@@ -23,6 +23,7 @@ export function getSitemapEntries(): MetadataRoute.Sitemap {
   const staticRoutes: Array<{ path: string; priority: number }> = [
     { path: "/", priority: 1 },
     { path: "/practice", priority: 0.9 },
+    { path: "/questions", priority: 0.8 },
     { path: "/mock-exam", priority: 0.8 },
     { path: "/services", priority: 0.8 },
     { path: "/learn", priority: 0.8 },

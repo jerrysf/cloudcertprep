@@ -53,11 +53,15 @@ export default function PracticePage() {
       </div>
 
       <Card className="mt-10 text-sm text-muted">
-        Want to test at exam pace?{" "}
-        <Link href="/mock-exam" className="font-medium text-accent hover:underline">
-          Take a timed mock exam
+        Prefer to read first?{" "}
+        <Link href="/questions" className="font-medium text-accent hover:underline">
+          Browse the full question bank
         </Link>{" "}
-        — a balanced mix across domains with a full results breakdown.
+        with answers and explanations — or{" "}
+        <Link href="/mock-exam" className="font-medium text-accent hover:underline">
+          take a timed mock exam
+        </Link>{" "}
+        for a balanced mix across domains with a full results breakdown.
       </Card>
     </Container>
   );

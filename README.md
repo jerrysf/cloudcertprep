@@ -88,10 +88,17 @@ domain weighting changes.
 
 - Statically generated pages for all content routes; canonical URLs via
   `metadataBase` + per-page `alternates.canonical`.
-- `src/app/sitemap.ts` lists only canonical, indexable URLs. User-specific
-  pages (`/mock-exam/[id]`, `/results/[id]`) are `noindex` + `robots.txt`
-  disallowed; practice filtering is client-side to avoid thin URL permutations.
-- JSON-LD: `WebSite`/`Organization` site-wide, `Article` on guides/articles.
+- Every published question gets an indexable detail page at
+  `/questions/[slug]` (stem, per-option explanations, AWS references, related
+  links), discoverable via the `/questions` index, topic pages, and the
+  interactive practice UI.
+- `src/app/sitemap.ts` lists only canonical, indexable URLs with
+  `lastModified`. User-specific pages (`/mock-exam/[id]`, `/results/[id]`) are
+  `noindex` + `robots.txt` disallowed; practice filtering is client-side to
+  avoid thin URL permutations.
+- JSON-LD: `WebSite`/`Organization` site-wide, `Article` on guides/articles,
+  `BreadcrumbList` on all content pages.
+- Dynamic OG image via `src/app/opengraph-image.tsx`.
 - Set `NEXT_PUBLIC_GSC_VERIFICATION` to the Search Console meta-tag token and
   submit `/sitemap.xml` after deployment.
 
@@ -122,7 +129,7 @@ domain weighting changes.
   data erases it. The `ProgressStore` interface in `src/lib/storage.ts` is the
   seam for a future Supabase/Postgres backend.
 - Practice scores are simple percentages, not AWS scaled scoring.
-- Question bank is ~35 questions — enough for topic practice; a full 65-question
+- Question bank is 65 questions — enough for topic practice; a full 65-question
   mock exam currently samples from that pool.
 - Contact is a mailto link; a serverless form would need spam/rate limiting.
 - Search Console/analytics/ads/affiliates are configured but intentionally

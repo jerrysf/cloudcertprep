@@ -36,7 +36,8 @@ export default async function ArticlePage({ params }: Props) {
   const article = getArticle(slug);
   if (!article) notFound();
   const topic = getTopic(article.topic);
-  const practiceCount = publishedByTopic(article.topic).length;
+  const topicQuestions = publishedByTopic(article.topic);
+  const practiceCount = topicQuestions.length;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -121,6 +122,23 @@ export default async function ArticlePage({ params }: Props) {
               >
                 Practice {topic.name}
               </ButtonLink>
+            </Card>
+          ) : null}
+          {topicQuestions.length > 0 ? (
+            <Card>
+              <h2 className="font-semibold">Related questions</h2>
+              <ul className="mt-2 space-y-2">
+                {topicQuestions.slice(0, 3).map((q) => (
+                  <li key={q.id}>
+                    <Link
+                      href={`/questions/${q.slug}`}
+                      className="line-clamp-2 text-sm text-muted hover:text-accent"
+                    >
+                      {q.question}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </Card>
           ) : null}
           <Card>
