@@ -299,4 +299,184 @@ export const costOptimizedQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-10-25",
   },
+  {
+    id: "saa-cost-009",
+    slug: "right-size-ebs-for-cold-storage",
+    domain: "design-cost-optimized-architectures",
+    topic: "cost-optimized-storage",
+    subtopic: "EBS cost optimization",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An infrequently accessed EC2 data volume uses a large general-purpose SSD where a cheaper option would suffice. Which EBS volume type is the least expensive for cold, infrequently accessed data?",
+    options: [
+      { id: "A", text: "Provisioned IOPS SSD (io2)" },
+      { id: "B", text: "General Purpose SSD (gp3)" },
+      { id: "C", text: "Cold HDD (sc1)" },
+      { id: "D", text: "Instance store" },
+    ],
+    correctAnswers: ["C"],
+    explanation:
+      "sc1 (Cold HDD) is the lowest-cost EBS volume type, designed for infrequently accessed, throughput-oriented workloads. It's the exam's standard 'cheapest EBS option' answer when access is infrequent and sequential.",
+    optionExplanations: {
+      A: "io2 is the most expensive — for sustained high-IOPS workloads.",
+      B: "gp3 balances price/performance but costs more than sc1.",
+      C: "Correct. sc1 is the cheapest EBS tier for cold data.",
+      D: "Instance store is ephemeral — data doesn't persist on stop/restart.",
+    },
+    services: ["Amazon EBS"],
+    references: [
+      {
+        title: "Amazon EBS volume types",
+        url: "https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volume-types.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-25",
+  },
+  {
+    id: "saa-cost-010",
+    slug: "efs-infrequent-access-cost-saving",
+    domain: "design-cost-optimized-architectures",
+    topic: "cost-optimized-storage",
+    subtopic: "EFS lifecycle",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "Most files on an EFS file system are rarely accessed. Which feature reduces cost automatically without moving files to another service?",
+    options: [
+      { id: "A", text: "EFS lifecycle management to the Infrequent Access storage class" },
+      { id: "B", text: "Migrate all files to S3 Glacier" },
+      { id: "C", text: "Provisioned throughput mode" },
+      { id: "D", text: "EBS snapshots" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "EFS lifecycle management automatically moves files not accessed for a set period into EFS Infrequent Access (or Archive), which costs a fraction of Standard — seamless and invisible to applications.",
+    optionExplanations: {
+      A: "Correct. EFS IA lifecycle is the native, automatic cost optimization.",
+      B: "Glacier migration breaks the shared file-system access pattern.",
+      C: "Provisioned throughput increases cost; it doesn't reduce storage cost.",
+      D: "Snapshots are for backup, not storage-class cost reduction.",
+    },
+    services: ["Amazon EFS"],
+    references: [
+      {
+        title: "EFS lifecycle management",
+        url: "https://docs.aws.amazon.com/efs/latest/ug/lifecycle-management-efs.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-25",
+  },
+  {
+    id: "saa-cost-011",
+    slug: "identify-idle-and-underutilized-resources",
+    domain: "design-cost-optimized-architectures",
+    topic: "cost-optimized-compute",
+    subtopic: "Cost visibility",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "An account's bill is growing and the team suspects idle EC2 instances, underutilized EBS volumes, and over-provisioned databases. Which AWS service analyzes resource utilization and recommends rightsizing?",
+    options: [
+      { id: "A", text: "AWS Cost Explorer" },
+      { id: "B", text: "AWS Compute Optimizer" },
+      { id: "C", text: "AWS Budgets" },
+      { id: "D", text: "AWS Trusted Advisor" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "AWS Compute Optimizer analyzes CloudWatch utilization metrics and recommends optimal instance types, volume configurations, and Lambda settings — the service purpose-built for rightsizing recommendations.",
+    optionExplanations: {
+      A: "Cost Explorer visualizes spend; it doesn't recommend rightsizing.",
+      B: "Correct. Compute Optimizer generates utilization-based rightsizing recommendations.",
+      C: "Budgets alerts on spend thresholds — detection, not recommendation.",
+      D: "Trusted Advisor checks best practices broadly, but Compute Optimizer is the dedicated rightsizing service.",
+    },
+    services: ["AWS Compute Optimizer"],
+    references: [
+      {
+        title: "AWS Compute Optimizer",
+        url: "https://docs.aws.amazon.com/compute-optimizer/latest/ug/what-is-compute-optimizer.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-25",
+  },
+  {
+    id: "saa-cost-012",
+    slug: "organizations-consolidated-billing",
+    domain: "design-cost-optimized-architectures",
+    topic: "cost-optimized-compute",
+    subtopic: "Billing consolidation",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A company runs workloads across dozens of AWS accounts. They want combined volume discounts and a single bill with per-account visibility. Which AWS Organizations feature provides this?",
+    options: [
+      { id: "A", text: "Service control policies" },
+      { id: "B", text: "Consolidated billing" },
+      { id: "C", text: "AWS Cost and Usage Report alone" },
+      { id: "D", text: "Tag policies" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Consolidated billing rolls all member-account usage into one payer bill — unlocking combined volume pricing tiers (e.g., cheaper S3/data-transfer rates) while still tracking per-account costs. Free with Organizations.",
+    optionExplanations: {
+      A: "SCPs control permissions across accounts, not billing.",
+      B: "Correct. Consolidated billing combines usage for discounts and a single bill.",
+      C: "CUR reports usage but doesn't consolidate billing or enable volume discounts.",
+      D: "Tag policies standardize tags; they don't affect billing structure.",
+    },
+    services: ["AWS Organizations"],
+    references: [
+      {
+        title: "Consolidated billing for AWS Organizations",
+        url: "https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/consolidated-billing.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-25",
+  },
+  {
+    id: "saa-cost-013",
+    slug: "cheapest-storage-for-regulatory-archive",
+    domain: "design-cost-optimized-architectures",
+    topic: "cost-optimized-storage",
+    subtopic: "Long-term archive",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A compliance team must retain audit logs for 7 years. Retrievals happen rarely and can wait up to 12 hours. Which S3 storage class minimizes cost for this archive?",
+    options: [
+      { id: "A", text: "S3 Standard-IA" },
+      { id: "B", text: "S3 Glacier Flexible Retrieval" },
+      { id: "C", text: "S3 Glacier Deep Archive" },
+      { id: "D", text: "S3 Intelligent-Tiering" },
+    ],
+    correctAnswers: ["C"],
+    explanation:
+      "S3 Glacier Deep Archive is the cheapest S3 storage class, designed for long-term regulatory/archival data with retrieval times up to 12 hours — matching the 7-year retention and rare-access scenario exactly.",
+    optionExplanations: {
+      A: "Standard-IA keeps millisecond access and costs far more for rarely-read archive data.",
+      B: "Flexible Retrieval restores in minutes-to-hours but costs more per GB than Deep Archive.",
+      C: "Correct. Deep Archive is purpose-built for multi-year archives tolerating up to 12-hour retrieval.",
+      D: "Intelligent-Tiering optimizes for changing access patterns; its archive tiers cost more than choosing Deep Archive directly.",
+    },
+    services: ["Amazon S3"],
+    references: [
+      {
+        title: "S3 Glacier storage classes",
+        url: "https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html#sc-glacier",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-25",
+  },
 ];

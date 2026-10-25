@@ -6,6 +6,7 @@ import { publishedByTopic } from "@/lib/content/questions";
 import { getDomain } from "@/lib/content/domains";
 import { PracticeSession } from "@/components/practice-session";
 import { Breadcrumbs, Container } from "@/components/ui";
+import { breadcrumbJsonLd } from "@/lib/jsonld";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -64,6 +65,17 @@ export default async function TopicPracticePage({ params }: Props) {
       <div className="mt-8">
         <PracticeSession questions={questions} topic={slug} />
       </div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbJsonLd([
+              { label: "Practice", href: "/practice" },
+              { label: topic.name, href: `/practice/${slug}` },
+            ]),
+          ),
+        }}
+      />
     </Container>
   );
 }

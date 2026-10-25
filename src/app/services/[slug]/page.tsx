@@ -6,6 +6,7 @@ import { SERVICES, getService } from "@/lib/content/services";
 import { getTopic } from "@/lib/content/topics";
 import { publishedByTopic } from "@/lib/content/questions";
 import { Breadcrumbs, Card, Container } from "@/components/ui";
+import { breadcrumbJsonLd } from "@/lib/jsonld";
 import { SITE } from "@/lib/site";
 
 interface Props {
@@ -156,6 +157,17 @@ export default async function ServicePage({ params }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbJsonLd([
+              { label: "Study Guides", href: "/services" },
+              { label: service.name, href: `/services/${slug}` },
+            ]),
+          ),
+        }}
       />
     </Container>
   );

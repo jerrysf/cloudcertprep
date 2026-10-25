@@ -445,4 +445,184 @@ export const highPerformingQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-10-25",
   },
+  {
+    id: "saa-perf-013",
+    slug: "real-time-stream-ingestion",
+    domain: "design-high-performing-architectures",
+    topic: "compute-selection",
+    subtopic: "Streaming data",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A platform must ingest clickstream events in real time and let multiple downstream applications each process the same stream independently, with replay of recent records. Which service is designed for this?",
+    options: [
+      { id: "A", text: "Amazon SQS" },
+      { id: "B", text: "Amazon Kinesis Data Streams" },
+      { id: "C", text: "Amazon EventBridge" },
+      { id: "D", text: "Amazon S3 event notifications" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Kinesis Data Streams is the managed real-time ingestion service: records persist for a retention window (default 24h, extendable), and multiple independent consumers can each process and replay the stream — a capability SQS and EventBridge lack.",
+    optionExplanations: {
+      A: "SQS is a work queue — each message goes to one consumer, no replay or stream semantics.",
+      B: "Correct. Kinesis provides ordered, replayable, multi-consumer streams.",
+      C: "EventBridge routes events by rules; it isn't a replayable ordered stream store.",
+      D: "S3 events notify on object changes; not a general ingestion stream.",
+    },
+    services: ["Amazon Kinesis"],
+    references: [
+      {
+        title: "Amazon Kinesis Data Streams",
+        url: "https://docs.aws.amazon.com/streams/latest/dev/introduction.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-25",
+  },
+  {
+    id: "saa-perf-014",
+    slug: "faster-long-distance-s3-uploads",
+    domain: "design-high-performing-architectures",
+    topic: "caching-and-content-delivery",
+    subtopic: "Upload acceleration",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A distributed team uploads large files to an S3 bucket in one Region and uploads are slow over long distances. The content itself doesn't need edge caching. Which feature improves upload speed most directly?",
+    options: [
+      { id: "A", text: "Amazon CloudFront distribution" },
+      { id: "B", text: "S3 Transfer Acceleration" },
+      { id: "C", text: "S3 Intelligent-Tiering" },
+      { id: "D", text: "Multipart upload API alone" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "S3 Transfer Acceleration routes uploads through AWS edge locations and over the AWS backbone, specifically speeding long-distance transfers to a bucket — exactly the slow-upload scenario described.",
+    optionExplanations: {
+      A: "CloudFront caches downloads for readers; it isn't the canonical upload accelerator (though it can ingest traffic).",
+      B: "Correct. Transfer Acceleration exists precisely for long-distance S3 uploads.",
+      C: "Intelligent-Tiering optimizes storage cost by access pattern, not transfer speed.",
+      D: "Multipart upload helps large-file reliability but doesn't route traffic over the AWS backbone.",
+    },
+    services: ["Amazon S3"],
+    references: [
+      {
+        title: "S3 Transfer Acceleration",
+        url: "https://docs.aws.amazon.com/AmazonS3/latest/userguide/transfer-acceleration.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-25",
+  },
+  {
+    id: "saa-perf-015",
+    slug: "elasticache-redis-vs-memcached",
+    domain: "design-high-performing-architectures",
+    topic: "caching-and-content-delivery",
+    subtopic: "Cache engine choice",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A session store needs an in-memory cache with persistence, replication, failover, and data structures like sorted sets for leaderboards. Which ElastiCache engine is required?",
+    options: [
+      { id: "A", text: "Memcached" },
+      { id: "B", text: "Redis OSS" },
+      { id: "C", text: "Either — they're equivalent on AWS" },
+      { id: "D", text: "DynamoDB DAX" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "ElastiCache for Redis OSS supports persistence, replication/failover, pub/sub, and rich data structures (sorted sets, hashes). Memcached is a simpler multi-threaded in-memory cache without persistence or replication.",
+    optionExplanations: {
+      A: "Memcached lacks persistence and replication — sessions would be lost on node failure.",
+      B: "Correct. Redis OSS provides persistence, failover, and sorted sets.",
+      C: "The engines differ significantly in capabilities; they're not interchangeable.",
+      D: "DAX accelerates DynamoDB reads; it isn't a general-purpose cache engine.",
+    },
+    services: ["Amazon ElastiCache"],
+    references: [
+      {
+        title: "Comparing Memcached and Redis OSS",
+        url: "https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/SelectEngine.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-25",
+  },
+  {
+    id: "saa-perf-016",
+    slug: "dynamodb-partition-key-design",
+    domain: "design-high-performing-architectures",
+    topic: "database-selection-and-scaling",
+    subtopic: "DynamoDB data modeling",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A DynamoDB table uses a partition key with only a handful of distinct values (e.g., a status field), so a few keys receive most of the traffic and get throttled. What's the fix?",
+    options: [
+      { id: "A", text: "Switch to on-demand capacity mode" },
+      { id: "B", text: "Choose a high-cardinality partition key (e.g., user ID) that spreads requests evenly" },
+      { id: "C", text: "Add a global secondary index on status" },
+      { id: "D", text: "Enable DynamoDB Streams" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "DynamoDB distributes data by partition key; low-cardinality keys concentrate load into 'hot' partitions. A high-cardinality key (or key suffixing/composite design) spreads requests across partitions — the fundamental DynamoDB performance principle.",
+    optionExplanations: {
+      A: "On-demand raises capacity ceilings but hot partitions still throttle within a partition.",
+      B: "Correct. Even distribution across partitions requires a high-cardinality partition key.",
+      C: "A GSI on a low-cardinality attribute creates the same hot-partition problem in the index.",
+      D: "Streams emit change events; they don't affect partitioning.",
+    },
+    services: ["Amazon DynamoDB"],
+    references: [
+      {
+        title: "DynamoDB partition key design",
+        url: "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-design.html",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-25",
+  },
+  {
+    id: "saa-perf-017",
+    slug: "low-latency-hpc-placement-group",
+    domain: "design-high-performing-architectures",
+    topic: "compute-selection",
+    subtopic: "Placement groups",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A tightly-coupled HPC workload needs the lowest possible network latency between its EC2 instances within a single AZ. Which EC2 placement group should be used?",
+    options: [
+      { id: "A", text: "Spread placement group" },
+      { id: "B", text: "Cluster placement group" },
+      { id: "C", text: "Partition placement group" },
+      { id: "D", text: "Dedicated hosts" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Cluster placement groups pack instances close together in one AZ for low-latency, high-throughput networking — ideal for tightly-coupled HPC. Spread and partition groups do the opposite (isolation).",
+    optionExplanations: {
+      A: "Spread groups deliberately isolate instances on separate hardware for availability, not latency.",
+      B: "Correct. Cluster groups maximize network performance for latency-sensitive workloads.",
+      C: "Partition groups isolate partitions for large distributed systems like Kafka/HDFS.",
+      D: "Dedicated hosts address licensing/compliance, not network latency.",
+    },
+    services: ["Amazon EC2"],
+    references: [
+      {
+        title: "Placement groups",
+        url: "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-25",
+  },
 ];

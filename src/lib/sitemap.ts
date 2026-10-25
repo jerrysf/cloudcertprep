@@ -3,7 +3,17 @@ import { SITE } from "@/lib/site";
 import { TOPICS } from "@/lib/content/topics";
 import { SERVICES } from "@/lib/content/services";
 import { ARTICLES } from "@/lib/content/articles";
-import { publishedByTopic } from "@/lib/content/questions";
+import {
+  PUBLISHED_QUESTIONS,
+  publishedByTopic,
+} from "@/lib/content/questions";
+
+const SITE_LAST_UPDATED = "2026-10-25";
+
+function latestReviewed(slugs: string[]): string {
+  const dates = slugs.sort();
+  return dates[dates.length - 1] ?? SITE_LAST_UPDATED;
+}
 
 /**
  * Canonical, indexable URLs only. User-specific and session pages
@@ -28,21 +38,33 @@ export function getSitemapEntries(): MetadataRoute.Sitemap {
   ];
   const entries: MetadataRoute.Sitemap = staticRoutes.map((r) => ({
     url: `${SITE.url}${r.path}`,
+    lastModified: SITE_LAST_UPDATED,
     changeFrequency: "weekly",
     priority: r.priority,
   }));
   for (const t of TOPICS) {
-    if (publishedByTopic(t.slug).length > 0) {
+    const qs = publishedByTopic(t.slug);
+    if (qs.length > 0) {
       entries.push({
         url: `${SITE.url}/practice/${t.slug}`,
+        lastModified: latestReviewed(qs.map((q) => q.lastReviewed)),
         changeFrequency: "weekly",
         priority: 0.8,
       });
     }
   }
+  for (const q of PUBLISHED_QUESTIONS) {
+    entries.push({
+      url: `${SITE.url}/questions/${q.slug}`,
+      lastModified: q.lastReviewed,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    });
+  }
   for (const s of SERVICES) {
     entries.push({
       url: `${SITE.url}/services/${s.slug}`,
+      lastModified: SITE_LAST_UPDATED,
       changeFrequency: "monthly",
       priority: 0.7,
     });

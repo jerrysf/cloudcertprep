@@ -8,6 +8,7 @@ import { publishedByTopic } from "@/lib/content/questions";
 import { Breadcrumbs, ButtonLink, Card, Container } from "@/components/ui";
 import { AffiliateBlock } from "@/components/affiliate-note";
 import { AdSlot } from "@/components/ad-slot";
+import { breadcrumbJsonLd } from "@/lib/jsonld";
 import { SITE } from "@/lib/site";
 
 interface Props {
@@ -150,6 +151,17 @@ export default async function ArticlePage({ params }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbJsonLd([
+              { label: "Learn", href: "/learn" },
+              { label: article.title, href: `/learn/${slug}` },
+            ]),
+          ),
+        }}
       />
     </Container>
   );

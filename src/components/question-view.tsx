@@ -1,12 +1,14 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import {
   Bookmark,
   BookmarkCheck,
   CheckCircle2,
   ExternalLink,
   Flag,
+  Link2,
   XCircle,
 } from "lucide-react";
 import type { Question } from "@/lib/content/schema";
@@ -83,8 +85,16 @@ export function QuestionView({
         {topic ? <Badge>{topic.name}</Badge> : null}
         <Badge>{question.difficulty}</Badge>
         <Badge>{multi ? "Multiple response" : "Single choice"}</Badge>
-        {showActions && (onToggleBookmark || onFlag) ? (
+        {showActions ? (
           <span className="ml-auto flex items-center gap-1">
+            <Link
+              href={`/questions/${question.slug}`}
+              aria-label="Permalink to this question's explanation page"
+              title="Permalink to this question's explanation page"
+              className="rounded-md p-2 text-muted hover:bg-slate-100 hover:text-foreground"
+            >
+              <Link2 className="h-4 w-4" />
+            </Link>
             {onToggleBookmark ? (
               <button
                 type="button"

@@ -441,4 +441,184 @@ export const resilientQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-10-25",
   },
+  {
+    id: "saa-res-013",
+    slug: "pilot-light-dr-definition",
+    domain: "design-resilient-architectures",
+    topic: "disaster-recovery",
+    subtopic: "Pilot light",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Which disaster-recovery approach keeps only the minimal data-replication components running in the DR Region — the data layer always live but the application stack provisioned only when needed?",
+    options: [
+      { id: "A", text: "Backup and restore" },
+      { id: "B", text: "Pilot light" },
+      { id: "C", text: "Warm standby" },
+      { id: "D", text: "Multi-site active/active" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Pilot light replicates the data layer continuously (databases, critical storage) while the application tier stays undeployed until failover. Warm standby goes further — it keeps a scaled-down but functional app stack running.",
+    optionExplanations: {
+      A: "Backup/restore keeps only backups — no live data replication.",
+      B: "Correct. Always-on data layer + provisioned-on-failover app tier = pilot light.",
+      C: "Warm standby runs a reduced-capacity functional stack, not just the data layer.",
+      D: "Active/active runs full capacity in both Regions simultaneously.",
+    },
+    services: ["Disaster recovery"],
+    references: [
+      {
+        title: "Disaster recovery options in the cloud",
+        url: "https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-options-in-the-cloud.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-25",
+  },
+  {
+    id: "saa-res-014",
+    slug: "route53-latency-vs-geolocation",
+    domain: "design-resilient-architectures",
+    topic: "high-availability",
+    subtopic: "DNS routing",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A global app has identical deployments in eu-west-1 and us-east-1. Users in Europe should reach the European deployment and US users the American one — routed by user geography, not measured latency. Which Route 53 policy?",
+    options: [
+      { id: "A", text: "Latency routing policy" },
+      { id: "B", text: "Geolocation routing policy" },
+      { id: "C", text: "Simple routing policy" },
+      { id: "D", text: "Failover routing policy" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Geolocation routing routes by the user's location (continent, country, US state) as the scenario requires. Latency routing picks the region with the best measured latency — which usually correlates with geography but isn't the same guarantee.",
+    optionExplanations: {
+      A: "Latency routes by measured network latency, not user location — different mechanism.",
+      B: "Correct. Geolocation maps user geography to the intended resource.",
+      C: "Simple routing offers no location awareness.",
+      D: "Failover is for primary/secondary health-based switching, not geographic routing.",
+    },
+    services: ["Amazon Route 53"],
+    references: [
+      {
+        title: "Route 53 routing policies",
+        url: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-policy.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-25",
+  },
+  {
+    id: "saa-res-015",
+    slug: "restore-ebs-volume-in-another-az",
+    domain: "design-resilient-architectures",
+    topic: "resilient-storage",
+    subtopic: "EBS recovery",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An EBS volume's data must survive an AZ outage and be recoverable into a different AZ within minutes. What mechanism enables this?",
+    options: [
+      { id: "A", text: "EBS volumes automatically replicate across AZs" },
+      { id: "B", text: "EBS snapshots stored in S3, restored into a new volume in any AZ" },
+      { id: "C", text: "Attach the same volume to a second instance simultaneously" },
+      { id: "D", text: "Instance store backup scripts" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "EBS volumes live in a single AZ, but snapshots are stored redundantly in S3 (multi-AZ). A snapshot can be restored as a new volume in any AZ — the standard recovery path when an AZ fails.",
+    optionExplanations: {
+      A: "EBS replicates within an AZ only — a single volume does not span AZs.",
+      B: "Correct. Snapshots → S3 → restore to any AZ.",
+      C: "Multi-attach works only within a single AZ for specific volume types.",
+      D: "Instance store is ephemeral and unrelated to EBS volume recovery.",
+    },
+    services: ["Amazon EBS", "Amazon S3"],
+    references: [
+      {
+        title: "Amazon EBS snapshots",
+        url: "https://docs.aws.amazon.com/ebs/latest/userguide/EBSSnapshots.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-25",
+  },
+  {
+    id: "saa-res-016",
+    slug: "stateless-web-tier-for-ha",
+    domain: "design-resilient-architectures",
+    topic: "high-availability",
+    subtopic: "Statelessness",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A web tier stores user sessions in local memory on each EC2 instance. When Auto Scaling replaces instances, users lose sessions. What change makes the tier properly stateless?",
+    options: [
+      { id: "A", text: "Increase instance sizes so instances are replaced less often" },
+      { id: "B", text: "Move session state to a shared store such as DynamoDB or ElastiCache" },
+      { id: "C", text: "Enable sticky sessions on the load balancer permanently" },
+      { id: "D", text: "Disable Auto Scaling" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Stateless compute — session data in an external store like DynamoDB or ElastiCache — lets any instance serve any request, so replacements and scaling cause no user impact. This is the foundational HA pattern.",
+    optionExplanations: {
+      A: "Bigger instances don't fix state loss on replacement.",
+      B: "Correct. Externalizing session state decouples it from instance lifetime.",
+      C: "Sticky sessions mask but don't fix the problem — a failed instance still loses its sessions.",
+      D: "Disabling Auto Scaling removes resilience, not adds it.",
+    },
+    services: ["Amazon DynamoDB", "Amazon ElastiCache", "Amazon EC2"],
+    references: [
+      {
+        title: "Well-Architected reliability pillar",
+        url: "https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/welcome.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-25",
+  },
+  {
+    id: "saa-res-017",
+    slug: "aurora-global-database-cross-region",
+    domain: "design-resilient-architectures",
+    topic: "high-availability",
+    subtopic: "Global database",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A global application needs a relational database readable with low latency in three Regions, able to promote a secondary Region to full read-write within about a minute for regional DR. Which option fits?",
+    options: [
+      { id: "A", text: "RDS read replicas in each Region" },
+      { id: "B", text: "Aurora Global Database" },
+      { id: "C", text: "DynamoDB global tables" },
+      { id: "D", text: "Redshift multi-region cluster" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Aurora Global Database provides storage-level replication to secondary Regions (typically sub-second lag) and managed cross-Region promotion for DR — purpose-built for multi-Region relational low-latency reads plus fast failover.",
+    optionExplanations: {
+      A: "RDS replicas have higher lag and slower, more manual promotion for regional DR.",
+      B: "Correct. Aurora Global Database is designed for this exact pattern.",
+      C: "DynamoDB is NoSQL — the workload requires relational.",
+      D: "Redshift is an analytics warehouse, not an OLTP multi-Region store.",
+    },
+    services: ["Amazon Aurora"],
+    references: [
+      {
+        title: "Amazon Aurora Global Database",
+        url: "https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-25",
+  },
 ];

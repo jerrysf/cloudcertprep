@@ -436,6 +436,356 @@ export const ARTICLES: Article[] = [
   },
 ];
 
+// ---- Pillar + comparison articles (SEO content expansion) ----
+
+ARTICLES.push(
+  {
+    slug: "saa-c03-exam-guide",
+    title: "SAA-C03 Exam Guide: Format, Cost, Scoring, and How to Prepare",
+    description:
+      "Everything about the AWS Certified Solutions Architect – Associate (SAA-C03) exam: 65 questions, 130 minutes, $150, the four domain weights, scoring, and a realistic prep strategy.",
+    domain: "design-secure-architectures",
+    topic: "iam-and-access-control",
+    updatedAt: "2026-10-25",
+    readingMinutes: 9,
+    sections: [
+      {
+        paragraphs: [
+          "The AWS Certified Solutions Architect – Associate (SAA-C03) validates that you can design solutions on AWS using the Well-Architected Framework. It is the most common starting point for cloud careers and the certification most employers recognize first.",
+          "This guide summarizes the official exam details as published by AWS — always confirm current details on the official certification page before booking, since AWS updates exams periodically.",
+        ],
+      },
+      {
+        heading: "Exam format and cost",
+        list: [
+          "65 questions — a mix of multiple choice (one correct) and multiple response (two or more correct)",
+          "130 minutes — roughly 2 minutes per question",
+          "$150 USD; delivered via Pearson VUE testing center or online proctoring",
+          "Pass/fail with a scaled score of 100–1,000; minimum passing score is 720",
+          "Compensatory scoring: you need to pass overall, not in every section",
+        ],
+      },
+      {
+        heading: "The four content domains",
+        list: [
+          "Domain 1: Design Secure Architectures — 30% of scored content",
+          "Domain 2: Design Resilient Architectures — 26%",
+          "Domain 3: Design High-Performing Architectures — 24%",
+          "Domain 4: Design Cost-Optimized Architectures — 20%",
+        ],
+        paragraphs: [
+          "Security carries the most weight, which surprises many candidates — expect heavy coverage of IAM, encryption choices, VPC security controls, and defense-in-depth. Resilience follows closely: Multi-AZ designs, decoupling with queues, and disaster recovery trade-offs.",
+        ],
+      },
+      {
+        heading: "Who should take it",
+        paragraphs: [
+          "AWS recommends about a year of hands-on experience designing cloud solutions, but candidates with general IT experience regularly succeed with structured study. If you have zero IT background, AWS suggests starting with Cloud Practitioner for fundamentals first.",
+          "The exam tests architectural decision-making more than hands-on console skills. Almost every question is a scenario: a workload description plus constraints (cost, latency, availability, security), and you pick the best-fit design.",
+        ],
+      },
+      {
+        heading: "How to prepare effectively",
+        list: [
+          "Learn the four domains' task statements — they define exactly what's in scope",
+          "Practice scenario questions until you can justify every option — right and wrong",
+          "Memorize the service-selection patterns: storage (S3/EBS/EFS), databases (RDS/Aurora/DynamoDB), compute (EC2/Lambda/containers), messaging (SQS/SNS/EventBridge)",
+          "Take timed mock exams to build pacing — 2 minutes per question is the exam's rhythm",
+          "Review official AWS docs and whitepapers for the services you keep getting wrong",
+        ],
+      },
+      {
+        heading: "Exam-day tips",
+        list: [
+          "Flag questions you're unsure of and return after a first pass",
+          "Eliminate obviously wrong options first — most questions have 1–2 clear distractors",
+          "Watch for cost keywords ('most cost-effective', 'cheapest') vs performance keywords ('lowest latency', 'most scalable') — they point to different answers",
+          "Unanswered questions score as wrong; never leave blanks",
+        ],
+        paragraphs: [
+          "Use our free practice questions and mock exams to rehearse these exact decision patterns — every question explains why each option is right or wrong.",
+        ],
+      },
+    ],
+    references: [
+      {
+        title: "AWS Certified Solutions Architect – Associate (official)",
+        url: "https://aws.amazon.com/certification/certified-solutions-architect-associate/",
+      },
+      {
+        title: "SAA-C03 exam guide (AWS docs)",
+        url: "https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03.html",
+      },
+    ],
+  },
+  {
+    slug: "alb-vs-nlb",
+    title: "ALB vs NLB: Application vs Network Load Balancer",
+    description:
+      "When to choose an Application Load Balancer over a Network Load Balancer — layer 7 routing, WAF integration, static IPs, and extreme performance.",
+    domain: "design-high-performing-architectures",
+    topic: "scalability-and-elasticity",
+    updatedAt: "2026-10-25",
+    readingMinutes: 4,
+    sections: [
+      {
+        paragraphs: [
+          "Both distribute traffic to targets, but they operate at different network layers — and that single fact drives almost every exam answer. ALB works at layer 7 (HTTP/HTTPS); NLB works at layer 4 (TCP/UDP/TLS passthrough).",
+        ],
+      },
+      {
+        heading: "Choose ALB when you need…",
+        list: [
+          "Path-, host-, header-, or query-string-based routing (e.g., /api → service A, /img → service B)",
+          "AWS WAF integration for layer-7 attack filtering",
+          "Authentication via OIDC/Cognito at the load balancer",
+          "WebSocket support and container-friendly target groups",
+          "Rich request metrics and access logs",
+        ],
+      },
+      {
+        heading: "Choose NLB when you need…",
+        list: [
+          "Non-HTTP protocols — TCP, UDP, or TLS passthrough to targets",
+          "Ultra-low latency and millions of requests per second",
+          "Static IP addresses per AZ (NLB supports Elastic IPs; ALB doesn't)",
+          "Preserving client source IPs",
+          "VPC endpoint service (PrivateLink) as a source",
+        ],
+      },
+      {
+        heading: "Exam shortcuts",
+        paragraphs: [
+          "'HTTP routing rules, WAF, auth' → ALB. 'Static IPs, UDP, extreme throughput, preserve source IP' → NLB. A third type, Gateway Load Balancer, only appears for inline virtual appliances (firewalls, IDS) — it's rarely the answer for app traffic.",
+        ],
+      },
+    ],
+    references: [
+      {
+        title: "How Elastic Load Balancing works",
+        url: "https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html",
+      },
+    ],
+  },
+  {
+    slug: "sns-vs-sqs-vs-eventbridge",
+    title: "SNS vs SQS vs EventBridge: Picking the Right Messaging Service",
+    description:
+      "Queues, pub/sub topics, and event buses solve different decoupling problems — learn which one fits each scenario.",
+    domain: "design-resilient-architectures",
+    topic: "decoupling-and-messaging",
+    updatedAt: "2026-10-25",
+    readingMinutes: 5,
+    sections: [
+      {
+        paragraphs: [
+          "All three move events between components, but they model different patterns: SQS is a queue (one consumer per message), SNS is pub/sub (every subscriber gets every message), and EventBridge is an event bus (routed events with filtering and third-party sources).",
+        ],
+      },
+      {
+        heading: "SQS — work queues",
+        paragraphs: [
+          "Use SQS when a task must be processed once by one consumer and you want to buffer load spikes. Consumers poll, process, and delete. Visibility timeout hides in-flight messages; dead-letter queues isolate poison messages. FIFO queues add ordering + exactly-once.",
+        ],
+      },
+      {
+        heading: "SNS — broadcast/fan-out",
+        paragraphs: [
+          "Use SNS when one event must reach many independent systems — the producer stays unaware of consumers. The standard pattern is SNS → per-consumer SQS queues (fan-out), giving each system durable, retryable delivery.",
+        ],
+      },
+      {
+        heading: "EventBridge — event routing",
+        paragraphs: [
+          "EventBridge is a serverless event bus: events from AWS services, SaaS partners, and custom apps route to targets by pattern-matching rules. Choose it for event-driven architectures needing content filtering, scheduling, SaaS integration, or schema discovery.",
+        ],
+      },
+      {
+        heading: "Decision table",
+        list: [
+          "One task → one consumer, buffer work → SQS",
+          "One event → many consumers → SNS (usually to per-consumer SQS)",
+          "Route/filter events from many sources (incl. SaaS) → EventBridge",
+          "Scheduled triggers → EventBridge Scheduler",
+        ],
+      },
+    ],
+    references: [
+      { title: "Amazon SQS", url: "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html" },
+      { title: "Amazon SNS", url: "https://docs.aws.amazon.com/sns/latest/dg/welcome.html" },
+      { title: "Amazon EventBridge", url: "https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-what-is.html" },
+    ],
+  },
+  {
+    slug: "rds-multi-az-vs-read-replica",
+    title: "RDS Multi-AZ vs Read Replicas: Availability vs Read Scaling",
+    description:
+      "The most-tested RDS distinction on the exam — synchronous standby for failover vs asynchronous copies for read offload.",
+    domain: "design-resilient-architectures",
+    topic: "high-availability",
+    updatedAt: "2026-10-25",
+    readingMinutes: 4,
+    sections: [
+      {
+        paragraphs: [
+          "Multi-AZ and read replicas both create copies of your RDS database, but for opposite reasons. Confusing them is one of the most common exam mistakes — and AWS knows it.",
+        ],
+      },
+      {
+        heading: "Multi-AZ — for availability",
+        paragraphs: [
+          "Multi-AZ maintains a synchronous standby replica in a different AZ. The standby serves no traffic — it exists only to take over automatically during failover (typically 60–120 seconds, no connection-string change needed). It's a disaster-resilience feature, not a scaling feature.",
+        ],
+      },
+      {
+        heading: "Read replicas — for read scaling",
+        paragraphs: [
+          "Read replicas are asynchronous copies that serve read-only traffic. Applications must explicitly point read queries at the replica endpoint. Replicas can also be promoted to standalone primaries — useful for DR or migrations — and can live in other Regions for cross-Region reads.",
+        ],
+      },
+      {
+        heading: "Memory aid",
+        list: [
+          "'Automatic failover / minimize downtime' → Multi-AZ",
+          "'Offload read traffic / reporting queries / cross-Region reads' → read replica",
+          "Need both? They're not exclusive — a primary can be Multi-AZ AND have replicas",
+          "Aurora behaves differently: replicas there are multi-purpose (both HA and reads)",
+        ],
+      },
+    ],
+    references: [
+      { title: "Multi-AZ deployments", url: "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.html" },
+      { title: "Working with read replicas", url: "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html" },
+    ],
+  },
+  {
+    slug: "interface-vs-gateway-vpc-endpoints",
+    title: "Gateway vs Interface VPC Endpoints: Private Access to AWS Services",
+    description:
+      "Gateway endpoints are free and cover S3/DynamoDB; interface endpoints (PrivateLink) cover everything else. Here's when each applies.",
+    domain: "design-secure-architectures",
+    topic: "network-security",
+    updatedAt: "2026-10-25",
+    readingMinutes: 4,
+    sections: [
+      {
+        paragraphs: [
+          "VPC endpoints let private resources reach AWS APIs without traversing the public internet — no NAT gateway, no public IPs. There are two types with very different mechanics, and the exam tests both.",
+        ],
+      },
+      {
+        heading: "Gateway endpoints — S3 and DynamoDB only",
+        paragraphs: [
+          "A gateway endpoint adds a route-table entry directing traffic for the service over the AWS network. They exist only for S3 and DynamoDB, carry no hourly charge, and are the standard answer for eliminating NAT data-processing fees on S3/DynamoDB traffic.",
+        ],
+      },
+      {
+        heading: "Interface endpoints — almost everything else",
+        paragraphs: [
+          "An interface endpoint (powered by AWS PrivateLink) provisions ENIs with private IPs in your subnets. Most AWS services — SNS, SQS, Secrets Manager, KMS, CloudWatch, and dozens more — are reachable through interface endpoints. They bill hourly per AZ plus per-GB processed.",
+        ],
+      },
+      {
+        heading: "Choosing",
+        list: [
+          "S3 or DynamoDB access → gateway endpoint (free, no reason not to)",
+          "Any other AWS service → interface endpoint (PrivateLink)",
+          "Third-party SaaS private access → PrivateLink to their endpoint service",
+          "Heavy S3 traffic through NAT → gateway endpoint removes data-processing charges (classic cost question)",
+        ],
+      },
+    ],
+    references: [
+      { title: "VPC endpoints", url: "https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html" },
+      { title: "Gateway endpoints for S3", url: "https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html" },
+    ],
+  },
+  {
+    slug: "ebs-snapshot-vs-ami",
+    title: "EBS Snapshot vs AMI: Backup Building Blocks Compared",
+    description:
+      "Snapshots back up a volume's data; AMIs capture the whole bootable instance configuration. Know which one a scenario needs.",
+    domain: "design-resilient-architectures",
+    topic: "disaster-recovery",
+    updatedAt: "2026-10-25",
+    readingMinutes: 4,
+    sections: [
+      {
+        paragraphs: [
+          "Both are 'copies' of EC2 state, but they answer different questions: an EBS snapshot backs up a single volume's data; an AMI is a launchable image bundling the root volume snapshot plus configuration (instance type, permissions, block device mappings).",
+        ],
+      },
+      {
+        heading: "EBS snapshots",
+        paragraphs: [
+          "Point-in-time, incremental backups of one volume stored in S3. Copy them across AZs/Regions for DR, resize on restore, or share across accounts. Use snapshots to protect data volumes and to seed new volumes.",
+        ],
+      },
+      {
+        heading: "AMIs",
+        paragraphs: [
+          "An AMI packages the root volume snapshot + launch metadata so new instances boot identically. Use AMIs for golden images, Auto Scaling launch templates, and replicating a configured instance across Regions (copy AMI).",
+        ],
+      },
+      {
+        heading: "Which does the scenario need?",
+        list: [
+          "'Back up the data on this volume' → EBS snapshot",
+          "'Launch identical instances in another Region/AZ' → AMI",
+          "'Restore a database volume after corruption' → snapshot → new volume",
+          "'Standardize a hardened image for the fleet' → AMI pipeline",
+        ],
+      },
+    ],
+    references: [
+      { title: "Amazon EBS snapshots", url: "https://docs.aws.amazon.com/ebs/latest/userguide/EBSSnapshots.html" },
+      { title: "Amazon Machine Images (AMI)", url: "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html" },
+    ],
+  },
+  {
+    slug: "s3-standard-ia-vs-intelligent-tiering",
+    title: "S3 Standard-IA vs Intelligent-Tiering: Infrequent Access Done Right",
+    description:
+      "Both cut storage cost for rarely-accessed data — but one is a fixed cheaper tier and the other adapts automatically. Here's how to choose.",
+    domain: "design-cost-optimized-architectures",
+    topic: "cost-optimized-storage",
+    updatedAt: "2026-10-25",
+    readingMinutes: 4,
+    sections: [
+      {
+        paragraphs: [
+          "Both classes keep millisecond retrieval while lowering the per-GB storage price. The difference is predictability: Standard-IA is cheaper storage with a retrieval fee, always; Intelligent-Tiering charges a small monitoring fee but automatically moves objects between tiers as access patterns change.",
+        ],
+      },
+      {
+        heading: "Standard-IA — for known rare access",
+        paragraphs: [
+          "Use Standard-IA when you know objects are accessed infrequently — backups you might restore, disaster-recovery copies, documents retrieved a few times a year. Storage price is roughly half of Standard; each retrieval carries a per-GB fee. Minimum storage duration (30 days) and minimum object size (128 KB) apply.",
+        ],
+      },
+      {
+        heading: "Intelligent-Tiering — for unknown or changing access",
+        paragraphs: [
+          "Intelligent-Tiering monitors access and moves objects between a frequent-access tier (Standard-priced), an infrequent tier (~Standard-IA-priced), and optional archive tiers — with no retrieval fees. Pay a small per-object monitoring charge instead. It's the answer for 'unknown or changing access pattern' scenarios.",
+        ],
+      },
+      {
+        heading: "Exam shortcuts",
+        list: [
+          "'Known infrequent access' → Standard-IA",
+          "'Unknown, changing, or unpredictable access' → Intelligent-Tiering",
+          "'Can tolerate hours-long retrieval' → Glacier Flexible Retrieval or Deep Archive (cheaper still)",
+          "'Must stay millisecond-latency' → eliminates the Glacier archive tiers",
+        ],
+      },
+    ],
+    references: [
+      { title: "S3 storage classes", url: "https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html" },
+      { title: "Intelligent-Tiering", url: "https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html#sc-dynamic-data-access" },
+    ],
+  },
+);
+
 export function getArticle(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
 }
