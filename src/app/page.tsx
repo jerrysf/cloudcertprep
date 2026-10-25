@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -14,6 +15,10 @@ import { ARTICLES } from "@/lib/content/articles";
 import { SITE } from "@/lib/site";
 import { DashboardPreview } from "@/components/progress-dashboard";
 import { Badge, ButtonLink, Card, Container, SectionHeading } from "@/components/ui";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 const FEATURED_TOPICS = TOPICS.slice(0, 6);
 

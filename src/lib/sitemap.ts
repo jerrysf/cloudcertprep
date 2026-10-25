@@ -38,7 +38,7 @@ export function getSitemapEntries(): MetadataRoute.Sitemap {
     { path: "/disclaimer", priority: 0.2 },
   ];
   const entries: MetadataRoute.Sitemap = staticRoutes.map((r) => ({
-    url: `${SITE.url}${r.path}`,
+    url: r.path === "/" ? SITE.url : `${SITE.url}${r.path}`,
     lastModified: SITE_LAST_UPDATED,
     changeFrequency: "weekly",
     priority: r.priority,
