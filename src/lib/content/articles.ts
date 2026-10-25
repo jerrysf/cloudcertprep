@@ -786,6 +786,103 @@ ARTICLES.push(
   },
 );
 
+ARTICLES.push({
+  slug: "saa-c03-cheat-sheet",
+  title: "SAA-C03 Cheat Sheet: AWS Service Selection Quick Reference",
+  description:
+    "A condensed decision guide for the SAA-C03 exam — which AWS service to pick for storage, databases, compute, messaging, networking, and DR scenarios.",
+  domain: "design-high-performing-architectures",
+  topic: "scalability-and-elasticity",
+  updatedAt: "2026-10-25",
+  readingMinutes: 8,
+  sections: [
+    {
+      paragraphs: [
+        "The SAA-C03 exam is a service-selection test at heart: a scenario plus constraints, and the 'best' AWS service. This cheat sheet compresses the most-tested decision patterns — bookmark it for your final review week.",
+      ],
+    },
+    {
+      heading: "Storage",
+      list: [
+        "Objects/files over HTTP, any scale → S3",
+        "Block storage attached to one EC2 instance → EBS",
+        "Shared POSIX file system across many instances → EFS",
+        "Known infrequent S3 access → Standard-IA; unknown/changing → Intelligent-Tiering",
+        "Multi-year archive, 12-hour retrieval OK → Glacier Deep Archive",
+        "Slow long-distance S3 uploads → Transfer Acceleration",
+      ],
+    },
+    {
+      heading: "Databases",
+      list: [
+        "Relational, managed → RDS; high-end relational w/ better perf + replication → Aurora",
+        "Key-value/documents, massive scale, single-digit-ms → DynamoDB",
+        "Relational failover (no traffic served) → Multi-AZ; read scaling → read replica",
+        "Multi-Region relational + fast DR promotion → Aurora Global Database",
+        "In-memory cache → ElastiCache; sessions/leaderboards/persistence → Redis OSS, simple cache → Memcached",
+        "Analytics/petabyte queries → Redshift",
+      ],
+    },
+    {
+      heading: "Compute",
+      list: [
+        "Full control, long-running → EC2; event-driven ≤15 min → Lambda",
+        "Containers → ECS (simpler, AWS-native) or EKS (Kubernetes); launch without servers → Fargate",
+        "HTTP routing/WAF/auth → ALB; TCP-UDP/static IPs/extreme throughput → NLB",
+        "Stateful web tier → move sessions to DynamoDB or ElastiCache first",
+      ],
+    },
+    {
+      heading: "Messaging & decoupling",
+      list: [
+        "One task → one consumer, buffer spikes → SQS",
+        "One event → many consumers → SNS (fan-out to per-consumer SQS queues)",
+        "Route/filter events from many sources incl. SaaS → EventBridge",
+        "Failed messages after retries → SQS dead-letter queue",
+        "Real-time replayable streams → Kinesis Data Streams",
+      ],
+    },
+    {
+      heading: "Networking & security",
+      list: [
+        "Instance-level stateful firewall → security groups; subnet-level stateless → NACLs",
+        "Private internet egress → NAT gateway; private S3/DynamoDB access → free gateway VPC endpoint; other AWS services → interface endpoint (PrivateLink)",
+        "Prevent any public S3 access account-wide → Block Public Access",
+        "TLS certificates on ALB/CloudFront → ACM; secrets w/ rotation → Secrets Manager; encrypt data → KMS",
+        "Threat detection → GuardDuty; API audit → CloudTrail; config history → AWS Config; web exploits → WAF",
+        "App user auth (sign-up/MFA/social login) → Cognito",
+      ],
+    },
+    {
+      heading: "Availability & DR",
+      list: [
+        "Survive an AZ loss → Multi-AZ + Multi-AZ DB",
+        "Backups only → backup & restore (highest RTO/RPO, cheapest)",
+        "Live data layer + provision app on failover → pilot light",
+        "Reduced-capacity running stack → warm standby; full capacity both Regions → active/active",
+        "Route by user geography → Route 53 geolocation; by latency → latency routing; DR failover → failover policy",
+        "Launch identical instances elsewhere → AMI; back up a volume → EBS snapshot",
+      ],
+    },
+    {
+      heading: "Cost",
+      list: [
+        "Steady long-term usage → Savings Plans / Reserved Instances",
+        "Interruptible batch → Spot Instances",
+        "Cheapest EBS for cold data → sc1 Cold HDD",
+        "Rightsizing recommendations → Compute Optimizer; spend alerts → Budgets",
+        "Combine volume discounts across accounts → Organizations consolidated billing",
+      ],
+    },
+  ],
+  references: [
+    {
+      title: "AWS Certified Solutions Architect – Associate exam guide",
+      url: "https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03.html",
+    },
+  ],
+});
+
 export function getArticle(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
 }

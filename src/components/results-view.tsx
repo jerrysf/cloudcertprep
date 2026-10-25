@@ -11,6 +11,7 @@ import { type ExamResult } from "@/lib/storage";
 import { useProgress } from "@/lib/use-progress";
 import { formatDuration } from "@/lib/utils";
 import { QuestionView } from "@/components/question-view";
+import { ShareButton } from "@/components/share-button";
 import { Badge, ButtonLink, Card } from "@/components/ui";
 
 export function ResultsView({
@@ -80,13 +81,16 @@ export function ResultsView({
               only.
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <ButtonLink href="/mock-exam" variant="primary">
               <RotateCcw className="h-4 w-4" aria-hidden /> Retake
             </ButtonLink>
             <ButtonLink href="/practice" variant="secondary">
               Back to practice
             </ButtonLink>
+            <ShareButton
+              text={`I scored ${Math.round(result.scorePercent)}% on a CloudCertPrep SAA-C03 mock exam — free AWS practice questions:`}
+            />
           </div>
         </div>
       </Card>
