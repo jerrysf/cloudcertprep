@@ -17,7 +17,9 @@ flashcards) lives in `src/lib/content/` as typed data files validated by Zod
 Commands:
 - `npm run lint` / `npm run typecheck` — must be clean
 - `npm test` — Vitest unit tests (bank integrity, scoring, timer, storage)
-- `npm run test:e2e` — Playwright (needs `npm run build` first)
+- `npm run test:e2e` — Playwright serves the **production build** on :3100
+  (`npm run start`). Rebuild first, and kill any stale server on :3100
+  (`lsof -ti :3100 | xargs kill`) or tests will run against an old build.
 - `npm run build` — production build; all content routes are SSG
 
 Rules:
