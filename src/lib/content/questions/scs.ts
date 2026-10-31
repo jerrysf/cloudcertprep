@@ -158,4 +158,152 @@ export const scsQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-10-26",
   },
+  {
+    id: "scs-ir-001",
+    slug: "compromised-access-key-response",
+    cert: "scs-c03",
+    domain: "scs-incident-response",
+    topic: "scs-incident-response",
+    subtopic: "Credential compromise",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "CloudTrail shows an IAM user's access key making API calls from an unknown IP — the key is compromised. What's the correct FIRST response?",
+    options: [
+      { id: "A", text: "Delete the IAM user entirely" },
+      { id: "B", text: "Deactivate the access key (and rotate), then investigate the blast radius" },
+      { id: "C", text: "Send the user an email asking if it was them" },
+      { id: "D", text: "Change the user's console password" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Deactivate the exposed key immediately to stop bleeding — then scope the incident via CloudTrail (what was called, from where) and rotate credentials. Deleting the user first destroys evidence and can break applications using other credentials on that user.",
+    optionExplanations: {
+      A: "Deleting the user is heavier-handed, loses forensic context, and may break workloads.",
+      B: "Correct. Contain first (deactivate), then investigate, then rotate.",
+      C: "Email delays containment while the attacker keeps access.",
+      D: "Console password doesn't stop programmatic API abuse of the access key.",
+    },
+    services: ["AWS IAM", "AWS CloudTrail"],
+    references: [
+      {
+        title: "Responding to compromised credentials",
+        url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "scs-inf-001",
+    slug: "waf-shield-ddos-protection",
+    cert: "scs-c03",
+    domain: "scs-infrastructure-security",
+    topic: "scs-infrastructure-security",
+    subtopic: "DDoS and edge protection",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A public web application behind an ALB faces repeated SQL-injection attempts and L7 floods. Which AWS services address application-layer attacks? (Choose the best single answer.)",
+    options: [
+      { id: "A", text: "AWS Shield Standard alone" },
+      { id: "B", text: "AWS WAF rules on the ALB (SQLi/XSS rate-limiting rules) — Shield Advanced optional for enhanced DDoS" },
+      { id: "C", text: "Security groups denying suspicious IPs" },
+      { id: "D", text: "Amazon Inspector agent on the instances" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "WAF inspects HTTP requests and blocks SQLi/XSS/rate abuse at the ALB/CloudFront layer. Shield Standard (free) covers L3/L4 floods automatically; Shield Advanced adds enhanced protection and response. Inspector finds host vulnerabilities — it doesn't filter web attacks.",
+    optionExplanations: {
+      A: "Shield Standard covers L3/L4 only, not application-layer payloads.",
+      B: "Correct. WAF is the L7 filtering layer; Shield handles DDoS.",
+      C: "SGs can't filter by request content or dynamic rate limits.",
+      D: "Inspector assesses vulnerabilities — it doesn't block attacks.",
+    },
+    services: ["AWS WAF", "AWS Shield", "Elastic Load Balancing"],
+    references: [
+      {
+        title: "AWS WAF",
+        url: "https://docs.aws.amazon.com/waf/latest/developerguide/waf-chapter.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "scs-det-003",
+    slug: "guardduty-vs-inspector-vs-macie",
+    cert: "scs-c03",
+    domain: "scs-detection",
+    topic: "scs-detection-and-response",
+    subtopic: "Detection services",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Which service detects a pattern like 'IAM credentials being used from an unusual geography combined with crypto-mining API calls' as a managed threat-detection finding?",
+    options: [
+      { id: "A", text: "Amazon Inspector" },
+      { id: "B", text: "Amazon GuardDuty" },
+      { id: "C", text: "Amazon Macie" },
+      { id: "D", text: "AWS Config" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "GuardDuty is the managed threat-detection service — it continuously analyzes CloudTrail events, DNS logs, VPC Flow Logs (and more) using ML and threat intelligence to flag anomalies like credential misuse and crypto-mining. Inspector finds CVEs; Macie finds sensitive data; Config checks configuration.",
+    optionExplanations: {
+      A: "Inspector scans for software vulnerabilities, not behavioral threats.",
+      B: "Correct. GuardDuty detects anomalous/malicious behavior from telemetry.",
+      C: "Macie discovers PII/sensitive data in S3.",
+      D: "Config evaluates resource configurations against rules.",
+    },
+    services: ["Amazon GuardDuty", "Amazon Inspector", "Amazon Macie"],
+    references: [
+      {
+        title: "Amazon GuardDuty",
+        url: "https://docs.aws.amazon.com/guardduty/latest/ug/what-is-guardduty.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "scs-gov-001",
+    slug: "scp-deny-leave-org",
+    cert: "scs-c03",
+    domain: "scs-security-foundations-governance",
+    topic: "scs-governance",
+    subtopic: "SCPs",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A security team must ensure no member account can disable CloudTrail or remove itself from the organization. Which control enforces this at the organization level?",
+    options: [
+      { id: "A", text: "IAM policies in each account" },
+      { id: "B", text: "An SCP denying cloudtrail:StopLogging/DeleteTrail and organizations:LeaveOrganization" },
+      { id: "C", text: "CloudWatch alarms on CloudTrail events" },
+      { id: "D", text: "A tagging policy requiring audit tags" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "SCPs applied at the org/OU level set maximum permissions member accounts can exercise — including blocking tampering with audit trails and leaving the org. Local IAM can't override an SCP.",
+    optionExplanations: {
+      A: "Account admins can modify local IAM — not a guarantee.",
+      B: "Correct. SCPs are the enforcement boundary member accounts can't escape.",
+      C: "Alarms detect after the fact — and can themselves be disabled.",
+      D: "Tag policies govern tagging, not API permissions.",
+    },
+    services: ["AWS Organizations", "AWS CloudTrail"],
+    references: [
+      {
+        title: "Service control policies",
+        url: "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
 ];

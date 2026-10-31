@@ -152,4 +152,152 @@ export const deaQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-10-26",
   },
+  {
+    id: "dea-ops-001",
+    slug: "pipeline-orchestration-service",
+    cert: "dea-c01",
+    domain: "dea-data-operations-support",
+    topic: "dea-data-operations",
+    subtopic: "Orchestration",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A data team has existing Apache Airflow DAGs orchestrating their pipelines and wants managed hosting on AWS without rewriting workflows. Which service runs Airflow natively?",
+    options: [
+      { id: "A", text: "AWS Step Functions" },
+      { id: "B", text: "Amazon MWAA (Managed Workflows for Apache Airflow)" },
+      { id: "C", text: "AWS Glue workflows" },
+      { id: "D", text: "EventBridge schedules" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Amazon MWAA is managed Apache Airflow — existing DAGs run unchanged. Step Functions is a different orchestration model (state machines); Glue workflows orchestrate Glue jobs only.",
+    optionExplanations: {
+      A: "Step Functions orchestrates well but requires rewriting DAGs.",
+      B: "Correct. MWAA is Airflow-as-a-service.",
+      C: "Glue workflows only chain Glue-native components.",
+      D: "Schedules trigger events — they don't orchestrate dependencies.",
+    },
+    services: ["Amazon MWAA", "AWS Step Functions"],
+    references: [
+      {
+        title: "Amazon MWAA",
+        url: "https://docs.aws.amazon.com/mwaa/latest/userguide/what-is-mwaa.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "dea-ing-003",
+    slug: "msk-vs-kinesis-choice",
+    cert: "dea-c01",
+    domain: "dea-ingestion-transformation",
+    topic: "dea-ingestion-and-etl",
+    subtopic: "Streaming platforms",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A company already runs Apache Kafka on-premises and wants the same Kafka APIs/ecosystem on AWS with minimal migration friction. Which service fits?",
+    options: [
+      { id: "A", text: "Amazon Kinesis Data Streams" },
+      { id: "B", text: "Amazon MSK (Managed Streaming for Apache Kafka)" },
+      { id: "C", text: "Amazon SQS" },
+      { id: "D", text: "Amazon EventBridge" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Amazon MSK is fully managed Apache Kafka — same APIs, tooling, and ecosystem as existing Kafka deployments. Kinesis is a proprietary streaming service requiring producer/consumer changes.",
+    optionExplanations: {
+      A: "Kinesis requires code changes — it's not Kafka-compatible.",
+      B: "Correct. MSK preserves the Kafka ecosystem with managed ops.",
+      C: "SQS is a message queue, not a streaming log platform.",
+      D: "EventBridge is an event bus for app integration, not Kafka.",
+    },
+    services: ["Amazon MSK", "Amazon Kinesis"],
+    references: [
+      {
+        title: "Amazon MSK",
+        url: "https://docs.aws.amazon.com/msk/latest/developerguide/what-is-msk.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "dea-store-002",
+    slug: "athena-partitioning-cost",
+    cert: "dea-c01",
+    domain: "dea-data-store-management",
+    topic: "dea-data-stores",
+    subtopic: "Athena optimization",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Athena queries over a 10 TB S3 data lake are slow and expensive — Athena bills per TB scanned. What design change most reduces both cost and latency?",
+    options: [
+      { id: "A", text: "Larger Athena workgroup with more memory" },
+      { id: "B", text: "Partition data by date/region in S3 + convert to a columnar format like Parquet" },
+      { id: "C", text: "Add more S3 buckets for the same data" },
+      { id: "D", text: "Increase the query timeout" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Partition pruning makes Athena scan only relevant partitions; columnar formats (Parquet/ORC) let it read only needed columns. Together they can cut scanned data 10-100x — the core Athena cost optimization.",
+    optionExplanations: {
+      A: "Athena is serverless — you can't allocate memory.",
+      B: "Correct. Partitioning + columnar format reduces bytes scanned.",
+      C: "More buckets without partitioning doesn't reduce scan volume.",
+      D: "Timeouts don't reduce data scanned.",
+    },
+    services: ["Amazon Athena", "Amazon S3"],
+    references: [
+      {
+        title: "Partitioning data in Athena",
+        url: "https://docs.aws.amazon.com/athena/latest/ug/partitions.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "dea-gov-002",
+    slug: "glue-data-quality-monitoring",
+    cert: "dea-c01",
+    domain: "dea-data-security-governance",
+    topic: "dea-data-governance",
+    subtopic: "Data quality",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A pipeline occasionally ingests files with nulls and schema drift, silently corrupting dashboards. What AWS capability evaluates data quality rules and can stop or alert on bad batches?",
+    options: [
+      { id: "A", text: "AWS Glue Data Quality" },
+      { id: "B", text: "S3 storage class analysis" },
+      { id: "C", text: "CloudWatch billing alarms" },
+      { id: "D", text: "IAM Access Analyzer" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "AWS Glue Data Quality lets you define rules (completeness, uniqueness, schema conformance) evaluated against datasets — with results published to CloudWatch and the ability to fail jobs on rule violations.",
+    optionExplanations: {
+      A: "Correct. Purpose-built data quality rules and scoring.",
+      B: "Storage class analysis is about cost, not content quality.",
+      C: "Billing alarms watch spend, not data.",
+      D: "Access Analyzer reviews permissions, not data quality.",
+    },
+    services: ["AWS Glue"],
+    references: [
+      {
+        title: "AWS Glue Data Quality",
+        url: "https://docs.aws.amazon.com/glue/latest/dg/glue-data-quality.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
 ];

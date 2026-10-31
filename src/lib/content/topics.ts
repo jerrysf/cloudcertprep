@@ -257,6 +257,22 @@ export const TOPICS: Topic[] = [
     description:
       "VPC ops, Route 53, load balancing, and CloudFront administration.",
   },
+  {
+    slug: "soa-reliability-and-dr",
+    name: "Reliability & DR",
+    cert: "soa-c03",
+    domain: "soa-reliability-continuity",
+    description:
+      "Backup strategies, disaster recovery, failover, and resilient operations.",
+  },
+  {
+    slug: "soa-security-operations",
+    name: "Security Operations",
+    cert: "soa-c03",
+    domain: "soa-security-compliance",
+    description:
+      "IAM operations, compliance enforcement, auditing, and security tooling.",
+  },
   // ---- DEA-C01 Data Engineer ----
   {
     slug: "dea-ingestion-and-etl",
@@ -281,6 +297,14 @@ export const TOPICS: Topic[] = [
     domain: "dea-data-security-governance",
     description:
       "Lake Formation, data encryption, access control, and data quality.",
+  },
+  {
+    slug: "dea-data-operations",
+    name: "Data Operations",
+    cert: "dea-c01",
+    domain: "dea-data-operations-support",
+    description:
+      "Pipeline orchestration, monitoring data quality, and operational support.",
   },
   // ---- SCS-C03 Security Specialty ----
   {
@@ -315,6 +339,30 @@ export const TOPICS: Topic[] = [
     description:
       "KMS key policies, envelope encryption, CloudHSM, and secrets management.",
   },
+  {
+    slug: "scs-incident-response",
+    name: "Incident Response",
+    cert: "scs-c03",
+    domain: "scs-incident-response",
+    description:
+      "IR plans, isolation and forensics, credential invalidation, and recovery.",
+  },
+  {
+    slug: "scs-infrastructure-security",
+    name: "Infrastructure Security",
+    cert: "scs-c03",
+    domain: "scs-infrastructure-security",
+    description:
+      "WAF/Shield, network segmentation, edge protection, and host hardening.",
+  },
+  {
+    slug: "scs-governance",
+    name: "Security Governance",
+    cert: "scs-c03",
+    domain: "scs-security-foundations-governance",
+    description:
+      "SCPs, multi-account security baselines, and compliance frameworks.",
+  },
   // ---- ANS-C01 Networking Specialty ----
   {
     slug: "ans-hybrid-connectivity",
@@ -340,6 +388,14 @@ export const TOPICS: Topic[] = [
     description:
       "Traffic inspection, Network Firewall, TLS, and securing hybrid paths.",
   },
+  {
+    slug: "ans-network-operations",
+    name: "Network Operations",
+    cert: "ans-c01",
+    domain: "ans-network-management-operations",
+    description:
+      "Monitoring, troubleshooting, automation, and network operations tooling.",
+  },
   // ---- SAP-C02 Solutions Architect Professional ----
   {
     slug: "sap-multi-account-architecture",
@@ -364,6 +420,14 @@ export const TOPICS: Topic[] = [
     domain: "sap-new-solutions",
     description:
       "Balancing competing requirements across security, cost, reliability, and performance.",
+  },
+  {
+    slug: "sap-optimization",
+    name: "Architecture Optimization",
+    cert: "sap-c02",
+    domain: "sap-continuous-improvement",
+    description:
+      "Improving existing solutions — cost, performance, security, and reliability trade-offs.",
   },
 ];
 
