@@ -960,6 +960,269 @@ ARTICLES.push({
   ],
 });
 
+ARTICLES.push({
+  slug: "dva-c02-exam-guide",
+  title: "DVA-C02 Exam Guide: Format, Cost, Domains, and How to Prepare",
+  description:
+    "Everything about the AWS Certified Developer – Associate (DVA-C02) exam: 65 questions, 130 minutes, $150, the four domain weights, scoring, and a developer-focused prep strategy.",
+  domain: "dva-development-with-aws",
+  topic: "dva-serverless-and-apis",
+  updatedAt: "2026-10-27",
+  readingMinutes: 8,
+  sections: [
+    {
+      paragraphs: [
+        "The AWS Certified Developer – Associate (DVA-C02) validates that you can build, deploy, and debug applications on AWS — SDK usage, Lambda, DynamoDB, APIs, CI/CD, and application security. It's aimed at developers with roughly a year of hands-on AWS experience.",
+        "This guide summarizes official exam details — confirm the current version on the AWS certification page before booking.",
+      ],
+    },
+    {
+      heading: "Exam format at a glance",
+      list: [
+        "65 questions — multiple choice and multiple response",
+        "130 minutes — about 2 minutes per question",
+        "$150 USD",
+        "Passing score: 720 on a scaled range of 100–1000 (compensatory scoring)",
+        "Pearson VUE testing center or online proctored exam",
+      ],
+    },
+    {
+      heading: "The four domains",
+      list: [
+        "Domain 1: Development with AWS Services — 32% (SDKs, serverless compute, APIs, data stores, messaging)",
+        "Domain 2: Security — 26% (IAM in code, Cognito, encryption, secrets)",
+        "Domain 3: Deployment — 24% (CI/CD, IaC, deployment strategies, containers)",
+        "Domain 4: Troubleshooting and Optimization — 18% (X-Ray, CloudWatch, caching, performance)",
+      ],
+    },
+    {
+      heading: "What the exam actually tests",
+      paragraphs: [
+        "DVA-C02 is API-and-service-behavior heavy. The questions rarely ask you to recall syntax — they describe a scenario and ask which service feature or configuration achieves the outcome. The recurring themes: Lambda limits and concurrency controls, DynamoDB capacity/streams/keys, SQS visibility timeouts and FIFO semantics, Cognito user pools vs identity pools, CodeDeploy strategies, and X-Ray tracing.",
+        "Multiple-response questions ('Select TWO') are common — partial answers score zero, so elimination skills matter as much as recall.",
+      ],
+    },
+    {
+      heading: "A realistic prep plan",
+      paragraphs: [
+        "Hands-on beats reading here — write a small serverless app (Lambda + API Gateway + DynamoDB) and break it on purpose: hit a visibility-timeout bug, trigger a concurrency throttle, deploy with a canary config. Budget 4–8 weeks depending on experience.",
+      ],
+      list: [
+        "Weeks 1–2: Domain 1 — Lambda, API Gateway, DynamoDB, SQS/SNS/EventBridge",
+        "Week 3: Domain 2 — IAM roles in code, Cognito, KMS, Secrets Manager",
+        "Week 4: Domain 3 — CodeBuild/CodePipeline/CodeDeploy, SAM, Beanstalk",
+        "Week 5: Domain 4 — X-Ray, CloudWatch, DAX/ElastiCache, provisioned concurrency",
+        "Final week: timed practice sets and review every missed explanation",
+      ],
+    },
+  ],
+  references: [
+    {
+      title: "AWS Certified Developer – Associate",
+      url: "https://aws.amazon.com/certification/certified-developer-associate/",
+    },
+  ],
+});
+
+ARTICLES.push({
+  slug: "aif-c01-exam-guide",
+  title: "AIF-C01 Exam Guide: Format, Cost, Domains, and How to Prepare",
+  description:
+    "Everything about the AWS Certified AI Practitioner (AIF-C01) exam: 65 questions, 90 minutes, $100, the five domain weights, new question formats, and a prep strategy for AI fundamentals.",
+  domain: "aif-ai-ml-fundamentals",
+  topic: "aif-ml-foundations",
+  updatedAt: "2026-10-27",
+  readingMinutes: 8,
+  sections: [
+    {
+      paragraphs: [
+        "The AWS Certified AI Practitioner (AIF-C01) is AWS's foundational AI certification — validating fluency in AI/ML concepts, generative AI, Amazon Bedrock, and responsible AI practices. It's designed for people who use or evaluate AI solutions, not necessarily build them.",
+        "This guide summarizes official exam details — confirm the current version on the AWS certification page before booking.",
+      ],
+    },
+    {
+      heading: "Exam format at a glance",
+      list: [
+        "65 questions — multiple choice, multiple response, plus ordering and matching formats unique to this exam",
+        "90 minutes — about 1.4 minutes per question",
+        "$100 USD",
+        "Passing score: 700 on a scaled range of 100–1000",
+        "50 scored + 15 unscored questions (unscored items aren't identified)",
+        "Pearson VUE testing center or online proctored exam",
+      ],
+    },
+    {
+      heading: "The five domains",
+      list: [
+        "Domain 1: Fundamentals of AI and ML — 20%",
+        "Domain 2: Fundamentals of Generative AI — 24%",
+        "Domain 3: Applications of Foundation Models — 28% (the largest — Bedrock, RAG, prompt engineering, agents)",
+        "Domain 4: Guidelines for Responsible AI — 14%",
+        "Domain 5: Security, Compliance, and Governance for AI — 14%",
+      ],
+    },
+    {
+      heading: "What the exam actually tests",
+      paragraphs: [
+        "AIF-C01 is conceptual, not code-heavy. Expect 'which technique/service fits this scenario' questions: RAG vs fine-tuning vs prompt engineering for a knowledge task; embeddings and vector stores for semantic search; Textract vs Comprehend vs Rekognition for document/text/image tasks; Bedrock Guardrails for content safety.",
+        "Watch the ordering/matching formats — e.g., rank inference options by latency or match responsible-AI dimensions to scenarios. They reward understanding relationships, not just memorization.",
+      ],
+    },
+    {
+      heading: "A realistic prep plan",
+      paragraphs: [
+        "Most candidates prepare in 2–6 weeks. Priorities by weight: spend the most time on Domain 3 (foundation model applications — RAG, prompt techniques, Bedrock features) and Domain 2 (generative concepts — tokens, embeddings, temperature).",
+      ],
+      list: [
+        "Week 1: AI/ML basics — supervised vs unsupervised vs generative, model lifecycle",
+        "Week 2: GenAI fundamentals — FMs, tokens, embeddings, inference parameters",
+        "Week 3: Bedrock + FM applications — RAG, agents, prompt engineering, managed AI services",
+        "Week 4: Responsible AI + security/governance — bias, transparency, PII, guardrails",
+        "Final days: practice sets covering every domain, review all explanations",
+      ],
+    },
+  ],
+  references: [
+    {
+      title: "AWS Certified AI Practitioner",
+      url: "https://aws.amazon.com/certification/certified-ai-practitioner/",
+    },
+  ],
+});
+
+ARTICLES.push({
+  slug: "soa-c03-exam-guide",
+  title: "SOA-C03 Exam Guide: CloudOps Engineer — Format, Domains, and How to Prepare",
+  description:
+    "Everything about the AWS Certified CloudOps Engineer – Associate (SOA-C03) exam — the renamed SysOps Administrator certification: 65 questions, 130 minutes, $150, the five domain weights, and a prep strategy.",
+  domain: "soa-monitoring-logging-remediation",
+  topic: "soa-monitoring-and-remediation",
+  updatedAt: "2026-10-27",
+  readingMinutes: 8,
+  sections: [
+    {
+      paragraphs: [
+        "The AWS Certified CloudOps Engineer – Associate (SOA-C03) is the renamed and updated successor to the SysOps Administrator – Associate (SOA-C02, retired September 29, 2025). It validates operating production workloads on AWS — monitoring, reliability, deployment, security, and networking.",
+        "Key change from SOA-C02: five domains instead of six (Cost and Performance Optimization merged into Domain 1), plus new scope for containers (ECR/ECS/EKS), CDK, and multi-account/multi-Region operations.",
+      ],
+    },
+    {
+      heading: "Exam format at a glance",
+      list: [
+        "65 questions — multiple choice and multiple response",
+        "130 minutes — about 2 minutes per question",
+        "$150 USD",
+        "Passing score: 720 on a scaled range of 100–1000",
+        "Pearson VUE testing center or online proctored exam",
+      ],
+    },
+    {
+      heading: "The five domains",
+      list: [
+        "Domain 1: Monitoring, Logging, Analysis, Remediation, and Performance Optimization — 22%",
+        "Domain 2: Reliability and Business Continuity — 22% (up from 16% in SOA-C02)",
+        "Domain 3: Deployment, Provisioning, and Automation — 22% (up from 18%)",
+        "Domain 4: Security and Compliance — 16%",
+        "Domain 5: Networking and Content Delivery — 18%",
+      ],
+    },
+    {
+      heading: "What the exam actually tests",
+      paragraphs: [
+        "SOA-C03 is operations-first: CloudWatch metrics/alarms/logs (including agent-collected OS metrics like memory), Config-based compliance and EventBridge/SSM remediation, CloudFormation operations (drift, change sets), Systems Manager (Patch Manager, Session Manager, Automation), backup/DR implementation, and VPC/Route 53/ALB troubleshooting.",
+        "New-for-C03 scope includes container operations and CloudFormation/CDK provisioning — if you prepared on SOA-C02 materials, top up with ECS/EKS operational basics and CDK stack management.",
+      ],
+    },
+    {
+      heading: "A realistic prep plan",
+      paragraphs: [
+        "Budget 4–8 weeks. The exam rewards operational instinct — know not just what CloudWatch does, but which alarm/metric/log combination detects a given failure mode.",
+      ],
+      list: [
+        "Weeks 1–2: Domains 1–2 — CloudWatch end-to-end, EventBridge remediation, AWS Backup, Auto Scaling health checks",
+        "Week 3: Domain 3 — CloudFormation drift/change sets, Systems Manager, patching, image pipelines, CDK basics",
+        "Week 4: Domain 4 — IAM operations, Config rules, Security Hub, compliance enforcement",
+        "Week 5: Domain 5 — VPC connectivity, Route 53, ALB health checks, CloudFront",
+        "Final week: timed practice + hands-on console drills on weak services",
+      ],
+    },
+  ],
+  references: [
+    {
+      title: "AWS Certified CloudOps Engineer – Associate",
+      url: "https://aws.amazon.com/certification/certified-cloudops-engineer-associate/",
+    },
+    {
+      title: "SOA-C02 vs SOA-C03 domain comparison",
+      url: "https://docs.aws.amazon.com/aws-certification/latest/sysops-administrator-associate-03/sysops-administrator-associate-03-comparison.html",
+    },
+  ],
+});
+
+ARTICLES.push({
+  slug: "sap-c02-exam-guide",
+  title: "SAP-C02 Exam Guide: Format, Cost, Domains, and How to Prepare",
+  description:
+    "Everything about the AWS Certified Solutions Architect – Professional (SAP-C02) exam: 75 questions, 180 minutes, $300, the four domain weights, and a strategy for AWS's hardest architecture exam.",
+  domain: "sap-organizational-complexity",
+  topic: "sap-multi-account-architecture",
+  updatedAt: "2026-10-27",
+  readingMinutes: 9,
+  sections: [
+    {
+      paragraphs: [
+        "The AWS Certified Solutions Architect – Professional (SAP-C02) is the pinnacle of the architecture track — validating the ability to design complex, multi-account, hybrid, and migration-scale solutions. It's widely regarded as the hardest AWS exam and the strongest signal for senior cloud architect roles.",
+        "This guide summarizes official exam details — confirm the current version on the AWS certification page before booking.",
+      ],
+    },
+    {
+      heading: "Exam format at a glance",
+      list: [
+        "75 questions — long, multi-paragraph scenarios; multiple choice and multiple response",
+        "180 minutes — about 2.4 minutes per question, but questions are dense",
+        "$300 USD",
+        "Passing score: 750 on a scaled range of 100–1000",
+        "Pearson VUE testing center or online proctored exam",
+      ],
+    },
+    {
+      heading: "The four domains",
+      list: [
+        "Domain 1: Design Solutions for Organizational Complexity — 26% (multi-account, hybrid connectivity, organizational guardrails)",
+        "Domain 2: Design for New Solutions — 29% (the largest — balancing security, reliability, performance, cost for greenfield)",
+        "Domain 3: Continuous Improvement for Existing Solutions — 25% (evolving and optimizing live architectures)",
+        "Domain 4: Accelerate Workload Migration and Modernization — 20% (6R strategies, DMS/SCT, discovery, cutover)",
+      ],
+    },
+    {
+      heading: "What the exam actually tests",
+      paragraphs: [
+        "SAP-C02 questions are multi-constraint scenarios: 'minimize cost AND meet RTO<15min AND work across 50 accounts.' The skill is reading requirements precisely and picking the option that satisfies ALL constraints — wrong answers usually fail exactly one constraint.",
+        "Recurring themes: AWS Organizations + SCPs, Transit Gateway vs PrivateLink vs peering at scale, hybrid DNS (Route 53 Resolver endpoints), multi-Region DR tiers (backup → pilot light → warm standby → active/active), data-migration tools (DMS, SCT, Snow family, DataSync), and cost governance (CUR, allocation tags, Savings Plans).",
+      ],
+    },
+    {
+      heading: "A realistic prep plan",
+      paragraphs: [
+        "Plan for 8–12+ weeks, especially if your experience is single-account or single-Region. The biggest gap for most candidates is organizational/multi-account architecture and hybrid networking — study those even if they're not part of your day job.",
+      ],
+      list: [
+        "Weeks 1–2: Domain 1 — Organizations, SCPs, TGW/DX/VPN, hybrid DNS, shared services patterns",
+        "Weeks 3–4: Domain 2 — new-solution trade-offs: DR tiers, caching, data stores, global architectures",
+        "Week 5: Domain 3 — optimization: cost, performance, security, reliability on running systems",
+        "Week 6: Domain 4 — migration: discovery tools, DMS/SCT, Snow/DataSync, cutover patterns",
+        "Final weeks: long timed sets — train stamina for 3-hour, 75-question scenarios",
+      ],
+    },
+  ],
+  references: [
+    {
+      title: "AWS Certified Solutions Architect – Professional",
+      url: "https://aws.amazon.com/certification/certified-solutions-architect-professional/",
+    },
+  ],
+});
+
 export function getArticle(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
 }
