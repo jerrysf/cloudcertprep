@@ -9,6 +9,7 @@ import { Breadcrumbs, ButtonLink, Card, Container } from "@/components/ui";
 import { AffiliateBlock } from "@/components/affiliate-note";
 import { AdSlot } from "@/components/ad-slot";
 import { NewsletterForm } from "@/components/newsletter-form";
+import { PrintButton } from "@/components/print-button";
 import { breadcrumbJsonLd } from "@/lib/jsonld";
 import { SITE } from "@/lib/site";
 
@@ -64,9 +65,12 @@ export default async function ArticlePage({ params }: Props) {
           <h1 className="mt-4 text-3xl font-bold tracking-tight">
             {article.title}
           </h1>
-          <p className="mt-2 text-sm text-muted">
-            {article.readingMinutes} min read · Updated {article.updatedAt}
-          </p>
+          <div className="mt-2 flex flex-wrap items-center gap-4 text-sm text-muted">
+            <span>
+              {article.readingMinutes} min read · Updated {article.updatedAt}
+            </span>
+            <PrintButton />
+          </div>
 
           <div className="mt-6 space-y-8">
             {article.sections.map((s, i) => (

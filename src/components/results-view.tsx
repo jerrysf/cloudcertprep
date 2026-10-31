@@ -5,6 +5,7 @@ import { useState } from "react";
 import { CheckCircle2, RotateCcw, XCircle } from "lucide-react";
 import type { Question } from "@/lib/content/schema";
 import { getDomain } from "@/lib/content/domains";
+import { getCertification } from "@/lib/content/certifications";
 import { getTopic } from "@/lib/content/topics";
 import type { DomainId } from "@/lib/content/schema";
 import { type ExamResult } from "@/lib/storage";
@@ -100,6 +101,16 @@ export function ResultsView({
   const incorrect = questions.filter((x) => !x.answer.correct);
   const shown = filter === "incorrect" ? incorrect : questions;
 
+  const cert = questions[0] ? getCertification(questions[0].q.cert) : undefined;
+  const passingPercent = cert
+    ? Math.round(
+        ((cert.passingScaledScore - cert.scaledScoreRange[0]) /
+          (cert.scaledScoreRange[1] - cert.scaledScoreRange[0])) *
+          100,
+      )
+    : 72;
+  const passing = result.scorePercent >= passingPercent;
+
   const weakTopics = [
     ...new Set(
       incorrect
@@ -115,18 +126,20 @@ export function ResultsView({
           <div className="flex items-center gap-6">
             <ScoreRing
               percent={result.scorePercent}
-              passing={result.scorePercent >= 72}
+              passing={passing}
             />
             <div>
-              <p className="text-sm font-medium text-muted">Estimated score</p>
+              <p className="text-sm font-medium text-muted">
+                Estimated score{cert ? ` — ${cert.code}` : ""}
+              </p>
               <p
                 className={
-                  result.scorePercent >= 72
+                  passing
                     ? "mt-1 inline-flex items-center gap-1.5 text-lg font-semibold text-emerald-700"
                     : "mt-1 text-lg font-semibold text-muted"
                 }
               >
-                {result.scorePercent >= 72
+                {passing
                   ? "At passing range"
                   : "Below typical passing range"}
               </p>
@@ -138,8 +151,10 @@ export function ResultsView({
               </p>
               <p className="mt-2 max-w-md text-xs text-muted">
                 This is a simple percentage, not AWS&apos;s scaled score
-                (100–1000, passing 720). Use it as a directional readiness
-                signal only.
+                {cert
+                  ? ` (${cert.scaledScoreRange[0]}–${cert.scaledScoreRange[1]}, passing ${cert.passingScaledScore} ≈ ${passingPercent}%)`
+                  : ""}
+                . Use it as a directional readiness signal only.
               </p>
             </div>
           </div>

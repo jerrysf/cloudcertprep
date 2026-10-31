@@ -598,4 +598,152 @@ export const soaQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-10-26",
   },
+  {
+    id: "soa-net-003",
+    slug: "nat-gateway-high-availability",
+    cert: "soa-c03",
+    domain: "soa-networking-content-delivery",
+    topic: "soa-networking-operations",
+    subtopic: "Outbound connectivity",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Private subnets across three AZs need resilient outbound internet access. What's the operationally sound design?",
+    options: [
+      { id: "A", text: "One NAT gateway shared by all AZs" },
+      { id: "B", text: "One NAT gateway per AZ with route tables pointing each AZ's subnets to its local gateway" },
+      { id: "C", text: "One NAT instance in a public subnet" },
+      { id: "D", text: "Give every instance a public IP" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "A NAT gateway is zonal — a single gateway becomes an outage for every AZ routing through it. The resilient pattern: NAT gateway per AZ, each AZ's private subnets route to their local one. NAT instances are the legacy DIY version with scaling/failover burdens.",
+    optionExplanations: {
+      A: "If that AZ or gateway fails, all private subnets lose outbound — single point of failure.",
+      B: "Correct. Per-AZ gateways + per-AZ routes = zonal isolation.",
+      C: "NAT instances need manual failover and bandwidth management.",
+      D: "Public IPs defeat the purpose of private subnets.",
+    },
+    services: ["Amazon VPC"],
+    references: [
+      {
+        title: "NAT gateways",
+        url: "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-28",
+  },
+  {
+    id: "soa-sec-003",
+    slug: "patch-fleet-ssm",
+    cert: "soa-c03",
+    domain: "soa-security-compliance",
+    topic: "soa-security-operations",
+    subtopic: "Patch management",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Ops must keep hundreds of EC2 instances patched to an approved baseline on a schedule, with reports on compliance. Which Systems Manager capability is designed for this?",
+    options: [
+      { id: "A", text: "Session Manager" },
+      { id: "B", text: "Patch Manager with patch baselines and maintenance windows" },
+      { id: "C", text: "Run Command with ad-hoc yum commands" },
+      { id: "D", text: "AWS Config rules" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Patch Manager combines patch baselines (approved patch sets) + maintenance windows (scheduled install) + compliance reporting — the complete fleet-patching answer. Run Command executes commands but doesn't manage patch state.",
+    optionExplanations: {
+      A: "Session Manager is interactive shell access, not patching.",
+      B: "Correct. Baselines + windows + compliance = Patch Manager's job.",
+      C: "Ad-hoc commands aren't scheduled, baseline-aware patching.",
+      D: "Config audits configuration, doesn't install patches.",
+    },
+    services: ["AWS Systems Manager"],
+    references: [
+      {
+        title: "AWS Systems Manager Patch Manager",
+        url: "https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-patch.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-28",
+  },
+  {
+    id: "soa-rel-004",
+    slug: "backup-vault-lock-compliance",
+    cert: "soa-c03",
+    domain: "soa-reliability-continuity",
+    topic: "soa-reliability-and-dr",
+    subtopic: "Backup governance",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "Regulations require backups that CANNOT be deleted or altered — even by administrators or compromised credentials — for 7 years. Which feature enforces this?",
+    options: [
+      { id: "A", text: "IAM policy denying delete" },
+      { id: "B", text: "AWS Backup Vault Lock in compliance mode" },
+      { id: "C", text: "S3 versioning" },
+      { id: "D", text: "A restrictive bucket policy" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Vault Lock in compliance mode applies WORM enforcement that not even the root user can remove — the mechanism designed for immutable-backup regulatory requirements. IAM/bucket policies can be changed by privileged admins; Vault Lock compliance mode cannot.",
+    optionExplanations: {
+      A: "Admin credentials can modify IAM policies — not immutable.",
+      B: "Correct. Compliance-mode WORM locks retention irreversibly.",
+      C: "Versioning keeps old versions but objects remain deletable.",
+      D: "Bucket policies are editable — the privileged-access hole remains.",
+    },
+    services: ["AWS Backup"],
+    references: [
+      {
+        title: "AWS Backup Vault Lock",
+        url: "https://docs.aws.amazon.com/aws-backup/latest/devguide/vault-lock.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-28",
+  },
+  {
+    id: "soa-mon-006",
+    slug: "composite-alarms-noise",
+    cert: "soa-c03",
+    domain: "soa-monitoring-logging-remediation",
+    topic: "soa-monitoring-and-remediation",
+    subtopic: "Alarm design",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An ops team gets paged by many CloudWatch alarms that all stem from the same underlying incident. Which feature reduces this alarm noise?",
+    options: [
+      { id: "A", text: "More granular metric dimensions" },
+      { id: "B", text: "Composite alarms — one alarm that triggers only when a combination of sub-alarms indicates real impact" },
+      { id: "C", text: "Longer evaluation periods on every alarm" },
+      { id: "D", text: "Sending all alarms to email" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Composite alarms combine multiple metric alarms with AND/OR logic — a single page for a real incident rather than N symptom alarms. Longer periods reduce sensitivity but not correlated-alarm storms.",
+    optionExplanations: {
+      A: "Dimensions refine metrics — they don't deduplicate alarms.",
+      B: "Correct. Alarm correlation is the designed anti-noise mechanism.",
+      C: "That just delays every alarm without reducing count.",
+      D: "Channel choice doesn't affect alarm count.",
+    },
+    services: ["Amazon CloudWatch"],
+    references: [
+      {
+        title: "Composite alarms",
+        url: "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Create_Composite_Alarm.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-28",
+  },
 ];

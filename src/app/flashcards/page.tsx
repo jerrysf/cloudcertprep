@@ -4,9 +4,9 @@ import { FlashcardsDeck } from "@/components/flashcards-deck";
 import { Container } from "@/components/ui";
 
 export const metadata: Metadata = {
-  title: "AWS SAA-C03 Flashcards — Quick Recall Practice",
+  title: "AWS Certification Flashcards — Quick Recall Practice",
   description:
-    "Free flashcards for the AWS Solutions Architect Associate exam covering service distinctions, security controls, resilience patterns, and cost levers.",
+    "Free flashcards for AWS certification exams covering service distinctions, security controls, resilience patterns, and cost levers — SAA-C03, CLF-C02, and more.",
   alternates: { canonical: "/flashcards" },
 };
 

@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { RefreshCw, RotateCw } from "lucide-react";
 import { FLASHCARDS, type Flashcard } from "@/lib/content/flashcards";
-import { DOMAINS } from "@/lib/content/domains";
+import { CERTIFICATIONS } from "@/lib/content/certifications";
 import type { DomainId } from "@/lib/content/schema";
 import { getProgressStore, recordActivityDay } from "@/lib/storage";
 import { notifyProgressChanged, useProgress } from "@/lib/use-progress";
@@ -56,12 +56,23 @@ export function FlashcardsDeck() {
             value={domain}
             onChange={(e) => changeDomain(e.target.value as DomainId | "all")}
           >
-            <option value="all">All domains ({FLASHCARDS.length})</option>
-            {DOMAINS.map((d) => (
-              <option key={d.id} value={d.id}>
-                {d.number}. {d.name}
-              </option>
-            ))}
+            <option value="all">All cards ({FLASHCARDS.length})</option>
+            {CERTIFICATIONS.map((cert) => {
+              const certDomains = cert.domains.filter((d) =>
+                FLASHCARDS.some((c) => c.domain === d.id),
+              );
+              if (certDomains.length === 0) return null;
+              return (
+                <optgroup key={cert.id} label={cert.code}>
+                  {certDomains.map((d) => (
+                    <option key={d.id} value={d.id}>
+                      {d.number}. {d.name} (
+                      {FLASHCARDS.filter((c) => c.domain === d.id).length})
+                    </option>
+                  ))}
+                </optgroup>
+              );
+            })}
           </select>
         </label>
         <span className="text-sm text-muted">

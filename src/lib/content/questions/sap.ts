@@ -450,4 +450,152 @@ export const sapQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-10-26",
   },
+  {
+    id: "sap-org-004",
+    slug: "control-tower-vs-organizations",
+    cert: "sap-c02",
+    domain: "sap-organizational-complexity",
+    topic: "sap-multi-account-architecture",
+    subtopic: "Landing zone",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A company needs a governed multi-account environment — account vending with guardrails, centralized logging, and a dashboard — provisioned quickly rather than hand-built. Which service delivers the managed landing zone?",
+    options: [
+      { id: "A", text: "AWS Organizations alone" },
+      { id: "B", text: "AWS Control Tower" },
+      { id: "C", text: "AWS Config alone" },
+      { id: "D", text: "IAM Identity Center alone" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Control Tower automates a landing zone: account factory (vending), guardrails (preventive/detective/proactive), centralized logging/audit accounts, and a dashboard — built ON TOP of Organizations, Config, and Identity Center, which are its components rather than alternatives.",
+    optionExplanations: {
+      A: "Organizations is the foundation — Control Tower builds the governed layer on it.",
+      B: "Correct. The managed multi-account landing zone.",
+      C: "Config powers detective guardrails — one ingredient, not the solution.",
+      D: "Identity Center handles workforce SSO — one ingredient.",
+    },
+    services: ["AWS Control Tower", "AWS Organizations"],
+    references: [
+      {
+        title: "AWS Control Tower",
+        url: "https://docs.aws.amazon.com/controltower/latest/userguide/what-is-control-tower.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-28",
+  },
+  {
+    id: "sap-new-004",
+    slug: "hybrid-storage-gateway",
+    cert: "sap-c02",
+    domain: "sap-new-solutions",
+    topic: "sap-complex-solutions",
+    subtopic: "Hybrid storage",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "An on-premises app generates files that must stay locally accessible with low latency while tiering seamlessly to cloud storage with NFS/SMB access. Which hybrid storage pattern fits?",
+    options: [
+      { id: "A", text: "S3 bucket with lifecycle policies" },
+      { id: "B", text: "AWS Storage Gateway File Gateway — local cache backed by S3" },
+      { id: "C", text: "EBS volumes replicated to on-premises" },
+      { id: "D", text: "Amazon FSx in the cloud only" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "File Gateway presents NFS/SMB shares on-premises with a local cache — hot data stays local for low latency while everything lives in S3. Cached volumes in Volume Gateway serve the same role for iSCSI block storage.",
+    optionExplanations: {
+      A: "Lifecycle tiers move data away — no local low-latency access.",
+      B: "Correct. Local cache + S3 backend is exactly File Gateway.",
+      C: "EBS can't attach to on-premises systems.",
+      D: "FSx is fully cloud-side — no on-prem presence.",
+    },
+    services: ["AWS Storage Gateway", "Amazon S3"],
+    references: [
+      {
+        title: "Storage Gateway file gateway",
+        url: "https://docs.aws.amazon.com/filegateway/latest/files3/what-is-file-gateway.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-28",
+  },
+  {
+    id: "sap-mig-004",
+    slug: "snowball-vs-datasync-migration",
+    cert: "sap-c02",
+    domain: "sap-migration-modernization",
+    topic: "sap-migration-strategies",
+    subtopic: "Data transfer",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "Two migration needs: (a) 500 TB over a slow, congested link — bandwidth math says months; (b) 20 TB on a decent connection that must sync repeatedly until cutover. Which services fit each?",
+    options: [
+      { id: "A", text: "DataSync for (a), Snowball for (b)" },
+      { id: "B", text: "Snowball Edge for (a) — offline bulk transfer; DataSync for (b) — online incremental sync" },
+      { id: "C", text: "S3 Transfer Acceleration for both" },
+      { id: "D", text: "Direct Connect for both" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "The offline/online split is the exam pattern: Snowball Edge ships physical devices for massive transfers where the network is the bottleneck; DataSync handles ongoing online transfers with incremental sync — ideal for repeated deltas until cutover.",
+    optionExplanations: {
+      A: "Roles reversed — DataSync needs usable bandwidth.",
+      B: "Correct. Physical for huge/slow-link data; online sync for repeated deltas.",
+      C: "Acceleration speeds uploads but still bounded by the same link.",
+      D: "DX takes weeks to provision and doesn't change transfer volume.",
+    },
+    services: ["AWS Snowball", "AWS DataSync", "Amazon S3"],
+    references: [
+      {
+        title: "Choosing a data transfer service",
+        url: "https://docs.aws.amazon.com/datasync/latest/userguide/choosing-aws-storage-data-transfer-service.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-28",
+  },
+  {
+    id: "sap-opt-004",
+    slug: "cost-optimization-tagging",
+    cert: "sap-c02",
+    domain: "sap-continuous-improvement",
+    topic: "sap-optimization",
+    subtopic: "Cost governance",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Leadership can't tell which team owns which cloud spend. What's the foundational step toward per-team cost allocation and accountability?",
+    options: [
+      { id: "A", text: "Move everything into one account" },
+      { id: "B", text: "Enforce a tagging strategy (e.g., cost-center/team) and activate cost allocation tags — surfaced in Cost Explorer and CUR" },
+      { id: "C", text: "Ask teams to self-report monthly" },
+      { id: "D", text: "Split billing into separate invoices manually" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Cost allocation tags make spend attributable: enforced via tag policies in Organizations, then activated in Billing so Cost Explorer/CUR can group by them. Account structure helps too, but tags are the flexible cross-account attribution layer.",
+    optionExplanations: {
+      A: "Consolidating accounts reduces isolation — the opposite direction.",
+      B: "Correct. Tags + activation = the standard allocation mechanism.",
+      C: "Self-reporting is unreliable and manual.",
+      D: "AWS consolidated billing doesn't produce per-team invoices automatically.",
+    },
+    services: ["AWS Cost Explorer", "AWS Organizations"],
+    references: [
+      {
+        title: "Cost allocation tags",
+        url: "https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-28",
+  },
 ];

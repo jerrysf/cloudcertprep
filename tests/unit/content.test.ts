@@ -7,7 +7,7 @@ import {
 } from "@/lib/content/questions";
 import { TOPICS, getTopic } from "@/lib/content/topics";
 import { DOMAINS } from "@/lib/content/domains";
-import { CERTIFICATIONS, getCertification } from "@/lib/content/certifications";
+import { ALL_DOMAINS, CERTIFICATIONS, getCertification } from "@/lib/content/certifications";
 import { ARTICLES } from "@/lib/content/articles";
 import { SERVICES } from "@/lib/content/services";
 import { FLASHCARDS } from "@/lib/content/flashcards";
@@ -104,7 +104,7 @@ describe("question bank integrity", () => {
 describe("supporting content", () => {
   it("flashcards reference real domains and topics", () => {
     for (const c of FLASHCARDS) {
-      expect(DOMAINS.some((d) => d.id === c.domain), c.id).toBe(true);
+      expect(ALL_DOMAINS.some((d) => d.id === c.domain), c.id).toBe(true);
       expect(getTopic(c.topic), c.id).toBeDefined();
     }
   });
