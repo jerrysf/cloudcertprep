@@ -180,6 +180,78 @@ export default async function CertificationPage({ params }: Props) {
             </div>
           )}
 
+          <Card className="mt-10">
+            <h2 className="text-lg font-semibold">
+              How to prepare for {cert.code}
+            </h2>
+            <ol className="mt-4 space-y-4">
+              {[
+                {
+                  step: "Learn the blueprint",
+                  text: "Start with the domain weights above — they tell you exactly where exam points are concentrated.",
+                  href: cert.examGuideUrl,
+                  linkLabel: "Official exam page",
+                  external: true,
+                },
+                {
+                  step: "Study the core services",
+                  text: "Work through service-focused study guides for the services that appear most in this exam's questions.",
+                  href: "/services",
+                  linkLabel: "Service study guides",
+                },
+                {
+                  step: "Practice by topic",
+                  text: "Take focused question sets per topic, read every per-option explanation — including why wrong answers are wrong.",
+                  href: "/practice",
+                  linkLabel: "All practice topics",
+                },
+                {
+                  step: "Simulate the real exam",
+                  text: `Take a timed mock exam at real pace (~${Math.round((cert.durationMinutes / cert.questionCount) * 10) / 10} min per question) and review every miss.`,
+                  href: "/mock-exam",
+                  linkLabel: "Mock exams",
+                },
+                {
+                  step: "Close the gaps",
+                  text: "Use your domain breakdown to find weak areas, bookmark tricky questions, and re-drill them before exam day.",
+                  href: "/study-plan",
+                  linkLabel: "Build a study plan",
+                },
+              ].map((item, i) => (
+                <li key={item.step} className="flex gap-3.5">
+                  <span
+                    aria-hidden
+                    className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent-soft text-sm font-bold text-accent"
+                  >
+                    {i + 1}
+                  </span>
+                  <div>
+                    <p className="font-medium">{item.step}</p>
+                    <p className="mt-0.5 text-sm text-muted">{item.text}</p>
+                    {item.external ? (
+                      <a
+                        href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-1 inline-flex items-center gap-1 text-sm text-accent hover:underline"
+                      >
+                        {item.linkLabel}
+                        <ExternalLink className="h-3 w-3" aria-hidden />
+                      </a>
+                    ) : (
+                      <Link
+                        href={item.href}
+                        className="mt-1 inline-block text-sm text-accent hover:underline"
+                      >
+                        {item.linkLabel} →
+                      </Link>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </Card>
+
           {questions.length > 0 ? (
             <div className="mt-8 rounded-xl border border-accent/30 bg-accent-soft p-6">
               <p className="font-semibold">

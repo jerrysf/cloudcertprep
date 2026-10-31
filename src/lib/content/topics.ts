@@ -208,6 +208,14 @@ export const TOPICS: Topic[] = [
     description:
       "CodePipeline/CodeDeploy, deployment strategies, CloudFormation, and X-Ray.",
   },
+  {
+    slug: "dva-debugging-and-optimization",
+    name: "Debugging & Optimization",
+    cert: "dva-c02",
+    domain: "dva-troubleshooting-optimization",
+    description:
+      "X-Ray tracing, CloudWatch debugging, caching strategies, and application performance tuning.",
+  },
   // ---- SOA-C03 SysOps Administrator ----
   {
     slug: "soa-monitoring-and-remediation",
