@@ -15,7 +15,7 @@ export const CERTIFICATION_IDS = [
   "dva-c02",
   "soa-c03",
   "dea-c01",
-  "scs-c02",
+  "scs-c03",
   "ans-c01",
   "sap-c02",
 ] as const;

@@ -183,6 +183,22 @@ export const TOPICS: Topic[] = [
     description:
       "Bias, transparency, privacy, and governance for AI workloads on AWS.",
   },
+  {
+    slug: "aif-genai-concepts",
+    name: "Generative AI Concepts",
+    cert: "aif-c01",
+    domain: "aif-genai-fundamentals",
+    description:
+      "Foundation models, tokens, embeddings, temperature, and prompt engineering concepts.",
+  },
+  {
+    slug: "aif-security-governance",
+    name: "AI Security & Governance",
+    cert: "aif-c01",
+    domain: "aif-ai-security-governance",
+    description:
+      "Securing AI workloads, PII handling, access control, and compliance for AI solutions.",
+  },
   // ---- DVA-C02 Developer Associate ----
   {
     slug: "dva-serverless-and-apis",
@@ -266,27 +282,27 @@ export const TOPICS: Topic[] = [
     description:
       "Lake Formation, data encryption, access control, and data quality.",
   },
-  // ---- SCS-C02 Security Specialty ----
+  // ---- SCS-C03 Security Specialty ----
   {
     slug: "scs-detection-and-response",
     name: "Detection & Response",
-    cert: "scs-c02",
-    domain: "scs-threat-detection-ir",
+    cert: "scs-c03",
+    domain: "scs-detection",
     description:
       "GuardDuty, Security Hub, incident response, and forensic workflows.",
   },
   {
     slug: "scs-logging-and-audit",
     name: "Logging & Audit",
-    cert: "scs-c02",
-    domain: "scs-security-logging-monitoring",
+    cert: "scs-c03",
+    domain: "scs-detection",
     description:
       "CloudTrail, Config, centralized logging, and building audit trails for investigations.",
   },
   {
     slug: "scs-iam-deep-dive",
     name: "IAM Deep Dive",
-    cert: "scs-c02",
+    cert: "scs-c03",
     domain: "scs-iam",
     description:
       "Policy evaluation, permission boundaries, federation, and cross-account access.",
@@ -294,7 +310,7 @@ export const TOPICS: Topic[] = [
   {
     slug: "scs-encryption-and-keys",
     name: "Encryption & Key Management",
-    cert: "scs-c02",
+    cert: "scs-c03",
     domain: "scs-data-protection",
     description:
       "KMS key policies, envelope encryption, CloudHSM, and secrets management.",

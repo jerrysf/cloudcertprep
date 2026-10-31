@@ -883,6 +883,83 @@ ARTICLES.push({
   ],
 });
 
+ARTICLES.push({
+  slug: "clf-c02-exam-guide",
+  title: "CLF-C02 Exam Guide: Format, Cost, Domains, and How to Prepare",
+  description:
+    "Everything about the AWS Certified Cloud Practitioner (CLF-C02) exam: 65 questions, 90 minutes, $100, the four domain weights, scoring, and a realistic prep strategy for beginners.",
+  domain: "clf-cloud-concepts",
+  topic: "clf-cloud-essentials",
+  updatedAt: "2026-10-27",
+  readingMinutes: 8,
+  sections: [
+    {
+      paragraphs: [
+        "The AWS Certified Cloud Practitioner (CLF-C02) is AWS's foundational certification — designed for people with no deep technical background who need to demonstrate broad cloud literacy. It's the most-taken AWS exam and the usual first step before associate-level certifications.",
+        "This guide summarizes the official exam details as published by AWS. Confirm current details on the official certification page before booking, since AWS revises exams periodically.",
+      ],
+    },
+    {
+      heading: "Exam format at a glance",
+      list: [
+        "65 questions — multiple choice (one correct of four) and multiple response (two or more of five+)",
+        "90 minutes — about 1.4 minutes per question, generous compared to associate exams",
+        "$100 USD — the cheapest AWS certification",
+        "Passing score: 700 on a scaled range of 100–1000 (compensatory scoring — no per-domain minimum)",
+        "50 scored + 15 unscored questions; unscored items aren't identified, so treat every question seriously",
+        "Pearson VUE testing center or online proctored exam",
+      ],
+    },
+    {
+      heading: "The four domains",
+      paragraphs: [
+        "CLF-C02 weights breadth over depth. The official domain percentages:",
+      ],
+      list: [
+        "Domain 1: Cloud Concepts — 24% (value of the cloud, Well-Architected basics, cloud adoption benefits)",
+        "Domain 2: Security and Compliance — 30% (shared responsibility model, IAM basics, compliance resources)",
+        "Domain 3: Cloud Technology and Services — 34% (the largest domain: core services, global infrastructure, deployment methods)",
+        "Domain 4: Billing, Pricing, and Support — 12% (pricing models, billing tools, support plans, cost calculators)",
+      ],
+    },
+    {
+      heading: "What the exam actually tests",
+      paragraphs: [
+        "CLF-C02 asks 'what is this service for' more than 'how do you configure it.' Expect scenario snippets like 'a team needs to run code without managing servers' — and the answer is recognizing that Lambda is the fit. The shared responsibility model shows up repeatedly in different disguises; know exactly where the AWS/customer line sits for EC2 vs managed services.",
+        "Billing questions are easy points: AWS Budgets vs Cost Explorer (alerts vs analysis), the Pricing Calculator for estimates, and the support plan tiers (Developer → Business → Enterprise) and what each unlocks.",
+      ],
+    },
+    {
+      heading: "A realistic prep plan",
+      paragraphs: [
+        "Most candidates with some IT exposure pass with 2–4 weeks of study; complete beginners should budget 4–6. The trap is over-studying depth — CLF rewards breadth, so cover every domain rather than mastering one.",
+      ],
+      list: [
+        "Week 1: Cloud concepts + security — shared responsibility model until it's reflexive",
+        "Week 2: Core services — compute, storage, databases, networking at recognition level",
+        "Week 3: Billing/pricing/support + practice questions per domain",
+        "Final days: timed practice sets, review every explanation (including why wrong answers are wrong), re-drill weak domains",
+      ],
+    },
+    {
+      heading: "After CLF-C02",
+      paragraphs: [
+        "Cloud Practitioner validates vocabulary and concepts — the next step depends on your role: Solutions Architect Associate for architecture, Developer Associate for builders, AI Practitioner for AI/ML fundamentals. Passing CLF also unlocks a 50%-off voucher on your next AWS exam, which meaningfully reduces the cost of the associate-level path.",
+      ],
+    },
+  ],
+  references: [
+    {
+      title: "AWS Certified Cloud Practitioner",
+      url: "https://aws.amazon.com/certification/certified-cloud-practitioner/",
+    },
+    {
+      title: "AWS shared responsibility model",
+      url: "https://aws.amazon.com/compliance/shared-responsibility-model/",
+    },
+  ],
+});
+
 export function getArticle(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
 }

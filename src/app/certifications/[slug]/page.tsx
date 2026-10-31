@@ -14,6 +14,7 @@ import {
   getCertification,
 } from "@/lib/content/certifications";
 import { publishedByCert, publishedByTopic } from "@/lib/content/questions";
+import { ARTICLES } from "@/lib/content/articles";
 import { topicsByCert } from "@/lib/content/topics";
 import { breadcrumbJsonLd } from "@/lib/jsonld";
 import { Badge, Breadcrumbs, Card, CertLevelBadge, Container } from "@/components/ui";
@@ -46,6 +47,7 @@ export default async function CertificationPage({ params }: Props) {
 
   const questions = publishedByCert(cert.id);
   const topics = topicsByCert(cert.id);
+  const hasExamGuide = ARTICLES.some((a) => a.slug === `${cert.id}-exam-guide`);
   const topicQuestions = (topicSlug: string) =>
     publishedByTopic(topicSlug).length;
 
@@ -117,6 +119,17 @@ export default async function CertificationPage({ params }: Props) {
               Official AWS certification page
               <ExternalLink className="h-3.5 w-3.5" aria-hidden />
             </a>
+            {hasExamGuide ? (
+              <p className="mt-3 border-t border-border pt-3 text-sm">
+                <Link
+                  href={`/learn/${cert.id}-exam-guide`}
+                  className="font-medium text-accent hover:underline"
+                >
+                  Read our {cert.code} exam guide — format, domains, and a prep
+                  plan →
+                </Link>
+              </p>
+            ) : null}
           </Card>
 
           <h2 className="mt-10 text-xl font-semibold">

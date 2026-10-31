@@ -7,8 +7,8 @@ export const scsQuestions: Question[] = [
   {
     id: "scs-det-001",
     slug: "aggregate-security-findings-centrally",
-    cert: "scs-c02",
-    domain: "scs-threat-detection-ir",
+    cert: "scs-c03",
+    domain: "scs-detection",
     topic: "scs-detection-and-response",
     subtopic: "Security Hub",
     difficulty: "medium",
@@ -44,7 +44,7 @@ export const scsQuestions: Question[] = [
   {
     id: "scs-iam-001",
     slug: "permission-boundary-vs-scp-difference",
-    cert: "scs-c02",
+    cert: "scs-c03",
     domain: "scs-iam",
     topic: "scs-iam-deep-dive",
     subtopic: "Guardrails",
@@ -81,7 +81,7 @@ export const scsQuestions: Question[] = [
   {
     id: "scs-enc-001",
     slug: "envelope-encryption-with-kms",
-    cert: "scs-c02",
+    cert: "scs-c03",
     domain: "scs-data-protection",
     topic: "scs-encryption-and-keys",
     subtopic: "KMS fundamentals",
@@ -118,8 +118,8 @@ export const scsQuestions: Question[] = [
   {
     id: "scs-det-002",
     slug: "cloudtrail-vs-config-vs-guardduty",
-    cert: "scs-c02",
-    domain: "scs-security-logging-monitoring",
+    cert: "scs-c03",
+    domain: "scs-detection",
     topic: "scs-logging-and-audit",
     subtopic: "Logging services",
     difficulty: "medium",

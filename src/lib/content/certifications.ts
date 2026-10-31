@@ -109,7 +109,7 @@ export const CERTIFICATIONS: Certification[] = [
     scaledScoreRange: [100, 1000],
     examGuideUrl:
       "https://aws.amazon.com/certification/certified-cloud-practitioner/",
-    verified: false,
+    verified: true,
     featured: true,
     domains: [
       {
@@ -161,7 +161,7 @@ export const CERTIFICATIONS: Certification[] = [
     scaledScoreRange: [100, 1000],
     examGuideUrl:
       "https://aws.amazon.com/certification/certified-ai-practitioner/",
-    verified: false,
+    verified: true,
     featured: true,
     domains: [
       {
@@ -221,7 +221,7 @@ export const CERTIFICATIONS: Certification[] = [
     scaledScoreRange: [100, 1000],
     examGuideUrl:
       "https://aws.amazon.com/certification/certified-developer-associate/",
-    verified: false,
+    verified: true,
     featured: true,
     domains: [
       {
@@ -261,34 +261,34 @@ export const CERTIFICATIONS: Certification[] = [
   {
     id: "soa-c03",
     code: "SOA-C03",
-    name: "AWS Certified SysOps Administrator – Associate",
+    name: "AWS Certified CloudOps Engineer – Associate",
     level: "associate",
     tagline: "Operate AWS workloads — monitoring, automation, and reliability.",
     description:
-      "For systems administrators and operations roles: running production workloads, monitoring, incident response, and cost/performance management.",
+      "For cloud operations roles (formerly SysOps Administrator): running production workloads, monitoring, incident response, automation, and networking.",
     questionCount: 65,
     durationMinutes: 130,
     costUsd: 150,
     passingScaledScore: 720,
     scaledScoreRange: [100, 1000],
     examGuideUrl:
-      "https://aws.amazon.com/certification/certified-sysops-admin-associate/",
-    verified: false,
+      "https://aws.amazon.com/certification/certified-cloudops-engineer-associate/",
+    verified: true,
     featured: false,
     domains: [
       {
         id: "soa-monitoring-logging-remediation",
         number: 1,
-        name: "Monitoring, Logging, and Remediation",
-        weight: 20,
+        name: "Monitoring, Logging, Analysis, Remediation, and Performance Optimization",
+        weight: 22,
         summary:
-          "CloudWatch metrics/alarms/logs, event-driven remediation, and observability.",
+          "CloudWatch metrics/alarms/logs, event-driven remediation, observability, and performance tuning.",
       },
       {
         id: "soa-reliability-continuity",
         number: 2,
         name: "Reliability and Business Continuity",
-        weight: 16,
+        weight: 22,
         summary:
           "Backups, disaster recovery implementation, and scalable/resilient operations.",
       },
@@ -296,7 +296,7 @@ export const CERTIFICATIONS: Certification[] = [
         id: "soa-deployment-provisioning-automation",
         number: 3,
         name: "Deployment, Provisioning, and Automation",
-        weight: 18,
+        weight: 22,
         summary:
           "CloudFormation, Systems Manager, image management, and provisioning automation.",
       },
@@ -316,14 +316,6 @@ export const CERTIFICATIONS: Certification[] = [
         summary:
           "VPC connectivity, DNS, load balancing, and CloudFront operations.",
       },
-      {
-        id: "soa-cost-performance-optimization",
-        number: 6,
-        name: "Cost and Performance Optimization",
-        weight: 12,
-        summary:
-          "Cost allocation, compute/storage optimization, and performance management.",
-      },
     ],
   },
   {
@@ -341,7 +333,7 @@ export const CERTIFICATIONS: Certification[] = [
     scaledScoreRange: [100, 1000],
     examGuideUrl:
       "https://aws.amazon.com/certification/certified-data-engineer-associate/",
-    verified: false,
+    verified: true,
     featured: false,
     domains: [
       {
@@ -379,8 +371,8 @@ export const CERTIFICATIONS: Certification[] = [
     ],
   },
   {
-    id: "scs-c02",
-    code: "SCS-C02",
+    id: "scs-c03",
+    code: "SCS-C03",
     name: "AWS Certified Security – Specialty",
     level: "specialty",
     tagline: "Deep dive into AWS security — detection, IAM, encryption, and response.",
@@ -393,38 +385,38 @@ export const CERTIFICATIONS: Certification[] = [
     scaledScoreRange: [100, 1000],
     examGuideUrl:
       "https://aws.amazon.com/certification/certified-security-specialty/",
-    verified: false,
+    verified: true,
     featured: false,
     domains: [
       {
-        id: "scs-threat-detection-ir",
+        id: "scs-detection",
         number: 1,
-        name: "Threat Detection and Incident Response",
-        weight: 20,
+        name: "Detection",
+        weight: 16,
         summary:
-          "GuardDuty, Security Hub, incident response workflows, and forensics.",
+          "Threat detection, security findings, and detection-focused logging (GuardDuty, Security Hub, CloudTrail, Config).",
       },
       {
-        id: "scs-security-logging-monitoring",
+        id: "scs-incident-response",
         number: 2,
-        name: "Security Logging and Monitoring",
-        weight: 16,
+        name: "Incident Response",
+        weight: 14,
         summary:
-          "CloudTrail, Config, centralized logging, and security metrics.",
+          "Incident response plans, isolation, forensics, and recovery from compromises.",
       },
       {
-        id: "scs-infrastructure-edge-protection",
+        id: "scs-infrastructure-security",
         number: 3,
-        name: "Infrastructure and Edge Protection",
-        weight: 16,
+        name: "Infrastructure Security",
+        weight: 18,
         summary:
-          "VPC security, WAF/Shield, edge security, and network-layer defenses.",
+          "VPC security, WAF/Shield, edge protection, and network-layer defenses.",
       },
       {
         id: "scs-iam",
         number: 4,
         name: "Identity and Access Management",
-        weight: 18,
+        weight: 20,
         summary:
           "IAM policies, federation, permission boundaries, and cross-account access.",
       },
@@ -432,14 +424,14 @@ export const CERTIFICATIONS: Certification[] = [
         id: "scs-data-protection",
         number: 5,
         name: "Data Protection",
-        weight: 16,
+        weight: 18,
         summary:
           "KMS, encryption patterns, secrets management, and data classification.",
       },
       {
-        id: "scs-management-security-governance",
+        id: "scs-security-foundations-governance",
         number: 6,
-        name: "Management and Security Governance",
+        name: "Security Foundations and Governance",
         weight: 14,
         summary:
           "Organizations/SCPs, multi-account governance, and compliance frameworks.",
@@ -461,7 +453,7 @@ export const CERTIFICATIONS: Certification[] = [
     scaledScoreRange: [100, 1000],
     examGuideUrl:
       "https://aws.amazon.com/certification/certified-advanced-networking-specialty/",
-    verified: false,
+    verified: true,
     featured: false,
     domains: [
       {
@@ -513,7 +505,7 @@ export const CERTIFICATIONS: Certification[] = [
     scaledScoreRange: [100, 1000],
     examGuideUrl:
       "https://aws.amazon.com/certification/certified-solutions-architect-professional/",
-    verified: false,
+    verified: true,
     featured: true,
     domains: [
       {
