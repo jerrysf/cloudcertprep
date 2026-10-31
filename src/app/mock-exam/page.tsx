@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { MockExamBuilder } from "@/components/mock-exam-builder";
 import { Container } from "@/components/ui";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Free AWS Mock Exams — Timed Practice Tests",
   description:
     "Configure a timed or untimed mock exam across 9 AWS certifications. Balanced question selection by official domain weights, flagging, and a full results breakdown.",
-  alternates: { canonical: "/mock-exam" },
-};
+  path: "/mock-exam",
+});
 
 export default function MockExamPage() {
   return (

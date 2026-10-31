@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { FLASHCARDS } from "@/lib/content/flashcards";
 import { FlashcardsDeck } from "@/components/flashcards-deck";
 import { Container } from "@/components/ui";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "AWS Certification Flashcards — Quick Recall Practice",
   description:
     "Free flashcards for AWS certification exams covering service distinctions, security controls, resilience patterns, and cost levers — SAA-C03, CLF-C02, and more.",
-  alternates: { canonical: "/flashcards" },
-};
+  path: "/flashcards",
+});
 
 export default function FlashcardsPage() {
   return (

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { PUBLISHED_QUESTIONS } from "@/lib/content/questions";
 import { CERTIFICATIONS } from "@/lib/content/certifications";
 import { getDomain } from "@/lib/content/domains";
@@ -9,12 +10,12 @@ import {
   type BankCertGroup,
 } from "@/components/question-bank";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "AWS Certification Question Bank — All Practice Questions",
   description:
     "Browse every reviewed AWS certification practice question on CloudCertPrep — SAA-C03, Cloud Practitioner, AI Practitioner, and more — organized by certification, domain, and topic.",
-  alternates: { canonical: "/questions" },
-};
+  path: "/questions",
+});
 
 export default function QuestionsIndexPage() {
   const groups: BankCertGroup[] = CERTIFICATIONS.map((c) => {
@@ -73,6 +74,18 @@ export default function QuestionsIndexPage() {
       <QuestionBankBrowser
         groups={groups}
         total={PUBLISHED_QUESTIONS.length}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            name: "AWS Certification Question Bank",
+            description: `${PUBLISHED_QUESTIONS.length} reviewed AWS certification practice questions with per-option explanations.`,
+            numberOfItems: PUBLISHED_QUESTIONS.length,
+          }),
+        }}
       />
     </Container>
   );

@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { SERVICES } from "@/lib/content/services";
 import { Badge, Card, Container } from "@/components/ui";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "AWS Service Study Guides for SAA-C03",
   description:
     "Concise study guides for the AWS services on the Solutions Architect Associate exam — when to use each service, key exam points, and comparisons.",
-  alternates: { canonical: "/services" },
-};
+  path: "/services",
+});
 
 export default function ServicesPage() {
   const categories = [...new Set(SERVICES.map((s) => s.category))];

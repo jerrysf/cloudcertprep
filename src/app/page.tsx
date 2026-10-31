@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -20,9 +21,11 @@ import { SITE } from "@/lib/site";
 import { DashboardPreview } from "@/components/progress-dashboard";
 import { Badge, ButtonLink, Card, CertLevelBadge, Container, SectionHeading } from "@/components/ui";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/" },
-};
+export const metadata: Metadata = pageMetadata({
+  title: `${SITE.name} — Free AWS Certification Practice Exams & Questions`,
+  description: SITE.description,
+  path: "/",
+});
 
 const FEATURED_TOPICS = TOPICS.slice(0, 6);
 

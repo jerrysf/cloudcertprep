@@ -30,6 +30,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
   },
+  twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
   ...(process.env.NEXT_PUBLIC_GSC_VERIFICATION
     ? {

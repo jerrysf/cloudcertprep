@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { ArrowRight, Clock } from "lucide-react";
 import { ARTICLES } from "@/lib/content/articles";
 import { getDomain } from "@/lib/content/domains";
 import { Container } from "@/components/ui";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "AWS Certification Study Guides & In-Depth Articles",
   description:
     "Exam guides, service comparisons, cheat sheets, and deep dives across AWS certifications — learn the architectural reasoning behind exam questions.",
-  alternates: { canonical: "/learn" },
-};
+  path: "/learn",
+});
 
 type Category = "Exam guides" | "Cheat sheets" | "Comparisons" | "Deep dives";
 
@@ -88,6 +89,18 @@ export default function LearnPage() {
           </section>
         );
       })}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            name: "AWS Certification Study Guides & Articles",
+            description: `${ARTICLES.length} exam guides, comparisons, and cheat sheets across AWS certifications.`,
+            numberOfItems: ARTICLES.length,
+          }),
+        }}
+      />
     </Container>
   );
 }

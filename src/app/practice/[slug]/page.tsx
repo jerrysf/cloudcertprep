@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
+import { getCertification } from "@/lib/content/certifications";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { TOPICS, getTopic } from "@/lib/content/topics";
@@ -23,11 +25,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const topic = getTopic(slug);
   if (!topic) return {};
   const count = publishedByTopic(slug).length;
-  return {
-    title: `${topic.name} Practice Questions — SAA-C03`,
-    description: `${count} free practice questions on ${topic.name.toLowerCase()} for the AWS Solutions Architect Associate exam, with full explanations and AWS documentation references.`,
-    alternates: { canonical: `/practice/${slug}` },
-  };
+  const cert = getCertification(topic.cert);
+  return pageMetadata({
+    title: `${topic.name} Practice Questions — ${cert?.code ?? "AWS"}`,
+    description: `${count} free practice questions on ${topic.name.toLowerCase()} for the ${cert?.name ?? "AWS certification"} exam, with full explanations and AWS documentation references.`,
+    path: `/practice/${slug}`,
+  });
 }
 
 export default async function TopicPracticePage({ params }: Props) {

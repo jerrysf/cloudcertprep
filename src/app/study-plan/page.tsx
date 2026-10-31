@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { StudyPlanForm } from "@/components/study-plan-form";
 import { Container } from "@/components/ui";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "AWS Certification Study Plan Generator",
   description:
     "Generate a personalized week-by-week AWS certification study schedule based on your certification, experience level, available hours, and target exam date.",
-  alternates: { canonical: "/study-plan" },
-};
+  path: "/study-plan",
+});
 
 export default function StudyPlanPage() {
   return (

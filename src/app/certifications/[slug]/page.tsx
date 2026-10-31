@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
@@ -34,11 +35,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const cert = getCertification(slug);
   if (!cert) return {};
-  return {
+  return pageMetadata({
     title: `${cert.code} Practice Questions & Exam Guide — ${cert.name.replace("AWS Certified ", "")}`,
     description: `${cert.name}: ${cert.questionCount} questions, ${cert.durationMinutes} minutes, $${cert.costUsd}. Free practice questions with explanations, domain weights, and study guidance.`,
-    alternates: { canonical: `/certifications/${slug}` },
-  };
+    path: `/certifications/${slug}`,
+  });
 }
 
 export default async function CertificationPage({ params }: Props) {

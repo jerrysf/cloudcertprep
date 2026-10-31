@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ExternalLink } from "lucide-react";
@@ -25,12 +26,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const article = getArticle(slug);
   if (!article) return {};
-  return {
+  return pageMetadata({
     title: article.title,
     description: article.description,
-    alternates: { canonical: `/learn/${slug}` },
-    openGraph: { type: "article" },
-  };
+    path: `/learn/${slug}`,
+    ogType: "article",
+  });
 }
 
 export default async function ArticlePage({ params }: Props) {

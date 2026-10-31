@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { ArrowRight, Clock, DollarSign, FileText } from "lucide-react";
 import { CERTIFICATIONS } from "@/lib/content/certifications";
 import { PUBLISHED_QUESTIONS, publishedByCert } from "@/lib/content/questions";
 import { Badge, Card, CertLevelBadge, Container } from "@/components/ui";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "AWS Certification Practice Exams — All Certifications",
   description:
     "Free practice questions and exam guides for AWS certifications — Cloud Practitioner, AI Practitioner, Solutions Architect, Developer, SysOps, Data Engineer, Security, Networking, and Professional tracks.",
-  alternates: { canonical: "/certifications" },
-};
+  path: "/certifications",
+});
 
 const LEVEL_ORDER = [
   "foundational",

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Check, ExternalLink, X } from "lucide-react";
@@ -21,11 +22,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const service = getService(slug);
   if (!service) return {};
-  return {
+  return pageMetadata({
     title: `${service.name} Study Guide — When to Use It (SAA-C03)`,
     description: `${service.tagline}. ${service.description.slice(0, 140)}…`,
-    alternates: { canonical: `/services/${slug}` },
-  };
+    path: `/services/${slug}`,
+  });
 }
 
 export default async function ServicePage({ params }: Props) {

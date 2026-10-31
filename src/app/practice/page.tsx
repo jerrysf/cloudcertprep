@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { PUBLISHED_QUESTIONS } from "@/lib/content/questions";
@@ -8,12 +9,12 @@ import { CERTIFICATIONS } from "@/lib/content/certifications";
 import { PracticeHub } from "@/components/practice-hub";
 import { Badge, Card, Container } from "@/components/ui";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Practice Questions — AWS Certification Practice Exams",
   description:
     "Free AWS certification practice questions with detailed explanations for every option — SAA-C03, Cloud Practitioner, AI Practitioner, and more. Filter by domain, topic, difficulty, and format.",
-  alternates: { canonical: "/practice" },
-};
+  path: "/practice",
+});
 
 export default function PracticePage() {
   const topicsWithQuestions = TOPICS.filter(

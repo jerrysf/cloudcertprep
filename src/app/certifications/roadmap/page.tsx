@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import { CERTIFICATIONS, getCertification } from "@/lib/content/certifications";
@@ -8,12 +9,12 @@ import { Badge, Breadcrumbs, CertLevelBadge, Container } from "@/components/ui";
 import { breadcrumbJsonLd } from "@/lib/jsonld";
 import { cn } from "@/lib/utils";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "AWS Certification Roadmap — Recommended Path by Role",
   description:
     "Which AWS certifications to take, in which order — role-based roadmaps for Solutions Architect, DevOps, Developer, Security, Data, AI/ML, and Networking careers.",
-  alternates: { canonical: "/certifications/roadmap" },
-};
+  path: "/certifications/roadmap",
+});
 
 const LEVEL_LADDER = [
   {

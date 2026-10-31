@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, CheckCircle2, ExternalLink, XCircle } from "lucide-react";
@@ -26,11 +27,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!q) return {};
   const topic = getTopic(q.topic);
   const cert = getCertification(q.cert);
-  return {
+  return pageMetadata({
     title: `${q.question.slice(0, 60)}${q.question.length > 60 ? "…" : ""}`,
     description: `${cert?.code ?? "AWS"} practice question on ${topic?.name ?? q.topic}: see the scenario, the correct answer, and why each option is right or wrong — with official AWS documentation.`,
-    alternates: { canonical: `/questions/${slug}` },
-  };
+    path: `/questions/${slug}`,
+  });
 }
 
 export default async function QuestionPage({ params }: Props) {
