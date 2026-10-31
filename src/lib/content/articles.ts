@@ -1812,6 +1812,181 @@ ARTICLES.push({
   ],
 });
 
+// ---- Comparison articles batch 2 ----
+
+ARTICLES.push({
+  slug: "secrets-manager-vs-parameter-store",
+  title: "Secrets Manager vs Parameter Store: Where Should Each Value Live?",
+  description:
+    "Both store strings securely — but rotation, cross-account sharing, cost, and integrations differ. Here's when Parameter Store is enough and when Secrets Manager earns its price.",
+  domain: "dva-security",
+  topic: "dva-app-security",
+  updatedAt: "2026-10-28",
+  readingMinutes: 5,
+  sections: [
+    {
+      paragraphs: [
+        "Both services store configuration values and secrets encrypted with KMS, retrievable via the same AWS SDKs. The exam distinction comes down to three things: automatic rotation, cost model, and purpose-built secret features.",
+      ],
+    },
+    {
+      heading: "Parameter Store — the config workhorse",
+      list: [
+        "Free standard tier: config values, feature flags, AMI IDs, plain strings",
+        "SecureString tier encrypts with your KMS key — good enough for many secrets",
+        "Hierarchical paths (/prod/db/host) with IAM-controlled access per path",
+        "No built-in rotation — you'd wire EventBridge + Lambda yourself",
+        "Advanced tier ($) raises the 4KB limit to 8KB and adds parameter policies",
+      ],
+    },
+    {
+      heading: "Secrets Manager — secrets with lifecycle",
+      list: [
+        "Automatic rotation built in for RDS/Redshift/DocumentDB — Lambda-based for others",
+        "Random secret generation, cross-account access to secrets, and fine-grained resource policies",
+        "$0.40 per secret per month + API calls — priced for real secrets, not config sprawl",
+        "Version staging labels (AWSCURRENT/AWSPREVIOUS) let apps roll through rotations safely",
+      ],
+      paragraphs: [
+        "The rule of thumb: rotating credentials for AWS databases → Secrets Manager, no contest. Plain configuration and non-rotating values → Parameter Store's free tier. SecureString covers the middle ground when you need encryption but not rotation.",
+      ],
+    },
+    {
+      heading: "Decision shortcuts",
+      list: [
+        "'Automatically rotate RDS credentials' → Secrets Manager (Parameter Store can't)",
+        "'Store non-secret config cheaply' → Parameter Store",
+        "'Encrypted value, no rotation needed, cost-sensitive' → Parameter Store SecureString",
+        "'Share a secret across AWS accounts' → Secrets Manager resource policy",
+        "'Lambda needs a secret at runtime' → either works via SDK; rotation need decides",
+      ],
+    },
+  ],
+  references: [
+    { title: "AWS Secrets Manager", url: "https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html" },
+    { title: "SSM Parameter Store", url: "https://docs.aws.amazon.com/systems-manager/latest/userguide/system-manager-parameter-store.html" },
+  ],
+});
+
+ARTICLES.push({
+  slug: "sqs-fifo-vs-standard",
+  title: "SQS FIFO vs Standard Queues: Ordering, Dedup, and Throughput",
+  description:
+    "Standard queues are fast and sloppy; FIFO queues are ordered and exactly-once but capped. Know the three guarantees, the throughput limits, and when each wins.",
+  domain: "design-high-performing-architectures",
+  topic: "decoupling-and-messaging",
+  updatedAt: "2026-10-28",
+  readingMinutes: 5,
+  sections: [
+    {
+      paragraphs: [
+        "SQS standard and FIFO queues differ on exactly three axes — and the exam hammers all three: message ordering, delivery guarantee, and throughput ceiling.",
+      ],
+    },
+    {
+      heading: "Standard: throughput over order",
+      list: [
+        "Nearly unlimited TPS — scales automatically with demand",
+        "At-least-once delivery — duplicates WILL happen; consumers must be idempotent",
+        "Best-effort ordering — messages usually arrive in order, not guaranteed",
+        "Cheaper per request and the right default for most decoupling",
+      ],
+    },
+    {
+      heading: "FIFO: correctness over speed",
+      list: [
+        "Exactly-once processing via deduplication (content-based or MessageDeduplicationId)",
+        "Strict ordering within a message group (MessageGroupId) — order across groups is parallel",
+        "Throughput: ~300 msg/s without batching, ~3,000 msg/s with batching — the hard ceiling that decides most questions",
+        "Higher per-request cost than standard",
+      ],
+      paragraphs: [
+        "The subtlety: FIFO ordering is per message GROUP, not queue-wide. Multiple group IDs give you ordered lanes with parallel throughput — high-cardinality group IDs preserve ordering AND scale.",
+      ],
+    },
+    {
+      heading: "Decision shortcuts",
+      list: [
+        "'Process payments/events exactly once in order' → FIFO",
+        "'Decouple microservices, duplicates are handled idempotently' → Standard",
+        "'Need >3,000 msg/s sustained' → Standard (or shard FIFO by group ID)",
+        "'Order matters per customer/session, but many independent customers' → FIFO with per-entity group IDs",
+        "'Just need a buffer between producer and consumer' → Standard",
+      ],
+      paragraphs: [
+        "Common trap: choosing FIFO 'to be safe' when ordering isn't required — you pay more and cap throughput for a guarantee nobody needs.",
+      ],
+    },
+  ],
+  references: [
+    { title: "Standard vs FIFO queues", url: "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/standard-queues.html" },
+    { title: "FIFO queue details", url: "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues.html" },
+  ],
+});
+
+ARTICLES.push({
+  slug: "cloudwatch-vs-cloudtrail-vs-config",
+  title: "CloudWatch vs CloudTrail vs AWS Config: Monitoring, Auditing, and Change Tracking",
+  description:
+    "The three most-confused AWS observability services: CloudWatch tells you how it's running, CloudTrail tells you who did what, and Config tells you what changed. Full breakdown.",
+  domain: "clf-security-compliance",
+  topic: "clf-security-basics",
+  updatedAt: "2026-10-28",
+  readingMinutes: 5,
+  sections: [
+    {
+      paragraphs: [
+        "These three services appear in almost every CLF-C02 exam — and confuse even experienced engineers because their names all sound like 'watching things.' The clean split: performance, activity, configuration.",
+      ],
+    },
+    {
+      heading: "CloudWatch — how is it performing?",
+      list: [
+        "Metrics (CPU, latency, custom metrics), alarms on thresholds, dashboards",
+        "Logs from Lambda, applications, agents — with metric filters and Insights queries",
+        "Answers: 'is CPU high?', 'why did this alarm fire?', 'show me error counts'",
+        "Time-series focused — it's about state over time, not events or history",
+      ],
+    },
+    {
+      heading: "CloudTrail — who did what?",
+      list: [
+        "Every API call in the account: who, what action, when, from where, on what resource",
+        "Event history (90 days free) and organization trails to S3 for permanent audit",
+        "Answers: 'who deleted the bucket?', 'who modified the security group?', 'was this API call made?'",
+        "The forensic/audit layer — enabled by default at the account level",
+      ],
+    },
+    {
+      heading: "AWS Config — what is the configuration state?",
+      list: [
+        "Configuration timeline: snapshots of resource settings and how they changed over time",
+        "Config rules evaluate compliance: 'are all buckets encrypted?', 'is MFA enabled?'",
+        "Remediation actions can auto-fix drift via SSM documents",
+        "Answers: 'when did this SG rule change?', 'is this resource compliant?', 'what did the VPC look like last week?'",
+      ],
+    },
+    {
+      heading: "The scenario test",
+      list: [
+        "'Who terminated the instance?' → CloudTrail (API activity)",
+        "'Why did the app slow down at 3am?' → CloudWatch (metrics/logs)",
+        "'When did the security group start allowing 0.0.0.0/0?' → Config (config timeline)",
+        "'Alert me when any bucket becomes public' → Config rule (+ optional remediation)",
+        "'Notify me when root is used' → CloudTrail event + EventBridge → alert",
+      ],
+      paragraphs: [
+        "They compose in practice: CloudTrail captures the event, Config tracks the resulting state change, and CloudWatch alarms on the operational impact.",
+      ],
+    },
+  ],
+  references: [
+    { title: "Amazon CloudWatch", url: "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html" },
+    { title: "AWS CloudTrail", url: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html" },
+    { title: "AWS Config", url: "https://docs.aws.amazon.com/config/latest/developerguide/WhatIsConfig.html" },
+  ],
+});
+
 export function getArticle(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
 }

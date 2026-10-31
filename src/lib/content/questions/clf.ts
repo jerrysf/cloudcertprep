@@ -1380,4 +1380,152 @@ export const clfQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-10-27",
   },
+  {
+    id: "clf-svc-012",
+    slug: "cloudformation-infrastructure-as-code",
+    cert: "clf-c02",
+    domain: "clf-technology-services",
+    topic: "clf-core-services",
+    subtopic: "Automation",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "A team wants to define their entire AWS environment — VPCs, databases, and roles — as version-controlled templates that can be deployed repeatably. Which service does this?",
+    options: [
+      { id: "A", text: "AWS Config" },
+      { id: "B", text: "AWS CloudFormation" },
+      { id: "C", text: "Amazon CloudWatch" },
+      { id: "D", text: "AWS Trusted Advisor" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "CloudFormation is infrastructure as code: you declare resources in YAML/JSON templates and it provisions them consistently — with drift detection, rollbacks, and repeatable stacks. Config audits configuration; it doesn't provision.",
+    optionExplanations: {
+      A: "Config records and evaluates configuration — it doesn't build infrastructure.",
+      B: "Correct. Declarative templates → repeatable stacks.",
+      C: "CloudWatch monitors — it doesn't provision.",
+      D: "Trusted Advisor recommends improvements, not deployment.",
+    },
+    services: ["AWS CloudFormation"],
+    references: [
+      {
+        title: "AWS CloudFormation",
+        url: "https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-28",
+  },
+  {
+    id: "clf-sec-010",
+    slug: "mfa-root-account",
+    cert: "clf-c02",
+    domain: "clf-security-compliance",
+    topic: "clf-security-basics",
+    subtopic: "Account security",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "What's the FIRST security action AWS recommends for a brand-new account's root user?",
+    options: [
+      { id: "A", text: "Create access keys for the root user" },
+      { id: "B", text: "Enable multi-factor authentication (MFA) on the root user, then stop using root for daily work" },
+      { id: "C", text: "Share root credentials with the admin team" },
+      { id: "D", text: "Use root for all daily administration" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "AWS's standing guidance: secure the root user with MFA immediately, create IAM identities for daily work, and reserve root for the few tasks that require it (billing changes, account closure).",
+    optionExplanations: {
+      A: "Root access keys are a major risk — AWS recommends deleting them.",
+      B: "Correct. MFA on root is the first recommended step.",
+      C: "Sharing root credentials defeats accountability entirely.",
+      D: "Root should be locked away for rare tasks, not daily use.",
+    },
+    services: ["AWS IAM"],
+    references: [
+      {
+        title: "Root user best practices",
+        url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-28",
+  },
+  {
+    id: "clf-bill-008",
+    slug: "savings-plans-vs-reserved",
+    cert: "clf-c02",
+    domain: "clf-billing-pricing-support",
+    topic: "clf-billing-and-support",
+    subtopic: "Commitment discounts",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A company wants commitment-based discounts on compute spend but needs flexibility to change instance families and even move workloads between EC2, Fargate, and Lambda. Which pricing model fits?",
+    options: [
+      { id: "A", text: "Standard Reserved Instances" },
+      { id: "B", text: "Compute Savings Plans" },
+      { id: "C", text: "Spot Instances" },
+      { id: "D", text: "Dedicated Hosts" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Savings Plans commit to a $/hour spend rather than specific instances — Compute SPs apply across EC2 families, regions, Fargate, and Lambda automatically. Standard RIs lock to instance attributes and don't cover Fargate/Lambda.",
+    optionExplanations: {
+      A: "Standard RIs are rigid — tied to instance family/tenancy and EC2 only.",
+      B: "Correct. Dollar-commitment flexibility across compute services.",
+      C: "Spot is interruptible — not a commitment discount.",
+      D: "Dedicated Hosts are for licensing/compliance, not flexibility.",
+    },
+    services: ["AWS Savings Plans", "Amazon EC2"],
+    references: [
+      {
+        title: "Savings Plans",
+        url: "https://aws.amazon.com/savingsplans/",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-28",
+  },
+  {
+    id: "clf-cc-013",
+    slug: "elasticity-vs-scalability",
+    cert: "clf-c02",
+    domain: "clf-cloud-concepts",
+    topic: "clf-cloud-essentials",
+    subtopic: "Scaling concepts",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An e-commerce site automatically adds capacity during a flash sale and releases it afterward, paying only for what it used. Which cloud characteristic does this demonstrate?",
+    options: [
+      { id: "A", text: "Fault tolerance" },
+      { id: "B", text: "Elasticity" },
+      { id: "C", text: "High availability" },
+      { id: "D", text: "Agility" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Elasticity is matching supply to demand dynamically — scaling out for peaks and back in after. Scalability is the capability to grow; elasticity is the automatic, demand-driven adjustment — the exam tests this distinction.",
+    optionExplanations: {
+      A: "Fault tolerance is surviving component failure.",
+      B: "Correct. Grow-with-demand and shrink-after = elasticity.",
+      C: "HA is about minimizing downtime, not demand-matching capacity.",
+      D: "Agility is speed of provisioning, a related but distinct benefit.",
+    },
+    services: ["Amazon EC2 Auto Scaling"],
+    references: [
+      {
+        title: "Benefits of cloud computing",
+        url: "https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-28",
+  },
 ];

@@ -60,6 +60,13 @@ export function ProgressDashboard() {
         <Stat label="Bookmarked" value={String(s.bookmarked.length)} />
       </div>
 
+      {data.activityDays.length > 0 ? (
+        <Card>
+          <h2 className="text-lg font-semibold">Study activity</h2>
+          <ActivityHeatmap days={data.activityDays} />
+        </Card>
+      ) : null}
+
       <Card className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <p className="text-sm font-medium text-muted">Suggested next step</p>
@@ -261,6 +268,58 @@ export function ProgressDashboard() {
         >
           <Trash2 className="h-4 w-4" aria-hidden /> Reset
         </button>
+      </div>
+    </div>
+  );
+}
+
+function ActivityHeatmap({ days }: { days: string[] }) {
+  const active = new Set(days);
+  const WEEKS = 16;
+  const today = new Date();
+  // grid cells: oldest first (left column top), ending today (bottom right)
+  const cells: { date: string; active: boolean }[] = [];
+  // pad the tail so the last column completes its week after today
+  const endOffset = (6 - today.getDay()) % 7;
+  const totalDays = WEEKS * 7;
+  const first = new Date(today);
+  first.setDate(first.getDate() - (totalDays - 1 - endOffset));
+  for (let i = 0; i < totalDays; i++) {
+    const d = new Date(first);
+    d.setDate(first.getDate() + i);
+    const iso = d.toISOString().slice(0, 10);
+    cells.push({ date: iso, active: active.has(iso) });
+  }
+  const future = (iso: string) => iso > today.toISOString().slice(0, 10);
+
+  return (
+    <div className="mt-4 overflow-x-auto">
+      <div
+        className="grid grid-flow-col gap-1"
+        style={{ gridTemplateRows: "repeat(7, 1fr)" }}
+        role="img"
+        aria-label={`${active.size} active study days in the last ${WEEKS} weeks`}
+      >
+        {cells.map((c) => (
+          <div
+            key={c.date}
+            title={c.date}
+            className={
+              future(c.date)
+                ? "h-3 w-3 rounded-[2px] bg-transparent"
+                : c.active
+                  ? "h-3 w-3 rounded-[2px] bg-accent"
+                  : "h-3 w-3 rounded-[2px] bg-slate-100"
+            }
+          />
+        ))}
+      </div>
+      <div className="mt-2 flex items-center gap-2 text-xs text-muted">
+        <span>Last {WEEKS} weeks</span>
+        <span className="ml-auto inline-flex items-center gap-1">
+          <span className="h-3 w-3 rounded-[2px] bg-slate-100" /> less
+          <span className="h-3 w-3 rounded-[2px] bg-accent" /> more
+        </span>
       </div>
     </div>
   );

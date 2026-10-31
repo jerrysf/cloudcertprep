@@ -1301,4 +1301,152 @@ export const dvaQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-10-27",
   },
+  {
+    id: "dva-dev-027",
+    slug: "dynamodb-streams-trigger",
+    cert: "dva-c02",
+    domain: "dva-development-with-aws",
+    topic: "dva-serverless-and-apis",
+    subtopic: "DynamoDB streams",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Whenever a new order item is written to a DynamoDB table, a Lambda function must update a search index. What mechanism delivers the item-change events?",
+    options: [
+      { id: "A", text: "A scheduled Lambda that scans the table every minute" },
+      { id: "B", text: "DynamoDB Streams triggering the Lambda function" },
+      { id: "C", text: "An SNS topic on the table" },
+      { id: "D", text: "CloudTrail events on the table" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "DynamoDB Streams captures item-level changes (inserts/updates/deletes) in near-real-time and integrates directly with Lambda via event source mapping — ordered per primary key, retained 24h. The designed answer for change-driven processing.",
+    optionExplanations: {
+      A: "Polling scans are inefficient and miss sub-minute granularity.",
+      B: "Correct. Streams → Lambda is the native CDC integration.",
+      C: "DynamoDB doesn't emit item events to SNS natively.",
+      D: "CloudTrail records control-plane API calls, not item writes.",
+    },
+    services: ["Amazon DynamoDB", "AWS Lambda"],
+    references: [
+      {
+        title: "DynamoDB Streams",
+        url: "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-28",
+  },
+  {
+    id: "dva-sec-007",
+    slug: "cors-api-gateway-config",
+    cert: "dva-c02",
+    domain: "dva-security",
+    topic: "dva-app-security",
+    subtopic: "CORS",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A browser SPA on https://app.example.com calls an API Gateway REST API — preflight OPTIONS requests fail and calls get blocked. What's the fix?",
+    options: [
+      { id: "A", text: "Add an IAM policy allowing the browser origin" },
+      { id: "B", text: "Enable CORS on the API — respond to OPTIONS with Access-Control-Allow-Origin/Headers/Methods" },
+      { id: "C", text: "Disable CORS in the browser" },
+      { id: "D", text: "Move the API behind a NAT gateway" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "CORS is a browser-enforced policy: the API must answer OPTIONS preflights with the right Access-Control-* headers for the SPA's origin. It's configured on the API resource — not in IAM, not in the browser, and unrelated to NAT.",
+    optionExplanations: {
+      A: "IAM can't grant browser-origin permission — CORS isn't an IAM concept.",
+      B: "Correct. Configure CORS headers on the API for the SPA origin.",
+      C: "Users can't be asked to weaken their browser security.",
+      D: "NAT handles outbound connectivity — nothing to do with CORS.",
+    },
+    services: ["Amazon API Gateway"],
+    references: [
+      {
+        title: "CORS for REST APIs",
+        url: "https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-cors.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-28",
+  },
+  {
+    id: "dva-dep-008",
+    slug: "elastic-beanstalk-purpose",
+    cert: "dva-c02",
+    domain: "dva-deployment",
+    topic: "dva-cicd-and-observability",
+    subtopic: "Deployment services",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "A small team wants to deploy a Node.js web app to AWS quickly — they don't want to manage servers, load balancers, or scaling configuration. Which service fits?",
+    options: [
+      { id: "A", text: "Amazon EC2 with manual setup" },
+      { id: "B", text: "AWS Elastic Beanstalk" },
+      { id: "C", text: "Amazon ECS with custom task definitions" },
+      { id: "D", text: "AWS CloudFormation alone" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Elastic Beanstalk is the PaaS-style answer: upload code, and it provisions EC2/ALB/Auto Scaling/monitoring automatically — the classic 'deploy fast without managing infrastructure' choice for traditional web apps.",
+    optionExplanations: {
+      A: "Manual EC2 is the opposite of 'don't want to manage servers'.",
+      B: "Correct. Managed platform for traditional app deployment.",
+      C: "ECS gives more control but more configuration.",
+      D: "CloudFormation is IaC — it provisions, but you define everything.",
+    },
+    services: ["AWS Elastic Beanstalk"],
+    references: [
+      {
+        title: "AWS Elastic Beanstalk",
+        url: "https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/Welcome.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-28",
+  },
+  {
+    id: "dva-trb-007",
+    slug: "dlq-debugging-failures",
+    cert: "dva-c02",
+    domain: "dva-troubleshooting-optimization",
+    topic: "dva-debugging-and-optimization",
+    subtopic: "Failure handling",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Some SQS messages keep failing Lambda processing and disappearing after repeated retries. The team needs to capture and inspect these poison messages. What's the mechanism?",
+    options: [
+      { id: "A", text: "Increase the visibility timeout" },
+      { id: "B", text: "Configure a dead-letter queue (DLQ) with a max receive count — failed messages land there for inspection" },
+      { id: "C", text: "Delete the failing messages manually" },
+      { id: "D", text: "Switch to a FIFO queue" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "A DLQ (set via redrive policy with maxReceiveCount) captures messages that fail processing repeatedly — preserving them for debugging instead of losing them. It's the standard poison-message isolation pattern.",
+    optionExplanations: {
+      A: "Longer visibility doesn't stop failures — just delays them.",
+      B: "Correct. Redrive policy → DLQ is designed exactly for this.",
+      C: "Manual deletion loses the evidence you need to debug.",
+      D: "FIFO changes ordering/dedup, not failure capture.",
+    },
+    services: ["Amazon SQS", "AWS Lambda"],
+    references: [
+      {
+        title: "SQS dead-letter queues",
+        url: "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-28",
+  },
 ];
