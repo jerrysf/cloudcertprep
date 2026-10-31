@@ -598,4 +598,152 @@ export const sapQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-10-28",
   },
+  {
+    id: "sap-new-005",
+    slug: "active-active-multi-region-write-anywhere",
+    cert: "sap-c02",
+    domain: "sap-new-solutions",
+    topic: "sap-complex-solutions",
+    subtopic: "Multi-region design",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A global app must accept writes in two regions simultaneously, survive a full regional outage with near-zero RPO, and resolve write conflicts. Which data-layer combination supports true active-active?",
+    options: [
+      { id: "A", text: "RDS Multi-AZ plus read replicas in a second region" },
+      { id: "B", text: "DynamoDB global tables (or Aurora Global Database with write forwarding)" },
+      { id: "C", text: "S3 cross-region replication for the primary datastore" },
+      { id: "D", text: "A single-region Aurora cluster with automated backups" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Active-active needs multi-writer replication: DynamoDB global tables replicate writes across regions with last-writer-wins conflict resolution. Aurora Global Database is single-writer (write forwarding proxies to the writer) — acceptable for many active-active reads but not symmetric multi-region writes.",
+    optionExplanations: {
+      A: "Multi-AZ ≠ multi-region; cross-region replicas require promotion before accepting writes — not active-active.",
+      B: "Correct. Global tables are the canonical multi-writer, conflict-resolved, near-zero-RPO answer.",
+      C: "S3 is object storage, not a transactional datastore — and replication is async, one-directional per bucket pair.",
+      D: "Single-region can't accept writes during a regional outage — RPO/RTO fail.",
+    },
+    services: ["Amazon DynamoDB", "Amazon Aurora", "Amazon Route 53"],
+    references: [
+      {
+        title: "DynamoDB global tables",
+        url: "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GlobalTables.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "sap-mig-005",
+    slug: "rehost-at-scale-application-migration-service",
+    cert: "sap-c02",
+    domain: "sap-migration-modernization",
+    topic: "sap-migration-strategies",
+    subtopic: "Rehost at scale",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "200 on-prem VMs must reach AWS in 6 months. The team wants minimal app changes now, then modernize later. Which migration approach and service fit?",
+    options: [
+      { id: "A", text: "Refactor each app to Lambda during migration" },
+      { id: "B", text: "Rehost using AWS Application Migration Service (MGN)" },
+      { id: "C", text: "Repurchase: replace all apps with SaaS equivalents" },
+      { id: "D", text: "Manually rebuild AMIs and copy them via DataSync" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "MGN continuously replicates source servers into AWS with automated conversion and cutover orchestration — the standard rehost-at-scale tool. Refactoring mid-migration blows the timeline; modernize as a second phase.",
+    optionExplanations: {
+      A: "Refactoring 200 apps in 6 months is unrealistic and mixes two migration strategies.",
+      B: "Correct. MGN = block-level replication + automated test/cutover instances.",
+      C: "Repurchase means replacing apps — a business decision far beyond a lift-and-shift mandate.",
+      D: "AMI exports handle single servers and lose continuous replication/cutover orchestration.",
+    },
+    services: ["AWS Application Migration Service", "Amazon EC2"],
+    references: [
+      {
+        title: "What is AWS Application Migration Service",
+        url: "https://docs.aws.amazon.com/mgn/latest/ug/what-is-application-migration-service.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "sap-org-005",
+    slug: "delegated-administrator-security-services",
+    cert: "sap-c02",
+    domain: "sap-organizational-complexity",
+    topic: "sap-multi-account-architecture",
+    subtopic: "Delegated administration",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A security team in a dedicated account must centrally manage GuardDuty findings, Security Hub, and Config aggregator for the whole organization — without using the management account daily. What pattern applies?",
+    options: [
+      { id: "A", text: "Cross-account IAM roles assumed into every member account" },
+      { id: "B", text: "Register the security account as delegated administrator for those services" },
+      { id: "C", text: "Replicate all findings to the security account with EventBridge rules per account" },
+      { id: "D", text: "Make the security account a second management account" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Delegated administration lets a member account administer an AWS service organization-wide (GuardDuty, Security Hub, Config, etc.) — best practice is keeping the management account for billing/org structure only.",
+    optionExplanations: {
+      A: "Role-chasing per account doesn't scale and misses the services' native org integration.",
+      B: "Correct. Delegated admin is the designed mechanism for exactly this operating model.",
+      C: "Works technically but reinvents what Security Hub/GuardDuty org features do natively.",
+      D: "There is exactly one management account per organization.",
+    },
+    services: ["AWS Organizations", "Amazon GuardDuty", "AWS Security Hub"],
+    references: [
+      {
+        title: "Delegated administrator for AWS Organizations",
+        url: "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_delegate_policies.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "sap-opt-005",
+    slug: "compute-optimizer-rightsizing",
+    cert: "sap-c02",
+    domain: "sap-continuous-improvement",
+    topic: "sap-optimization",
+    subtopic: "Cost & performance optimization",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "Across dozens of accounts, leadership wants data-driven recommendations to downsize over-provisioned EC2 instances and pick better instance types. Which service generates these recommendations from utilization history?",
+    options: [
+      { id: "A", text: "AWS Trusted Advisor basic checks" },
+      { id: "B", text: "AWS Compute Optimizer" },
+      { id: "C", text: "AWS Cost Explorer" },
+      { id: "D", text: "Amazon Inspector" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Compute Optimizer analyzes CloudWatch utilization (up to 14 months via enhanced metrics) and recommends right-sized EC2 instance types, ASGs, EBS volumes, and Lambda memory — with org-wide support.",
+    optionExplanations: {
+      A: "Trusted Advisor flags some idle/underutilized resources but lacks per-workload type recommendations.",
+      B: "Correct. ML-driven rightsizing across EC2/ASG/EBS/Lambda.",
+      C: "Cost Explorer shows spend patterns, not sizing recommendations.",
+      D: "Inspector finds vulnerabilities, not compute sizing.",
+    },
+    services: ["AWS Compute Optimizer", "Amazon EC2"],
+    references: [
+      {
+        title: "What is AWS Compute Optimizer",
+        url: "https://docs.aws.amazon.com/compute-optimizer/latest/ug/what-is-compute-optimizer.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
 ];

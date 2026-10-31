@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, CheckCircle2, ExternalLink, XCircle } from "lucide-react";
 import { PUBLISHED_QUESTIONS } from "@/lib/content/questions";
+import { ARTICLES } from "@/lib/content/articles";
 import { getDomain } from "@/lib/content/domains";
 import { getCertification } from "@/lib/content/certifications";
 import { getTopic } from "@/lib/content/topics";
@@ -53,6 +54,10 @@ export default async function QuestionPage({ params }: Props) {
   const related = PUBLISHED_QUESTIONS.filter(
     (x) => x.domain === q.domain && x.id !== q.id && x.topic !== q.topic,
   ).slice(0, 4);
+  const relatedArticles = [
+    ...ARTICLES.filter((a) => a.topic === q.topic),
+    ...ARTICLES.filter((a) => a.topic !== q.topic && a.domain === q.domain),
+  ].slice(0, 3);
 
   const crumbs = [
     { label: cert.code, href: `/certifications/${cert.id}` },
@@ -289,6 +294,23 @@ export default async function QuestionPage({ params }: Props) {
                       className="line-clamp-2 text-sm text-muted hover:text-accent"
                     >
                       {s.question}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          ) : null}
+          {relatedArticles.length > 0 ? (
+            <Card>
+              <h2 className="text-sm font-semibold">Guides &amp; articles</h2>
+              <ul className="mt-3 space-y-2.5">
+                {relatedArticles.map((a) => (
+                  <li key={a.slug}>
+                    <Link
+                      href={`/learn/${a.slug}`}
+                      className="line-clamp-2 text-sm text-muted hover:text-accent"
+                    >
+                      {a.title}
                     </Link>
                   </li>
                 ))}

@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { ExternalLink } from "lucide-react";
 import { ARTICLES, getArticle } from "@/lib/content/articles";
 import { getTopic } from "@/lib/content/topics";
-import { publishedByTopic } from "@/lib/content/questions";
+import { PUBLISHED_QUESTIONS, publishedByTopic } from "@/lib/content/questions";
 import { Breadcrumbs, ButtonLink, Card, Container } from "@/components/ui";
 import { AffiliateBlock } from "@/components/affiliate-note";
 import { AdSlot } from "@/components/ad-slot";
@@ -38,7 +38,11 @@ export default async function ArticlePage({ params }: Props) {
   const article = getArticle(slug);
   if (!article) notFound();
   const topic = getTopic(article.topic);
-  const topicQuestions = publishedByTopic(article.topic);
+  const direct = publishedByTopic(article.topic);
+  const domainQuestions = PUBLISHED_QUESTIONS.filter(
+    (q) => q.domain === article.domain && q.topic !== article.topic,
+  );
+  const topicQuestions = [...direct, ...domainQuestions].slice(0, 6);
   const practiceCount = topicQuestions.length;
 
   const jsonLd = {

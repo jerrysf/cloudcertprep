@@ -1987,6 +1987,162 @@ ARTICLES.push({
   ],
 });
 
+ARTICLES.push({
+  slug: "soa-c03-cheat-sheet",
+  title: "SOA-C03 Cheat Sheet: CloudOps Engineer Associate Quick Reference",
+  description:
+    "A condensed SOA-C03 review sheet: CloudWatch monitoring and remediation, backup/DR, deployment automation, security operations, and hybrid networking — the operational facts the exam repeats.",
+  domain: "soa-monitoring-logging-remediation",
+  topic: "soa-monitoring-and-remediation",
+  updatedAt: "2026-10-27",
+  readingMinutes: 7,
+  sections: [
+    {
+      paragraphs: [
+        "SOA-C03 is the renamed SysOps Administrator exam — it tests operating AWS in production: metrics, alarms, remediation, backup/restore, and safe deployments. This sheet compresses the highest-frequency operational facts.",
+      ],
+    },
+    {
+      heading: "CloudWatch essentials",
+      list: [
+        "Default EC2 metrics: CPU, network, disk I/O, status checks — every 5 min (1 min with detailed monitoring)",
+        "Memory and disk usage need the CloudWatch agent (or Systems Manager + unified agent config)",
+        "Alarms states: OK / ALARM / INSUFFICIENT_DATA; actions: SNS, Auto Scaling, EC2 recover/reboot",
+        "Logs Insights queries log groups; Contributor Insights finds top talkers",
+        "EventBridge matches events/schedules → targets (SNS, Lambda, SSM Automation)",
+      ],
+    },
+    {
+      heading: "Remediation patterns",
+      list: [
+        "Config rule + EventBridge + SSM Automation = detect → auto-remediate (e.g., public S3 bucket → make private)",
+        "CloudWatch alarm → SSM runbook for instance remediation",
+        "SSM Session Manager = shell access without SSH keys, bastion, or port 22",
+        "Patch Manager = patch baselines + maintenance windows + compliance reporting",
+      ],
+    },
+    {
+      heading: "Backup & reliability",
+      list: [
+        "AWS Backup: central policies for EBS/RDS/DynamoDB/EFS/S3, cross-account + cross-region copies, Vault Lock (WORM)",
+        "DR options cheapest→strongest: Backup & Restore → Pilot Light → Warm Standby → Multi-site Active-Active",
+        "RPO = data loss tolerance; RTO = downtime tolerance — always check which the question optimizes",
+        "ELB health checks vs ASG: use ELB health check type so failed instances get replaced",
+      ],
+    },
+    {
+      heading: "Deployment & provisioning",
+      list: [
+        "CloudFormation: change sets preview changes; drift detection finds out-of-band changes; StackSets deploy across accounts/regions",
+        "SSM documents/Automation: runbooks for ops tasks; State Manager = desired-state enforcement",
+        "OpsWorks/Puppet/Chef are legacy — favor Systems Manager answers",
+        "Elastic Beanstalk deployment options: all-at-once, rolling, rolling+additional batch, immutable, blue/green",
+      ],
+    },
+    {
+      heading: "Security & compliance",
+      list: [
+        "CloudTrail = API audit (management + data events); enable org trail for all accounts",
+        "Config = resource configuration history + compliance rules",
+        "GuardDuty = threat detection; Security Hub = findings aggregator; Inspector = vulnerability scanning",
+        "SSM Parameter Store vs Secrets Manager: free vs rotation + cross-service integration",
+      ],
+    },
+    {
+      heading: "Networking & content delivery",
+      list: [
+        "ALB = Layer 7 host/path routing; NLB = Layer 4, static IP, ultra-low latency",
+        "CloudFront = CDN caching at edge; signed URLs/cookies for private content; OAI/OAC for S3 origin access",
+        "Route 53 routing: simple, weighted, latency, failover, geolocation, geoproximity, multivalue",
+        "NAT gateway per AZ for private-subnet outbound internet",
+      ],
+    },
+  ],
+  references: [
+    { title: "SOA-C03 exam guide", url: "https://aws.amazon.com/certification/certified-cloudops-engineer-associate/" },
+    { title: "Amazon CloudWatch", url: "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html" },
+    { title: "AWS Systems Manager", url: "https://docs.aws.amazon.com/systems-manager/latest/userguide/what-is-systems-manager.html" },
+    { title: "AWS Backup", url: "https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html" },
+  ],
+});
+
+ARTICLES.push({
+  slug: "aif-c01-cheat-sheet",
+  title: "AIF-C01 Cheat Sheet: AI Practitioner Quick Reference",
+  description:
+    "A condensed AIF-C01 review sheet: AI vs ML vs GenAI vocabulary, Bedrock capabilities, prompt engineering levers, responsible-AI guardrails, and AI security — the terms the exam repeats.",
+  domain: "aif-ai-ml-fundamentals",
+  topic: "aif-ml-foundations",
+  updatedAt: "2026-10-27",
+  readingMinutes: 7,
+  sections: [
+    {
+      paragraphs: [
+        "AIF-C01 is vocabulary-driven: distinguish AI/ML/GenAI, know which AWS AI service does what, and know responsible-AI controls. Scan this the week before the exam.",
+      ],
+    },
+    {
+      heading: "Vocabulary you must separate",
+      list: [
+        "AI = the field; ML = subset learning from data; DL = neural-net subset; GenAI = creates new content from foundation models",
+        "Foundation model (FM) = large pre-trained model adaptable to many tasks; LLM = text-focused FM",
+        "Inference = running a trained model; training = fitting parameters on data; fine-tuning = continued training on your data",
+        "Embeddings = numeric vectors capturing meaning → semantic search, RAG retrieval",
+      ],
+    },
+    {
+      heading: "AWS AI services in one line",
+      list: [
+        "SageMaker — build/train/deploy custom ML models; SageMaker JumpStart = pre-trained models",
+        "Bedrock — managed foundation models via API (Claude, Llama, Titan, etc.) + Knowledge Bases + Agents + Guardrails",
+        "Comprehend — NLP: sentiment, entities, PII; Textract — document text/tables/forms extraction",
+        "Rekognition — image/video analysis; Polly — text→speech; Transcribe — speech→text; Translate — language translation",
+        "Lex — chatbots; Personalize — recommendations; Forecast — time-series; Fraud Detector / Kendra (search)",
+        "Q Business / Q Developer — enterprise assistant / coding assistant",
+      ],
+    },
+    {
+      heading: "Prompt engineering levers",
+      list: [
+        "Temperature — higher = more random/creative, lower = more deterministic",
+        "Top-p (nucleus) / top-k — sample from most probable tokens",
+        "Zero-shot vs few-shot (examples in prompt); chain-of-thought improves reasoning",
+        "System/context prompts set behavior; prompt injection = user input overriding instructions",
+      ],
+    },
+    {
+      heading: "RAG vs fine-tuning",
+      list: [
+        "RAG — retrieve relevant docs at inference → current/factual answers without retraining; cheaper, traceable",
+        "Fine-tuning — adjust model weights on labeled data → style/format/domain behavior; costlier, static knowledge",
+        "Bedrock Knowledge Bases = managed RAG; Agents = tool-use orchestration",
+      ],
+    },
+    {
+      heading: "Responsible AI",
+      list: [
+        "Dimensions: fairness, explainability, privacy, safety, transparency, veracity/robustness, governance",
+        "Guardrails for Amazon Bedrock — content filters, denied topics, PII redaction, grounding checks",
+        "Hallucination = confident false output — mitigate with RAG grounding + guardrails",
+        "SageMaker Clarify / Model Monitor — bias detection and drift monitoring",
+      ],
+    },
+    {
+      heading: "AI security & governance",
+      list: [
+        "Same AWS security stack applies: IAM for access, KMS for encryption, CloudTrail for audit, PrivateLink for private endpoints",
+        "Data residency & retention: understand where Bedrock processes prompts; training data doesn't leave your control plane boundary per service terms",
+        "Shared responsibility extends to AI: AWS secures the platform, you secure prompts/data/outputs",
+      ],
+    },
+  ],
+  references: [
+    { title: "AIF-C01 exam guide", url: "https://aws.amazon.com/certification/certified-ai-practitioner/" },
+    { title: "Amazon Bedrock", url: "https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html" },
+    { title: "Guardrails for Amazon Bedrock", url: "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html" },
+  ],
+});
+
 export function getArticle(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
 }
