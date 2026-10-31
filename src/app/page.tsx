@@ -276,6 +276,48 @@ export default function Home() {
         </Container>
       </section>
 
+      {/* Latest articles */}
+      <section className="border-t border-border py-14">
+        <Container>
+          <SectionHeading
+            eyebrow="Learning hub"
+            title="Latest guides & comparisons"
+            description="Exam guides, service deep-dives, and decision frameworks — written from official AWS documentation."
+          />
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {[...ARTICLES]
+              .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
+              .slice(0, 6)
+              .map((a) => (
+                <Link
+                  key={a.slug}
+                  href={`/learn/${a.slug}`}
+                  className="group flex flex-col rounded-xl border border-border bg-white p-5 transition-all duration-150 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <h3 className="font-semibold leading-snug">{a.title}</h3>
+                    <ArrowRight
+                      className="mt-1 h-4 w-4 shrink-0 text-muted transition-transform group-hover:translate-x-1 group-hover:text-accent"
+                      aria-hidden
+                    />
+                  </div>
+                  <p className="mt-2 line-clamp-2 text-sm text-muted">
+                    {a.description}
+                  </p>
+                  <span className="mt-auto pt-3 text-xs text-muted">
+                    {a.readingMinutes} min read · Updated {a.updatedAt}
+                  </span>
+                </Link>
+              ))}
+          </div>
+          <div className="mt-6">
+            <ButtonLink href="/learn" variant="secondary">
+              Browse all {ARTICLES.length} articles
+            </ButtonLink>
+          </div>
+        </Container>
+      </section>
+
       {/* Featured topics */}
       <section className="border-t border-border bg-card py-14">
         <Container>

@@ -596,4 +596,152 @@ export const deaQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-10-26",
   },
+  {
+    id: "dea-ops-004",
+    slug: "glue-data-quality-dqdl-rules",
+    cert: "dea-c01",
+    domain: "dea-data-operations-support",
+    topic: "dea-data-operations",
+    subtopic: "Data quality",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Before data lands in the curated zone, the team must validate row counts, null rates, and value ranges — failing checks should stop the pipeline. Which Glue feature expresses these rules?",
+    options: [
+      { id: "A", text: "Glue DataBrew recipes" },
+      { id: "B", text: "AWS Glue Data Quality with DQDL rules" },
+      { id: "C", text: "Athena constraint checks in DDL" },
+      { id: "D", text: "Glue workflow triggers" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Glue Data Quality evaluates DQDL rules (RowCount, IsComplete, ColumnValues ranges, etc.) on datasets and can publish metrics to CloudWatch or fail ETL jobs — the managed data-quality gate.",
+    optionExplanations: {
+      A: "DataBrew cleans and profiles data visually — it isn't the rules-engine gate for pipelines.",
+      B: "Correct. DQDL rules run inside Glue jobs and can stop downstream processing.",
+      C: "Athena doesn't enforce data-entry constraints — it's a query engine over files.",
+      D: "Workflow triggers schedule jobs; they don't evaluate data quality.",
+    },
+    services: ["AWS Glue", "Amazon CloudWatch"],
+    references: [
+      {
+        title: "AWS Glue Data Quality",
+        url: "https://docs.aws.amazon.com/glue/latest/dg/glue-data-quality.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "dea-store-005",
+    slug: "choose-redshift-athena-emr-analytics",
+    cert: "dea-c01",
+    domain: "dea-data-store-management",
+    topic: "dea-data-stores",
+    subtopic: "Analytics engines",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Analysts run complex SQL joins over terabytes of curated data several times a day, need sub-minute response, and concurrency for ~50 users. Which engine fits best?",
+    options: [
+      { id: "A", text: "Amazon Athena" },
+      { id: "B", text: "Amazon Redshift" },
+      { id: "C", text: "Amazon EMR with Hive" },
+      { id: "D", text: "AWS Glue interactive sessions" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Redshift is the data warehouse: MPP query engine, materialized views, concurrency scaling — built for repeated complex SQL at interactive speed with many concurrent users. Athena suits ad-hoc/sporadic queries; EMR suits big-data processing frameworks.",
+    optionExplanations: {
+      A: "Athena is serverless and great for occasional ad-hoc queries — but repeated heavy joins at 50-user concurrency favor provisioned MPP.",
+      B: "Correct. Purpose-built warehouse for frequent complex SQL and concurrency.",
+      C: "EMR+Hive can run SQL but means managing clusters — overkill versus a warehouse.",
+      D: "Glue interactive sessions are for developing ETL, not serving analyst dashboards.",
+    },
+    services: ["Amazon Redshift", "Amazon Athena"],
+    references: [
+      {
+        title: "Amazon Redshift overview",
+        url: "https://docs.aws.amazon.com/redshift/latest/mgmt/welcome.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "dea-ing-006",
+    slug: "kinesis-on-demand-capacity-mode",
+    cert: "dea-c01",
+    domain: "dea-ingestion-transformation",
+    topic: "dea-ingestion-and-etl",
+    subtopic: "Kinesis",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A new event stream's volume is unpredictable — spiky, ranging 10x between quiet and peak. The team wants no capacity planning or shard management. Which Kinesis mode applies?",
+    options: [
+      { id: "A", text: "Provisioned mode with manual shard splits" },
+      { id: "B", text: "On-demand mode" },
+      { id: "C", text: "Enhanced fan-out consumers" },
+      { id: "D", text: "Kinesis Data Firehose delivery to S3" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "On-demand mode scales shard capacity automatically with throughput (default 4 MB/s, scales to GB/s) — no shard math. Provisioned mode requires forecasting and managing shards; fan-out is a consumer pattern, not a capacity mode.",
+    optionExplanations: {
+      A: "Provisioned mode means choosing shard counts — exactly what the team wants to avoid.",
+      B: "Correct. On-demand auto-manages capacity for unpredictable streams.",
+      C: "Enhanced fan-out gives dedicated per-consumer throughput — it doesn't size the stream itself.",
+      D: "Firehose delivers to destinations; the question is about stream capacity.",
+    },
+    services: ["Amazon Kinesis"],
+    references: [
+      {
+        title: "On-demand vs provisioned capacity",
+        url: "https://docs.aws.amazon.com/streams/latest/dev/on-demand-provisioned-capacity-modes.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "dea-gov-005",
+    slug: "macie-sensitive-data-discovery",
+    cert: "dea-c01",
+    domain: "dea-data-security-governance",
+    topic: "dea-data-governance",
+    subtopic: "Sensitive data discovery",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "Before opening a data lake to more teams, governance wants an automated inventory of which S3 objects contain PII. Which service discovers this?",
+    options: [
+      { id: "A", text: "Amazon Macie" },
+      { id: "B", text: "AWS Glue crawler" },
+      { id: "C", text: "Amazon Inspector" },
+      { id: "D", text: "AWS Config" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Macie uses ML and pattern matching to discover sensitive data (PII, financial data, credentials) in S3 and reports object-level findings — the dedicated sensitive-data discovery service.",
+    optionExplanations: {
+      A: "Correct. Macie scans S3 for PII/sensitive data and reports where it lives.",
+      B: "Crawlers infer schemas — they classify structure, not sensitivity.",
+      C: "Inspector finds software vulnerabilities in EC2/ECR/Lambda, not data content.",
+      D: "Config tracks resource configuration, not object contents.",
+    },
+    services: ["Amazon Macie", "Amazon S3"],
+    references: [
+      {
+        title: "What is Amazon Macie",
+        url: "https://docs.aws.amazon.com/macie/latest/user/what-is-macie.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
 ];

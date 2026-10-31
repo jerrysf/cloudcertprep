@@ -604,4 +604,152 @@ export const scsQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-10-26",
   },
+  {
+    id: "scs-ir-003",
+    slug: "isolate-ec2-instance-forensics",
+    cert: "scs-c03",
+    domain: "scs-incident-response",
+    topic: "scs-incident-response",
+    subtopic: "Isolation",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "GuardDuty flags an EC2 instance for crypto-mining. IR must preserve evidence while cutting the instance off from the network immediately. Which first actions isolate it?",
+    options: [
+      { id: "A", text: "Terminate the instance and let the ASG replace it" },
+      { id: "B", text: "Replace its security group with a no-access SG, then snapshot the EBS volumes and capture memory" },
+      { id: "C", text: "Stop the instance, then investigate the stopped volume" },
+      { id: "D", text: "Add a NACL deny for its subnet and move on" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Swap the instance's SG for a forensics SG (no inbound/outbound except your forensic tools) — quarantine without destroying state — then snapshot EBS and capture memory/disk for analysis. Terminating or stopping destroys volatile evidence.",
+    optionExplanations: {
+      A: "Termination destroys the evidence you need for forensics.",
+      B: "Correct. SG swap isolates the instance while preserving running state for capture.",
+      C: "Stop wipes memory — volatile evidence is lost before you can capture it.",
+      D: "NACLs are subnet-level — they'd also block your forensic access and affect neighbors.",
+    },
+    services: ["Amazon EC2", "Amazon GuardDuty"],
+    references: [
+      {
+        title: "AWS Security Incident Response Guide",
+        url: "https://docs.aws.amazon.com/whitepapers/latest/aws-security-incident-response-guide/welcome.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "scs-gov-002",
+    slug: "control-tower-preventive-detective-guardrails",
+    cert: "scs-c03",
+    domain: "scs-security-foundations-governance",
+    topic: "scs-governance",
+    subtopic: "AWS Control Tower",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Landing zone design: which statement correctly maps Control Tower guardrail types?",
+    options: [
+      { id: "A", text: "Preventive = SCPs blocking actions; Detective = Config rules detecting drift; Proactive = CloudFormation hooks checking resources before deploy" },
+      { id: "B", text: "Preventive = Config rules; Detective = SCPs; Proactive = GuardDuty" },
+      { id: "C", text: "All guardrails are implemented as SCPs" },
+      { id: "D", text: "Preventive = IAM policies; Detective = CloudTrail; Proactive = Macie" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Control Tower guardrails: preventive (SCPs — disallow actions outright), detective (Config rules — flag noncompliance), proactive (CloudFormation hooks — block noncompliant deploys before creation).",
+    optionExplanations: {
+      A: "Correct — the three guardrail mechanisms in order.",
+      B: "Swaps preventive and detective; GuardDuty is a threat-detection service, not a guardrail type.",
+      C: "Only preventive guardrails use SCPs.",
+      D: "Wrong services entirely — none of these define guardrail categories.",
+    },
+    services: ["AWS Control Tower", "AWS Config", "AWS Organizations"],
+    references: [
+      {
+        title: "Guardrails in AWS Control Tower",
+        url: "https://docs.aws.amazon.com/controltower/latest/userguide/guardrails.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "scs-inf-004",
+    slug: "security-groups-vs-nacls-statefulness",
+    cert: "scs-c03",
+    domain: "scs-infrastructure-security",
+    topic: "scs-infrastructure-security",
+    subtopic: "Network controls",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "Why can a security group allow outbound HTTPS to the internet without an explicit inbound rule for the response traffic?",
+    options: [
+      { id: "A", text: "Security groups are stateful — return traffic for an allowed connection is automatically permitted" },
+      { id: "B", text: "HTTPS responses arrive on port 443 which is open by default" },
+      { id: "C", text: "The internet gateway tracks sessions and bypasses security groups" },
+      { id: "D", text: "Ephemeral ports are always allowed in security groups" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Security groups are stateful: if you send a request out, the response is allowed back regardless of inbound rules. NACLs are stateless — return traffic needs an explicit inbound rule on ephemeral ports.",
+    optionExplanations: {
+      A: "Correct. Connection tracking means responses to initiated connections return freely.",
+      B: "Inbound 443 isn't default-open — the response uses a high ephemeral port anyway.",
+      C: "The IGW routes traffic; it doesn't override security group evaluation.",
+      D: "Nothing is 'always allowed' — statefulness is the mechanism, not open ephemeral ranges.",
+    },
+    services: ["Amazon VPC"],
+    references: [
+      {
+        title: "Security groups for your VPC",
+        url: "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "scs-det-005",
+    slug: "detective-investigate-findings",
+    cert: "scs-c03",
+    domain: "scs-detection",
+    topic: "scs-detection-and-response",
+    subtopic: "Investigation",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A GuardDuty finding shows an EC2 instance talking to a known-malicious IP. The team wants to visualize related API calls, network flows, and IAM activity around it — without building queries. Which service is designed for this triage?",
+    options: [
+      { id: "A", text: "Amazon Detective" },
+      { id: "B", text: "AWS CloudTrail event history" },
+      { id: "C", text: "VPC Flow Logs in Athena" },
+      { id: "D", text: "Amazon Macie" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Detective ingests GuardDuty findings, VPC Flow Logs, and CloudTrail into a behavior graph — purpose-built for visual investigation: see what an entity touched, when, and how, without manual log correlation.",
+    optionExplanations: {
+      A: "Correct. Detective is the investigation/analysis layer over findings and telemetry.",
+      B: "Event history shows API calls only — you'd manually correlate with flows and IAM activity.",
+      C: "Athena queries flows but requires writing queries and joining sources yourself.",
+      D: "Macie finds sensitive data in S3 — unrelated to incident triage.",
+    },
+    services: ["Amazon Detective", "Amazon GuardDuty"],
+    references: [
+      {
+        title: "What is Amazon Detective",
+        url: "https://docs.aws.amazon.com/detective/latest/userguide/what-is-detective.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
 ];

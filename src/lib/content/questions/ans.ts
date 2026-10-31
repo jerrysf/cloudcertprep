@@ -596,4 +596,152 @@ export const ansQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-10-26",
   },
+  {
+    id: "ans-des-004",
+    slug: "ipv6-egress-only-internet-gateway",
+    cert: "ans-c01",
+    domain: "ans-network-management-operations",
+    topic: "ans-network-operations",
+    subtopic: "IPv6",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A VPC runs dual-stack. IPv6 instances in a private subnet must reach the internet but must NOT accept inbound connections initiated from the internet. What provides this?",
+    options: [
+      { id: "A", text: "NAT gateway for IPv6" },
+      { id: "B", text: "Egress-only internet gateway" },
+      { id: "C", text: "Internet gateway with security group deny rules" },
+      { id: "D", text: "NAT64 on a NAT instance" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "IPv6 addresses are globally routable — there is no NAT for IPv6 outbound privacy. The egress-only internet gateway is the IPv6 analog of NAT: permits outbound connections and their return traffic, blocks inbound-initiated connections.",
+    optionExplanations: {
+      A: "NAT gateways don't carry IPv6 in this pattern — IPv6 is routable, not translated.",
+      B: "Correct. Egress-only IGW = outbound-only for IPv6 private subnets.",
+      C: "An IGW would expose the instances to inbound connections; filtering per-SG is fragile and the question asks for the network construct.",
+      D: "NAT64 translates IPv6→IPv4 — it doesn't gate inbound initiation, and NAT instances are a legacy pattern.",
+    },
+    services: ["Amazon VPC"],
+    references: [
+      {
+        title: "Egress-only internet gateways",
+        url: "https://docs.aws.amazon.com/vpc/latest/userguide/egress-only-internet-gateway.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "ans-dns-002",
+    slug: "route53-private-resource-health-checks",
+    cert: "ans-c01",
+    domain: "ans-network-implementation",
+    topic: "ans-dns-and-routing",
+    subtopic: "Route 53",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A failover record should point to an internal ALB in a private subnet. Route 53 health checkers can't reach private IPs. How do you health-check it?",
+    options: [
+      { id: "A", text: "Create a CloudWatch alarm on the ALB's metrics and a Route 53 health check that watches the alarm state" },
+      { id: "B", text: "Point the health check at the ALB's public DNS name — Route 53 resolves it inside the VPC" },
+      { id: "C", text: "Enable private health checking in the hosted zone settings" },
+      { id: "D", text: "Use a Route 53 Resolver inbound endpoint to proxy the check" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Route 53 health checkers run outside the VPC. For private resources you create a CloudWatch metric/alarm (e.g., HealthyHostCount) and configure a Route 53 'state of CloudWatch alarm' health check.",
+    optionExplanations: {
+      A: "Correct — alarm-based health checks are the documented pattern for private endpoints.",
+      B: "Public DNS resolves outside the VPC to public IPs; checkers never enter your VPC.",
+      C: "No such feature exists.",
+      D: "Resolver endpoints serve DNS resolution for hybrid networks — unrelated to health checking.",
+    },
+    services: ["Amazon Route 53", "Amazon CloudWatch"],
+    references: [
+      {
+        title: "Monitoring health checks using CloudWatch",
+        url: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/dns-failover-private-hosted-zones.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "ans-ops-004",
+    slug: "network-manager-global-network-visibility",
+    cert: "ans-c01",
+    domain: "ans-network-management-operations",
+    topic: "ans-network-operations",
+    subtopic: "Network monitoring",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "Ops wants a single topology view of Transit Gateways, attachments, and on-prem devices across all regions and accounts — including DX and VPN status. Which service provides it?",
+    options: [
+      { id: "A", text: "VPC Reachability Analyzer" },
+      { id: "B", text: "AWS Cloud WAN / Network Manager" },
+      { id: "C", text: "VPC Flow Logs" },
+      { id: "D", text: "CloudWatch dashboards" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Network Manager (part of Cloud WAN) gives a global network view — topology maps, TGW registration, DX/VPN device monitoring, events — across accounts and regions.",
+    optionExplanations: {
+      A: "Reachability Analyzer tests paths between two resources — it isn't a fleet topology view.",
+      B: "Correct. Network Manager is the centralized global-network console.",
+      C: "Flow Logs are per-ENI/subnet traffic records, not topology.",
+      D: "Dashboards show chosen metrics — they don't build a network topology graph.",
+    },
+    services: ["AWS Cloud WAN", "AWS Transit Gateway"],
+    references: [
+      {
+        title: "AWS Network Manager",
+        url: "https://docs.aws.amazon.com/network-manager/latest/cloudwan/what-is-cloudwan.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "ans-hyb-004",
+    slug: "direct-connect-transit-vif-transit-gateway",
+    cert: "ans-c01",
+    domain: "ans-network-design",
+    topic: "ans-hybrid-connectivity",
+    subtopic: "Direct Connect",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "On-prem needs private connectivity to 30 VPCs across regions via a single Direct Connect link, with full VPC-to-VPC segmentation control. Which architecture scales?",
+    options: [
+      { id: "A", text: "Private VIF per VPC to its VGW — one VIF per VPC" },
+      { id: "B", text: "Transit VIF to a Direct Connect gateway associated with a Transit Gateway" },
+      { id: "C", text: "Public VIF to AWS public endpoints, then VPC peering" },
+      { id: "D", text: "DX gateway with private VIFs to each VPC's virtual private gateway" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "A transit VIF to DX gateway + TGW carries private traffic to many VPCs across regions and lets TGW route tables enforce segmentation. Private VIF + VGW works too but TGW is required for the segmentation control and scales better for 30+ VPCs.",
+    optionExplanations: {
+      A: "VGW per VPC can't route VPC-to-VPC and hard-limits VIF/VGW associations — doesn't scale.",
+      B: "Correct. Transit VIF + TGW is the hub design for many VPCs and segmentation.",
+      C: "Public VIFs reach public endpoints only — they can't carry private VPC traffic.",
+      D: "DX gateway + private VIFs reaches VPCs but bypasses TGW — no transit segmentation between VPCs.",
+    },
+    services: ["AWS Direct Connect", "AWS Transit Gateway"],
+    references: [
+      {
+        title: "Transit virtual interfaces",
+        url: "https://docs.aws.amazon.com/directconnect/latest/UserGuide/create-vif.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
 ];
