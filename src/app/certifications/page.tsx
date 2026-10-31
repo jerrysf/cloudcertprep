@@ -66,6 +66,25 @@ export default function CertificationsPage() {
         </span>
       </div>
 
+      <Link
+        href="/certifications/roadmap"
+        className="group mt-6 flex items-center justify-between gap-4 rounded-xl border border-accent/30 bg-accent-soft px-5 py-4 transition-all hover:shadow-md"
+      >
+        <div>
+          <p className="font-semibold text-accent">
+            Not sure which cert to take first?
+          </p>
+          <p className="mt-0.5 text-sm text-muted">
+            See role-based roadmaps — Solutions Architect, DevOps, Developer,
+            Security, Data, AI/ML, Networking — with recommended order.
+          </p>
+        </div>
+        <ArrowRight
+          className="h-5 w-5 shrink-0 text-accent transition-transform group-hover:translate-x-1"
+          aria-hidden
+        />
+      </Link>
+
       <div className="mt-10 space-y-10">
         {grouped.map(({ level, certs }) => (
           <section key={level}>

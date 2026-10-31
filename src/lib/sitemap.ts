@@ -25,6 +25,7 @@ export function getSitemapEntries(): MetadataRoute.Sitemap {
     { path: "/", priority: 1 },
     { path: "/practice", priority: 0.9 },
     { path: "/certifications", priority: 0.9 },
+    { path: "/certifications/roadmap", priority: 0.8 },
     { path: "/questions", priority: 0.8 },
     { path: "/mock-exam", priority: 0.8 },
     { path: "/services", priority: 0.8 },

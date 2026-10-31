@@ -16,6 +16,7 @@ import {
 import { publishedByCert, publishedByTopic } from "@/lib/content/questions";
 import { ARTICLES } from "@/lib/content/articles";
 import { topicsByCert } from "@/lib/content/topics";
+import { ROADMAPS } from "@/lib/content/roadmaps";
 import { breadcrumbJsonLd } from "@/lib/jsonld";
 import { Badge, Breadcrumbs, Card, CertLevelBadge, Container } from "@/components/ui";
 import { AffiliateBlock } from "@/components/affiliate-note";
@@ -301,6 +302,31 @@ export default async function CertificationPage({ params }: Props) {
         </div>
 
         <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
+          {(() => {
+            const paths = ROADMAPS.filter((r) =>
+              r.steps.some((s) => s.certId === cert.id),
+            );
+            return paths.length > 0 ? (
+              <Card>
+                <h2 className="text-sm font-semibold">
+                  {cert.code} appears in {paths.length} career path
+                  {paths.length > 1 ? "s" : ""}
+                </h2>
+                <ul className="mt-2 space-y-1.5">
+                  {paths.map((r) => (
+                    <li key={r.slug}>
+                      <Link
+                        href="/certifications/roadmap"
+                        className="text-sm text-muted hover:text-accent"
+                      >
+                        {r.title} →
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            ) : null;
+          })()}
           <Card>
             <h2 className="text-sm font-semibold">Other certifications</h2>
             <ul className="mt-2 space-y-1.5">

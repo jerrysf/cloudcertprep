@@ -14,6 +14,7 @@ const PRODUCT_LINKS = [
 
 const RESOURCE_LINKS = [
   { label: "Certifications", href: "/certifications" },
+  { label: "Cert Roadmap", href: "/certifications/roadmap" },
   { label: "Study Guides", href: "/services" },
   { label: "Articles", href: "/learn" },
   { label: "SAA-C03 Exam Guide", href: "/learn/saa-c03-exam-guide" },
