@@ -146,6 +146,42 @@ export default function Home() {
         </Container>
       </section>
 
+      {/* Differentiation band */}
+      <section className="border-b border-border bg-white py-10">
+        <Container>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              {
+                title: "No dumps. Ever.",
+                text: "Every question is original and scenario-based — written to teach the reasoning exams test, not to leak real exam content.",
+              },
+              {
+                title: "Every option explained",
+                text: "Not just the right answer — why each wrong option is wrong, plus a link to official AWS documentation.",
+              },
+              {
+                title: "Truly free",
+                text: "No account, no paywall, no credit card. Your progress stays in your browser — nothing is tracked to a server.",
+              },
+              {
+                title: "Verified exam data",
+                text: `Domain weights, costs, and formats checked against official AWS exam guides for all ${CERTIFICATIONS.length} certifications.`,
+              },
+            ].map((f) => (
+              <div key={f.title}>
+                <p className="flex items-center gap-2 font-semibold">
+                  <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                  {f.title}
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-muted">
+                  {f.text}
+                </p>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </section>
+
       {/* Dashboard preview */}
       <section className="py-12">
         <Container>

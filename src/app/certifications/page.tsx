@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Clock, DollarSign, FileText } from "lucide-react";
 import { CERTIFICATIONS } from "@/lib/content/certifications";
-import { publishedByCert } from "@/lib/content/questions";
+import { PUBLISHED_QUESTIONS, publishedByCert } from "@/lib/content/questions";
 import { Badge, Card, CertLevelBadge, Container } from "@/components/ui";
 
 export const metadata: Metadata = {
@@ -26,6 +26,13 @@ const LEVEL_LABEL: Record<string, string> = {
   specialty: "Specialty",
 };
 
+const LEVEL_DOT: Record<string, string> = {
+  foundational: "bg-emerald-500",
+  associate: "bg-blue-500",
+  professional: "bg-purple-500",
+  specialty: "bg-amber-500",
+};
+
 export default function CertificationsPage() {
   const grouped = LEVEL_ORDER.map((level) => ({
     level,
@@ -43,10 +50,32 @@ export default function CertificationsPage() {
         explanations and official AWS documentation links.
       </p>
 
+      <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 rounded-xl border border-border bg-card px-5 py-4 text-sm">
+        <span className="font-semibold">
+          {PUBLISHED_QUESTIONS.length} reviewed questions
+        </span>
+        <span className="text-muted">
+          {CERTIFICATIONS.length} certifications · {CERTIFICATIONS.reduce(
+            (n, c) => n + c.domains.length,
+            0,
+          )}{" "}
+          exam domains mapped
+        </span>
+        <span className="ml-auto font-medium text-accent">
+          100% free — no account required
+        </span>
+      </div>
+
       <div className="mt-10 space-y-10">
         {grouped.map(({ level, certs }) => (
           <section key={level}>
-            <h2 className="text-xl font-semibold">{LEVEL_LABEL[level]}</h2>
+            <h2 className="flex items-center gap-2 text-xl font-semibold">
+              <span
+                className={`h-2.5 w-2.5 rounded-full ${LEVEL_DOT[level]}`}
+                aria-hidden
+              />
+              {LEVEL_LABEL[level]}
+            </h2>
             <div className="mt-4 grid gap-4 md:grid-cols-2">
               {certs.map((cert) => {
                 const count = publishedByCert(cert.id).length;

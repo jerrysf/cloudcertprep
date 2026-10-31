@@ -62,27 +62,42 @@ export default async function CertificationPage({ params }: Props) {
 
       <div className="mt-6 grid gap-10 lg:grid-cols-[minmax(0,1fr)_300px]">
         <div>
-          <div className="flex flex-wrap items-center gap-2">
-            <Badge tone="accent">{cert.code}</Badge>
-            <CertLevelBadge level={cert.level} />
-            {!cert.verified ? (
-              <Badge tone="warning">Details pending re-verification</Badge>
-            ) : null}
-          </div>
-          <h1 className="mt-4 text-3xl font-bold tracking-tight">
-            {cert.name}
-          </h1>
-          <p className="mt-3 max-w-2xl text-lg text-muted">
-            {cert.description}
-          </p>
-
-          <Card className="mt-6">
-            <h2 className="text-lg font-semibold">Exam at a glance</h2>
-            <dl className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
+          <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-950 p-7 text-white sm:p-9">
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge tone="accent">{cert.code}</Badge>
+              <CertLevelBadge level={cert.level} />
+              {!cert.verified ? (
+                <Badge tone="warning">Details pending re-verification</Badge>
+              ) : null}
+            </div>
+            <h1 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
+              {cert.name}
+            </h1>
+            <p className="mt-3 max-w-2xl text-slate-300">
+              {cert.description}
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                href="/practice"
+                className="inline-flex items-center gap-2 rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-slate-900 shadow-sm transition-all hover:bg-slate-100 active:scale-[0.98]"
+              >
+                Start practicing free
+                <ArrowRight className="h-4 w-4" aria-hidden />
+              </Link>
+              {hasExamGuide ? (
+                <Link
+                  href={`/learn/${cert.id}-exam-guide`}
+                  className="inline-flex items-center gap-2 rounded-lg border border-white/25 px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-white/10 active:scale-[0.98]"
+                >
+                  Read the exam guide
+                </Link>
+              ) : null}
+            </div>
+            <dl className="mt-7 grid grid-cols-2 gap-x-6 gap-y-4 border-t border-white/10 pt-6 sm:grid-cols-4">
               {[
                 {
                   icon: FileText,
-                  label: "Questions",
+                  label: "Exam questions",
                   value: `${cert.questionCount}`,
                 },
                 {
@@ -92,7 +107,7 @@ export default async function CertificationPage({ params }: Props) {
                 },
                 {
                   icon: DollarSign,
-                  label: "Cost",
+                  label: "Exam cost",
                   value: `$${cert.costUsd} USD`,
                 },
                 {
@@ -102,35 +117,27 @@ export default async function CertificationPage({ params }: Props) {
                 },
               ].map(({ icon: Icon, label, value }) => (
                 <div key={label}>
-                  <dt className="flex items-center gap-1.5 text-xs text-muted">
+                  <dt className="flex items-center gap-1.5 text-xs text-slate-400">
                     <Icon className="h-3.5 w-3.5" aria-hidden />
                     {label}
                   </dt>
-                  <dd className="mt-1 font-semibold">{value}</dd>
+                  <dd className="mt-1 text-lg font-bold">{value}</dd>
                 </div>
               ))}
             </dl>
-            <a
-              href={cert.examGuideUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-flex items-center gap-1 text-sm text-accent hover:underline"
-            >
-              Official AWS certification page
-              <ExternalLink className="h-3.5 w-3.5" aria-hidden />
-            </a>
-            {hasExamGuide ? (
-              <p className="mt-3 border-t border-border pt-3 text-sm">
-                <Link
-                  href={`/learn/${cert.id}-exam-guide`}
-                  className="font-medium text-accent hover:underline"
-                >
-                  Read our {cert.code} exam guide — format, domains, and a prep
-                  plan →
-                </Link>
-              </p>
-            ) : null}
-          </Card>
+            <p className="mt-4 text-xs text-slate-400">
+              {questions.length} reviewed practice questions live on this site ·{" "}
+              <a
+                href={cert.examGuideUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-slate-200 underline decoration-slate-500 underline-offset-2 hover:text-white"
+              >
+                Official AWS certification page
+                <ExternalLink className="h-3 w-3" aria-hidden />
+              </a>
+            </p>
+          </div>
 
           <h2 className="mt-10 text-xl font-semibold">
             Exam domains and weights
