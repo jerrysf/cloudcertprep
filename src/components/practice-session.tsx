@@ -125,7 +125,7 @@ export function PracticeSession({
         aria-valuemax={questions.length}
       >
         <div
-          className="h-full rounded-full bg-accent transition-all"
+          className="h-full rounded-full bg-gradient-to-r from-accent to-blue-400 transition-all duration-300"
           style={{ width: `${(answeredCount / questions.length) * 100}%` }}
         />
       </div>
@@ -163,7 +163,7 @@ export function PracticeSession({
           type="button"
           onClick={() => setIndex((i) => Math.max(0, i - 1))}
           disabled={index === 0}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium disabled:opacity-40"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-white px-4 py-2 text-sm font-medium shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 active:scale-[0.98] disabled:opacity-40"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden /> Previous
         </button>
@@ -178,10 +178,10 @@ export function PracticeSession({
                 aria-label={`Go to question ${i + 1}`}
                 aria-current={i === index ? "true" : undefined}
                 className={cn(
-                  "h-8 w-8 rounded-md border text-xs font-medium",
-                  i === index && "border-accent bg-accent text-white",
-                  i !== index && !st && "border-border text-muted",
-                  i !== index && st?.correct && "border-green-400 bg-green-50 text-green-700",
+                  "h-8 w-8 rounded-md border text-xs font-medium transition-all hover:scale-105",
+                  i === index && "border-accent bg-accent text-white shadow-sm",
+                  i !== index && !st && "border-border text-muted hover:border-slate-400 hover:text-foreground",
+                  i !== index && st?.correct && "border-emerald-400 bg-emerald-50 text-emerald-700",
                   i !== index && st && !st.correct && "border-red-400 bg-red-50 text-red-700",
                 )}
               >
@@ -194,7 +194,7 @@ export function PracticeSession({
           type="button"
           onClick={() => setIndex((i) => Math.min(questions.length - 1, i + 1))}
           disabled={index === questions.length - 1}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium disabled:opacity-40"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-white px-4 py-2 text-sm font-medium shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 active:scale-[0.98] disabled:opacity-40"
         >
           Next <ArrowRight className="h-4 w-4" aria-hidden />
         </button>
@@ -212,7 +212,7 @@ export function PracticeSession({
           <button
             type="button"
             onClick={reset}
-            className="mt-4 inline-flex items-center gap-1.5 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-blue-800"
+            className="mt-4 inline-flex items-center gap-1.5 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-accent-hover hover:shadow active:scale-[0.98]"
           >
             <RotateCcw className="h-4 w-4" aria-hidden /> Practice again
           </button>

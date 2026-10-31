@@ -18,7 +18,7 @@ import { CERTIFICATIONS } from "@/lib/content/certifications";
 import { ARTICLES } from "@/lib/content/articles";
 import { SITE } from "@/lib/site";
 import { DashboardPreview } from "@/components/progress-dashboard";
-import { Badge, ButtonLink, Card, Container, SectionHeading } from "@/components/ui";
+import { Badge, ButtonLink, Card, CertLevelBadge, Container, SectionHeading } from "@/components/ui";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -40,42 +40,105 @@ export default function Home() {
           aria-hidden
         />
         <Container className="relative py-16 sm:py-24">
-          <div className="max-w-3xl">
-            <Badge tone="accent">
-              {CERTIFICATIONS.length} AWS certifications covered
-            </Badge>
-            <h1 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
-              Prepare for the AWS Solutions Architect Associate Exam
-            </h1>
-            <p className="mt-4 text-lg leading-relaxed text-muted">
-              Practice AWS architecture scenarios, understand why each answer is
-              correct, and build confidence with free study resources.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <ButtonLink href="/practice" className="px-6 py-3 text-base">
-                Start Free Practice
-              </ButtonLink>
-              <ButtonLink
-                href="/certifications"
-                variant="secondary"
-                className="px-6 py-3 text-base"
-              >
-                Explore Certifications
-              </ButtonLink>
+          <div className="grid items-center gap-12 lg:grid-cols-[1.15fr_1fr]">
+            <div className="max-w-3xl">
+              <Badge tone="accent">
+                {CERTIFICATIONS.length} AWS certifications covered
+              </Badge>
+              <h1 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
+                Prepare for the AWS Solutions Architect Associate Exam
+              </h1>
+              <p className="mt-4 text-lg leading-relaxed text-muted">
+                Practice AWS architecture scenarios, understand why each answer
+                is correct, and build confidence with free study resources.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <ButtonLink href="/practice" className="px-6 py-3 text-base">
+                  Start Free Practice
+                </ButtonLink>
+                <ButtonLink
+                  href="/certifications"
+                  variant="secondary"
+                  className="px-6 py-3 text-base"
+                >
+                  Explore Certifications
+                </ButtonLink>
+              </div>
+              <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted">
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                  {PUBLISHED_QUESTIONS.length} reviewed questions
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                  {CERTIFICATIONS.length} certifications
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                  Free, no account required
+                </span>
+              </div>
             </div>
-            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted">
-              <span className="inline-flex items-center gap-1.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                {PUBLISHED_QUESTIONS.length} reviewed questions
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                {CERTIFICATIONS.length} certifications
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                Free, no account required
-              </span>
+
+            {/* Product preview: mini question card */}
+            <div
+              aria-hidden
+              className="relative mx-auto hidden w-full max-w-sm lg:block"
+            >
+              <div className="absolute -inset-4 rounded-3xl bg-accent/5" />
+              <div className="relative rotate-1 rounded-2xl border border-border bg-white p-5 shadow-xl">
+                <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wide">
+                  <span className="rounded-full bg-accent-soft px-2 py-0.5 text-accent">
+                    SAA-C03
+                  </span>
+                  <span className="rounded-full bg-slate-100 px-2 py-0.5 text-muted">
+                    Single choice
+                  </span>
+                </div>
+                <p className="mt-3 text-sm font-semibold leading-snug">
+                  A company needs durable object storage for user uploads…
+                </p>
+                <div className="mt-3 space-y-2">
+                  {[
+                    { letter: "A", ok: false },
+                    { letter: "B", ok: true },
+                    { letter: "C", ok: false },
+                    { letter: "D", ok: false },
+                  ].map((o) => (
+                    <div
+                      key={o.letter}
+                      className={
+                        o.ok
+                          ? "flex items-center gap-2.5 rounded-lg border-2 border-emerald-500 bg-emerald-50 p-2.5 text-xs"
+                          : "flex items-center gap-2.5 rounded-lg border-2 border-border p-2.5 text-xs"
+                      }
+                    >
+                      <span
+                        className={
+                          o.ok
+                            ? "flex h-5 w-5 items-center justify-center rounded bg-emerald-600 text-[10px] font-bold text-white"
+                            : "flex h-5 w-5 items-center justify-center rounded bg-slate-100 text-[10px] font-bold text-slate-500"
+                        }
+                      >
+                        {o.letter}
+                      </span>
+                      <span
+                        className={
+                          o.ok ? "font-medium text-emerald-900" : "text-muted"
+                        }
+                      >
+                        {o.ok
+                          ? "Amazon S3 with versioning"
+                          : `Option ${o.letter}`}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-3 flex items-center gap-1.5 rounded-lg bg-emerald-50 px-3 py-2 text-xs font-medium text-emerald-800">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                  Correct — every option explained
+                </div>
+              </div>
             </div>
           </div>
         </Container>
@@ -144,7 +207,7 @@ export default function Home() {
                 <Link
                   key={c.id}
                   href={`/certifications/${c.id}`}
-                  className="group rounded-xl border border-border bg-white p-5 transition-shadow hover:shadow-md"
+                  className="group rounded-xl border border-border bg-white p-5 transition-all duration-150 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
@@ -160,11 +223,14 @@ export default function Home() {
                       aria-hidden
                     />
                   </div>
-                  <p className="mt-2 text-xs text-muted">
-                    {count > 0
-                      ? `${count} practice questions`
-                      : "Question bank coming soon"}
-                  </p>
+                  <div className="mt-3 flex items-center gap-2">
+                    <CertLevelBadge level={c.level} />
+                    <span className="text-xs text-muted">
+                      {count > 0
+                        ? `${count} questions`
+                        : "Coming soon"}
+                    </span>
+                  </div>
                 </Link>
               );
             })}
@@ -185,7 +251,7 @@ export default function Home() {
               <Link
                 key={t.slug}
                 href={`/practice/${t.slug}`}
-                className="group rounded-xl border border-border bg-white p-5 transition-shadow hover:shadow-md"
+                className="group rounded-xl border border-border bg-white p-5 transition-all duration-150 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md"
               >
                 <div className="flex items-center justify-between">
                   <h3 className="font-semibold">{t.name}</h3>

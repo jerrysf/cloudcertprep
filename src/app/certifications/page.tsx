@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Clock, DollarSign, FileText } from "lucide-react";
 import { CERTIFICATIONS } from "@/lib/content/certifications";
 import { publishedByCert } from "@/lib/content/questions";
-import { Badge, Card, Container } from "@/components/ui";
+import { Badge, Card, CertLevelBadge, Container } from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "AWS Certification Practice Exams — All Certifications",
@@ -54,7 +54,7 @@ export default function CertificationsPage() {
                   <Link
                     key={cert.id}
                     href={`/certifications/${cert.id}`}
-                    className="group rounded-xl border border-border bg-white p-5 transition-shadow hover:shadow-md"
+                    className="group rounded-xl border border-border bg-white p-5 transition-all duration-150 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div>
@@ -62,7 +62,7 @@ export default function CertificationsPage() {
                           <span className="font-mono text-sm font-semibold text-accent">
                             {cert.code}
                           </span>
-                          <Badge>{LEVEL_LABEL[cert.level]}</Badge>
+                          <CertLevelBadge level={cert.level} />
                           {cert.featured ? (
                             <Badge tone="accent">Popular</Badge>
                           ) : null}

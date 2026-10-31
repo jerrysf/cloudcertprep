@@ -136,24 +136,27 @@ export function QuestionView({
 
       <fieldset disabled={disabled || revealed}>
         <legend className="sr-only">Answer options</legend>
-        <div className="space-y-2">
+        <div className="space-y-2.5">
           {question.options.map((opt) => {
             const isSelected = selected.includes(opt.id);
             const isCorrect = question.correctAnswers.includes(opt.id);
             const showCorrect = revealed && isCorrect;
             const showWrong = revealed && isSelected && !isCorrect;
+            const interactive = !revealed && !disabled;
             return (
               <label
                 key={opt.id}
                 className={cn(
-                  "flex cursor-pointer items-start gap-3 rounded-lg border p-4 transition-colors",
-                  !revealed && !disabled && "hover:border-accent/60",
+                  "group relative flex cursor-pointer items-start gap-3.5 rounded-xl border-2 p-4 pl-3 transition-all duration-150",
+                  interactive &&
+                    "hover:border-accent/50 hover:bg-slate-50 hover:shadow-sm",
                   isSelected && !revealed
-                    ? "border-accent bg-accent-soft"
-                    : "border-border",
-                  showCorrect && "border-green-500 bg-green-50",
-                  showWrong && "border-red-400 bg-red-50",
-                  (disabled || revealed) && "cursor-default",
+                    ? "border-accent bg-accent-soft shadow-sm"
+                    : "border-border bg-white",
+                  showCorrect &&
+                    "border-emerald-500 bg-emerald-50 ring-1 ring-emerald-200",
+                  showWrong && "border-red-400 bg-red-50 ring-1 ring-red-200",
+                  !interactive && "cursor-default",
                 )}
               >
                 <input
@@ -161,18 +164,57 @@ export function QuestionView({
                   name={`q-${question.id}`}
                   checked={isSelected}
                   onChange={() => toggle(opt.id)}
-                  className="mt-1"
+                  className="sr-only"
                   aria-label={`Option ${opt.id}`}
                 />
-                <span className="flex-1 text-sm leading-relaxed">
-                  <span className="mr-1.5 font-semibold">{opt.id}.</span>
+                <span
+                  aria-hidden
+                  className={cn(
+                    "flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-xs font-bold transition-colors",
+                    isSelected && !revealed
+                      ? "bg-accent text-white"
+                      : "bg-slate-100 text-slate-600 group-hover:bg-slate-200",
+                    showCorrect && "bg-emerald-600 text-white",
+                    showWrong && "bg-red-500 text-white",
+                  )}
+                >
+                  {opt.id}
+                </span>
+                <span className="flex-1 pt-0.5 text-sm leading-relaxed">
                   {opt.text}
                 </span>
+                <span
+                  aria-hidden
+                  className={cn(
+                    "mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2 transition-colors",
+                    multi ? "rounded" : "rounded-full",
+                    isSelected && !revealed
+                      ? "border-accent bg-accent"
+                      : "border-slate-300 bg-white group-hover:border-slate-400",
+                    showCorrect && "border-emerald-600 bg-emerald-600",
+                    showWrong && "border-red-500 bg-red-500",
+                  )}
+                >
+                  {(isSelected || showCorrect || showWrong) && (
+                    <span
+                      className={cn(
+                        "bg-white",
+                        multi ? "h-2 w-2 rounded-[1px]" : "h-1.5 w-1.5 rounded-full",
+                      )}
+                    />
+                  )}
+                </span>
                 {showCorrect ? (
-                  <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-success" aria-label="Correct answer" />
+                  <CheckCircle2
+                    className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600"
+                    aria-label="Correct answer"
+                  />
                 ) : null}
                 {showWrong ? (
-                  <XCircle className="mt-0.5 h-5 w-5 shrink-0 text-danger" aria-label="Your answer, incorrect" />
+                  <XCircle
+                    className="mt-0.5 h-5 w-5 shrink-0 text-danger"
+                    aria-label="Your answer, incorrect"
+                  />
                 ) : null}
               </label>
             );
@@ -185,7 +227,7 @@ export function QuestionView({
           type="button"
           onClick={submit}
           disabled={selected.length === 0}
-          className="rounded-lg bg-accent px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-40"
+          className="rounded-lg bg-accent px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-accent-hover hover:shadow active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
         >
           Submit answer
         </button>
@@ -194,24 +236,40 @@ export function QuestionView({
       {revealed ? (
         <div
           className={cn(
-            "rounded-lg border p-5",
-            correct ? "border-green-300 bg-green-50" : "border-red-300 bg-red-50",
+            "rounded-xl border-2 p-5",
+            correct
+              ? "border-emerald-300 bg-emerald-50"
+              : "border-red-300 bg-red-50",
           )}
           role="status"
         >
-          <p className="font-semibold">
-            {correct ? "Correct." : "Incorrect."}{" "}
-            <span className="font-normal">
-              Correct answer{question.correctAnswers.length > 1 ? "s" : ""}:{" "}
+          <p className="flex items-center gap-2 font-semibold">
+            {correct ? (
+              <CheckCircle2 className="h-5 w-5 text-emerald-600" aria-hidden />
+            ) : (
+              <XCircle className="h-5 w-5 text-danger" aria-hidden />
+            )}
+            {correct ? "Correct" : "Incorrect"}
+            <span className="font-normal text-sm">
+              · answer{question.correctAnswers.length > 1 ? "s" : ""}:{" "}
               {question.correctAnswers.join(", ")}
             </span>
           </p>
-          <p className="mt-2 text-sm leading-relaxed">{question.explanation}</p>
+          <p className="mt-3 text-sm leading-relaxed">{question.explanation}</p>
           <ul className="mt-4 space-y-2 text-sm">
             {question.options.map((opt) => (
-              <li key={opt.id}>
-                <span className="font-semibold">{opt.id}.</span>{" "}
-                {question.optionExplanations[opt.id]}
+              <li key={opt.id} className="flex gap-2">
+                <span
+                  className={cn(
+                    "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded text-[10px] font-bold",
+                    question.correctAnswers.includes(opt.id)
+                      ? "bg-emerald-600 text-white"
+                      : "bg-slate-200 text-slate-600",
+                  )}
+                >
+                  {opt.id}
+                </span>
+                <span>{question.optionExplanations[opt.id]}</span>
               </li>
             ))}
           </ul>

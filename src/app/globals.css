@@ -5,11 +5,19 @@
   --foreground: #0f172a;
   --muted: #64748b;
   --accent: #1d4ed8;
+  --accent-hover: #1e40af;
   --accent-soft: #eff6ff;
   --border: #e2e8f0;
   --card: #f8fafc;
   --success: #15803d;
   --danger: #b91c1c;
+  --warning: #b45309;
+
+  /* certification level accents */
+  --level-foundational: #047857;
+  --level-associate: #1d4ed8;
+  --level-professional: #7c3aed;
+  --level-specialty: #b45309;
 }
 
 @theme inline {
@@ -17,11 +25,17 @@
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
   --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
   --color-accent-soft: var(--accent-soft);
   --color-border: var(--border);
   --color-card: var(--card);
   --color-success: var(--success);
   --color-danger: var(--danger);
+  --color-warning: var(--warning);
+  --color-level-foundational: var(--level-foundational);
+  --color-level-associate: var(--level-associate);
+  --color-level-professional: var(--level-professional);
+  --color-level-specialty: var(--level-specialty);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -30,6 +44,13 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--accent);
+  color: #ffffff;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -19,14 +19,17 @@ export function Container({
 export function Card({
   children,
   className,
+  hover = false,
 }: {
   children: ReactNode;
   className?: string;
+  hover?: boolean;
 }) {
   return (
     <div
       className={cn(
-        "rounded-xl border border-border bg-white p-6 shadow-sm",
+        "rounded-xl border border-border bg-white p-6 shadow-sm transition-all duration-150",
+        hover && "hover:-translate-y-0.5 hover:shadow-md hover:border-slate-300",
         className,
       )}
     >
@@ -35,24 +38,41 @@ export function Card({
   );
 }
 
+export type BadgeTone =
+  | "neutral"
+  | "accent"
+  | "success"
+  | "danger"
+  | "warning"
+  | "violet"
+  | "emerald"
+  | "amber";
+
 export function Badge({
   children,
   tone = "neutral",
+  className,
 }: {
   children: ReactNode;
-  tone?: "neutral" | "accent" | "success" | "danger";
+  tone?: BadgeTone;
+  className?: string;
 }) {
-  const tones = {
-    neutral: "bg-slate-100 text-slate-700",
-    accent: "bg-accent-soft text-accent",
-    success: "bg-green-100 text-green-800",
-    danger: "bg-red-100 text-red-800",
+  const tones: Record<BadgeTone, string> = {
+    neutral: "bg-slate-100 text-slate-700 ring-slate-200",
+    accent: "bg-accent-soft text-accent ring-blue-200",
+    success: "bg-emerald-50 text-emerald-800 ring-emerald-200",
+    danger: "bg-red-50 text-red-800 ring-red-200",
+    warning: "bg-amber-50 text-amber-800 ring-amber-200",
+    violet: "bg-violet-50 text-violet-800 ring-violet-200",
+    emerald: "bg-emerald-50 text-emerald-800 ring-emerald-200",
+    amber: "bg-amber-50 text-amber-800 ring-amber-200",
   };
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium",
+        "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ring-inset",
         tones[tone],
+        className,
       )}
     >
       {children}
@@ -60,8 +80,51 @@ export function Badge({
   );
 }
 
+/** Consistent color coding for certification levels across the site. */
+export function CertLevelBadge({
+  level,
+  className,
+}: {
+  level: "foundational" | "associate" | "professional" | "specialty" | string;
+  className?: string;
+}) {
+  const styles: Record<string, { label: string; cls: string }> = {
+    foundational: {
+      label: "Foundational",
+      cls: "bg-emerald-50 text-emerald-800 ring-emerald-200",
+    },
+    associate: {
+      label: "Associate",
+      cls: "bg-accent-soft text-accent ring-blue-200",
+    },
+    professional: {
+      label: "Professional",
+      cls: "bg-violet-50 text-violet-800 ring-violet-200",
+    },
+    specialty: {
+      label: "Specialty",
+      cls: "bg-amber-50 text-amber-800 ring-amber-200",
+    },
+  };
+  const s = styles[level] ?? {
+    label: level,
+    cls: "bg-slate-100 text-slate-700 ring-slate-200",
+  };
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset",
+        s.cls,
+        className,
+      )}
+    >
+      {s.label}
+    </span>
+  );
+}
+
 const btnBase =
-  "inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors";
+  "inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-150 active:scale-[0.98]";
 
 export function ButtonLink({
   href,
@@ -75,9 +138,10 @@ export function ButtonLink({
   className?: string;
 }) {
   const styles = {
-    primary: "bg-accent text-white hover:bg-blue-800",
+    primary:
+      "bg-accent text-white shadow-sm hover:bg-accent-hover hover:shadow",
     secondary:
-      "border border-border bg-white text-foreground hover:bg-slate-50",
+      "border border-border bg-white text-foreground shadow-sm hover:border-slate-300 hover:bg-slate-50",
     ghost: "text-accent hover:bg-accent-soft",
   };
   return (
@@ -125,7 +189,10 @@ export function Breadcrumbs({
           <li key={item.label} className="flex items-center gap-1.5">
             {i > 0 && <span aria-hidden>/</span>}
             {item.href ? (
-              <Link href={item.href} className="hover:text-foreground">
+              <Link
+                href={item.href}
+                className="rounded-sm transition-colors hover:text-foreground"
+              >
                 {item.label}
               </Link>
             ) : (

@@ -11,7 +11,7 @@ test("homepage renders positioning and CTAs", async ({ page }) => {
     page.getByRole("link", { name: "Start Free Practice" }),
   ).toBeVisible();
   await expect(
-    page.getByRole("link", { name: "Explore Study Guides" }),
+    page.getByRole("link", { name: "Explore Certifications" }).first(),
   ).toBeVisible();
   // official domain weights are shown
   await expect(page.getByText("Design Secure Architectures")).toBeVisible();
@@ -22,11 +22,11 @@ test("practice session: answer, submit, see explanation", async ({ page }) => {
   await expect(
     page.getByRole("heading", { name: "IAM & Access Control" }),
   ).toBeVisible();
-  // select an answer — options are labelled A./B./etc.
-  await page.getByRole("radio").first().check();
+  // select an answer by clicking its option row (labels wrap hidden inputs)
+  await page.locator("fieldset label").first().click();
   await page.getByRole("button", { name: "Submit answer" }).click();
   // feedback + explanation appear
-  await expect(page.getByRole("status")).toContainText(/Correct\.|Incorrect\./);
+  await expect(page.getByRole("status")).toContainText(/Correct|Incorrect/);
   await expect(page.getByText("Official AWS references")).toBeVisible();
   // navigate to next question
   await page.getByRole("button", { name: "Next", exact: true }).click();
@@ -42,10 +42,10 @@ test("mock exam: start, answer, persist across refresh, submit, see results", as
   await page.getByRole("button", { name: /Start mock exam/ }).click();
   await page.waitForURL(/\/mock-exam\/.+/);
 
-  await page.getByRole("radio").first().check();
+  await page.locator("fieldset label").first().click();
   await page.getByRole("button", { name: "Flag for review" }).click();
   await page.getByRole("button", { name: "Next", exact: true }).click();
-  await page.getByRole("radio").first().check();
+  await page.locator("fieldset label").first().click();
 
   // refresh → answers persist
   await page.reload();

@@ -14,6 +14,53 @@ import { QuestionView } from "@/components/question-view";
 import { ShareButton } from "@/components/share-button";
 import { Badge, ButtonLink, Card } from "@/components/ui";
 
+function ScoreRing({
+  percent,
+  passing,
+}: {
+  percent: number;
+  passing: boolean;
+}) {
+  const r = 44;
+  const c = 2 * Math.PI * r;
+  const filled = (Math.min(100, Math.max(0, percent)) / 100) * c;
+  return (
+    <div className="relative h-28 w-28 shrink-0">
+      <svg
+        viewBox="0 0 100 100"
+        className="h-full w-full -rotate-90"
+        role="img"
+        aria-label={`Score ${Math.round(percent)}%`}
+      >
+        <circle
+          cx="50"
+          cy="50"
+          r={r}
+          fill="none"
+          stroke="#e2e8f0"
+          strokeWidth="9"
+        />
+        <circle
+          cx="50"
+          cy="50"
+          r={r}
+          fill="none"
+          stroke={passing ? "#059669" : "#1d4ed8"}
+          strokeWidth="9"
+          strokeLinecap="round"
+          strokeDasharray={`${filled} ${c}`}
+        />
+      </svg>
+      <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <span className="text-2xl font-bold tabular-nums">
+          {Math.round(percent)}
+        </span>
+        <span className="-mt-0.5 text-[10px] font-medium text-muted">%</span>
+      </div>
+    </div>
+  );
+}
+
 export function ResultsView({
   resultId,
   questionBank,
@@ -64,22 +111,37 @@ export function ResultsView({
   return (
     <div className="space-y-8">
       <Card>
-        <div className="flex flex-wrap items-end justify-between gap-6">
-          <div>
-            <p className="text-sm font-medium text-muted">Estimated score</p>
-            <p className="text-5xl font-bold tabular-nums">
-              {Math.round(result.scorePercent)}%
-            </p>
-            <p className="mt-2 text-sm text-muted">
-              {result.correct} of {result.totalQuestions} correct ·{" "}
-              {result.answered} answered · {formatDuration(result.timeSpentSeconds)}{" "}
-              {result.timed ? "(timed)" : "(untimed)"}
-            </p>
-            <p className="mt-2 max-w-md text-xs text-muted">
-              This is a simple percentage, not AWS&apos;s scaled score
-              (100–1000, passing 720). Use it as a directional readiness signal
-              only.
-            </p>
+        <div className="flex flex-wrap items-center justify-between gap-6">
+          <div className="flex items-center gap-6">
+            <ScoreRing
+              percent={result.scorePercent}
+              passing={result.scorePercent >= 72}
+            />
+            <div>
+              <p className="text-sm font-medium text-muted">Estimated score</p>
+              <p
+                className={
+                  result.scorePercent >= 72
+                    ? "mt-1 inline-flex items-center gap-1.5 text-lg font-semibold text-emerald-700"
+                    : "mt-1 text-lg font-semibold text-muted"
+                }
+              >
+                {result.scorePercent >= 72
+                  ? "At passing range"
+                  : "Below typical passing range"}
+              </p>
+              <p className="mt-1 text-sm text-muted">
+                {result.correct} of {result.totalQuestions} correct ·{" "}
+                {result.answered} answered ·{" "}
+                {formatDuration(result.timeSpentSeconds)}{" "}
+                {result.timed ? "(timed)" : "(untimed)"}
+              </p>
+              <p className="mt-2 max-w-md text-xs text-muted">
+                This is a simple percentage, not AWS&apos;s scaled score
+                (100–1000, passing 720). Use it as a directional readiness
+                signal only.
+              </p>
+            </div>
           </div>
           <div className="flex flex-wrap gap-2">
             <ButtonLink href="/mock-exam" variant="primary">
@@ -156,31 +218,27 @@ export function ResultsView({
 
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold">Answer review</h2>
-        <div className="flex gap-2 text-sm">
-          <button
-            type="button"
-            onClick={() => setFilter("incorrect")}
-            aria-pressed={filter === "incorrect"}
-            className={
-              filter === "incorrect"
-                ? "rounded-lg bg-accent px-3 py-1.5 font-medium text-white"
-                : "rounded-lg border border-border px-3 py-1.5"
-            }
-          >
-            Incorrect ({incorrect.length})
-          </button>
-          <button
-            type="button"
-            onClick={() => setFilter("all")}
-            aria-pressed={filter === "all"}
-            className={
-              filter === "all"
-                ? "rounded-lg bg-accent px-3 py-1.5 font-medium text-white"
-                : "rounded-lg border border-border px-3 py-1.5"
-            }
-          >
-            All ({questions.length})
-          </button>
+        <div className="flex gap-1 rounded-lg bg-slate-100 p-1 text-sm">
+          {(
+            [
+              ["incorrect", `Incorrect (${incorrect.length})`],
+              ["all", `All (${questions.length})`],
+            ] as const
+          ).map(([value, label]) => (
+            <button
+              key={value}
+              type="button"
+              onClick={() => setFilter(value)}
+              aria-pressed={filter === value}
+              className={
+                filter === value
+                  ? "rounded-md bg-white px-3 py-1.5 font-medium text-foreground shadow-sm"
+                  : "rounded-md px-3 py-1.5 text-muted transition-colors hover:text-foreground"
+              }
+            >
+              {label}
+            </button>
+          ))}
         </div>
       </div>
 

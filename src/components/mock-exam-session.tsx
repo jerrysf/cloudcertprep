@@ -223,7 +223,9 @@ function SessionInner({
           <div
             className={cn(
               "inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-semibold tabular-nums",
-              remaining < 300 ? "bg-red-100 text-red-800" : "bg-slate-100",
+              remaining < 300
+                ? "animate-pulse bg-red-100 text-red-800 ring-1 ring-red-300"
+                : "bg-slate-100",
             )}
             role="timer"
             aria-label="Time remaining"
@@ -234,6 +236,20 @@ function SessionInner({
         ) : (
           <div className="text-sm text-muted">Untimed</div>
         )}
+      </div>
+
+      <div
+        className="h-1.5 overflow-hidden rounded-full bg-slate-100"
+        role="progressbar"
+        aria-valuemin={0}
+        aria-valuemax={questions.length}
+        aria-valuenow={answeredCount}
+        aria-label="Questions answered"
+      >
+        <div
+          className="h-full rounded-full bg-gradient-to-r from-accent to-blue-400 transition-all duration-300"
+          style={{ width: `${(answeredCount / questions.length) * 100}%` }}
+        />
       </div>
 
       <Card>
@@ -260,7 +276,7 @@ function SessionInner({
             })
           }
           disabled={session.currentIndex === 0}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium disabled:opacity-40"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-white px-4 py-2 text-sm font-medium shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 active:scale-[0.98] disabled:opacity-40"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden /> Previous
         </button>
@@ -277,10 +293,10 @@ function SessionInner({
             }
             aria-pressed={session.flagged.includes(question.id)}
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-lg border px-4 py-2 text-sm font-medium",
+              "inline-flex items-center gap-1.5 rounded-lg border px-4 py-2 text-sm font-medium shadow-sm transition-all active:scale-[0.98]",
               session.flagged.includes(question.id)
                 ? "border-amber-400 bg-amber-50 text-amber-800"
-                : "border-border",
+                : "border-border bg-white hover:border-slate-300 hover:bg-slate-50",
             )}
           >
             <Flag className="h-4 w-4" aria-hidden />
@@ -292,7 +308,7 @@ function SessionInner({
             <button
               type="button"
               onClick={finish}
-              className="inline-flex items-center gap-1.5 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-blue-800"
+              className="inline-flex items-center gap-1.5 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-accent-hover hover:shadow active:scale-[0.98]"
             >
               <Send className="h-4 w-4" aria-hidden /> Submit exam
             </button>
@@ -308,7 +324,7 @@ function SessionInner({
                   ),
                 })
               }
-              className="inline-flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-white px-4 py-2 text-sm font-medium shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 active:scale-[0.98]"
             >
               Next <ArrowRight className="h-4 w-4" aria-hidden />
             </button>
@@ -330,12 +346,12 @@ function SessionInner({
                 aria-label={`Question ${i + 1}${answered ? ", answered" : ""}${flagged ? ", flagged" : ""}`}
                 aria-current={i === session.currentIndex ? "true" : undefined}
                 className={cn(
-                  "relative h-9 w-9 rounded-md border text-xs font-medium",
+                  "relative h-9 w-9 rounded-md border text-xs font-medium transition-all hover:scale-105",
                   i === session.currentIndex
-                    ? "border-accent bg-accent text-white"
+                    ? "border-accent bg-accent text-white shadow-sm"
                     : answered
-                      ? "border-accent/50 bg-accent-soft text-accent"
-                      : "border-border text-muted",
+                      ? "border-accent/50 bg-accent-soft text-accent hover:border-accent"
+                      : "border-border text-muted hover:border-slate-400 hover:text-foreground",
                 )}
               >
                 {i + 1}
@@ -349,7 +365,7 @@ function SessionInner({
         <button
           type="button"
           onClick={finish}
-          className="mt-4 inline-flex items-center gap-1.5 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-blue-800"
+          className="mt-4 inline-flex items-center gap-1.5 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-accent-hover hover:shadow active:scale-[0.98]"
         >
           <Send className="h-4 w-4" aria-hidden /> Submit exam now
         </button>

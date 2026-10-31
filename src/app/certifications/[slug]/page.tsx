@@ -16,7 +16,7 @@ import {
 import { publishedByCert, publishedByTopic } from "@/lib/content/questions";
 import { topicsByCert } from "@/lib/content/topics";
 import { breadcrumbJsonLd } from "@/lib/jsonld";
-import { Badge, Breadcrumbs, Card, Container } from "@/components/ui";
+import { Badge, Breadcrumbs, Card, CertLevelBadge, Container } from "@/components/ui";
 import { AffiliateBlock } from "@/components/affiliate-note";
 import { NewsletterForm } from "@/components/newsletter-form";
 
@@ -38,13 +38,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: { canonical: `/certifications/${slug}` },
   };
 }
-
-const LEVEL_LABEL: Record<string, string> = {
-  foundational: "Foundational",
-  associate: "Associate",
-  professional: "Professional",
-  specialty: "Specialty",
-};
 
 export default async function CertificationPage({ params }: Props) {
   const { slug } = await params;
@@ -69,9 +62,9 @@ export default async function CertificationPage({ params }: Props) {
         <div>
           <div className="flex flex-wrap items-center gap-2">
             <Badge tone="accent">{cert.code}</Badge>
-            <Badge>{LEVEL_LABEL[cert.level]}</Badge>
+            <CertLevelBadge level={cert.level} />
             {!cert.verified ? (
-              <Badge>Details pending re-verification</Badge>
+              <Badge tone="warning">Details pending re-verification</Badge>
             ) : null}
           </div>
           <h1 className="mt-4 text-3xl font-bold tracking-tight">
@@ -146,7 +139,7 @@ export default async function CertificationPage({ params }: Props) {
                 ) : null}
                 <div className="mt-2 h-1.5 rounded-full bg-slate-100">
                   <div
-                    className="h-full rounded-full bg-accent"
+                    className="h-full rounded-full bg-gradient-to-r from-accent to-blue-400"
                     style={{ width: `${d.weight}%` }}
                   />
                 </div>
@@ -170,7 +163,7 @@ export default async function CertificationPage({ params }: Props) {
                 <Link
                   key={t.slug}
                   href={`/practice/${t.slug}`}
-                  className="group rounded-xl border border-border bg-white p-4 transition-shadow hover:shadow-md"
+                  className="group rounded-xl border border-border bg-white p-4 transition-all duration-150 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md"
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-medium">{t.name}</span>
@@ -199,14 +192,14 @@ export default async function CertificationPage({ params }: Props) {
               <div className="mt-4 flex flex-wrap gap-3">
                 <Link
                   href={`/questions`}
-                  className="inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-blue-800"
+                  className="inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-accent-hover hover:shadow active:scale-[0.98]"
                 >
                   Browse question bank
                   <ArrowRight className="h-4 w-4" aria-hidden />
                 </Link>
                 <Link
                   href="/mock-exam"
-                  className="inline-flex items-center gap-2 rounded-lg border border-border bg-white px-4 py-2 text-sm font-medium hover:bg-slate-50"
+                  className="inline-flex items-center gap-2 rounded-lg border border-border bg-white px-4 py-2 text-sm font-medium shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 active:scale-[0.98]"
                 >
                   Take a mock exam
                 </Link>
