@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Cloud } from "lucide-react";
+import { Cloud, Coffee } from "lucide-react";
 import { AWS_TRADEMARK_DISCLAIMER, SITE } from "@/lib/site";
 import { CERTIFICATIONS } from "@/lib/content/certifications";
 
@@ -44,6 +44,15 @@ export function SiteFooter() {
               {SITE.name}
             </div>
             <p className="mt-3 max-w-xs text-sm text-muted">{SITE.tagline}</p>
+            <a
+              href="https://buymeacoffee.com/jwstecho"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-1.5 text-sm font-medium text-amber-800 transition-colors hover:bg-amber-100"
+            >
+              <Coffee className="h-4 w-4" aria-hidden />
+              Buy me a coffee
+            </a>
             <p className="mt-4 text-xs leading-relaxed text-muted">
               {AWS_TRADEMARK_DISCLAIMER}
             </p>
