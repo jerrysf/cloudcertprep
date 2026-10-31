@@ -42,3 +42,22 @@ Candidate paid features (only if free-tier traffic validates demand):
 
 Do not implement payments until affiliate/ad revenue or user research justifies
 the complexity.
+
+## Revenue path to $1,000/month (working assumptions)
+
+Two channels, not mutually exclusive:
+
+1. **Affiliate** (~$5–15/sale for AWS course/lab referrals): ~100–150 sales/mo
+   needed. Levers: per-cert hub pages recommend relevant courses, comparison
+   articles capture high-intent "X vs Y" and "how to prepare" queries, results
+   page suggests paid full-length exams when bank coverage is thin.
+2. **Display ads** (~$10–25 RPM in the certification niche): 30–80k monthly
+   pageviews needed. Levers: 200+ indexable pages now (question pages, cert
+   hubs, articles); each new cert bank adds a separate long-tail pool.
+
+Sequenced bets, highest expected ROI first:
+1. Grow CLF-C02 and DVA-C02 banks (entry-level traffic pools).
+2. Per-cert "how to prepare" sections with affiliate slots (closest to money).
+3. Email list via `NEXT_PUBLIC_NEWSLETTER_ENDPOINT` — repeat visits plus a
+   direct channel for affiliate pushes.
+4. Apply to ad network only after consistent ~10k+ monthly sessions.

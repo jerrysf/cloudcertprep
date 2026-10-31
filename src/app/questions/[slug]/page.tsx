@@ -53,6 +53,45 @@ export default async function QuestionPage({ params }: Props) {
   ];
   const jsonLd = breadcrumbJsonLd(crumbs);
 
+  // Quiz structured data — enables "practice problems" eligibility in search
+  const quizLd = {
+    "@context": "https://schema.org",
+    "@type": "Quiz",
+    name: q.question.slice(0, 110),
+    about: { "@type": "Thing", name: `${cert.name} (${cert.code})` },
+    educationalAlignment: {
+      "@type": "AlignmentObject",
+      alignmentType: "educationalSubject",
+      targetName: topic?.name ?? cert.code,
+    },
+    hasPart: [
+      {
+        "@type": "Question",
+        eduQuestionType:
+          q.format === "multiple-response" ? "Checklist" : "Multiple choice",
+        learningResourceType: "Practice problem",
+        name: q.question,
+        text: q.question,
+        answerCount: q.options.length,
+        suggestedAnswer: q.options
+          .filter((o) => !q.correctAnswers.includes(o.id))
+          .map((o) => ({
+            "@type": "Answer",
+            text: o.text,
+            comment: { "@type": "Comment", text: q.optionExplanations[o.id] },
+          })),
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: q.options
+            .filter((o) => q.correctAnswers.includes(o.id))
+            .map((o) => o.text)
+            .join("; "),
+          comment: { "@type": "Comment", text: q.explanation },
+        },
+      },
+    ],
+  };
+
   return (
     <Container className="py-10">
       <Breadcrumbs
@@ -220,6 +259,10 @@ export default async function QuestionPage({ params }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(quizLd) }}
       />
     </Container>
   );

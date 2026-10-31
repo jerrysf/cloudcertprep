@@ -30,11 +30,19 @@ export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="border-b border-border bg-gradient-to-b from-accent-soft to-background">
-        <Container className="py-16 sm:py-24">
+      <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-accent-soft via-blue-50 to-background">
+        <div
+          className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-accent/10 blur-3xl"
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute -left-24 top-40 h-64 w-64 rounded-full bg-blue-300/20 blur-3xl"
+          aria-hidden
+        />
+        <Container className="relative py-16 sm:py-24">
           <div className="max-w-3xl">
             <Badge tone="accent">
-              {EXAM.name} ({EXAM.code})
+              {CERTIFICATIONS.length} AWS certifications covered
             </Badge>
             <h1 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
               Prepare for the AWS Solutions Architect Associate Exam
@@ -48,20 +56,27 @@ export default function Home() {
                 Start Free Practice
               </ButtonLink>
               <ButtonLink
-                href="/services"
+                href="/certifications"
                 variant="secondary"
                 className="px-6 py-3 text-base"
               >
-                Explore Study Guides
+                Explore Certifications
               </ButtonLink>
             </div>
-            <p className="mt-6 text-xs text-muted">
-              Free. No account required. Progress stays in your browser.{" "}
-              <Link href="/certifications" className="text-accent hover:underline">
-                Also covering {CERTIFICATIONS.length - 1} other AWS
-                certifications →
-              </Link>
-            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted">
+              <span className="inline-flex items-center gap-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                {PUBLISHED_QUESTIONS.length} reviewed questions
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                {CERTIFICATIONS.length} certifications
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                Free, no account required
+              </span>
+            </div>
           </div>
         </Container>
       </section>

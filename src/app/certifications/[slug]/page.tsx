@@ -18,6 +18,7 @@ import { topicsByCert } from "@/lib/content/topics";
 import { breadcrumbJsonLd } from "@/lib/jsonld";
 import { Badge, Breadcrumbs, Card, Container } from "@/components/ui";
 import { AffiliateBlock } from "@/components/affiliate-note";
+import { NewsletterForm } from "@/components/newsletter-form";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -240,6 +241,7 @@ export default async function CertificationPage({ params }: Props) {
               </li>
             </ul>
           </Card>
+          <NewsletterForm />
           <AffiliateBlock context="article" />
         </aside>
       </div>

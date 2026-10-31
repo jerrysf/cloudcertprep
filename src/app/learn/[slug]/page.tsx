@@ -8,6 +8,7 @@ import { publishedByTopic } from "@/lib/content/questions";
 import { Breadcrumbs, ButtonLink, Card, Container } from "@/components/ui";
 import { AffiliateBlock } from "@/components/affiliate-note";
 import { AdSlot } from "@/components/ad-slot";
+import { NewsletterForm } from "@/components/newsletter-form";
 import { breadcrumbJsonLd } from "@/lib/jsonld";
 import { SITE } from "@/lib/site";
 
@@ -161,6 +162,7 @@ export default async function ArticlePage({ params }: Props) {
               </li>
             </ul>
           </Card>
+          <NewsletterForm />
           <AffiliateBlock context="article" />
           <AdSlot slot="article-sidebar" />
         </aside>
