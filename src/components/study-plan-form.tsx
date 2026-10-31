@@ -1,7 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { TOPICS } from "@/lib/content/topics";
+import { topicsByCert } from "@/lib/content/topics";
+import { CERTIFICATIONS } from "@/lib/content/certifications";
+import { publishedByCert } from "@/lib/content/questions";
+import type { CertificationId } from "@/lib/content/schema";
 import {
   generateStudyPlan,
   type StudyPlan,
@@ -27,6 +30,9 @@ export function StudyPlanForm() {
 
 function StudyPlanFormInner() {
   const [saved] = useState(() => getProgressStore().load().studyPlan);
+  const [certId, setCertId] = useState<CertificationId>(
+    (saved?.certId as CertificationId) ?? "saa-c03",
+  );
   const [experience, setExperience] = useState<StudyPlanInput["experience"]>(
     (saved?.experience as StudyPlanInput["experience"]) ?? "beginner",
   );
@@ -43,6 +49,7 @@ function StudyPlanFormInner() {
   const [plan, setPlan] = useState<StudyPlan | null>(() =>
     saved
       ? generateStudyPlan({
+          certId: saved.certId as CertificationId | undefined,
           experience: saved.experience as StudyPlanInput["experience"],
           hoursPerWeek: saved.hoursPerWeek,
           targetDate: saved.targetDate,
@@ -50,6 +57,13 @@ function StudyPlanFormInner() {
         })
       : null,
   );
+
+  function selectCert(id: CertificationId) {
+    setCertId(id);
+    setWeakTopics((cur) =>
+      cur.filter((slug) => topicsByCert(id).some((t) => t.slug === slug)),
+    );
+  }
 
   function toggleTopic(slug: string) {
     setWeakTopics((cur) =>
@@ -59,6 +73,7 @@ function StudyPlanFormInner() {
 
   function generate() {
     const input: StudyPlanInput = {
+      certId,
       experience,
       hoursPerWeek,
       targetDate,
@@ -70,6 +85,7 @@ function StudyPlanFormInner() {
     const data = store.load();
     data.studyPlan = {
       createdAt: new Date().toISOString(),
+      certId,
       experience,
       hoursPerWeek,
       targetDate,
@@ -95,6 +111,22 @@ function StudyPlanFormInner() {
     <div className="grid gap-8 lg:grid-cols-[minmax(0,380px)_1fr]">
       <Card className="space-y-5 self-start">
         <h2 className="text-lg font-semibold">Your situation</h2>
+        <label className="block text-sm font-medium">
+          Certification
+          <select
+            className={inputClass}
+            value={certId}
+            onChange={(e) => selectCert(e.target.value as CertificationId)}
+          >
+            {CERTIFICATIONS.filter((c) => publishedByCert(c.id).length > 0).map(
+              (c) => (
+                <option key={c.id} value={c.id}>
+                  {c.code} — {c.name.replace("AWS Certified ", "")}
+                </option>
+              ),
+            )}
+          </select>
+        </label>
         <label className="block text-sm font-medium">
           Current experience level
           <select
@@ -137,7 +169,7 @@ function StudyPlanFormInner() {
             Topics you find difficult (optional)
           </legend>
           <div className="mt-2 flex flex-wrap gap-1.5">
-            {TOPICS.map((t) => (
+            {topicsByCert(certId).map((t) => (
               <button
                 key={t.slug}
                 type="button"
@@ -205,7 +237,7 @@ function StudyPlanFormInner() {
         ) : (
           <Card className="text-sm text-muted">
             Fill in your experience level, weekly hours, and target date, then
-            generate a week-by-week schedule covering all four exam domains with
+            generate a week-by-week schedule covering every exam domain with
             revision checkpoints and a final review period.
           </Card>
         )}

@@ -448,4 +448,152 @@ export const ansQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-10-26",
   },
+  {
+    id: "ans-des-003",
+    slug: "vpc-cidr-non-overlapping-planning",
+    cert: "ans-c01",
+    domain: "ans-network-design",
+    topic: "ans-hybrid-connectivity",
+    subtopic: "Address planning",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A company will peer five VPCs and later connect on-prem networks over Direct Connect. What is the most important design decision up front?",
+    options: [
+      { id: "A", text: "Assign every VPC a /16 for maximum capacity" },
+      { id: "B", text: "Ensure all VPC and on-prem CIDRs are non-overlapping" },
+      { id: "C", text: "Use the same CIDR in each VPC and rely on NAT" },
+      { id: "D", text: "Enable IPv6 only to avoid IPv4 exhaustion" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "VPC peering, Transit Gateway, and hybrid routing all require non-overlapping CIDRs — you cannot change a VPC's primary CIDR after creation. Plan an address schema (e.g., different /16s per VPC, distinct on-prem ranges) before building.",
+    optionExplanations: {
+      A: "Capacity matters but /16s everywhere wastes space — and says nothing about overlap, the actual blocker.",
+      B: "Correct. Overlapping CIDRs make peering and hybrid routing impossible without painful NAT workarounds.",
+      C: "Duplicate CIDRs can't be peered or routed — NAT-at-scale for overlapping networks is a documented anti-pattern.",
+      D: "IPv6 doesn't remove the need to plan; most hybrid networks still carry IPv4.",
+    },
+    services: ["Amazon VPC", "AWS Transit Gateway"],
+    references: [
+      {
+        title: "VPC peering limitations",
+        url: "https://docs.aws.amazon.com/vpc/latest/peering/vpc-peering-basics.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "ans-hyb-003",
+    slug: "site-to-site-vpn-vs-direct-connect-latency",
+    cert: "ans-c01",
+    domain: "ans-network-design",
+    topic: "ans-hybrid-connectivity",
+    subtopic: "Hybrid connectivity",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "A workload needs consistent, low-latency private connectivity between a data center and AWS with predictable bandwidth — the connection must not traverse the public internet. Which option fits?",
+    options: [
+      { id: "A", text: "AWS Site-to-Site VPN" },
+      { id: "B", text: "AWS Direct Connect" },
+      { id: "C", text: "VPC peering to the corporate network" },
+      { id: "D", text: "AWS Client VPN" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Direct Connect is a private physical link — consistent latency, dedicated bandwidth, no internet traversal. Site-to-Site VPN is private in the encrypted sense but still rides the public internet, so latency varies.",
+    optionExplanations: {
+      A: "VPN tunnels encrypt traffic but run over the public internet — latency and bandwidth aren't predictable.",
+      B: "Correct. Dedicated private circuit = consistent latency and bandwidth.",
+      C: "Peering connects VPCs to each other — it can't reach a corporate data center.",
+      D: "Client VPN is for end-user remote access, not site connectivity.",
+    },
+    services: ["AWS Direct Connect", "AWS Site-to-Site VPN"],
+    references: [
+      {
+        title: "What is AWS Direct Connect",
+        url: "https://docs.aws.amazon.com/directconnect/latest/UserGuide/Welcome.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "ans-imp-003",
+    slug: "transit-gateway-route-table-isolation",
+    cert: "ans-c01",
+    domain: "ans-network-management-operations",
+    topic: "ans-network-operations",
+    subtopic: "Transit Gateway",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "Ten VPCs attach to a Transit Gateway. Two 'shared services' VPCs must be reachable by all, but the eight workload VPCs must not reach each other. How is this enforced?",
+    options: [
+      { id: "A", text: "Security groups on every workload instance" },
+      { id: "B", text: "Separate TGW route tables: one for workloads propagating only shared services, one for shared services propagating everything" },
+      { id: "C", text: "Network ACLs blocking inter-VPC subnets" },
+      { id: "D", text: "One TGW route table with blackhole routes for each workload CIDR" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "TGW route tables control which attachments can reach which — associate workload VPCs to a table propagating only shared services, and shared services to a table seeing all CIDRs. Segmentation lives in the routing layer, not security groups.",
+    optionExplanations: {
+      A: "Security groups filter at instance level — an operational burden across hundreds of resources, and doesn't express topology.",
+      B: "Correct. This hub-spoke pattern via TGW route tables is the standard segmentation design.",
+      C: "NACLs are stateless subnet filters — they'd need constant updates as CIDRs change.",
+      D: "Blackholing workload CIDRs in one table also breaks shared-services return traffic paths in many designs — two tables is the clean pattern.",
+    },
+    services: ["AWS Transit Gateway", "Amazon VPC"],
+    references: [
+      {
+        title: "Transit Gateway route tables",
+        url: "https://docs.aws.amazon.com/vpc/latest/tgw/how-transit-gateways-work.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "ans-sec-004",
+    slug: "vpc-traffic-mirroring-inspection",
+    cert: "ans-c01",
+    domain: "ans-network-security-compliance",
+    topic: "ans-network-security",
+    subtopic: "Traffic inspection",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A security team needs full packet copies from specific EC2 instances sent to an appliance for deep-packet inspection — without installing agents. What provides this?",
+    options: [
+      { id: "A", text: "VPC Flow Logs" },
+      { id: "B", text: "VPC Traffic Mirroring" },
+      { id: "C", text: "AWS Network Firewall" },
+      { id: "D", text: "Route 53 Resolver query logs" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Traffic Mirroring copies network packets from ENIs of selected instances to a mirror target (NLB or appliance ENI) — agentless, full-packet capture for inspection tools. Flow Logs are metadata only, not payloads.",
+    optionExplanations: {
+      A: "Flow Logs record connection metadata (IPs, ports, bytes) — no packet contents.",
+      B: "Correct. Mirroring delivers encapsulated copies of actual packets to your inspection target.",
+      C: "Network Firewall inspects traffic in-line at the VPC boundary, not copies from arbitrary instance ENIs.",
+      D: "Resolver logs cover DNS queries only.",
+    },
+    services: ["Amazon VPC"],
+    references: [
+      {
+        title: "What is Traffic Mirroring",
+        url: "https://docs.aws.amazon.com/vpc/latest/mirroring/what-is-traffic-mirroring.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
 ];

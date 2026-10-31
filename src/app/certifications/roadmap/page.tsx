@@ -224,6 +224,34 @@ export default function RoadmapPage() {
           ),
         }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": ROADMAPS.map((r) => ({
+              "@type": "ItemList",
+              name: `AWS certification path — ${r.title}`,
+              description: r.description,
+              itemListOrder: "https://schema.org/ItemListOrderAscending",
+              numberOfItems: r.steps.length,
+              itemListElement: r.steps.map((s, i) => {
+                const c = s.certId ? getCertification(s.certId) : undefined;
+                return {
+                  "@type": "ListItem",
+                  position: i + 1,
+                  name: `${c?.code ?? s.externalCode} — ${
+                    c?.name ?? s.externalName
+                  }`,
+                  ...(c
+                    ? { url: `/certifications/${c.id}` }
+                    : {}),
+                };
+              }),
+            })),
+          }),
+        }}
+      />
     </Container>
   );
 }

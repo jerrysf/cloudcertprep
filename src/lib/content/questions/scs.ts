@@ -456,4 +456,152 @@ export const scsQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-10-26",
   },
+  {
+    id: "scs-iam-003",
+    slug: "permissions-boundaries-delegation",
+    cert: "scs-c03",
+    domain: "scs-iam",
+    topic: "scs-iam-deep-dive",
+    subtopic: "Permissions boundaries",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "You want developers to create IAM roles for their Lambda functions but never grant those roles more permissions than a defined maximum. What enforces that ceiling?",
+    options: [
+      { id: "A", text: "Service control policy on the OU" },
+      { id: "B", text: "Permissions boundary attached to the developer role" },
+      { id: "C", text: "Resource-based policy on each Lambda" },
+      { id: "D", text: "IAM policy simulator" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "A permissions boundary caps the maximum permissions an identity-based policy can grant. Require the dev role to pass it when creating roles (aws:PermissionsBoundary condition) — created roles can never exceed the boundary.",
+    optionExplanations: {
+      A: "SCPs bound all principals in an OU account — they can't specifically constrain which roles a developer creates.",
+      B: "Correct. Boundaries are the delegated-administration mechanism: maximum permissions regardless of identity policies.",
+      C: "Resource policies grant access to a resource; they don't limit what a created role may do.",
+      D: "The simulator evaluates policies — it doesn't enforce anything at runtime.",
+    },
+    services: ["AWS IAM"],
+    references: [
+      {
+        title: "Permissions boundaries for IAM entities",
+        url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "scs-enc-002",
+    slug: "kms-key-rotation-types",
+    cert: "scs-c03",
+    domain: "scs-data-protection",
+    topic: "scs-encryption-and-keys",
+    subtopic: "AWS KMS",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "Your security policy requires yearly rotation of KMS keys encrypting S3 data. Which option rotates backing key material with the least operational effort?",
+    options: [
+      { id: "A", text: "Manually create a new key each year and update all references" },
+      { id: "B", text: "Enable automatic key rotation on the customer-managed KMS key" },
+      { id: "C", text: "Use SSE-S3 and rotate keys with a bucket policy" },
+      { id: "D", text: "Re-encrypt all objects with a new customer master key annually" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Automatic rotation on a customer-managed KMS key rotates the backing material yearly while keeping the same key ARN — no reference updates or re-encryption needed. SSE-S3 keys rotate automatically anyway (no KMS needed).",
+    optionExplanations: {
+      A: "Works but is heavy: every grant, alias, and app reference must be updated and data re-encrypted.",
+      B: "Correct. One toggle gives annual rotation with a stable key ID.",
+      C: "SSE-S3 doesn't use KMS keys or bucket-policy rotation — this option is incoherent.",
+      D: "Re-encrypting everything annually is the manual, error-prone path rotation exists to avoid.",
+    },
+    services: ["AWS KMS", "Amazon S3"],
+    references: [
+      {
+        title: "Rotating AWS KMS keys",
+        url: "https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "scs-inf-003",
+    slug: "ecr-image-vulnerability-scanning",
+    cert: "scs-c03",
+    domain: "scs-infrastructure-security",
+    topic: "scs-infrastructure-security",
+    subtopic: "Container security",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "A team pushes container images to ECR and wants vulnerabilities detected automatically on push and continuously as new CVEs publish. What should they use?",
+    options: [
+      { id: "A", text: "Amazon GuardDuty" },
+      { id: "B", text: "Amazon Inspector with ECR scanning" },
+      { id: "C", text: "AWS Config managed rules" },
+      { id: "D", text: "Amazon Macie" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Amazon Inspector scans ECR images (basic scan-on-push and enhanced continuous scanning that re-evaluates images when new CVEs appear) and surfaces findings to Security Hub.",
+    optionExplanations: {
+      A: "GuardDuty detects threats in activity/telemetry, not software vulnerabilities in images.",
+      B: "Correct. Inspector is the vulnerability-management service for ECR, EC2, and Lambda.",
+      C: "Config tracks resource configuration compliance — not CVE detection.",
+      D: "Macie finds sensitive data in S3, unrelated to image CVEs.",
+    },
+    services: ["Amazon Inspector", "Amazon ECR"],
+    references: [
+      {
+        title: "Scanning Amazon ECR images",
+        url: "https://docs.aws.amazon.com/inspector/latest/user/scanning-ecr.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "scs-log-001",
+    slug: "organization-trail-centralized-logging",
+    cert: "scs-c03",
+    domain: "scs-detection",
+    topic: "scs-logging-and-audit",
+    subtopic: "AWS CloudTrail",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Security wants one audit trail capturing API activity across all 80 accounts in the AWS Organization, delivered to a dedicated log-archive account. What is the cleanest setup?",
+    options: [
+      { id: "A", text: "Enable a trail in each account and replicate logs with S3 replication" },
+      { id: "B", text: "Create an organization trail in the management account logging to the log-archive account's bucket" },
+      { id: "C", text: "Send each account's CloudTrail to a shared SNS topic" },
+      { id: "D", text: "Enable CloudTrail Lake in every account" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "An organization trail (created in the management or a delegated admin account) logs every member account to a single bucket — centrally managed, automatically covering new accounts, and the standard multi-account audit pattern.",
+    optionExplanations: {
+      A: "Per-account trails work but mean 80 configs to manage and don't auto-cover new accounts.",
+      B: "Correct. Organization trail = one configuration, all accounts, central bucket.",
+      C: "SNS fans out notifications, not durable log delivery — and still needs per-account trails.",
+      D: "CloudTrail Lake queries events but the org-wide aggregation primitive is still an organization trail; Lake in each account fragments data.",
+    },
+    services: ["AWS CloudTrail", "AWS Organizations", "Amazon S3"],
+    references: [
+      {
+        title: "Creating a trail for an organization",
+        url: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/creating-trail-organization.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
 ];

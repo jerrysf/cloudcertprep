@@ -1,7 +1,8 @@
-import { DOMAINS } from "@/lib/content/domains";
-import type { DomainId } from "@/lib/content/schema";
+import { getCertification } from "@/lib/content/certifications";
+import type { CertificationId, DomainId } from "@/lib/content/schema";
 
 export interface StudyPlanInput {
+  certId?: CertificationId;
   experience: "beginner" | "some-it" | "aws-hands-on";
   hoursPerWeek: number;
   targetDate: string; // YYYY-MM-DD
@@ -46,21 +47,13 @@ export function generateStudyPlan(
     );
   }
   const needsFoundation = input.experience === "beginner";
-  const domainCycle: { domain: DomainId; label: string }[] = [
-    { domain: "design-secure-architectures", label: "Design Secure Architectures" },
-    {
-      domain: "design-resilient-architectures",
-      label: "Design Resilient Architectures",
-    },
-    {
-      domain: "design-high-performing-architectures",
-      label: "Design High-Performing Architectures",
-    },
-    {
-      domain: "design-cost-optimized-architectures",
-      label: "Design Cost-Optimized Architectures",
-    },
-  ];
+  const cert = getCertification(input.certId ?? "saa-c03");
+  const domainCycle: { domain: DomainId; label: string; weight: number }[] = (
+    cert?.domains ?? []
+  )
+    .slice()
+    .sort((a, b) => b.weight - a.weight)
+    .map((d) => ({ domain: d.id, label: d.name, weight: d.weight }));
   const weeks: StudyWeek[] = [];
   const hasFinalReview = totalWeeks >= 2;
   const studyWeeks = hasFinalReview ? totalWeeks - 1 : totalWeeks;
@@ -91,14 +84,13 @@ export function generateStudyPlan(
       focus = "AWS fundamentals and core services";
       tasks.push(
         "Learn core services: IAM, EC2, S3, VPC, RDS, Lambda, CloudWatch",
-        "Read the overview of the four exam domains",
+        `Read the overview of the ${domainCycle.length} exam domains`,
         `Complete 10–15 easy practice questions (${input.hoursPerWeek}h/week pace)`,
       );
     } else {
       const idx = needsFoundation ? w - 1 : w;
       const dc = domainCycle[Math.min(idx, domainCycle.length - 1)];
-      const domain = DOMAINS.find((d) => d.id === dc.domain)!;
-      focus = `${dc.label} (${domain.weight}% of exam)`;
+      focus = `${dc.label} (${dc.weight}% of exam)`;
       tasks.push(
         `Study the key services and patterns in ${dc.label}`,
         "Complete the topic practice sets for this domain",

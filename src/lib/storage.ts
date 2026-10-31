@@ -73,6 +73,7 @@ export interface ProgressData {
 
 export interface StoredStudyPlan {
   createdAt: string;
+  certId?: string;
   experience: string;
   hoursPerWeek: number;
   targetDate: string;

@@ -448,4 +448,152 @@ export const deaQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-10-26",
   },
+  {
+    id: "dea-ing-005",
+    slug: "glue-crawler-data-catalog",
+    cert: "dea-c01",
+    domain: "dea-ingestion-transformation",
+    topic: "dea-ingestion-and-etl",
+    subtopic: "AWS Glue",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "A data lake in S3 adds new files daily. Analysts want to query them in Athena without manually defining table schemas. What keeps table metadata up to date automatically?",
+    options: [
+      { id: "A", text: "Amazon EMR cluster" },
+      { id: "B", text: "AWS Glue crawler writing to the Glue Data Catalog" },
+      { id: "C", text: "Amazon S3 Inventory" },
+      { id: "D", text: "Amazon Redshift Spectrum" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "A Glue crawler scans S3 data, infers schema and partitions, and creates/updates tables in the Glue Data Catalog — which Athena, EMR, and Redshift Spectrum all query against. Schedule it to keep metadata fresh.",
+    optionExplanations: {
+      A: "EMR processes data but doesn't populate a queryable metadata catalog for Athena.",
+      B: "Correct. Crawlers infer schema and register tables in the Data Catalog automatically.",
+      C: "S3 Inventory lists object metadata, not data schemas or tables.",
+      D: "Spectrum queries external tables — it doesn't discover or catalog schemas.",
+    },
+    services: ["AWS Glue", "Amazon Athena", "Amazon S3"],
+    references: [
+      {
+        title: "AWS Glue crawlers",
+        url: "https://docs.aws.amazon.com/glue/latest/dg/add-crawler.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "dea-store-004",
+    slug: "redshift-distribution-styles",
+    cert: "dea-c01",
+    domain: "dea-data-store-management",
+    topic: "dea-data-stores",
+    subtopic: "Amazon Redshift",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A large fact table in Redshift is always joined to a customer dimension table on customer_id. Which distribution minimizes data movement across nodes during those joins?",
+    options: [
+      { id: "A", text: "DISTSTYLE EVEN on both tables" },
+      { id: "B", text: "DISTKEY(customer_id) on both tables" },
+      { id: "C", text: "DISTSTYLE AUTO on the fact table only" },
+      { id: "D", text: "DISTSTYLE ALL on the fact table" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "DISTKEY on the join column co-locates matching rows on the same slices, enabling collocated joins with no redistribution. A small dimension can also use DISTSTYLE ALL — but ALL on a large fact table would bloat every node.",
+    optionExplanations: {
+      A: "EVEN round-robins rows, so matching join keys land on different nodes and data must be redistributed.",
+      B: "Correct. Matching customer_id rows co-locate, making joins collocated.",
+      C: "AUTO picks a style over time but isn't deterministic for a known hot join — explicit DISTKEY is the exam answer.",
+      D: "ALL copies the whole table to every node — fine for a small dimension, wasteful for a large fact table.",
+    },
+    services: ["Amazon Redshift"],
+    references: [
+      {
+        title: "Distribution styles",
+        url: "https://docs.aws.amazon.com/redshift/latest/dg/c_choosing_dist_sort.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "dea-ops-003",
+    slug: "orchestrating-pipelines-dependencies",
+    cert: "dea-c01",
+    domain: "dea-data-operations-support",
+    topic: "dea-data-operations",
+    subtopic: "Workflow orchestration",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A team has interdependent ETL jobs — job B only after job A succeeds, with retries and alerting — and wants managed Apache Airflow. Which service runs Airflow on AWS without self-managing?",
+    options: [
+      { id: "A", text: "AWS Step Functions" },
+      { id: "B", text: "Amazon MWAA" },
+      { id: "C", text: "Amazon EventBridge Scheduler" },
+      { id: "D", text: "AWS Batch" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Amazon MWAA is managed Apache Airflow — DAGs, scheduling, retries, and dependency management without running Airflow infrastructure. Step Functions can orchestrate too, but the question asks for managed Airflow specifically.",
+    optionExplanations: {
+      A: "Step Functions orchestrates serverless workflows but isn't Airflow — teams with existing DAGs would need to rewrite.",
+      B: "Correct. MWAA runs your Airflow DAGs in a managed environment.",
+      C: "EventBridge Scheduler triggers single targets on a schedule — it doesn't model multi-step dependencies.",
+      D: "Batch runs containerized jobs on compute it provisions — not a DAG orchestrator.",
+    },
+    services: ["Amazon MWAA", "AWS Step Functions"],
+    references: [
+      {
+        title: "What is Amazon MWAA",
+        url: "https://docs.aws.amazon.com/mwaa/latest/userguide/what-is-mwaa.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "dea-gov-004",
+    slug: "lake-formation-column-level-access",
+    cert: "dea-c01",
+    domain: "dea-data-security-governance",
+    topic: "dea-data-governance",
+    subtopic: "AWS Lake Formation",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Analysts should query a data lake table but only see non-sensitive columns — salary and SSN must be hidden. Which approach enforces column-level access centrally?",
+    options: [
+      { id: "A", text: "S3 bucket policy denying access to specific objects" },
+      { id: "B", text: "Lake Formation column-level permissions on the catalog table" },
+      { id: "C", text: "IAM policy with a Condition on column names" },
+      { id: "D", text: "Encrypting the sensitive columns client-side" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Lake Formation grants column-level (and row-level) permissions on Data Catalog tables — services like Athena enforce them at query time. IAM and bucket policies operate at the object/bucket level and can't see column semantics.",
+    optionExplanations: {
+      A: "Columns live inside files — bucket policies can only control whole objects.",
+      B: "Correct. Lake Formation column filters let you grant SELECT on named columns only.",
+      C: "IAM has no knowledge of table columns; conditions cover API-level attributes.",
+      D: "Client-side encryption hides data but breaks analytics on those columns entirely — access control is the requirement.",
+    },
+    services: ["AWS Lake Formation", "Amazon Athena"],
+    references: [
+      {
+        title: "Lake Formation column-level security",
+        url: "https://docs.aws.amazon.com/lake-formation/latest/dg/lf-permissions.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
 ];
