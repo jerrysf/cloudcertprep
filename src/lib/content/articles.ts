@@ -1223,6 +1223,201 @@ ARTICLES.push({
   ],
 });
 
+ARTICLES.push({
+  slug: "dea-c01-exam-guide",
+  title: "DEA-C01 Exam Guide: Format, Cost, Domains, and How to Prepare",
+  description:
+    "Everything about the AWS Certified Data Engineer – Associate (DEA-C01) exam: 65 questions, 130 minutes, $150, the four domain weights, and a data-engineering prep strategy.",
+  domain: "dea-ingestion-transformation",
+  topic: "dea-ingestion-and-etl",
+  updatedAt: "2026-10-27",
+  readingMinutes: 8,
+  sections: [
+    {
+      paragraphs: [
+        "The AWS Certified Data Engineer – Associate (DEA-C01) validates building and operating data pipelines on AWS — ingestion, transformation, storage, orchestration, and governance. It targets data engineers with hands-on pipeline experience.",
+        "This guide summarizes official exam details — confirm the current version on the AWS certification page before booking.",
+      ],
+    },
+    {
+      heading: "Exam format at a glance",
+      list: [
+        "65 questions — multiple choice and multiple response",
+        "130 minutes — about 2 minutes per question",
+        "$150 USD",
+        "Passing score: 720 on a scaled range of 100–1000",
+        "Pearson VUE testing center or online proctored exam",
+      ],
+    },
+    {
+      heading: "The four domains",
+      list: [
+        "Domain 1: Data Ingestion and Transformation — 34% (the largest — Glue, Kinesis, MSK, Firehose, DMS)",
+        "Domain 2: Data Store Management — 26% (S3 data lakes, Redshift, DynamoDB, partitioning, lifecycle)",
+        "Domain 3: Data Operations and Support — 22% (orchestration, monitoring, data quality)",
+        "Domain 4: Data Security and Governance — 18% (Lake Formation, encryption, access control, catalog)",
+      ],
+    },
+    {
+      heading: "What the exam actually tests",
+      paragraphs: [
+        "DEA-C01 is pipeline-architecture focused. Expect 'which service/pattern ingests this data at this velocity' and 'how do you transform/store this efficiently' scenarios. The recurring themes: Glue ETL and crawlers vs EMR, Kinesis vs MSK vs Firehose for streaming, S3 partitioning + columnar formats (Parquet) for Athena/Redshift Spectrum query cost, MWAA vs Step Functions for orchestration, and Lake Formation for fine-grained lake access.",
+        "Data quality and schema evolution questions appear often — Glue Data Quality, schema registries, and handling schema drift are worth knowing concretely.",
+      ],
+    },
+    {
+      heading: "A realistic prep plan",
+      paragraphs: [
+        "Budget 5–8 weeks. Domain 1 alone is a third of the score — ingestion/transformation deserves the most time. Build one end-to-end mini pipeline if you can: Kinesis/Firehose → S3 → Glue → Athena is the exam's canonical shape.",
+      ],
+      list: [
+        "Weeks 1–2: Domain 1 — streaming vs batch ingestion, Glue jobs/crawlers, MSK vs Kinesis, Firehose, DMS",
+        "Week 3: Domain 2 — S3 layout/partitioning, Parquet, Redshift distribution/sort keys, DynamoDB patterns",
+        "Week 4: Domain 3 — MWAA/Step Functions orchestration, CloudWatch for pipelines, Glue Data Quality",
+        "Week 5: Domain 4 — Lake Formation permissions, KMS encryption, Glue Data Catalog",
+        "Final week: timed practice sets + review every missed option",
+      ],
+    },
+  ],
+  references: [
+    {
+      title: "AWS Certified Data Engineer – Associate",
+      url: "https://aws.amazon.com/certification/certified-data-engineer-associate/",
+    },
+  ],
+});
+
+ARTICLES.push({
+  slug: "scs-c03-exam-guide",
+  title: "SCS-C03 Exam Guide: Format, Cost, Domains, and How to Prepare",
+  description:
+    "Everything about the AWS Certified Security – Specialty (SCS-C03) exam — the current version that replaced SCS-C02 in December 2025: 65 questions, 170 minutes, $300, the six domain weights, and a security-focused prep strategy.",
+  domain: "scs-detection",
+  topic: "scs-detection-and-response",
+  updatedAt: "2026-10-27",
+  readingMinutes: 9,
+  sections: [
+    {
+      paragraphs: [
+        "The AWS Certified Security – Specialty (SCS-C03) is the current version of the security specialty — it replaced SCS-C02 on December 2, 2025. It validates deep security expertise across detection, incident response, infrastructure protection, IAM, data protection, and governance.",
+        "Compared to SCS-C02, the new version reorganized domains: detection and incident response are now separate domains, IAM grew to 20%, and the governance domain was reframed as Security Foundations and Governance.",
+      ],
+    },
+    {
+      heading: "Exam format at a glance",
+      list: [
+        "65 questions — long scenario-based multiple choice and multiple response",
+        "170 minutes — about 2.6 minutes per question",
+        "$300 USD",
+        "Passing score: 750 on a scaled range of 100–1000",
+        "Pearson VUE testing center or online proctored exam",
+      ],
+    },
+    {
+      heading: "The six domains",
+      list: [
+        "Domain 1: Detection — 16% (GuardDuty, Security Hub, detection-focused logging)",
+        "Domain 2: Incident Response — 14% (IR plans, isolation, forensics, credential compromise)",
+        "Domain 3: Infrastructure Security — 18% (VPC security, WAF/Shield, edge protection)",
+        "Domain 4: Identity and Access Management — 20% (the largest — policy evaluation, federation, boundaries)",
+        "Domain 5: Data Protection — 18% (KMS, envelope encryption, secrets, certificate management)",
+        "Domain 6: Security Foundations and Governance — 14% (SCPs, multi-account security baselines)",
+      ],
+    },
+    {
+      heading: "What the exam actually tests",
+      paragraphs: [
+        "SCS-C03 rewards precise security reasoning: which finding source detects a given anomaly (GuardDuty vs Inspector vs Macie vs Config), how to respond to a compromised credential, how envelope encryption actually works, which IAM policy construct (SCP vs permission boundary vs resource policy vs session policy) enforces a given constraint.",
+        "The split between Detection (domain 1) and Incident Response (domain 2) matters: know the difference between generating a finding and executing a response runbook — GuardDuty/Security Hub vs SSM Incident Manager/IR workflows.",
+      ],
+    },
+    {
+      heading: "A realistic prep plan",
+      paragraphs: [
+        "Budget 8–10 weeks — this is a specialty exam and assumes real security experience. IAM is the heaviest domain and the most frequently failed: practice reading policy documents until evaluation logic is reflexive.",
+      ],
+      list: [
+        "Weeks 1–2: Domain 4 (IAM) — policies, boundaries, SCPs, federation, cross-account access",
+        "Week 3: Domain 5 (Data Protection) — KMS internals, envelope encryption, CloudHSM, secrets rotation",
+        "Week 4: Domains 1–2 — GuardDuty/Security Hub/Detective, IR playbooks, forensics",
+        "Week 5: Domain 3 — WAF/Shield/Network Firewall, VPC security layers, edge protection",
+        "Week 6: Domain 6 — Organizations governance, security baselines, compliance tooling",
+        "Final weeks: long timed sets — this exam's scenarios are dense",
+      ],
+    },
+  ],
+  references: [
+    {
+      title: "AWS Certified Security – Specialty",
+      url: "https://aws.amazon.com/certification/certified-security-specialty/",
+    },
+  ],
+});
+
+ARTICLES.push({
+  slug: "ans-c01-exam-guide",
+  title: "ANS-C01 Exam Guide: Format, Cost, Domains, and How to Prepare",
+  description:
+    "Everything about the AWS Certified Advanced Networking – Specialty (ANS-C01) exam: 65 questions, 170 minutes, $300, the four domain weights, and a networking prep strategy.",
+  domain: "ans-network-design",
+  topic: "ans-hybrid-connectivity",
+  updatedAt: "2026-10-27",
+  readingMinutes: 8,
+  sections: [
+    {
+      paragraphs: [
+        "The AWS Certified Advanced Networking – Specialty (ANS-C01) validates deep networking expertise — hybrid connectivity, large-scale VPC design, DNS, and network security. It's the most specialized associate-adjacent AWS exam and pairs naturally with Solutions Architect Professional knowledge.",
+        "Note: AWS has announced ANS-C01 retires on December 31, 2026 — if you're planning to take it, schedule accordingly.",
+      ],
+    },
+    {
+      heading: "Exam format at a glance",
+      list: [
+        "65 questions — scenario-heavy multiple choice and multiple response",
+        "170 minutes — about 2.6 minutes per question",
+        "$300 USD",
+        "Passing score: 750 on a scaled range of 100–1000",
+        "Pearson VUE testing center or online proctored exam",
+      ],
+    },
+    {
+      heading: "The four domains",
+      list: [
+        "Domain 1: Network Design — 30% (the largest — VPC design, hybrid architectures, edge/global design)",
+        "Domain 2: Network Implementation — 26% (routing, Transit Gateway, Direct Connect, VPN, DNS)",
+        "Domain 3: Network Management and Operations — 20% (monitoring, troubleshooting, automation)",
+        "Domain 4: Network Security, Compliance, and Governance — 24% (firewalls, inspection, PrivateLink, TLS)",
+      ],
+    },
+    {
+      heading: "What the exam actually tests",
+      paragraphs: [
+        "ANS-C01 is unforgiving about connectivity details: Transit Gateway routing tables and attachments, Direct Connect (dedicated vs hosted, public vs private VIF, BGP), Site-to-Site VPN redundancy, Route 53 Resolver inbound/outbound endpoints for hybrid DNS, and when PrivateLink beats peering (overlapping CIDRs, unidirectional exposure).",
+        "Operations questions focus on diagnosis: Reachability Analyzer, VPC Flow Logs analysis, and Network Firewall vs security groups vs NACLs for layered defense.",
+      ],
+    },
+    {
+      heading: "A realistic prep plan",
+      paragraphs: [
+        "Budget 8–10 weeks. Hybrid connectivity (DX + VPN + TGW interactions) is where most candidates lose points — lab it if possible: build two VPCs, a TGW, resolver endpoints, and break the routing on purpose.",
+      ],
+      list: [
+        "Weeks 1–2: Domain 1 — VPC design at scale, multi-account networking, global/edge architecture",
+        "Weeks 3–4: Domain 2 — TGW routing, DX VIFs/LAG, VPN, BGP, Route 53 resolver endpoints, PrivateLink",
+        "Week 5: Domain 3 — Reachability Analyzer, Flow Logs, CloudWatch network metrics, automation",
+        "Week 6: Domain 4 — Network Firewall, TLS inspection, WAF at the edge, governance",
+        "Final weeks: timed scenario sets — practice tracing traffic hop by hop",
+      ],
+    },
+  ],
+  references: [
+    {
+      title: "AWS Certified Advanced Networking – Specialty",
+      url: "https://aws.amazon.com/certification/certified-advanced-networking-specialty/",
+    },
+  ],
+});
+
 export function getArticle(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
 }
