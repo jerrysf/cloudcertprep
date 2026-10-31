@@ -2143,6 +2143,233 @@ ARTICLES.push({
   ],
 });
 
+ARTICLES.push({
+  slug: "dea-c01-cheat-sheet",
+  title: "DEA-C01 Cheat Sheet: Data Engineer Associate Quick Reference",
+  description:
+    "A condensed DEA-C01 review sheet: ingestion services, data stores, Glue/EMR transforms, orchestration, and data governance — the service distinctions the exam repeats.",
+  domain: "dea-ingestion-transformation",
+  topic: "dea-ingestion-and-etl",
+  updatedAt: "2026-10-27",
+  readingMinutes: 7,
+  sections: [
+    {
+      paragraphs: [
+        "DEA-C01 is a service-selection exam: know which ingestion, storage, and processing tool fits each workload, plus the operational and governance details. Scan this the week before the exam.",
+      ],
+    },
+    {
+      heading: "Ingestion",
+      list: [
+        "Kinesis Data Streams — real-time streaming, shard-based, replayable; on-demand vs provisioned capacity",
+        "Data Firehose — managed delivery to S3/Redshift/OpenSearch, batch transform, no shard management",
+        "MSK — managed Apache Kafka for existing Kafka workloads; MSK Connect for connectors",
+        "DataSync — bulk/scheduled file migration NFS/SMB→S3/EFS/FSx; DMS — database migration + CDC",
+        "S3 Transfer Acceleration — edge-accelerated uploads; Snowball — offline bulk transfer",
+      ],
+    },
+    {
+      heading: "Data stores",
+      list: [
+        "S3 data lake + Glue Data Catalog — the center of nearly every architecture",
+        "Redshift — MPP data warehouse for repeated complex SQL; DISTKEY co-locates joins, ALL for small dims",
+        "Athena — serverless SQL on S3; partition + Parquet/ORC cuts cost and time",
+        "DynamoDB — NoSQL key-value at any scale; OpenSearch — log/search analytics",
+        "Lake Formation — permissions layer over the lake (DB/table/column/row)",
+      ],
+    },
+    {
+      heading: "Transform & process",
+      list: [
+        "Glue — serverless ETL: crawlers (schema→catalog), jobs (Spark/Python shell), DataBrew (visual prep)",
+        "Glue Data Quality — DQDL rules gate pipelines on row counts/nulls/ranges",
+        "EMR — managed Spark/Hive/HBase clusters when you need framework control",
+        "Lambda — lightweight event transforms; Kinesis Data Analytics / Flink — stream processing with SQL",
+      ],
+    },
+    {
+      heading: "Orchestration & operations",
+      list: [
+        "MWAA — managed Airflow DAGs for interdependent pipelines",
+        "Step Functions — serverless state machines; EventBridge Scheduler — single-target schedules",
+        "Glue workflows/triggers — ETL-native orchestration",
+        "CloudWatch + EventBridge — pipeline monitoring, retries, alerting",
+      ],
+    },
+    {
+      heading: "Governance & security",
+      list: [
+        "Lake Formation — column/row-level access on catalog tables; tag-based access control",
+        "Macie — automated PII/sensitive-data discovery in S3",
+        "KMS — encrypt at rest; TLS in transit; CloudTrail — audit API access",
+        "Glue Data Catalog — schema registry + versioning; resource policies for cross-account sharing",
+      ],
+    },
+  ],
+  references: [
+    { title: "DEA-C01 exam guide", url: "https://aws.amazon.com/certification/certified-data-engineer-associate/" },
+    { title: "AWS Glue", url: "https://docs.aws.amazon.com/glue/latest/dg/what-is-glue.html" },
+    { title: "Amazon Kinesis", url: "https://docs.aws.amazon.com/streams/latest/dev/introduction.html" },
+  ],
+});
+
+ARTICLES.push({
+  slug: "scs-c03-cheat-sheet",
+  title: "SCS-C03 Cheat Sheet: Security Specialty Quick Reference",
+  description:
+    "A condensed SCS-C03 review sheet: detection services, incident response, infrastructure security, IAM deep-dive, data protection, and governance — the control mappings the exam repeats.",
+  domain: "scs-detection",
+  topic: "scs-detection-and-response",
+  updatedAt: "2026-10-27",
+  readingMinutes: 8,
+  sections: [
+    {
+      paragraphs: [
+        "SCS-C03 rewards knowing which control detects, prevents, or responds — and the exact service mechanics. This sheet groups the highest-frequency distinctions.",
+      ],
+    },
+    {
+      heading: "Detection services",
+      list: [
+        "GuardDuty — threat detection from CloudTrail/VPC Flow/DNS logs + malware scans; findings, not prevention",
+        "Security Hub — findings aggregator (ASFF format) + standards checks (CIS, FSBP)",
+        "Inspector — vulnerability scanning for EC2/ECR/Lambda; ECR scan-on-push + continuous",
+        "Macie — sensitive data (PII) discovery in S3",
+        "Detective — behavior-graph investigation over findings/flow logs/CloudTrail",
+        "Config — resource config history + compliance rules; CloudTrail — API audit trail",
+      ],
+    },
+    {
+      heading: "Incident response",
+      list: [
+        "Isolate EC2: swap SG → forensics SG, then snapshot EBS + capture memory — never terminate/stop first",
+        "Compromised credentials: deactivate key → rotate → review CloudTrail for abuse → SCP boundary if needed",
+        "Automate: EventBridge on findings → SSM Automation/Lambda runbooks",
+        "Artifact service for legal/compliance agreements; Abuse team contact for reporting",
+      ],
+    },
+    {
+      heading: "Infrastructure security",
+      list: [
+        "SGs are stateful (responses auto-allowed); NACLs are stateless (need ephemeral-port rules)",
+        "ALB = L7; NLB = L4 + static IP; endpoint services = PrivateLink",
+        "WAF — L7 rules (SQLi/XSS/rate/geo/managed); Shield Standard free auto DDoS; Shield Advanced = DRT + cost protection",
+        "Network Firewall — stateful VPC boundary inspection; Route 53 Resolver DNS Firewall — domain filtering",
+      ],
+    },
+    {
+      heading: "IAM deep-dive",
+      list: [
+        "Evaluation order: explicit Deny → SCP → resource policy → session policy → permission boundary → identity policy",
+        "Permission boundaries cap what delegated admins can grant (aws:PermissionsBoundary condition)",
+        "Roles for cross-account/federation; access analyzer for external access + unused access findings",
+        "OIDC federation for GitHub/CI workloads — no long-lived keys",
+      ],
+    },
+    {
+      heading: "Data protection",
+      list: [
+        "KMS: symmetric for data encryption, envelope encryption via data keys; automatic yearly rotation on CMKs",
+        "SSE-S3 / SSE-KMS / SSE-C / client-side — know who manages the keys in each",
+        "CloudHSM — dedicated single-tenant HSM when you must control key material",
+        "Secrets Manager — auto-rotation + cross-service creds; Parameter Store — free, no rotation",
+        "Certificate Manager — free public TLS certs, auto-renewal, ALB/CloudFront integration",
+      ],
+    },
+    {
+      heading: "Governance",
+      list: [
+        "SCPs set permission ceilings per OU/account — they never grant",
+        "Control Tower guardrails: preventive=SCPs, detective=Config rules, proactive=CFN hooks",
+        "Organization CloudTrail → single log-archive account; Config aggregator for fleet compliance",
+        "Service Catalog / account vending for approved, guardrailed products",
+      ],
+    },
+  ],
+  references: [
+    { title: "SCS-C03 exam guide", url: "https://aws.amazon.com/certification/certified-security-specialty/" },
+    { title: "Amazon GuardDuty", url: "https://docs.aws.amazon.com/guardduty/latest/ug/what-is-guardduty.html" },
+    { title: "AWS KMS", url: "https://docs.aws.amazon.com/kms/latest/developerguide/overview.html" },
+  ],
+});
+
+ARTICLES.push({
+  slug: "ans-c01-cheat-sheet",
+  title: "ANS-C01 Cheat Sheet: Advanced Networking Specialty Quick Reference",
+  description:
+    "A condensed ANS-C01 review sheet: hybrid connectivity, Transit Gateway routing, DNS, load balancing, and network security — the architecture patterns the exam repeats.",
+  domain: "ans-network-design",
+  topic: "ans-hybrid-connectivity",
+  updatedAt: "2026-10-27",
+  readingMinutes: 8,
+  sections: [
+    {
+      paragraphs: [
+        "ANS-C01 is the hardest associate-adjacent exam: it tests routing tables, BGP, and when each connectivity construct applies. This sheet compresses the highest-frequency patterns.",
+      ],
+    },
+    {
+      heading: "Hybrid connectivity",
+      list: [
+        "Direct Connect — private dedicated circuit: consistent latency/bandwidth, no internet; private VIF→VPC VGW, transit VIF→TGW, public VIF→AWS public endpoints",
+        "Site-to-Site VPN — encrypted over internet, fast to stand up, cheaper; static or BGP routing",
+        "DX + VPN backup — classic resilience pair; MACsec for DX encryption",
+        "Client VPN — end-user remote access",
+      ],
+    },
+    {
+      heading: "Transit Gateway",
+      list: [
+        "TGW = regional hub; peering links TGWs across regions; route tables control segmentation (hub-spoke)",
+        "TGW + DX gateway via transit VIF — many VPCs, segmentation, multi-region over one link",
+        "Shared TGW via RAM for multi-account; appliance mode for symmetric stateful inspection",
+        "Connect/peer attachments: VPC, VPN, DX (via DXGW), peering, connect (SD-WAN/GRE)",
+      ],
+    },
+    {
+      heading: "DNS & Route 53",
+      list: [
+        "Routing policies: simple, weighted, latency, failover, geolocation, geoproximity, multivalue, IP-based",
+        "Private resources health checks → CloudWatch alarm-based checks (checkers live outside VPC)",
+        "Resolver endpoints: inbound (on-prem→VPC DNS), outbound (VPC→on-prem); Resolver rules forward domains",
+        "Public vs private hosted zones; split-view DNS with same-name PHZ",
+      ],
+    },
+    {
+      heading: "Load balancing & edge",
+      list: [
+        "ALB — L7 host/path routing, auth offload; NLB — L4, static IP, preserve source IP, TLS passthrough; GWLB — L3 appliance insertion",
+        "CloudFront — CDN, OAC for S3, signed URLs/cookies, field-level encryption, functions vs Lambda@Edge",
+        "Global Accelerator — anycast static IPs, TCP/UDP, near-source failover — vs CloudFront (caching CDN)",
+        "PrivateLink/endpoint services — expose service via NLB, no routing/peering needed",
+      ],
+    },
+    {
+      heading: "VPC internals",
+      list: [
+        "CIDR planning is irreversible — non-overlapping ranges before peering/TGW/hybrid",
+        "Egress-only IGW for IPv6 outbound-only; NAT gateway for IPv4 (per-AZ for HA)",
+        "VPC endpoints: interface (PrivateLink, per-AZ ENI) vs gateway (S3/DynamoDB, route-table entry)",
+        "Flow Logs (metadata), Traffic Mirroring (full packets), Reachability Analyzer (path testing)",
+      ],
+    },
+    {
+      heading: "Network security & operations",
+      list: [
+        "SGs stateful vs NACLs stateless; ephemeral ports 1024–65535 in NACL returns",
+        "Network Firewall — managed stateful L3–L7 at VPC boundary; DNS Firewall for domain control",
+        "Cloud WAN / Network Manager — global topology, monitoring, segmentation",
+        "BGP: local-pref controls outbound, AS-path prepending/med influence inbound",
+      ],
+    },
+  ],
+  references: [
+    { title: "ANS-C01 exam guide", url: "https://aws.amazon.com/certification/certified-advanced-networking-specialty/" },
+    { title: "AWS Transit Gateway", url: "https://docs.aws.amazon.com/vpc/latest/tgw/what-is-transit-gateway.html" },
+    { title: "AWS Direct Connect", url: "https://docs.aws.amazon.com/directconnect/latest/UserGuide/Welcome.html" },
+  ],
+});
+
 export function getArticle(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
 }

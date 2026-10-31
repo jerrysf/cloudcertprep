@@ -368,6 +368,51 @@ export default async function CertificationPage({ params }: Props) {
           ),
         }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              {
+                "@type": "Question",
+                name: `How many questions are on the ${cert.code} exam?`,
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: `The ${cert.name} (${cert.code}) exam has ${cert.questionCount} questions in ${cert.durationMinutes} minutes. AWS exams include scored questions plus unscored pilot items.`,
+                },
+              },
+              {
+                "@type": "Question",
+                name: `How much does the ${cert.code} exam cost?`,
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: `The ${cert.code} exam costs $${cert.costUsd} USD. AWS typically includes a free retake option and 50% off your next exam after passing.`,
+                },
+              },
+              {
+                "@type": "Question",
+                name: `What is the passing score for ${cert.code}?`,
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: `${cert.code} uses scaled scoring from ${cert.scaledScoreRange[0]} to ${cert.scaledScoreRange[1]}, with a passing score of ${cert.passingScaledScore}. Raw percentages are not published; aim for consistent mock scores in the passing range.`,
+                },
+              },
+              {
+                "@type": "Question",
+                name: `How should I prepare for ${cert.code}?`,
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: `Start with the official exam guide and domain weights, study the core services per domain, drill topic practice questions, take timed mock exams, and re-attempt every missed question. ${cert.domains.length} domains are weighted ${cert.domains
+                    .map((d) => `${d.name} ${d.weight}%`)
+                    .join(", ")}.`,
+                },
+              },
+            ],
+          }),
+        }}
+      />
     </Container>
   );
 }
