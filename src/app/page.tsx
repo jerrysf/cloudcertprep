@@ -46,11 +46,13 @@ export default function Home() {
                 {CERTIFICATIONS.length} AWS certifications covered
               </Badge>
               <h1 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
-                Prepare for the AWS Solutions Architect Associate Exam
+                Free AWS Certification Practice Exams &amp; Questions
               </h1>
               <p className="mt-4 text-lg leading-relaxed text-muted">
-                Practice AWS architecture scenarios, understand why each answer
-                is correct, and build confidence with free study resources.
+                Original practice questions with per-option explanations, timed
+                mock exams, and study guides — covering{" "}
+                {CERTIFICATIONS.length} AWS certifications from Cloud
+                Practitioner to Professional.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <ButtonLink href="/practice" className="px-6 py-3 text-base">

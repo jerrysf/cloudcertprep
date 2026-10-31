@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: `${SITE.name} — Free AWS Solutions Architect Associate Practice`,
+    default: `${SITE.name} — Free AWS Certification Practice Exams & Questions`,
     template: `%s | ${SITE.name}`,
   },
   description: SITE.description,
