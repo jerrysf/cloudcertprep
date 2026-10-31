@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, CheckCircle2, ExternalLink, XCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, ExternalLink, XCircle } from "lucide-react";
 import { PUBLISHED_QUESTIONS } from "@/lib/content/questions";
 import { getDomain } from "@/lib/content/domains";
 import { getCertification } from "@/lib/content/certifications";
@@ -24,9 +24,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const q = PUBLISHED_QUESTIONS.find((x) => x.slug === slug);
   if (!q) return {};
   const topic = getTopic(q.topic);
+  const cert = getCertification(q.cert);
   return {
     title: `${q.question.slice(0, 60)}${q.question.length > 60 ? "…" : ""}`,
-    description: `SAA-C03 practice question on ${topic?.name ?? q.topic}: see the scenario, the correct answer, and why each option is right or wrong — with official AWS documentation.`,
+    description: `${cert?.code ?? "AWS"} practice question on ${topic?.name ?? q.topic}: see the scenario, the correct answer, and why each option is right or wrong — with official AWS documentation.`,
     alternates: { canonical: `/questions/${slug}` },
   };
 }
@@ -42,6 +43,13 @@ export default async function QuestionPage({ params }: Props) {
     (x) => x.topic === q.topic && x.id !== q.id,
   ).slice(0, 4);
   const idx = PUBLISHED_QUESTIONS.indexOf(q);
+  const topicQuestions = PUBLISHED_QUESTIONS.filter((x) => x.topic === q.topic);
+  const topicIdx = topicQuestions.findIndex((x) => x.id === q.id);
+  const prevQ = topicIdx > 0 ? topicQuestions[topicIdx - 1] : undefined;
+  const nextQ =
+    topicIdx >= 0 && topicIdx < topicQuestions.length - 1
+      ? topicQuestions[topicIdx + 1]
+      : undefined;
   const related = PUBLISHED_QUESTIONS.filter(
     (x) => x.domain === q.domain && x.id !== q.id && x.topic !== q.topic,
   ).slice(0, 4);
@@ -193,6 +201,44 @@ export default async function QuestionPage({ params }: Props) {
               ))}
             </ul>
           </div>
+
+          {topicQuestions.length > 1 ? (
+            <nav
+              className="mt-10 flex items-stretch gap-3"
+              aria-label="Question navigation"
+            >
+              {prevQ ? (
+                <Link
+                  href={`/questions/${prevQ.slug}`}
+                  className="group flex-1 rounded-xl border border-border bg-white p-4 transition-all hover:-translate-y-0.5 hover:shadow-md"
+                >
+                  <span className="flex items-center gap-1 text-xs font-medium text-muted">
+                    <ArrowLeft className="h-3.5 w-3.5" aria-hidden /> Previous
+                  </span>
+                  <span className="mt-1 line-clamp-2 text-sm font-medium group-hover:text-accent">
+                    {prevQ.question}
+                  </span>
+                </Link>
+              ) : (
+                <span className="flex-1" aria-hidden />
+              )}
+              {nextQ ? (
+                <Link
+                  href={`/questions/${nextQ.slug}`}
+                  className="group flex-1 rounded-xl border border-border bg-white p-4 text-right transition-all hover:-translate-y-0.5 hover:shadow-md"
+                >
+                  <span className="flex items-center justify-end gap-1 text-xs font-medium text-muted">
+                    Next <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+                  </span>
+                  <span className="mt-1 line-clamp-2 text-sm font-medium group-hover:text-accent">
+                    {nextQ.question}
+                  </span>
+                </Link>
+              ) : (
+                <span className="flex-1" aria-hidden />
+              )}
+            </nav>
+          ) : null}
 
           {topic ? (
             <div className="mt-10 rounded-xl border border-border bg-card p-6">

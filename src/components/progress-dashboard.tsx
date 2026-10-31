@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Flame, Trash2 } from "lucide-react";
 import { CERTIFICATIONS } from "@/lib/content/certifications";
+import { QUESTION_BY_ID } from "@/lib/content/questions";
 import { getTopic, TOPICS } from "@/lib/content/topics";
 import { getProgressStore, summarize } from "@/lib/storage";
 import { notifyProgressChanged, useProgress } from "@/lib/use-progress";
@@ -35,7 +36,7 @@ export function ProgressDashboard() {
   const suggested = !hasData
     ? { label: "Start your first practice set", href: "/practice" }
     : s.incorrectIds.size > 0
-      ? { label: "Review your missed questions", href: "/practice" }
+      ? { label: "Review your missed questions", href: "/practice/mistakes" }
       : weakestTopics.length > 0 && weakestTopics[0]
         ? {
             label: `Practice ${getTopic(weakestTopics[0][0])?.name ?? weakestTopics[0][0]}`,
@@ -156,16 +157,36 @@ export function ProgressDashboard() {
                 Questions to re-attempt ({s.incorrectIds.size})
               </h2>
               {s.incorrectIds.size ? (
+                <>
                 <ul className="mt-3 space-y-2 text-sm">
-                  {[...s.incorrectIds].slice(0, 8).map((id) => (
-                    <li key={id} className="text-muted">
-                      {id}
-                    </li>
-                  ))}
+                  {[...s.incorrectIds].slice(0, 8).map((id) => {
+                    const q = QUESTION_BY_ID.get(id);
+                    return (
+                      <li key={id}>
+                        {q ? (
+                          <Link
+                            href={`/questions/${q.slug}`}
+                            className="line-clamp-1 text-muted hover:text-accent"
+                          >
+                            {q.question}
+                          </Link>
+                        ) : (
+                          <span className="text-muted">{id}</span>
+                        )}
+                      </li>
+                    );
+                  })}
                   {s.incorrectIds.size > 8 ? (
                     <li className="text-muted">…and more</li>
                   ) : null}
                 </ul>
+                <Link
+                  href="/practice/mistakes"
+                  className="mt-4 inline-flex items-center gap-1.5 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-accent-hover active:scale-[0.98]"
+                >
+                  Re-attempt all missed questions
+                </Link>
+                </>
               ) : (
                 <p className="mt-2 text-sm text-muted">
                   No outstanding incorrect answers. Keep it up.
@@ -176,6 +197,9 @@ export function ProgressDashboard() {
 
           <Card>
             <h2 className="text-lg font-semibold">Recent mock exams</h2>
+            {data.examResults.length >= 2 ? (
+              <ScoreTrend results={data.examResults} />
+            ) : null}
             {data.examResults.length ? (
               <ul className="mt-3 space-y-2 text-sm">
                 {[...data.examResults]
@@ -239,6 +263,60 @@ export function ProgressDashboard() {
         </button>
       </div>
     </div>
+  );
+}
+
+function ScoreTrend({
+  results,
+}: {
+  results: { finishedAt: string; scorePercent: number }[];
+}) {
+  const ordered = [...results].sort((a, b) =>
+    a.finishedAt.localeCompare(b.finishedAt),
+  );
+  const W = 560;
+  const H = 96;
+  const PAD = 8;
+  const n = ordered.length;
+  const pts = ordered.map((r, i) => {
+    const x = PAD + (n === 1 ? W / 2 : (i / (n - 1)) * (W - PAD * 2));
+    const y = H - PAD - (r.scorePercent / 100) * (H - PAD * 2);
+    return { x, y, r };
+  });
+  const path = pts.map((p) => `${p.x},${p.y}`).join(" ");
+  const passY = H - PAD - 0.72 * (H - PAD * 2);
+
+  return (
+    <figure className="mt-4" aria-label="Mock exam score trend">
+      <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img">
+        <title>
+          Score trend across {n} mock exams — latest{" "}
+          {Math.round(ordered[n - 1].scorePercent)}%
+        </title>
+        <line
+          x1={PAD}
+          x2={W - PAD}
+          y1={passY}
+          y2={passY}
+          stroke="#94a3b8"
+          strokeDasharray="4 4"
+          strokeWidth="1"
+        />
+        <polyline
+          points={path}
+          fill="none"
+          stroke="var(--accent)"
+          strokeWidth="2"
+          strokeLinejoin="round"
+        />
+        {pts.map((p, i) => (
+          <circle key={i} cx={p.x} cy={p.y} r="3" fill="var(--accent)" />
+        ))}
+      </svg>
+      <figcaption className="mt-1 text-xs text-muted">
+        Score over time — dashed line marks a ~72% typical passing range.
+      </figcaption>
+    </figure>
   );
 }
 
