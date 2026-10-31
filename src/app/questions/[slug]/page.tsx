@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowRight, CheckCircle2, ExternalLink, XCircle } from "lucide-react";
 import { PUBLISHED_QUESTIONS } from "@/lib/content/questions";
 import { getDomain } from "@/lib/content/domains";
+import { getCertification } from "@/lib/content/certifications";
 import { getTopic } from "@/lib/content/topics";
 import { breadcrumbJsonLd } from "@/lib/jsonld";
 import { cn } from "@/lib/utils";
@@ -36,6 +37,7 @@ export default async function QuestionPage({ params }: Props) {
   if (!q) notFound();
   const domain = getDomain(q.domain);
   const topic = getTopic(q.topic);
+  const cert = getCertification(q.cert)!;
   const siblings = PUBLISHED_QUESTIONS.filter(
     (x) => x.topic === q.topic && x.id !== q.id,
   ).slice(0, 4);
@@ -45,7 +47,7 @@ export default async function QuestionPage({ params }: Props) {
   ).slice(0, 4);
 
   const crumbs = [
-    { label: "Practice", href: "/practice" },
+    { label: cert.code, href: `/certifications/${cert.id}` },
     ...(topic ? [{ label: topic.name, href: `/practice/${topic.slug}` }] : []),
     { label: `Question` },
   ];
@@ -61,7 +63,10 @@ export default async function QuestionPage({ params }: Props) {
       <div className="mt-4 grid gap-10 lg:grid-cols-[minmax(0,1fr)_300px]">
         <article className="max-w-3xl">
           <div className="flex flex-wrap items-center gap-2">
-            <Badge tone="accent">
+            <Link href={`/certifications/${cert.id}`}>
+              <Badge tone="accent">{cert.code}</Badge>
+            </Link>
+            <Badge>
               Domain {domain.number}: {domain.name}
             </Badge>
             {topic ? <Badge>{topic.name}</Badge> : null}

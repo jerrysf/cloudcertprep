@@ -1,14 +1,30 @@
-import { questionSchema, validateQuestionBank, type DomainId, type Difficulty, type Question } from "../schema";
+import { questionSchema, validateQuestionBank, type CertificationId, type DomainId, type Difficulty, type Question } from "../schema";
 import { secureQuestions } from "./secure";
 import { resilientQuestions } from "./resilient";
 import { highPerformingQuestions } from "./high-performing";
 import { costOptimizedQuestions } from "./cost-optimized";
+import { clfQuestions } from "./clf";
+import { aifQuestions } from "./aif";
+import { dvaQuestions } from "./dva";
+import { soaQuestions } from "./soa";
+import { deaQuestions } from "./dea";
+import { scsQuestions } from "./scs";
+import { ansQuestions } from "./ans";
+import { sapQuestions } from "./sap";
 
 export const ALL_QUESTIONS: Question[] = [
   ...secureQuestions,
   ...resilientQuestions,
   ...highPerformingQuestions,
   ...costOptimizedQuestions,
+  ...clfQuestions,
+  ...aifQuestions,
+  ...dvaQuestions,
+  ...soaQuestions,
+  ...deaQuestions,
+  ...scsQuestions,
+  ...ansQuestions,
+  ...sapQuestions,
 ];
 
 /** Parsed + cross-validated. Throws at import time if content is invalid. */
@@ -43,4 +59,8 @@ export function publishedByDomain(domain: DomainId): Question[] {
 
 export function publishedByDifficulty(d: Difficulty): Question[] {
   return PUBLISHED_QUESTIONS.filter((q) => q.difficulty === d);
+}
+
+export function publishedByCert(certId: CertificationId): Question[] {
+  return PUBLISHED_QUESTIONS.filter((q) => q.cert === certId);
 }

@@ -5,6 +5,7 @@ export const SITE = {
   description:
     "Free practice questions, explanations, mock exams, and study plans for the AWS Certified Solutions Architect – Associate (SAA-C03) exam.",
   nav: [
+    { label: "Certifications", href: "/certifications" },
     { label: "Practice Questions", href: "/practice" },
     { label: "Question Bank", href: "/questions" },
     { label: "Mock Exams", href: "/mock-exam" },

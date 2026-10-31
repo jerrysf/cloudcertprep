@@ -2,13 +2,16 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import type { DomainId } from "@/lib/content/schema";
-import { DOMAINS, EXAM } from "@/lib/content/domains";
+import type { CertificationId, DomainId } from "@/lib/content/schema";
+import {
+  CERTIFICATIONS,
+  getCertification,
+} from "@/lib/content/certifications";
 import {
   createExamSession,
   selectExamQuestions,
 } from "@/lib/exam";
-import { PUBLISHED_QUESTIONS } from "@/lib/content/questions";
+import { publishedByCert } from "@/lib/content/questions";
 import { ANALYTICS_EVENTS, track } from "@/lib/analytics";
 import { EXAM_SESSION_PREFIX } from "@/lib/storage";
 import { Card } from "@/components/ui";
@@ -17,11 +20,18 @@ const COUNT_OPTIONS = [10, 20, 35, 65];
 
 export function MockExamBuilder() {
   const router = useRouter();
+  const [certId, setCertId] = useState<CertificationId>("saa-c03");
   const [count, setCount] = useState(10);
   const [timed, setTimed] = useState(true);
   const [domains, setDomains] = useState<DomainId[]>([]);
-  const available = PUBLISHED_QUESTIONS.length;
+  const cert = getCertification(certId)!;
+  const available = publishedByCert(cert.id).length;
   const effectiveCount = Math.min(count, available);
+
+  function selectCert(id: CertificationId) {
+    setCertId(id);
+    setDomains([]);
+  }
 
   function toggleDomain(d: DomainId) {
     setDomains((cur) =>
@@ -30,13 +40,14 @@ export function MockExamBuilder() {
   }
 
   function start() {
+    const pool = publishedByCert(cert.id);
     const questions = selectExamQuestions(
-      PUBLISHED_QUESTIONS,
+      pool,
       effectiveCount,
       domains.length ? domains : undefined,
     );
     const duration = timed
-      ? Math.round((EXAM.durationMinutes / EXAM.questionCount) * questions.length) * 60
+      ? Math.round((cert.durationMinutes / cert.questionCount) * questions.length) * 60
       : null;
     const session = createExamSession(questions, timed, duration);
     if (typeof window !== "undefined") {
@@ -46,6 +57,7 @@ export function MockExamBuilder() {
       );
     }
     track(ANALYTICS_EVENTS.examStart, {
+      cert: cert.id,
       count: questions.length,
       timed,
     });
@@ -54,6 +66,38 @@ export function MockExamBuilder() {
 
   return (
     <Card className="space-y-6">
+      <div>
+        <h2 className="text-lg font-semibold">Certification</h2>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {CERTIFICATIONS.map((c) => {
+            const n = publishedByCert(c.id).length;
+            return (
+              <button
+                key={c.id}
+                type="button"
+                onClick={() => selectCert(c.id)}
+                aria-pressed={certId === c.id}
+                disabled={n === 0}
+                title={
+                  n === 0
+                    ? `${c.code} question bank coming soon`
+                    : undefined
+                }
+                className={
+                  certId === c.id
+                    ? "rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white"
+                    : n === 0
+                      ? "cursor-not-allowed rounded-lg border border-border px-4 py-2 text-sm font-medium text-muted opacity-50"
+                      : "rounded-lg border border-border px-4 py-2 text-sm font-medium hover:bg-slate-50"
+                }
+              >
+                {c.code} ({n})
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       <div>
         <h2 className="text-lg font-semibold">Number of questions</h2>
         <div className="mt-3 flex flex-wrap gap-2">
@@ -75,8 +119,8 @@ export function MockExamBuilder() {
           ))}
         </div>
         <p className="mt-2 text-xs text-muted">
-          The real exam has {EXAM.questionCount} questions. This practice bank
-          currently contains {available} questions.
+          The real {cert.code} exam has {cert.questionCount} questions. This
+          practice bank currently contains {available} {cert.code} questions.
         </p>
       </div>
 
@@ -93,7 +137,9 @@ export function MockExamBuilder() {
                 : "rounded-lg border border-border px-4 py-2 text-sm font-medium hover:bg-slate-50"
             }
           >
-            Timed — {EXAM.durationMinutes / EXAM.questionCount} min/question pace
+            Timed —{" "}
+            {(cert.durationMinutes / cert.questionCount).toFixed(1)}{" "}
+            min/question pace
           </button>
           <button
             type="button"
@@ -118,7 +164,7 @@ export function MockExamBuilder() {
           </span>
         </legend>
         <div className="mt-3 grid gap-2 sm:grid-cols-2">
-          {DOMAINS.map((d) => (
+          {cert.domains.map((d) => (
             <label
               key={d.id}
               className="flex cursor-pointer items-start gap-3 rounded-lg border border-border p-3 text-sm hover:border-accent/60"
@@ -143,13 +189,14 @@ export function MockExamBuilder() {
       <button
         type="button"
         onClick={start}
-        className="w-full rounded-lg bg-accent px-6 py-3 text-sm font-semibold text-white hover:bg-blue-800 sm:w-auto"
+        disabled={effectiveCount === 0}
+        className="w-full rounded-lg bg-accent px-6 py-3 text-sm font-semibold text-white hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
       >
         Start mock exam ({effectiveCount} questions)
       </button>
       <p className="text-xs text-muted">
         Practice scores are estimates only and do not replicate AWS&apos;s
-        official scaled scoring (100–1000, passing 720).
+        official scaled scoring (100–1000).
       </p>
     </Card>
   );

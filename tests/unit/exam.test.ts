@@ -14,6 +14,7 @@ import type { Question } from "@/lib/content/schema";
 const singleQ: Question = {
   id: "saa-test-001",
   slug: "test-single",
+  cert: "saa-c03",
   domain: "design-secure-architectures",
   topic: "iam-and-access-control",
   difficulty: "easy",

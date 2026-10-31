@@ -1,14 +1,27 @@
 import { z } from "zod";
 
-export const DOMAIN_IDS = [
-  "design-secure-architectures",
-  "design-resilient-architectures",
-  "design-high-performing-architectures",
-  "design-cost-optimized-architectures",
+/**
+ * Domain ids are defined per certification in certifications.ts and are
+ * globally unique across certs (e.g. "design-secure-architectures" for
+ * SAA-C03, "clf-cloud-concepts" for CLF-C02).
+ */
+export const domainSchema = z.string().min(1);
+export type DomainId = string;
+
+export const CERTIFICATION_IDS = [
+  "saa-c03",
+  "clf-c02",
+  "aif-c01",
+  "dva-c02",
+  "soa-c03",
+  "dea-c01",
+  "scs-c02",
+  "ans-c01",
+  "sap-c02",
 ] as const;
 
-export const domainSchema = z.enum(DOMAIN_IDS);
-export type DomainId = z.infer<typeof domainSchema>;
+export const certificationSchema = z.enum(CERTIFICATION_IDS);
+export type CertificationId = z.infer<typeof certificationSchema>;
 
 export const difficultySchema = z.enum(["easy", "medium", "hard"]);
 export type Difficulty = z.infer<typeof difficultySchema>;
@@ -41,10 +54,14 @@ export const questionSchema = z
   .object({
     id: z
       .string()
-      .regex(/^saa-[a-z0-9-]+$/i, "ids look like saa-storage-001"),
+      .regex(
+        /^[a-z]{2,4}-[a-z0-9]+(?:-[a-z0-9]+)*$/i,
+        "ids look like saa-sec-001",
+      ),
     slug: z
       .string()
       .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "kebab-case slug"),
+    cert: certificationSchema,
     domain: domainSchema,
     topic: z.string().min(1),
     subtopic: z.string().optional(),

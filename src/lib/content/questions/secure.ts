@@ -4,6 +4,7 @@ export const secureQuestions: Question[] = [
   {
     id: "saa-sec-001",
     slug: "least-privilege-permissions-for-lambda",
+    cert: "saa-c03",
     domain: "design-secure-architectures",
     topic: "iam-and-access-control",
     subtopic: "IAM roles and policies",
@@ -44,6 +45,7 @@ export const secureQuestions: Question[] = [
   {
     id: "saa-sec-002",
     slug: "cross-account-access-with-roles",
+    cert: "saa-c03",
     domain: "design-secure-architectures",
     topic: "iam-and-access-control",
     subtopic: "Cross-account access",
@@ -84,6 +86,7 @@ export const secureQuestions: Question[] = [
   {
     id: "saa-sec-003",
     slug: "enforce-mfa-for-privileged-users",
+    cert: "saa-c03",
     domain: "design-secure-architectures",
     topic: "iam-and-access-control",
     subtopic: "Identity hardening",
@@ -120,6 +123,7 @@ export const secureQuestions: Question[] = [
   {
     id: "saa-sec-004",
     slug: "restrict-access-across-accounts-with-scps",
+    cert: "saa-c03",
     domain: "design-secure-architectures",
     topic: "iam-and-access-control",
     subtopic: "Multi-account guardrails",
@@ -156,6 +160,7 @@ export const secureQuestions: Question[] = [
   {
     id: "saa-sec-005",
     slug: "security-groups-vs-network-acls",
+    cert: "saa-c03",
     domain: "design-secure-architectures",
     topic: "network-security",
     subtopic: "VPC traffic control",
@@ -196,6 +201,7 @@ export const secureQuestions: Question[] = [
   {
     id: "saa-sec-006",
     slug: "protect-web-app-from-sql-injection",
+    cert: "saa-c03",
     domain: "design-secure-architectures",
     topic: "network-security",
     subtopic: "Application-layer protection",
@@ -232,6 +238,7 @@ export const secureQuestions: Question[] = [
   {
     id: "saa-sec-007",
     slug: "allow-private-subnet-instances-internet-egress",
+    cert: "saa-c03",
     domain: "design-secure-architectures",
     topic: "network-security",
     subtopic: "VPC egress",
@@ -268,6 +275,7 @@ export const secureQuestions: Question[] = [
   {
     id: "saa-sec-008",
     slug: "layer-3-4-ddos-protection",
+    cert: "saa-c03",
     domain: "design-secure-architectures",
     topic: "network-security",
     subtopic: "DDoS mitigation",
@@ -304,6 +312,7 @@ export const secureQuestions: Question[] = [
   {
     id: "saa-sec-009",
     slug: "encrypt-data-at-rest-with-customer-controlled-keys",
+    cert: "saa-c03",
     domain: "design-secure-architectures",
     topic: "data-protection",
     subtopic: "KMS",
@@ -344,6 +353,7 @@ export const secureQuestions: Question[] = [
   {
     id: "saa-sec-010",
     slug: "store-database-credentials-with-automatic-rotation",
+    cert: "saa-c03",
     domain: "design-secure-architectures",
     topic: "data-protection",
     subtopic: "Secrets management",
@@ -380,6 +390,7 @@ export const secureQuestions: Question[] = [
   {
     id: "saa-sec-011",
     slug: "tls-certificates-for-load-balancer",
+    cert: "saa-c03",
     domain: "design-secure-architectures",
     topic: "data-protection",
     subtopic: "Encryption in transit",
@@ -416,6 +427,7 @@ export const secureQuestions: Question[] = [
   {
     id: "saa-sec-012",
     slug: "select-controls-for-secure-workload",
+    cert: "saa-c03",
     domain: "design-secure-architectures",
     topic: "data-protection",
     subtopic: "Layered controls",
@@ -458,6 +470,7 @@ export const secureQuestions: Question[] = [
   {
     id: "saa-sec-013",
     slug: "private-api-access-with-interface-endpoint",
+    cert: "saa-c03",
     domain: "design-secure-architectures",
     topic: "network-security",
     subtopic: "Private connectivity",
@@ -494,6 +507,7 @@ export const secureQuestions: Question[] = [
   {
     id: "saa-sec-014",
     slug: "prevent-accidental-public-s3-access",
+    cert: "saa-c03",
     domain: "design-secure-architectures",
     topic: "data-protection",
     subtopic: "S3 access control",
@@ -530,6 +544,7 @@ export const secureQuestions: Question[] = [
   {
     id: "saa-sec-015",
     slug: "detect-threats-and-audit-api-calls",
+    cert: "saa-c03",
     domain: "design-secure-architectures",
     topic: "data-protection",
     subtopic: "Detection and audit",
@@ -572,6 +587,7 @@ export const secureQuestions: Question[] = [
   {
     id: "saa-sec-016",
     slug: "restrict-cloudfront-content-to-signed-urls",
+    cert: "saa-c03",
     domain: "design-secure-architectures",
     topic: "data-protection",
     subtopic: "Content access control",
@@ -608,6 +624,7 @@ export const secureQuestions: Question[] = [
   {
     id: "saa-sec-017",
     slug: "user-authentication-for-mobile-app",
+    cert: "saa-c03",
     domain: "design-secure-architectures",
     topic: "iam-and-access-control",
     subtopic: "Customer identity",
@@ -644,6 +661,7 @@ export const secureQuestions: Question[] = [
   {
     id: "saa-sec-018",
     slug: "security-group-chaining-between-tiers",
+    cert: "saa-c03",
     domain: "design-secure-architectures",
     topic: "network-security",
     subtopic: "Security group design",

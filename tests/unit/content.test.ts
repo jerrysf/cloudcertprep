@@ -7,6 +7,7 @@ import {
 } from "@/lib/content/questions";
 import { TOPICS, getTopic } from "@/lib/content/topics";
 import { DOMAINS } from "@/lib/content/domains";
+import { CERTIFICATIONS, getCertification } from "@/lib/content/certifications";
 import { ARTICLES } from "@/lib/content/articles";
 import { SERVICES } from "@/lib/content/services";
 import { FLASHCARDS } from "@/lib/content/flashcards";
@@ -37,6 +38,33 @@ describe("question bank integrity", () => {
   it("every published question's topic exists in the registry", () => {
     for (const q of PUBLISHED_QUESTIONS) {
       expect(getTopic(q.topic), q.id).toBeDefined();
+    }
+  });
+
+  it("every question's cert exists, domain matches the cert, and topic is consistent", () => {
+    for (const q of PUBLISHED_QUESTIONS) {
+      const cert = getCertification(q.cert);
+      expect(cert, `${q.id} → unknown cert ${q.cert}`).toBeDefined();
+      expect(
+        cert!.domains.some((d) => d.id === q.domain),
+        `${q.id} → domain ${q.domain} not in ${q.cert}`,
+      ).toBe(true);
+      const topic = getTopic(q.topic);
+      if (topic) {
+        expect(topic.cert, `${q.id} topic cert mismatch`).toBe(q.cert);
+        expect(topic.domain, `${q.id} topic domain mismatch`).toBe(q.domain);
+      }
+    }
+  });
+
+  it("every certification registry entry has valid domain ids and weights", () => {
+    const domainIds = new Set<string>();
+    for (const c of CERTIFICATIONS) {
+      for (const d of c.domains) {
+        expect(domainIds.has(d.id), `duplicate domain id ${d.id}`).toBe(false);
+        domainIds.add(d.id);
+        expect(d.weight).toBeGreaterThan(0);
+      }
     }
   });
 

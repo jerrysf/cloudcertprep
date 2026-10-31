@@ -10,7 +10,11 @@ import {
 } from "lucide-react";
 import { DOMAINS, EXAM } from "@/lib/content/domains";
 import { TOPICS } from "@/lib/content/topics";
-import { PUBLISHED_QUESTIONS } from "@/lib/content/questions";
+import {
+  PUBLISHED_QUESTIONS,
+  publishedByCert,
+} from "@/lib/content/questions";
+import { CERTIFICATIONS } from "@/lib/content/certifications";
 import { ARTICLES } from "@/lib/content/articles";
 import { SITE } from "@/lib/site";
 import { DashboardPreview } from "@/components/progress-dashboard";
@@ -52,7 +56,11 @@ export default function Home() {
               </ButtonLink>
             </div>
             <p className="mt-6 text-xs text-muted">
-              Free. No account required. Progress stays in your browser.
+              Free. No account required. Progress stays in your browser.{" "}
+              <Link href="/certifications" className="text-accent hover:underline">
+                Also covering {CERTIFICATIONS.length - 1} other AWS
+                certifications →
+              </Link>
             </p>
           </div>
         </Container>
@@ -106,8 +114,51 @@ export default function Home() {
         </Container>
       </section>
 
-      {/* Featured topics */}
+      {/* Certifications */}
       <section className="py-14">
+        <Container>
+          <SectionHeading
+            eyebrow="All certifications"
+            title="Choose your AWS certification"
+            description="Practice banks, exam guides, and domain breakdowns for every AWS certification we cover."
+          />
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {CERTIFICATIONS.map((c) => {
+              const count = publishedByCert(c.id).length;
+              return (
+                <Link
+                  key={c.id}
+                  href={`/certifications/${c.id}`}
+                  className="group rounded-xl border border-border bg-white p-5 transition-shadow hover:shadow-md"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <span className="font-mono text-sm font-semibold text-accent">
+                        {c.code}
+                      </span>
+                      <h3 className="mt-1 font-semibold leading-snug">
+                        {c.name.replace("AWS Certified ", "")}
+                      </h3>
+                    </div>
+                    <ArrowRight
+                      className="mt-1 h-4 w-4 shrink-0 text-muted transition-transform group-hover:translate-x-1 group-hover:text-accent"
+                      aria-hidden
+                    />
+                  </div>
+                  <p className="mt-2 text-xs text-muted">
+                    {count > 0
+                      ? `${count} practice questions`
+                      : "Question bank coming soon"}
+                  </p>
+                </Link>
+              );
+            })}
+          </div>
+        </Container>
+      </section>
+
+      {/* Featured topics */}
+      <section className="border-t border-border bg-card py-14">
         <Container>
           <SectionHeading
             eyebrow="Practice topics"

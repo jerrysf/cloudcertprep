@@ -4,6 +4,7 @@ export const resilientQuestions: Question[] = [
   {
     id: "saa-res-001",
     slug: "multi-az-web-tier-behind-alb",
+    cert: "saa-c03",
     domain: "design-resilient-architectures",
     topic: "high-availability",
     subtopic: "Multi-AZ compute",
@@ -44,6 +45,7 @@ export const resilientQuestions: Question[] = [
   {
     id: "saa-res-002",
     slug: "rds-failover-for-critical-database",
+    cert: "saa-c03",
     domain: "design-resilient-architectures",
     topic: "high-availability",
     subtopic: "Database HA",
@@ -80,6 +82,7 @@ export const resilientQuestions: Question[] = [
   {
     id: "saa-res-003",
     slug: "route53-health-check-failover",
+    cert: "saa-c03",
     domain: "design-resilient-architectures",
     topic: "high-availability",
     subtopic: "DNS failover",
@@ -116,6 +119,7 @@ export const resilientQuestions: Question[] = [
   {
     id: "saa-res-004",
     slug: "decouple-with-sqs-queue",
+    cert: "saa-c03",
     domain: "design-resilient-architectures",
     topic: "decoupling-and-messaging",
     subtopic: "Queue-based decoupling",
@@ -152,6 +156,7 @@ export const resilientQuestions: Question[] = [
   {
     id: "saa-res-005",
     slug: "fan-out-order-events-to-multiple-consumers",
+    cert: "saa-c03",
     domain: "design-resilient-architectures",
     topic: "decoupling-and-messaging",
     subtopic: "Pub/sub fan-out",
@@ -192,6 +197,7 @@ export const resilientQuestions: Question[] = [
   {
     id: "saa-res-006",
     slug: "fifo-ordering-for-transactions",
+    cert: "saa-c03",
     domain: "design-resilient-architectures",
     topic: "decoupling-and-messaging",
     subtopic: "Message ordering",
@@ -228,6 +234,7 @@ export const resilientQuestions: Question[] = [
   {
     id: "saa-res-007",
     slug: "rto-rpo-choose-dr-strategy",
+    cert: "saa-c03",
     domain: "design-resilient-architectures",
     topic: "disaster-recovery",
     subtopic: "DR patterns",
@@ -264,6 +271,7 @@ export const resilientQuestions: Question[] = [
   {
     id: "saa-res-008",
     slug: "centralized-backup-across-services",
+    cert: "saa-c03",
     domain: "design-resilient-architectures",
     topic: "disaster-recovery",
     subtopic: "Backup orchestration",
@@ -300,6 +308,7 @@ export const resilientQuestions: Question[] = [
   {
     id: "saa-res-009",
     slug: "rpo-driven-backup-frequency",
+    cert: "saa-c03",
     domain: "design-resilient-architectures",
     topic: "disaster-recovery",
     subtopic: "RPO fundamentals",
@@ -336,6 +345,7 @@ export const resilientQuestions: Question[] = [
   {
     id: "saa-res-010",
     slug: "s3-durability-and-versioning",
+    cert: "saa-c03",
     domain: "design-resilient-architectures",
     topic: "resilient-storage",
     subtopic: "S3 data protection",
@@ -372,6 +382,7 @@ export const resilientQuestions: Question[] = [
   {
     id: "saa-res-011",
     slug: "share-storage-across-instances-multi-az",
+    cert: "saa-c03",
     domain: "design-resilient-architectures",
     topic: "resilient-storage",
     subtopic: "Shared file storage",
@@ -408,6 +419,7 @@ export const resilientQuestions: Question[] = [
   {
     id: "saa-res-012",
     slug: "handle-poison-messages-with-dlq",
+    cert: "saa-c03",
     domain: "design-resilient-architectures",
     topic: "decoupling-and-messaging",
     subtopic: "Failure handling",
@@ -444,6 +456,7 @@ export const resilientQuestions: Question[] = [
   {
     id: "saa-res-013",
     slug: "pilot-light-dr-definition",
+    cert: "saa-c03",
     domain: "design-resilient-architectures",
     topic: "disaster-recovery",
     subtopic: "Pilot light",
@@ -480,6 +493,7 @@ export const resilientQuestions: Question[] = [
   {
     id: "saa-res-014",
     slug: "route53-latency-vs-geolocation",
+    cert: "saa-c03",
     domain: "design-resilient-architectures",
     topic: "high-availability",
     subtopic: "DNS routing",
@@ -516,6 +530,7 @@ export const resilientQuestions: Question[] = [
   {
     id: "saa-res-015",
     slug: "restore-ebs-volume-in-another-az",
+    cert: "saa-c03",
     domain: "design-resilient-architectures",
     topic: "resilient-storage",
     subtopic: "EBS recovery",
@@ -552,6 +567,7 @@ export const resilientQuestions: Question[] = [
   {
     id: "saa-res-016",
     slug: "stateless-web-tier-for-ha",
+    cert: "saa-c03",
     domain: "design-resilient-architectures",
     topic: "high-availability",
     subtopic: "Statelessness",
@@ -588,6 +604,7 @@ export const resilientQuestions: Question[] = [
   {
     id: "saa-res-017",
     slug: "aurora-global-database-cross-region",
+    cert: "saa-c03",
     domain: "design-resilient-architectures",
     topic: "high-availability",
     subtopic: "Global database",

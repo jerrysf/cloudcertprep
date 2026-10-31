@@ -4,6 +4,7 @@ export const costOptimizedQuestions: Question[] = [
   {
     id: "saa-cost-001",
     slug: "archive-access-pattern-storage-class",
+    cert: "saa-c03",
     domain: "design-cost-optimized-architectures",
     topic: "cost-optimized-storage",
     subtopic: "S3 storage classes",
@@ -40,6 +41,7 @@ export const costOptimizedQuestions: Question[] = [
   {
     id: "saa-cost-002",
     slug: "lifecycle-rules-for-aging-logs",
+    cert: "saa-c03",
     domain: "design-cost-optimized-architectures",
     topic: "cost-optimized-storage",
     subtopic: "Lifecycle management",
@@ -76,6 +78,7 @@ export const costOptimizedQuestions: Question[] = [
   {
     id: "saa-cost-003",
     slug: "unknown-access-pattern-storage",
+    cert: "saa-c03",
     domain: "design-cost-optimized-architectures",
     topic: "cost-optimized-storage",
     subtopic: "Intelligent-Tiering",
@@ -112,6 +115,7 @@ export const costOptimizedQuestions: Question[] = [
   {
     id: "saa-cost-004",
     slug: "predictable-steady-workload-pricing",
+    cert: "saa-c03",
     domain: "design-cost-optimized-architectures",
     topic: "cost-optimized-compute",
     subtopic: "Commitment discounts",
@@ -152,6 +156,7 @@ export const costOptimizedQuestions: Question[] = [
   {
     id: "saa-cost-005",
     slug: "right-size-underutilized-instances",
+    cert: "saa-c03",
     domain: "design-cost-optimized-architectures",
     topic: "cost-optimized-compute",
     subtopic: "Right-sizing",
@@ -188,6 +193,7 @@ export const costOptimizedQuestions: Question[] = [
   {
     id: "saa-cost-006",
     slug: "intermittent-dev-workloads-serverless",
+    cert: "saa-c03",
     domain: "design-cost-optimized-architectures",
     topic: "cost-optimized-compute",
     subtopic: "Pay-per-use",
@@ -224,6 +230,7 @@ export const costOptimizedQuestions: Question[] = [
   {
     id: "saa-cost-007",
     slug: "aurora-vs-rds-vs-dynamodb-cost",
+    cert: "saa-c03",
     domain: "design-cost-optimized-architectures",
     topic: "cost-optimized-databases-and-network",
     subtopic: "Database cost models",
@@ -266,6 +273,7 @@ export const costOptimizedQuestions: Question[] = [
   {
     id: "saa-cost-008",
     slug: "private-s3-access-avoid-nat-fees",
+    cert: "saa-c03",
     domain: "design-cost-optimized-architectures",
     topic: "cost-optimized-databases-and-network",
     subtopic: "VPC endpoints",
@@ -302,6 +310,7 @@ export const costOptimizedQuestions: Question[] = [
   {
     id: "saa-cost-009",
     slug: "right-size-ebs-for-cold-storage",
+    cert: "saa-c03",
     domain: "design-cost-optimized-architectures",
     topic: "cost-optimized-storage",
     subtopic: "EBS cost optimization",
@@ -338,6 +347,7 @@ export const costOptimizedQuestions: Question[] = [
   {
     id: "saa-cost-010",
     slug: "efs-infrequent-access-cost-saving",
+    cert: "saa-c03",
     domain: "design-cost-optimized-architectures",
     topic: "cost-optimized-storage",
     subtopic: "EFS lifecycle",
@@ -374,6 +384,7 @@ export const costOptimizedQuestions: Question[] = [
   {
     id: "saa-cost-011",
     slug: "identify-idle-and-underutilized-resources",
+    cert: "saa-c03",
     domain: "design-cost-optimized-architectures",
     topic: "cost-optimized-compute",
     subtopic: "Cost visibility",
@@ -410,6 +421,7 @@ export const costOptimizedQuestions: Question[] = [
   {
     id: "saa-cost-012",
     slug: "organizations-consolidated-billing",
+    cert: "saa-c03",
     domain: "design-cost-optimized-architectures",
     topic: "cost-optimized-compute",
     subtopic: "Billing consolidation",
@@ -446,6 +458,7 @@ export const costOptimizedQuestions: Question[] = [
   {
     id: "saa-cost-013",
     slug: "cheapest-storage-for-regulatory-archive",
+    cert: "saa-c03",
     domain: "design-cost-optimized-architectures",
     topic: "cost-optimized-storage",
     subtopic: "Long-term archive",

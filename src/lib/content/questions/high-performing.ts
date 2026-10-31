@@ -4,6 +4,7 @@ export const highPerformingQuestions: Question[] = [
   {
     id: "saa-perf-001",
     slug: "event-driven-image-resize-compute",
+    cert: "saa-c03",
     domain: "design-high-performing-architectures",
     topic: "compute-selection",
     subtopic: "Serverless compute",
@@ -44,6 +45,7 @@ export const highPerformingQuestions: Question[] = [
   {
     id: "saa-perf-002",
     slug: "steady-state-vs-spiky-compute",
+    cert: "saa-c03",
     domain: "design-high-performing-architectures",
     topic: "compute-selection",
     subtopic: "Right compute model",
@@ -80,6 +82,7 @@ export const highPerformingQuestions: Question[] = [
   {
     id: "saa-perf-003",
     slug: "batch-processing-spot-fleet",
+    cert: "saa-c03",
     domain: "design-high-performing-architectures",
     topic: "compute-selection",
     subtopic: "Batch workloads",
@@ -120,6 +123,7 @@ export const highPerformingQuestions: Question[] = [
   {
     id: "saa-perf-004",
     slug: "read-heavy-rds-scaling",
+    cert: "saa-c03",
     domain: "design-high-performing-architectures",
     topic: "database-selection-and-scaling",
     subtopic: "Read scaling",
@@ -156,6 +160,7 @@ export const highPerformingQuestions: Question[] = [
   {
     id: "saa-perf-005",
     slug: "key-value-single-digit-ms-at-any-scale",
+    cert: "saa-c03",
     domain: "design-high-performing-architectures",
     topic: "database-selection-and-scaling",
     subtopic: "NoSQL at scale",
@@ -192,6 +197,7 @@ export const highPerformingQuestions: Question[] = [
   {
     id: "saa-perf-006",
     slug: "dynamodb-millisecond-reads-under-load",
+    cert: "saa-c03",
     domain: "design-high-performing-architectures",
     topic: "database-selection-and-scaling",
     subtopic: "DynamoDB caching",
@@ -228,6 +234,7 @@ export const highPerformingQuestions: Question[] = [
   {
     id: "saa-perf-007",
     slug: "global-low-latency-static-assets",
+    cert: "saa-c03",
     domain: "design-high-performing-architectures",
     topic: "caching-and-content-delivery",
     subtopic: "CDN",
@@ -264,6 +271,7 @@ export const highPerformingQuestions: Question[] = [
   {
     id: "saa-perf-008",
     slug: "cache-frequent-db-lookups",
+    cert: "saa-c03",
     domain: "design-high-performing-architectures",
     topic: "caching-and-content-delivery",
     subtopic: "In-memory caching",
@@ -300,6 +308,7 @@ export const highPerformingQuestions: Question[] = [
   {
     id: "saa-perf-009",
     slug: "auto-scaling-for-daily-traffic-cycle",
+    cert: "saa-c03",
     domain: "design-high-performing-architectures",
     topic: "scalability-and-elasticity",
     subtopic: "Scaling policies",
@@ -340,6 +349,7 @@ export const highPerformingQuestions: Question[] = [
   {
     id: "saa-perf-010",
     slug: "alb-vs-nlb-selection",
+    cert: "saa-c03",
     domain: "design-high-performing-architectures",
     topic: "scalability-and-elasticity",
     subtopic: "Load balancer types",
@@ -376,6 +386,7 @@ export const highPerformingQuestions: Question[] = [
   {
     id: "saa-perf-011",
     slug: "cloudfront-vs-global-accelerator",
+    cert: "saa-c03",
     domain: "design-high-performing-architectures",
     topic: "caching-and-content-delivery",
     subtopic: "Global networking",
@@ -412,6 +423,7 @@ export const highPerformingQuestions: Question[] = [
   {
     id: "saa-perf-012",
     slug: "gp3-vs-io2-for-iops",
+    cert: "saa-c03",
     domain: "design-high-performing-architectures",
     topic: "compute-selection",
     subtopic: "Block storage performance",
@@ -448,6 +460,7 @@ export const highPerformingQuestions: Question[] = [
   {
     id: "saa-perf-013",
     slug: "real-time-stream-ingestion",
+    cert: "saa-c03",
     domain: "design-high-performing-architectures",
     topic: "compute-selection",
     subtopic: "Streaming data",
@@ -484,6 +497,7 @@ export const highPerformingQuestions: Question[] = [
   {
     id: "saa-perf-014",
     slug: "faster-long-distance-s3-uploads",
+    cert: "saa-c03",
     domain: "design-high-performing-architectures",
     topic: "caching-and-content-delivery",
     subtopic: "Upload acceleration",
@@ -520,6 +534,7 @@ export const highPerformingQuestions: Question[] = [
   {
     id: "saa-perf-015",
     slug: "elasticache-redis-vs-memcached",
+    cert: "saa-c03",
     domain: "design-high-performing-architectures",
     topic: "caching-and-content-delivery",
     subtopic: "Cache engine choice",
@@ -556,6 +571,7 @@ export const highPerformingQuestions: Question[] = [
   {
     id: "saa-perf-016",
     slug: "dynamodb-partition-key-design",
+    cert: "saa-c03",
     domain: "design-high-performing-architectures",
     topic: "database-selection-and-scaling",
     subtopic: "DynamoDB data modeling",
@@ -592,6 +608,7 @@ export const highPerformingQuestions: Question[] = [
   {
     id: "saa-perf-017",
     slug: "low-latency-hpc-placement-group",
+    cert: "saa-c03",
     domain: "design-high-performing-architectures",
     topic: "compute-selection",
     subtopic: "Placement groups",

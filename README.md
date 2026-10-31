@@ -1,6 +1,6 @@
 # CloudCertPrep
 
-Free, open study platform for the **AWS Certified Solutions Architect – Associate (SAA-C03)** exam — original practice questions with per-option explanations, timed mock exams, a study-plan generator, flashcards, and SEO-optimized study guides.
+Free, open study platform for **AWS certifications** — 9 exams covered (SAA-C03 deepest, plus CLF-C02, AIF-C01, DVA-C02, SOA-C03, DEA-C01, SCS-C02, ANS-C01, SAP-C02) — with original practice questions, per-option explanations, timed mock exams, a study-plan generator, flashcards, and SEO-optimized study guides.
 
 > CloudCertPrep is an independent study resource and is not affiliated with, endorsed by, or sponsored by Amazon Web Services.
 
@@ -47,9 +47,10 @@ src/
   lib/
     content/
       schema.ts         # Zod question schema + bank validators
-      domains.ts        # official SAA-C03 exam facts (verify before edits!)
-      topics.ts         # practice topics -> /practice/[slug]
-      questions/        # question bank, one file per domain
+      certifications.ts # all 9 cert defs — domains, weights, exam metadata
+      domains.ts        # domain lookup across certs + SAA-C03 re-exports
+      topics.ts         # practice topics per cert -> /practice/[slug]
+      questions/        # question bank, one file per cert/domain
       services.ts       # AWS service study guides -> /services/[slug]
       articles.ts       # in-depth articles -> /learn/[slug]
       flashcards.ts     # flashcard deck
@@ -129,8 +130,12 @@ domain weighting changes.
   data erases it. The `ProgressStore` interface in `src/lib/storage.ts` is the
   seam for a future Supabase/Postgres backend.
 - Practice scores are simple percentages, not AWS scaled scoring.
-- Question bank is 65 questions — enough for topic practice; a full 65-question
-  mock exam currently samples from that pool.
+- Question bank is 97 questions (65 SAA-C03 + 32 seed questions across the
+  other 8 certifications). Non-SAA cert banks are thin seeds — expand per
+  `docs/exam-verification.md` before marketing those certs.
+- Exam metadata (weights, cost, duration) is verified only for SAA-C03;
+  other certs are flagged `verified: false` in `certifications.ts` and must be
+  re-checked against official exam guides before major content pushes.
 - Contact is a mailto link; a serverless form would need spam/rate limiting.
 - Search Console/analytics/ads/affiliates are configured but intentionally
   disabled until verified and consented.

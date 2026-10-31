@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/site";
+import { CERTIFICATIONS } from "@/lib/content/certifications";
 import { TOPICS } from "@/lib/content/topics";
 import { SERVICES } from "@/lib/content/services";
 import { ARTICLES } from "@/lib/content/articles";
@@ -23,6 +24,7 @@ export function getSitemapEntries(): MetadataRoute.Sitemap {
   const staticRoutes: Array<{ path: string; priority: number }> = [
     { path: "/", priority: 1 },
     { path: "/practice", priority: 0.9 },
+    { path: "/certifications", priority: 0.9 },
     { path: "/questions", priority: 0.8 },
     { path: "/mock-exam", priority: 0.8 },
     { path: "/services", priority: 0.8 },
@@ -60,6 +62,14 @@ export function getSitemapEntries(): MetadataRoute.Sitemap {
       lastModified: q.lastReviewed,
       changeFrequency: "monthly",
       priority: 0.6,
+    });
+  }
+  for (const c of CERTIFICATIONS) {
+    entries.push({
+      url: `${SITE.url}/certifications/${c.id}`,
+      lastModified: SITE_LAST_UPDATED,
+      changeFrequency: "weekly",
+      priority: 0.8,
     });
   }
   for (const s of SERVICES) {
