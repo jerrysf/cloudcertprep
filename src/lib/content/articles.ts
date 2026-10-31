@@ -1418,6 +1418,400 @@ ARTICLES.push({
   ],
 });
 
+// ---- Comparison articles: messaging, IAM, network security, hybrid ----
+
+ARTICLES.push({
+  slug: "kinesis-vs-msk-vs-eventbridge",
+  title: "Kinesis vs Amazon MSK vs EventBridge: Picking the Right Event Platform",
+  description:
+    "Streaming data, Kafka workloads, and event buses solve different problems. Learn when Kinesis, MSK, or EventBridge is the right answer — with decision shortcuts for exam scenarios.",
+  domain: "design-high-performing-architectures",
+  topic: "decoupling-and-messaging",
+  updatedAt: "2026-10-27",
+  readingMinutes: 7,
+  sections: [
+    {
+      paragraphs: [
+        "All three services move events, but they answer different questions. Kinesis is AWS's native streaming platform for high-throughput ordered data. MSK is managed Apache Kafka for teams standardized on Kafka's ecosystem. EventBridge is a serverless event bus for routing application events to targets with filtering — not a streaming store.",
+        "Exam questions hinge on three signals: is this a durable replayable stream (Kinesis/MSK) or event routing (EventBridge)? Is Kafka compatibility required (MSK)? Is the answer 'fully managed, least operational effort' (usually EventBridge or Kinesis Data Streams/Firehose over MSK)?",
+      ],
+    },
+    {
+      heading: "Kinesis: native AWS streaming",
+      paragraphs: [
+        "Kinesis Data Streams stores an ordered, replayable stream per shard (1 MB/s in, 2 MB/s out per shard). Consumers use the KCL or Lambda to process records; retention is 24 hours to 365 days. Choose it for clickstream ingestion, real-time analytics pipelines, and ordering-sensitive event logs.",
+        "Kinesis Data Firehose is the delivery cousin — buffers and delivers streams to S3, Redshift, or OpenSearch with optional Lambda transforms. If the requirement ends at 'land data in a destination,' Firehose is the answer.",
+      ],
+    },
+    {
+      heading: "Amazon MSK: when it must be Kafka",
+      paragraphs: [
+        "MSK runs real Apache Kafka clusters — brokers, ZooKeeper/KRaft, the whole ecosystem. Choose MSK when migrating existing Kafka workloads, when teams depend on Kafka clients/tools (Kafka Connect, ksqlDB), or when multi-cluster replication patterns are already Kafka-based.",
+        "The trade-off: more operational surface than Kinesis. MSK Serverless reduces this, but if there's no Kafka requirement, native Kinesis is usually the 'less operations' answer.",
+      ],
+    },
+    {
+      heading: "EventBridge: the routing bus",
+      paragraphs: [
+        "EventBridge ingests events from AWS services, SaaS partners, and custom apps, then routes them to 20+ targets via rules — with content filtering, schema registry, and event replay. It's the default for decoupled 'X happened → notify these consumers' integration, scheduled tasks, and cross-service choreography.",
+        "It's not a stream: no ordering guarantees across the bus, no shard-based replay model for bulk analytics. If the question says 'route events to different targets based on content,' think EventBridge.",
+      ],
+    },
+    {
+      heading: "Decision shortcuts",
+      list: [
+        "Ordered replayable stream, real-time consumers → Kinesis Data Streams",
+        "Deliver streaming data to S3/Redshift/OpenSearch, no code → Kinesis Data Firehose",
+        "Existing Kafka ecosystem or migration → Amazon MSK",
+        "Route events between apps/AWS services with filtering → EventBridge",
+        "Scheduled jobs or cron-like triggers → EventBridge Scheduler",
+        "Simple decoupling of one producer/consumer → SQS (not these three)",
+      ],
+      paragraphs: [
+        "Watch for hybrid answers: producers often publish to Kinesis while EventBridge handles the application-integration layer — they coexist rather than compete.",
+      ],
+    },
+  ],
+  references: [
+    { title: "Amazon Kinesis Data Streams", url: "https://docs.aws.amazon.com/streams/latest/dev/introduction.html" },
+    { title: "Amazon MSK", url: "https://docs.aws.amazon.com/msk/latest/developerguide/what-is-msk.html" },
+    { title: "Amazon EventBridge", url: "https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-what-is.html" },
+  ],
+});
+
+ARTICLES.push({
+  slug: "scp-vs-permission-boundary",
+  title: "SCP vs Permission Boundary: Two Guardrails That Look Alike but Aren't",
+  description:
+    "Service Control Policies and permission boundaries both cap what IAM identities can do — but they apply at different layers, in different scopes, and fail differently. Here's how to tell them apart.",
+  domain: "design-secure-architectures",
+  topic: "iam-and-access-control",
+  updatedAt: "2026-10-27",
+  readingMinutes: 6,
+  sections: [
+    {
+      paragraphs: [
+        "Both SCPs and permission boundaries are maximum-permission guardrails — neither grants permissions on its own. The exam tests whether you know WHERE each applies: SCPs guard accounts (and OUs/roots) in AWS Organizations; permission boundaries guard individual IAM users and roles.",
+        "The effective permission is always the intersection: for an IAM entity to act, its identity policy must allow it AND no guardrail must deny it.",
+      ],
+    },
+    {
+      heading: "Service Control Policies — account-level ceiling",
+      paragraphs: [
+        "SCPs attach to the organization root, OUs, or individual accounts in AWS Organizations. They set the maximum permissions for ALL principals in affected accounts — including the root user. Deny-list strategy (default allow, SCPs carve out) is the common pattern: 'deny leaving these regions,' 'deny disabling CloudTrail.'",
+        "Key facts: SCPs don't affect service-linked roles; they apply to IAM users/roles including root; a 'deny' wins over any allow; management-account SCPs don't limit the management account itself.",
+      ],
+    },
+    {
+      heading: "Permission boundaries — entity-level ceiling",
+      paragraphs: [
+        "A permission boundary is a managed policy attached to a single IAM user or role that caps what that entity can do — even if its identity policies grant more. The classic use case: let developers create IAM roles for their Lambda functions, but only if the new roles carry a boundary that prevents privilege escalation.",
+        "Boundaries don't apply to resource-based policies for access evaluation in the same way — a resource policy can grant access to the entity within boundary limits, but the boundary still caps what identity-policy permissions can do.",
+      ],
+    },
+    {
+      heading: "Side-by-side",
+      list: [
+        "Scope: SCP = org/OU/account; boundary = one user or role",
+        "Managed by: SCP = organization admin; boundary = IAM admin in the account",
+        "Applies to root user: SCP yes; boundary no (root has no policies)",
+        "Use for: SCP = governance across many accounts; boundary = safe IAM delegation",
+        "Evaluation: both intersect with identity policies — allow requires all three layers",
+      ],
+      paragraphs: [
+        "Exam shortcut: 'prevent privilege escalation when delegating role creation' → permission boundary. 'Enforce rules across every account in the org' → SCP. Both can appear in the same scenario — layered, not competing.",
+      ],
+    },
+  ],
+  references: [
+    { title: "Service control policies", url: "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html" },
+    { title: "Permission boundaries", url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html" },
+  ],
+});
+
+ARTICLES.push({
+  slug: "waf-vs-network-firewall-vs-shield",
+  title: "AWS WAF vs Network Firewall vs Shield: Three Layers of Network Defense",
+  description:
+    "WAF filters application traffic, Network Firewall inspects network flows, Shield absorbs DDoS. Understand which service answers which threat — and how they layer together.",
+  domain: "design-secure-architectures",
+  topic: "network-security",
+  updatedAt: "2026-10-27",
+  readingMinutes: 6,
+  sections: [
+    {
+      paragraphs: [
+        "These three services get confused because all are 'firewall-ish.' The clean separation: Shield protects against DDoS (layers 3/4 volumetric + L7 with Advanced), WAF filters HTTP(S) requests at layer 7, and Network Firewall is a stateful network-layer inspection engine for VPC traffic.",
+      ],
+    },
+    {
+      heading: "AWS WAF — the web request gatekeeper",
+      paragraphs: [
+        "WAF attaches to CloudFront, ALB, API Gateway, AppSync, and Cognito. It inspects HTTP requests against rules: managed rule groups (OWASP Top 10, known bad inputs, IP reputation), rate-based rules, geo-matching, and custom conditions.",
+        "Choose WAF for: blocking SQLi/XSS patterns, rate-limiting abusive clients, geo-blocking, bot control. It sees requests only after TLS termination at the attached resource — it's an application-layer control.",
+      ],
+    },
+    {
+      heading: "AWS Network Firewall — the VPC traffic inspector",
+      paragraphs: [
+        "Network Firewall deploys into a dedicated subnet and inspects traffic flowing through it — stateful rules, domain filtering, Suricata-compatible IPS signatures, and TLS inspection (with ACM certs). It's the managed answer to 'run IDS/IPS across my VPCs,' typically in a centralized inspection VPC behind Transit Gateway.",
+        "Choose it for: egress filtering to approved domains, protocol enforcement, centralized deep-packet inspection across many VPCs. It operates at layers 3–7 on network flows, not just web requests.",
+      ],
+    },
+    {
+      heading: "AWS Shield — the DDoS absorber",
+      paragraphs: [
+        "Shield Standard is automatic and free on CloudFront, Route 53, ALB, and Global Accelerator — it absorbs common L3/L4 attacks. Shield Advanced adds 24/7 DDoS response team access, cost protection during attacks, enhanced visibility, and L7 mitigation when combined with WAF.",
+        "Shield isn't a firewall you configure rules for — it's always-on mitigation capacity. The decision is usually Standard (free, default) vs Advanced (paid, for high-availability or regulated workloads).",
+      ],
+    },
+    {
+      heading: "Layering them together",
+      list: [
+        "Edge DDoS protection for a public web app → Shield Standard on CloudFront + WAF rules",
+        "Regulated workload needing DRT support + cost protection → Shield Advanced",
+        "Inspect ALL outbound VPC traffic to unapproved domains → Network Firewall",
+        "Block SQL injection on an ALB → WAF (Network Firewall could, but WAF is the designed answer)",
+        "Defense in depth for a large org → all three, each covering its layer",
+      ],
+      paragraphs: [
+        "Exam tells: 'HTTP request filtering' → WAF. 'VPC-level IDS/IPS or domain-based egress control' → Network Firewall. 'DDoS resilience or response team' → Shield.",
+      ],
+    },
+  ],
+  references: [
+    { title: "AWS WAF", url: "https://docs.aws.amazon.com/waf/latest/developerguide/waf-chapter.html" },
+    { title: "AWS Network Firewall", url: "https://docs.aws.amazon.com/network-firewall/latest/developerguide/what-is-aws-network-firewall.html" },
+    { title: "AWS Shield", url: "https://docs.aws.amazon.com/waf/latest/developerguide/shield-chapter.html" },
+  ],
+});
+
+ARTICLES.push({
+  slug: "direct-connect-vs-site-to-site-vpn",
+  title: "Direct Connect vs Site-to-Site VPN: Choosing Your Hybrid Link",
+  description:
+    "Dedicated private circuit or encrypted tunnel over the internet? Compare latency, cost, setup time, encryption, and resilience — with the exam's decision cues for hybrid connectivity.",
+  domain: "ans-network-design",
+  topic: "ans-hybrid-connectivity",
+  updatedAt: "2026-10-27",
+  readingMinutes: 6,
+  sections: [
+    {
+      paragraphs: [
+        "Both connect your on-premises network to AWS, but they trade differently. Site-to-Site VPN is an IPsec tunnel over the public internet — fast to provision, cheap, dependent on internet quality. Direct Connect is a dedicated physical circuit via a DX location — consistent bandwidth and latency, private, but takes weeks to provision and costs more.",
+        "The standard enterprise answer is often 'both': DX as the primary path, VPN as encrypted backup or failover.",
+      ],
+    },
+    {
+      heading: "Site-to-Site VPN: the quick encrypted tunnel",
+      list: [
+        "Two IPsec tunnels per connection for built-in failover",
+        "Provisions in minutes — just a customer gateway device and config",
+        "Runs over the internet — bandwidth/latency vary with your ISP path",
+        "Encapsulation is encrypted end to end (IPsec)",
+        "Throughput ~1.25 Gbps per tunnel on a VGW (more via TGW/ECMP)",
+      ],
+      paragraphs: [
+        "Choose VPN for: quick setup, low traffic volumes, backup connectivity to DX, or reaching resources where a DX location isn't feasible.",
+      ],
+    },
+    {
+      heading: "Direct Connect: the dedicated circuit",
+      list: [
+        "Private physical connection — bypasses the internet entirely",
+        "Consistent low latency and bandwidth (dedicated 1/10/100 Gbps or hosted 50 Mbps–10 Gbps)",
+        "Weeks to provision — involves a carrier and a DX location",
+        "NOT encrypted by default — add MACsec (supported ports) or run a VPN over DX",
+        "Virtual interfaces: private VIF (VPCs), public VIF (AWS public endpoints), transit VIF (TGW)",
+      ],
+      paragraphs: [
+        "Choose DX for: steady high-throughput workloads, latency-sensitive apps, compliance requiring private paths, or reducing data-transfer costs at scale.",
+      ],
+    },
+    {
+      heading: "Resilience and the hybrid answer",
+      paragraphs: [
+        "A single DX connection is a single point of failure — the reference design is two connections at separate DX locations, optionally with a Site-to-Site VPN as tertiary failover. VPN over a public VIF on DX adds encryption to a private path.",
+      ],
+      list: [
+        "'Provision in days, low cost, moderate bandwidth' → Site-to-Site VPN",
+        "'Consistent latency/bandwidth, private connectivity' → Direct Connect",
+        "'Encrypt traffic on DX' → MACsec on supported ports or VPN over public VIF",
+        "'Resilient production hybrid' → dual DX + VPN backup",
+        "'Backup when DX fails' → Site-to-Site VPN as failover path",
+      ],
+    },
+  ],
+  references: [
+    { title: "AWS Direct Connect", url: "https://docs.aws.amazon.com/directconnect/latest/UserGuide/Welcome.html" },
+    { title: "AWS Site-to-Site VPN", url: "https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN.html" },
+    { title: "Direct Connect resilience", url: "https://docs.aws.amazon.com/directconnect/latest/UserGuide/resilient-dx.html" },
+  ],
+});
+
+ARTICLES.push({
+  slug: "clf-c02-cheat-sheet",
+  title: "CLF-C02 Cheat Sheet: Cloud Practitioner Quick Reference",
+  description:
+    "A condensed CLF-C02 review sheet: cloud concepts, shared responsibility, core services by category, billing tools, and support plans — the facts the exam repeats.",
+  domain: "clf-cloud-concepts",
+  topic: "clf-cloud-essentials",
+  updatedAt: "2026-10-27",
+  readingMinutes: 7,
+  sections: [
+    {
+      paragraphs: [
+        "CLF-C02 is vocabulary-heavy: most questions are 'which service/concept is described here.' This sheet compresses the highest-frequency facts — scan it the week before the exam.",
+      ],
+    },
+    {
+      heading: "Cloud concepts",
+      list: [
+        "Six cloud advantages: trade CapEx for variable expense, economies of scale, stop guessing capacity, speed/agility, stop running data centers, go global in minutes",
+        "Well-Architected pillars: Operational Excellence, Security, Reliability, Performance Efficiency, Cost Optimization, Sustainability",
+        "CAF perspectives: Business, People, Governance, Platform, Security, Operations",
+        "Deployment models: cloud, hybrid (Outposts, Direct Connect, VPN), on-premises",
+      ],
+    },
+    {
+      heading: "Shared responsibility model",
+      list: [
+        "AWS = security OF the cloud: physical, hardware, global infrastructure, managed-service OS/patching",
+        "Customer = security IN the cloud: data, IAM, network config, (on EC2) guest OS",
+        "More managed = less customer responsibility: EC2 > containers > Lambda",
+      ],
+    },
+    {
+      heading: "Core services in one line",
+      list: [
+        "EC2 — virtual servers; S3 — object storage; EBS — block storage for EC2; EFS — shared file storage",
+        "RDS/Aurora — relational DB; DynamoDB — NoSQL key-value; Redshift — data warehouse",
+        "Lambda — serverless functions; Elastic Beanstalk — deploy apps fast; ECS/EKS — containers",
+        "VPC — your network; Route 53 — DNS; CloudFront — CDN; ELB — load balancing",
+        "IAM — users/roles/policies; Organizations — multi-account; CloudTrail — API audit; CloudWatch — metrics/logs/alarms",
+        "SNS — pub/sub notifications; SQS — message queue; KMS — encryption keys; WAF/Shield — web filtering/DDoS",
+      ],
+    },
+    {
+      heading: "Billing & pricing",
+      list: [
+        "Cost Explorer — analyze/visualize spend & forecast; Budgets — threshold alerts on actual or forecasted spend",
+        "Pricing Calculator — estimate BEFORE you build; CUR — raw detailed billing data to S3",
+        "Free tier: 12-month (e.g., t2/t3.micro), always-free (e.g., Lambda 1M requests), trials",
+        "EC2 pricing: On-Demand (flexible), Reserved/Savings Plans (1-3yr commit, up to ~72% off), Spot (interruptible, up to ~90% off), Dedicated Hosts (licensing/compliance)",
+        "Consolidated billing (Organizations) — volume discounts pool across accounts",
+      ],
+    },
+    {
+      heading: "Support plans",
+      list: [
+        "Basic — free: docs, forums, limited Trusted Advisor checks",
+        "Developer — business-hours email, one primary contact, general guidance",
+        "Business — 24/7 phone/chat/email, full Trusted Advisor, production guidance (NO TAM — the trap)",
+        "Enterprise — adds a Technical Account Manager + concierge team",
+      ],
+    },
+    {
+      heading: "Last-week checklist",
+      list: [
+        "Know which tool does what: CloudTrail (who did it) vs CloudWatch (how it's performing) vs Config (what changed)",
+        "Multi-AZ = availability; read replica = scale/DR; edge location = latency",
+        "'Cheapest way to X' answers usually involve serverless or managed services",
+        "Global services: IAM, CloudFront, Route 53, WAF — everything else is regional",
+      ],
+    },
+  ],
+  references: [
+    {
+      title: "AWS Certified Cloud Practitioner",
+      url: "https://aws.amazon.com/certification/certified-cloud-practitioner/",
+    },
+  ],
+});
+
+ARTICLES.push({
+  slug: "dva-c02-cheat-sheet",
+  title: "DVA-C02 Cheat Sheet: Developer Associate Quick Reference",
+  description:
+    "A condensed DVA-C02 review sheet: Lambda limits and behaviors, DynamoDB gotchas, API Gateway features, SQS/SNS/EventBridge patterns, IAM must-knows, and CI/CD services.",
+  domain: "dva-development-with-aws",
+  topic: "dva-serverless-and-apis",
+  updatedAt: "2026-10-27",
+  readingMinutes: 7,
+  sections: [
+    {
+      paragraphs: [
+        "DVA-C02 rewards service-behavior precision — limits, defaults, and which feature solves which problem. This sheet compresses the repeated exam signals by service.",
+      ],
+    },
+    {
+      heading: "Lambda — the numbers that matter",
+      list: [
+        "Timeout max: 15 minutes. Memory: 128 MB–10 GB (CPU scales with memory). /tmp: 512 MB–10 GB",
+        "Deployment: 50 MB zipped direct, 250 MB unzipped (with layers), 10 GB container image",
+        "Concurrency: default 1,000/region (soft); reserved = guarantee+ceiling; provisioned = pre-warmed (kills cold starts)",
+        "Versions are immutable; aliases point at versions — weighted alias routing enables canary/blue-green via CodeDeploy",
+        "Destinations: async success/failure routing (SQS/SNS/Lambda/EventBridge); DLQ for sync-invoked failures",
+        "Environment variables are encrypted at rest by KMS but visible in console — use Secrets Manager for real secrets",
+      ],
+    },
+    {
+      heading: "DynamoDB — the gotchas",
+      list: [
+        "Primary key: partition key (required) + optional sort key — no joins, no ad-hoc query by non-key attrs without GSI/scan",
+        "GSI: any attributes, can be added anytime, own RCU/WCU; LSI: same PK, different sort, table-creation only",
+        "On-demand vs provisioned capacity; DAX = in-memory cache (ms→µs); Streams capture item changes (Lambda triggers)",
+        "Eventually consistent by default; strongly consistent reads cost 2x RCU — the classic cost/accuracy trade",
+        "Point-in-time recovery, global tables (multi-region), TTL for free expiry",
+      ],
+    },
+    {
+      heading: "SQS / SNS / EventBridge",
+      list: [
+        "SQS standard: at-least-once, best-effort ordering, ~unlimited throughput; FIFO: exactly-once + strict order (300 msg/s base)",
+        "Visibility timeout ≠ retention — message hidden while being processed; DLQ after max receives",
+        "Long polling (waitTimeSeconds 1–20s) reduces empty receives and cost — always prefer it",
+        "SNS = fan-out pub/sub to many subscribers; EventBridge = event bus with content-based routing + SaaS/native integrations + schema registry",
+        "Fan-out pattern: SNS → multiple SQS queues (each consumer gets its own copy)",
+      ],
+    },
+    {
+      heading: "API Gateway",
+      list: [
+        "REST vs HTTP API: HTTP is cheaper/faster (proxy-style); REST adds keys, usage plans, request validation, caching, private endpoints",
+        "WebSocket API: two-way real-time (chat); routes $connect/$disconnect/custom",
+        "Authorizers: IAM, Cognito user pools, Lambda (custom); resource policies for cross-account/IP rules",
+        "Throttling default 10k rps/account; stages + stage variables; canary deployments on stages",
+      ],
+    },
+    {
+      heading: "IAM & security must-knows",
+      list: [
+        "Never embed credentials — EC2 instance profile, Lambda execution role, ECS task role",
+        "Cognito: user pools = authN + JWTs; identity pools = AWS credentials for federated/guest access",
+        "JWT verification: JWKS public keys + validate iss/aud/exp — verify signature, not just decode",
+        "KMS: envelope encryption; SSM Parameter Store vs Secrets Manager (rotation built-in)",
+      ],
+    },
+    {
+      heading: "CI/CD & observability",
+      list: [
+        "CodeCommit (source) → CodeBuild (build/test) → CodeDeploy (deploy) → CodePipeline (orchestrates all)",
+        "CodeDeploy styles: in-place/blue-green on EC2; canary/linear traffic shifting on Lambda & ECS; auto-rollback on CloudWatch alarms",
+        "X-Ray: end-to-end traces + service map + subsegments — 'where is latency' answers",
+        "Elastic Beanstalk: upload code, AWS manages infra — 'fastest way to deploy without managing servers (non-Lambda)'",
+        "SAM = IaC for serverless (template shorthand for Lambda/API/DynamoDB)",
+      ],
+    },
+  ],
+  references: [
+    {
+      title: "AWS Certified Developer – Associate",
+      url: "https://aws.amazon.com/certification/certified-developer-associate/",
+    },
+  ],
+});
+
 export function getArticle(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
 }

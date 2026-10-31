@@ -300,4 +300,152 @@ export const ansQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-10-26",
   },
+  {
+    id: "ans-ops-002",
+    slug: "flow-logs-rejected-traffic",
+    cert: "ans-c01",
+    domain: "ans-network-management-operations",
+    topic: "ans-network-operations",
+    subtopic: "Flow log analysis",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An app intermittently loses connectivity to a partner API. Ops suspects a stateless rule is dropping return traffic. Which log record would confirm a blocked connection attempt?",
+    options: [
+      { id: "A", text: "CloudTrail events for the API call" },
+      { id: "B", text: "VPC Flow Log entries showing REJECT on the ENI" },
+      { id: "C", text: "CloudWatch CPUUtilization metrics" },
+      { id: "D", text: "Route 53 query logs" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "VPC Flow Logs record ACCEPT/REJECT per flow on each ENI — a REJECT entry on the return direction pinpoints a NACL or security group blocking traffic. They're the first tool for 'is the packet even getting through.'",
+    optionExplanations: {
+      A: "CloudTrail logs control-plane API calls, not packet flows.",
+      B: "Correct. REJECT records show exactly what's dropped and where.",
+      C: "CPU metrics say nothing about packet filtering.",
+      D: "DNS logs cover name resolution, not traffic blocking.",
+    },
+    services: ["Amazon VPC"],
+    references: [
+      {
+        title: "VPC Flow Logs",
+        url: "https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "ans-des-002",
+    slug: "dx-resilient-design",
+    cert: "ans-c01",
+    domain: "ans-network-design",
+    topic: "ans-hybrid-connectivity",
+    subtopic: "Direct Connect resilience",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A financial firm's production workloads depend on Direct Connect to AWS. Leadership requires the hybrid link to survive any single facility or device failure. What's the resilient design?",
+    options: [
+      { id: "A", text: "One dedicated DX connection on a high-bandwidth port" },
+      { id: "B", text: "Two DX connections at separate locations/devices — plus a Site-to-Site VPN as backup path" },
+      { id: "C", text: "A single DX connection with a higher SLA" },
+      { id: "D", text: "Rely on the public internet for resilience" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "DX resilience requires physically redundant connections at different colocation facilities/devices, ideally with a VPN backup path for worst-case dual failure. Bandwidth and SLAs don't create redundancy.",
+    optionExplanations: {
+      A: "A single connection is a single point of failure regardless of speed.",
+      B: "Correct. Redundant DX + VPN backup is the reference resilient pattern.",
+      C: "SLAs are contractual, not technical redundancy.",
+      D: "Public internet lacks the consistency/production guarantees needed.",
+    },
+    services: ["AWS Direct Connect", "AWS Site-to-Site VPN"],
+    references: [
+      {
+        title: "Direct Connect resilience",
+        url: "https://docs.aws.amazon.com/directconnect/latest/UserGuide/resilient-dx.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "ans-imp-002",
+    slug: "tgw-route-table-segmentation",
+    cert: "ans-c01",
+    domain: "ans-network-implementation",
+    topic: "ans-dns-and-routing",
+    subtopic: "Transit Gateway routing",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A Transit Gateway connects prod, dev, and shared-services VPCs. Prod and dev must NOT reach each other but both must reach shared services. How is this enforced at the TGW layer?",
+    options: [
+      { id: "A", text: "Put all attachments in one TGW route table" },
+      { id: "B", text: "Separate TGW route tables — prod and dev each propagate to the shared table but not to each other's table" },
+      { id: "C", text: "Security groups only — TGW can't isolate" },
+      { id: "D", text: "Delete the dev attachment" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "TGW route tables control which attachments can reach each other: place shared services in a table both prod and dev route to, while keeping prod and dev in separate tables without mutual propagation — segmentation at the routing layer.",
+    optionExplanations: {
+      A: "One shared table gives full mesh — violates isolation.",
+      B: "Correct. Route-table design enforces segmentation natively.",
+      C: "SGs filter at the instance level — routing-layer isolation is the stronger control.",
+      D: "That removes dev's connectivity entirely.",
+    },
+    services: ["AWS Transit Gateway", "Amazon VPC"],
+    references: [
+      {
+        title: "Transit Gateway route tables",
+        url: "https://docs.aws.amazon.com/vpc/latest/tgw/tgw-route-tables.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "ans-sec-003",
+    slug: "centralized-egress-inspection",
+    cert: "ans-c01",
+    domain: "ans-network-security-compliance",
+    topic: "ans-network-security",
+    subtopic: "Egress inspection",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "Security policy requires all outbound internet traffic from 20 workload VPCs to pass through deep packet inspection. What's the scalable architecture?",
+    options: [
+      { id: "A", text: "NAT gateways in every VPC with security groups" },
+      { id: "B", text: "A dedicated egress/inspection VPC with AWS Network Firewall, fronted by Transit Gateway routing all outbound flows through it" },
+      { id: "C", text: "WAF on each VPC's internet gateway" },
+      { id: "D", text: "Squid proxies in one VPC with VPC peering" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "The reference pattern: a centralized inspection VPC running Network Firewall (or GWLB + appliances), with TGW route tables steering all egress through it — scales to many VPCs with one policy domain.",
+    optionExplanations: {
+      A: "NAT + SGs provide no DPI — just connectivity and port filtering.",
+      B: "Correct. Centralized inspection VPC + TGW is the documented design.",
+      C: "WAF attaches to ALB/CloudFront, not outbound NAT paths.",
+      D: "DIY proxies + peering don't scale and lack managed DPI.",
+    },
+    services: ["AWS Network Firewall", "AWS Transit Gateway"],
+    references: [
+      {
+        title: "Deploying Network Firewall",
+        url: "https://docs.aws.amazon.com/network-firewall/latest/developerguide/vpc-tgw.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
 ];

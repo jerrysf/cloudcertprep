@@ -70,7 +70,7 @@ export default async function ArticlePage({ params }: Props) {
 
           <div className="mt-6 space-y-8">
             {article.sections.map((s, i) => (
-              <section key={i}>
+              <section key={i} id={s.heading ? `sec-${i}` : undefined}>
                 {s.heading ? (
                   <h2 className="text-xl font-semibold">{s.heading}</h2>
                 ) : null}
@@ -111,6 +111,25 @@ export default async function ArticlePage({ params }: Props) {
         </article>
 
         <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
+          {article.sections.filter((s) => s.heading).length >= 3 ? (
+            <Card className="hidden lg:block">
+              <h2 className="font-semibold">On this page</h2>
+              <ul className="mt-2 space-y-1.5">
+                {article.sections.map((s, i) =>
+                  s.heading ? (
+                    <li key={i}>
+                      <a
+                        href={`#sec-${i}`}
+                        className="block truncate text-sm text-muted hover:text-accent"
+                      >
+                        {s.heading}
+                      </a>
+                    </li>
+                  ) : null,
+                )}
+              </ul>
+            </Card>
+          ) : null}
           {topic && practiceCount > 0 ? (
             <Card>
               <h2 className="font-semibold">Practice this topic</h2>

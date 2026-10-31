@@ -18,6 +18,7 @@ const RESOURCE_LINKS = [
   { label: "Articles", href: "/learn" },
   { label: "SAA-C03 Exam Guide", href: "/learn/saa-c03-exam-guide" },
   { label: "Cheat Sheet", href: "/learn/saa-c03-cheat-sheet" },
+  { label: "RSS Feed", href: "/feed.xml" },
 ];
 
 const LEGAL_LINKS = [

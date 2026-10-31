@@ -450,4 +450,152 @@ export const soaQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-10-26",
   },
+  {
+    id: "soa-mon-005",
+    slug: "cloudwatch-logs-retention-export",
+    cert: "soa-c03",
+    domain: "soa-monitoring-logging-remediation",
+    topic: "soa-monitoring-and-remediation",
+    subtopic: "Log management",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Compliance requires application logs kept 7 years and queryable, but CloudWatch Logs costs too much at that retention. What's the cost-effective archive pattern?",
+    options: [
+      { id: "A", text: "Set the log group to never expire and accept the cost" },
+      { id: "B", text: "Export logs to S3 (subscription/export task) and transition to Glacier storage classes for long-term retention" },
+      { id: "C", text: "Delete logs after 30 days" },
+      { id: "D", text: "Move logs to a larger CloudWatch log group" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "The cost pattern: short retention in CloudWatch for operational queries, export to S3 for the archive tier, then lifecycle-transition to Glacier Flexible/Deep Archive for years-long retention at pennies per GB.",
+    optionExplanations: {
+      A: "Keeping 7 years in CloudWatch Logs is the expensive path.",
+      B: "Correct. S3+Glacier archival is the standard cheap long-term pattern.",
+      C: "Deletion violates the retention requirement.",
+      D: "Log group size doesn't change retention pricing.",
+    },
+    services: ["Amazon CloudWatch", "Amazon S3"],
+    references: [
+      {
+        title: "Export log data to S3",
+        url: "https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/S3Export.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "soa-rel-003",
+    slug: "multi-az-rds-failover",
+    cert: "soa-c03",
+    domain: "soa-reliability-continuity",
+    topic: "soa-reliability-and-dr",
+    subtopic: "Database HA",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A production RDS instance must survive an Availability Zone outage with minimal downtime and no manual failover steps. What configuration provides this?",
+    options: [
+      { id: "A", text: "A read replica in another AZ" },
+      { id: "B", text: "Multi-AZ deployment with synchronous standby and automatic failover" },
+      { id: "C", text: "Daily snapshots to S3" },
+      { id: "D", text: "A larger instance in the same AZ" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Multi-AZ RDS keeps a synchronous standby in another AZ and fails over automatically (typically ~60-120s) — surviving AZ loss with no admin action. Read replicas are for scale-out/DR, not automatic AZ-failure protection.",
+    optionExplanations: {
+      A: "Read replicas replicate asynchronously and require manual promotion.",
+      B: "Correct. Sync standby + automatic failover = built for AZ loss.",
+      C: "Snapshots are for recovery, not availability — restore takes much longer.",
+      D: "Instance size doesn't protect against AZ failure.",
+    },
+    services: ["Amazon RDS"],
+    references: [
+      {
+        title: "Multi-AZ deployments",
+        url: "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "soa-dep-004",
+    slug: "ssm-automation-runbook",
+    cert: "soa-c03",
+    domain: "soa-deployment-provisioning-automation",
+    topic: "soa-deployment-and-automation",
+    subtopic: "SSM Automation",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Ops needs a repeatable, approval-gated process to restart a fleet of instances in batches with health checks between batches. Which SSM capability provides prebuilt or custom multi-step workflows?",
+    options: [
+      { id: "A", text: "Run Command" },
+      { id: "B", text: "Automation runbooks" },
+      { id: "C", text: "Session Manager" },
+      { id: "D", text: "State Manager associations" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "SSM Automation runbooks define multi-step workflows — actions like aws:executeScript, waitForAwsResourceProperty, approvals, and rate control across targets — with prebuilt runbooks for common ops tasks.",
+    optionExplanations: {
+      A: "Run Command sends one-off commands, not orchestrated workflows.",
+      B: "Correct. Runbooks = scripted multi-step ops with approval gates.",
+      C: "Session Manager is interactive shell access.",
+      D: "State Manager enforces configuration state, not procedural workflows.",
+    },
+    services: ["AWS Systems Manager"],
+    references: [
+      {
+        title: "AWS Systems Manager Automation",
+        url: "https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-automation.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
+  {
+    id: "soa-sec-002",
+    slug: "iam-access-analyzer-review",
+    cert: "soa-c03",
+    domain: "soa-security-compliance",
+    topic: "soa-security-operations",
+    subtopic: "Access review",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Ops suspects an S3 bucket or IAM role grants access to an external AWS account. Which tool analyzes resource policies and flags external access automatically?",
+    options: [
+      { id: "A", text: "AWS Config" },
+      { id: "B", text: "IAM Access Analyzer" },
+      { id: "C", text: "Amazon Inspector" },
+      { id: "D", text: "AWS CloudTrail Insights" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "IAM Access Analyzer continuously analyzes resource-based policies (S3, roles, KMS keys, etc.) and generates findings for access granted to external principals — the designed tool for unintended-access review.",
+    optionExplanations: {
+      A: "Config evaluates configuration rules — not cross-account policy analysis.",
+      B: "Correct. External-access findings are Access Analyzer's job.",
+      C: "Inspector finds software vulnerabilities.",
+      D: "CloudTrail Insights detects unusual API activity, not policy grants.",
+    },
+    services: ["AWS IAM", "Amazon S3"],
+    references: [
+      {
+        title: "IAM Access Analyzer",
+        url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-10-26",
+  },
 ];

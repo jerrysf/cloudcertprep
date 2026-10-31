@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import {
   Bookmark,
@@ -75,6 +75,32 @@ export function QuestionView({
     if (!onSubmit || selected.length === 0) return;
     onSubmit(selected, evaluateAnswer(question, selected));
   }
+
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      const t = e.target as HTMLElement | null;
+      if (t && ["INPUT", "TEXTAREA", "SELECT"].includes(t.tagName)) return;
+      if (revealed || disabled) return;
+      const digit = parseInt(e.key, 10);
+      const letter = "abcdef".indexOf(e.key.toLowerCase());
+      const idx = digit >= 1 && digit <= question.options.length ? digit - 1 : letter;
+      if (idx >= 0 && idx < question.options.length) {
+        e.preventDefault();
+        toggle(question.options[idx].id);
+      } else if (
+        e.key === "Enter" &&
+        onSubmit &&
+        selected.length > 0 &&
+        !(t instanceof HTMLButtonElement) &&
+        !(t instanceof HTMLAnchorElement)
+      ) {
+        e.preventDefault();
+        submit();
+      }
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  });
 
   return (
     <article className="space-y-5">

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Flame, Trash2 } from "lucide-react";
-import { DOMAINS } from "@/lib/content/domains";
+import { CERTIFICATIONS } from "@/lib/content/certifications";
 import { getTopic, TOPICS } from "@/lib/content/topics";
 import { getProgressStore, summarize } from "@/lib/storage";
 import { notifyProgressChanged, useProgress } from "@/lib/use-progress";
@@ -70,28 +70,51 @@ export function ProgressDashboard() {
       {hasData ? (
         <>
           <Card>
-            <h2 className="text-lg font-semibold">Accuracy by domain</h2>
-            <div className="mt-4 space-y-3">
-              {DOMAINS.map((d) => {
-                const stat = s.byDomain.get(d.id);
-                const pct =
-                  !stat || stat.total === 0 ? null : stat.correct / stat.total;
+            <h2 className="text-lg font-semibold">
+              Accuracy by certification &amp; domain
+            </h2>
+            <div className="mt-4 space-y-6">
+              {CERTIFICATIONS.map((cert) => {
+                const domains = cert.domains.filter((d) =>
+                  s.byDomain.has(d.id),
+                );
+                if (domains.length === 0) return null;
                 return (
-                  <div key={d.id}>
-                    <div className="flex justify-between text-sm">
-                      <span className="font-medium">
-                        {d.number}. {d.name}
-                      </span>
-                      <span className="text-muted">
-                        {stat ? `${stat.correct}/${stat.total}` : "no attempts"}
-                        {pct !== null ? ` (${Math.round(pct * 100)}%)` : ""}
-                      </span>
-                    </div>
-                    <div className="mt-1 h-2 rounded-full bg-slate-100">
-                      <div
-                        className="h-full rounded-full bg-accent"
-                        style={{ width: `${(pct ?? 0) * 100}%` }}
-                      />
+                  <div key={cert.id}>
+                    <p className="text-xs font-semibold uppercase tracking-wide text-muted">
+                      {cert.code} — {cert.name}
+                    </p>
+                    <div className="mt-2 space-y-3">
+                      {domains.map((d) => {
+                        const stat = s.byDomain.get(d.id);
+                        const pct =
+                          !stat || stat.total === 0
+                            ? null
+                            : stat.correct / stat.total;
+                        return (
+                          <div key={d.id}>
+                            <div className="flex justify-between text-sm">
+                              <span className="font-medium">
+                                {d.number}. {d.name}
+                              </span>
+                              <span className="text-muted">
+                                {stat
+                                  ? `${stat.correct}/${stat.total}`
+                                  : "no attempts"}
+                                {pct !== null
+                                  ? ` (${Math.round(pct * 100)}%)`
+                                  : ""}
+                              </span>
+                            </div>
+                            <div className="mt-1 h-2 rounded-full bg-slate-100">
+                              <div
+                                className="h-full rounded-full bg-accent"
+                                style={{ width: `${(pct ?? 0) * 100}%` }}
+                              />
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 );

@@ -36,6 +36,31 @@ export function PracticeSession({
   }, []);
 
   const question = questions[index];
+
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      const t = e.target as HTMLElement | null;
+      if (t && ["INPUT", "TEXTAREA", "SELECT"].includes(t.tagName)) return;
+      if (e.key === "ArrowRight") {
+        e.preventDefault();
+        setIndex((i) => Math.min(questions.length - 1, i + 1));
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        setIndex((i) => Math.max(0, i - 1));
+      } else if (
+        e.key === "Enter" &&
+        submitted[question.id] &&
+        !(t instanceof HTMLButtonElement) &&
+        !(t instanceof HTMLAnchorElement)
+      ) {
+        e.preventDefault();
+        setIndex((i) => Math.min(questions.length - 1, i + 1));
+      }
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  });
+
   const answeredCount = useMemo(() => Object.keys(submitted).length, [submitted]);
   const correctCount = useMemo(
     () => Object.values(submitted).filter((s) => s.correct).length,
@@ -106,6 +131,10 @@ export function PracticeSession({
               · {answeredCount} answered · {correctCount} correct
             </>
           )}
+          <span className="hidden sm:inline text-xs text-slate-400">
+            {" "}
+            · keys: 1–5 select, Enter submit, ← → navigate
+          </span>
         </div>
         <button
           type="button"
