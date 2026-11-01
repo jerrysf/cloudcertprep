@@ -61,10 +61,10 @@ export default function PrivacyPage() {
           <p className="mt-2">
             Questions about this policy:{" "}
             <a
-              href="mailto:hello@cloudcertprep.com"
+              href="mailto:hello@cloudcertprep.cloud"
               className="text-accent hover:underline"
             >
-              hello@cloudcertprep.com
+              hello@cloudcertprep.cloud
             </a>
           </p>
         </section>

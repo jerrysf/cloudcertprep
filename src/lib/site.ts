@@ -1,7 +1,7 @@
 export const SITE = {
   name: "CloudCertPrep",
   tagline: "Learn AWS Architecture. Practice with Confidence.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.cloudcertprep.com",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.cloudcertprep.cloud",
   description:
     "Free practice questions, per-option explanations, timed mock exams, and study plans for AWS certifications — Cloud Practitioner, Solutions Architect, Developer, and more.",
   nav: [
