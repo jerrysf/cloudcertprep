@@ -190,6 +190,30 @@ export default async function ArticlePage({ params }: Props) {
               </li>
             </ul>
           </Card>
+          {article.slug.endsWith("-cheat-sheet") ? (
+            <Card className="border-amber-200 bg-amber-50/50">
+              <h2 className="font-semibold">Get the printable bundle</h2>
+              <p className="mt-1 text-sm text-muted">
+                All 9 certification cheat sheets as one branded PDF —
+                print-ready, offline, always updated.
+              </p>
+              <a
+                href="https://jerrysf.gumroad.com/l/cnhpct"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-flex w-full items-center justify-center gap-1.5 rounded-lg bg-amber-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-amber-700"
+              >
+                Get the bundle — $12
+                <ExternalLink className="h-3.5 w-3.5" aria-hidden />
+              </a>
+              <Link
+                href="/shop"
+                className="mt-2 block text-center text-xs text-muted hover:text-accent"
+              >
+                or see all study packs →
+              </Link>
+            </Card>
+          ) : null}
           <NewsletterForm />
           <AffiliateBlock context="article" />
           <AdSlot slot="article-sidebar" />
