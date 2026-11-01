@@ -11,6 +11,7 @@ import { AffiliateBlock } from "@/components/affiliate-note";
 import { AdSlot } from "@/components/ad-slot";
 import { NewsletterForm } from "@/components/newsletter-form";
 import { PrintButton } from "@/components/print-button";
+import { ReadyCheck } from "@/components/ready-check";
 import { breadcrumbJsonLd } from "@/lib/jsonld";
 import { SITE } from "@/lib/site";
 
@@ -45,6 +46,22 @@ export default async function ArticlePage({ params }: Props) {
   );
   const topicQuestions = [...direct, ...domainQuestions].slice(0, 6);
   const practiceCount = topicQuestions.length;
+
+  // Readiness check for exam-guide / how-to-pass articles: deterministic
+  // sample of 5 questions spread across the cert's domains.
+  const isPrepArticle =
+    slug.endsWith("-exam-guide") || slug.startsWith("how-to-pass-");
+  const certQuestions = isPrepArticle
+    ? PUBLISHED_QUESTIONS.filter((q) => q.cert === topic?.cert)
+    : [];
+  const seenDomains = new Set<string>();
+  const checkQuestions = certQuestions
+    .filter((q) => {
+      if (seenDomains.has(q.domain) || seenDomains.size >= 5) return false;
+      seenDomains.add(q.domain);
+      return true;
+    })
+    .slice(0, 5);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -98,6 +115,23 @@ export default async function ArticlePage({ params }: Props) {
               </section>
             ))}
           </div>
+
+          {checkQuestions.length >= 5 && topic ? (
+            <Card className="mt-10 border-accent/30">
+              <h2 className="font-semibold">
+                Quick readiness check — {topic.cert.toUpperCase()}
+              </h2>
+              <p className="mt-1 text-sm text-muted">
+                5 sampled questions, one per domain. Instant score.
+              </p>
+              <div className="mt-5">
+                <ReadyCheck
+                  questions={checkQuestions}
+                  certCode={topic.cert.toUpperCase()}
+                />
+              </div>
+            </Card>
+          ) : null}
 
           <Card className="mt-10">
             <h2 className="font-semibold">Official references</h2>

@@ -2607,6 +2607,423 @@ ARTICLES.push({
   ],
 });
 
+ARTICLES.push({
+  slug: "how-to-pass-soa-c03-sysops-guide",
+  title: "How to Pass SOA-C03: The SysOps Administrator's Guide",
+  description:
+    "A study plan for the AWS CloudOps Engineer Associate exam: the operations-first mindset SOA-C03 demands, which services matter most, and a 3-week schedule.",
+  domain: "soa-monitoring-logging-remediation",
+  topic: "soa-monitoring-and-remediation",
+  updatedAt: "2026-11-02",
+  readingMinutes: 7,
+  sections: [
+    {
+      paragraphs: [
+        "SOA-C03 (formerly SysOps Administrator Associate) is the associate exam most different from SAA — while SAA asks 'design the architecture', SOA asks 'operate, monitor, and fix it'. If you run AWS day-to-day, this is your exam. If your background is design rather than operations, expect the monitoring/operations domain to need the most work. Plan 3 weeks at 1.5–2 hours/day with existing AWS experience.",
+      ],
+    },
+    {
+      heading: "The operations-first mindset",
+      paragraphs: [
+        "SOA questions reward operational depth: alarm design, patching fleets, backup compliance, cost monitoring, and incident response. When two options both 'work', the correct one is usually the more operationally maintainable — managed services, automation, least manual toil.",
+      ],
+      list: [
+        "Monitoring & remediation (largest domain): CloudWatch alarms/metrics/logs, EventBridge-driven remediation, SSM Incident Manager",
+        "Reliability & continuity: backup/DR implementation, multi-AZ ops, Route 53 health checks, scaling operations",
+        "Deployment & automation: CloudFormation ops (drift, stacksets), SSM Patch Manager/Automation, image pipelines",
+        "Security & compliance: IAM ops, Config rules, audit logging, patch compliance reporting",
+        "Networking & content delivery: VPC ops, NAT/ALB/NLB administration, CloudFront, DNS failover",
+      ],
+    },
+    {
+      heading: "Week 1 — Monitoring and remediation (days 1–7)",
+      list: [
+        "Days 1–2: CloudWatch end-to-end — metrics vs logs vs alarms vs dashboards, custom metrics, metric math, Logs Insights",
+        "Days 3–4: EventBridge + SSM remediation patterns — alarm → event → runbook, incident response automation",
+        "Days 5–6: AWS Config, CloudTrail, and audit operations — who did what, resource compliance",
+        "Day 7: untimed practice set — calibrate your ops vocabulary",
+      ],
+    },
+    {
+      heading: "Week 2 — Reliability, deployment, security (days 8–14)",
+      list: [
+        "Days 8–9: AWS Backup (plans, vaults, Vault Lock), DR tiers, ASG operations and health checks",
+        "Days 10–11: CloudFormation ops — stack drift, StackSets, change sets; SSM Patch Manager + maintenance windows",
+        "Days 12–13: security ops — IAM policy troubleshooting, Secrets Manager rotation, compliance reporting",
+        "Day 14: timed practice set — SOA scenarios are operational, practice incident-style questions",
+      ],
+    },
+    {
+      heading: "Week 3 — Networking, cost ops, and mocks (days 15–21)",
+      list: [
+        "Days 15–16: VPC operations — NAT gateways per AZ, Route 53 health/failover, ALB vs NLB admin, CloudFront ops",
+        "Day 17: cost operations — Cost Explorer, Budgets alerts, Trusted Advisor, tagging strategies",
+        "Days 18–19: first full timed mock (65 questions, 130 minutes)",
+        "Days 20–21: mistake review + second mock — target 75%+ with margin",
+      ],
+    },
+    {
+      heading: "Exam traps specific to SOA",
+      list: [
+        "Systems Manager family: Session Manager (shell), Patch Manager (patching), Run Command (one-off commands), Automation (runbooks) — the exam tests the boundaries",
+        "Metric filters alert on patterns; Logs Insights answers ad-hoc questions — different tools",
+        "NAT gateway is zonal — resilient designs need one per AZ",
+        "CloudFormation drift detection vs Config timeline — drift compares to template, Config shows change history",
+        "Composite alarms reduce noise — know why they exist",
+      ],
+    },
+    {
+      heading: "What 'ready' looks like",
+      paragraphs: [
+        "You're ready when timed mocks land at 75%+ and you can answer 'what does this do operationally' for every monitoring/SSM/backup service. SOA rewards operators — if you live in CloudWatch and SSM daily, this is the most passable associate exam for you.",
+      ],
+    },
+  ],
+  references: [
+    { title: "SOA-C03 exam guide (official)", url: "https://aws.amazon.com/certification/certified-sysops-admin-associate/" },
+    { title: "AWS Systems Manager user guide", url: "https://docs.aws.amazon.com/systems-manager/latest/userguide/what-is-systems-manager.html" },
+  ],
+});
+
+ARTICLES.push({
+  slug: "how-to-pass-sap-c02-professional-guide",
+  title: "How to Pass SAP-C02: The Solutions Architect Professional Guide",
+  description:
+    "A study plan for AWS's hardest associate-level-plus exam: what makes SAP-C02 different, the multi-account and migration material that dominates it, and a 5-week preparation schedule.",
+  domain: "sap-new-solutions",
+  topic: "sap-complex-solutions",
+  updatedAt: "2026-11-02",
+  readingMinutes: 8,
+  sections: [
+    {
+      paragraphs: [
+        "SAP-C02 (Solutions Architect Professional) is where AWS certification gets genuinely hard. Unlike the associate exams, nearly every question is a paragraph-long scenario with multiple valid-looking answers — the exam tests judgment under competing constraints (cost vs security vs reliability vs operational overhead), not recall. Candidates typically need 5–6 weeks of prep even with SAA-level knowledge. The exam is 75 questions in 180 minutes — pacing matters.",
+      ],
+    },
+    {
+      heading: "What makes SAP different",
+      list: [
+        "Scenario density: questions describe organizations with competing requirements — you optimize for the stated priority",
+        "Multi-account architecture dominates: Organizations, SCPs, Control Tower, delegated admins, shared service VPCs",
+        "Migration is a whole domain: 6R strategies, DMS patterns, Application Discovery, transfer services",
+        "Hybrid connectivity at scale: Direct Connect + VPN + TGW topologies, not single-VPC designs",
+        "Every question has a 'most' qualifier — most cost-effective, least operational overhead, most secure — find it first",
+      ],
+    },
+    {
+      heading: "Week 1 — Organizational complexity (days 1–7)",
+      list: [
+        "Days 1–2: AWS Organizations — SCPs, OUs, delegated administrators, service control boundaries",
+        "Days 3–4: Control Tower, account vending, multi-account security baselines, guardrails",
+        "Days 5–6: Shared services patterns — centralized egress/inspection VPCs, TGW topologies, RAM resource sharing",
+        "Day 7: practice set focused on org/multi-account questions",
+      ],
+    },
+    {
+      heading: "Week 2 — Migration & modernization (days 8–14)",
+      list: [
+        "Days 8–9: 6R strategies and decision criteria — when rehost vs replatform vs refactor",
+        "Days 10–11: DMS — full load + CDC, homogeneous vs heterogeneous (SCT), minimal-downtime patterns",
+        "Days 12–13: Migration Hub, Application Discovery Service, DataSync vs Transfer Family vs Snowball",
+        "Day 14: timed practice set on migration scenarios",
+      ],
+    },
+    {
+      heading: "Week 3 — Complex solutions & hybrid (days 15–21)",
+      list: [
+        "Days 15–16: Hybrid networking — DX + VPN backup, TGW design, Route 53 Resolver endpoints, private connectivity",
+        "Days 17–18: Resilience at scale — multi-region active-active, DR tier trade-offs, Route 53 failover",
+        "Days 19–20: Cost architecture — compute purchasing strategies, data transfer optimization, multi-account billing",
+        "Day 21: first full timed mock",
+      ],
+    },
+    {
+      heading: "Weeks 4–5 — Optimization and mock marathon (days 22–35)",
+      list: [
+        "Days 22–25: continuous improvement — Well-Architected optimization, compute optimization, right-sizing",
+        "Days 26–28: security architecture depth — cross-account encryption, KMS key strategies, identity federation at scale",
+        "Days 29–32: two full timed mocks with deep explanation review — this is where scores actually move",
+        "Days 33–35: weak-domain drilling + final review; schedule the exam for week 5's end",
+      ],
+    },
+    {
+      heading: "SAP-specific exam tactics",
+      list: [
+        "Paragraph questions: read the LAST sentence (the constraint) first, then skim the scenario for relevant facts",
+        "Two right answers pattern: when options differ by cost or operational overhead, the qualifier decides",
+        "Eliminate obviously-wrong answers aggressively — SAP options are long, getting to 50/50 fast is a skill",
+        "Watch for scope traps: 'across the organization' disqualifies per-account solutions automatically",
+        "Time management: 75 questions / 180 min ≈ 2.4 min per question — flag generously",
+      ],
+    },
+    {
+      heading: "What 'ready' looks like",
+      paragraphs: [
+        "You're ready when you consistently score 75%+ on timed mocks AND can articulate why the runner-up option was wrong — usually a constraint you missed. SAP-C02 has roughly a 60% first-attempt pass rate among prepared candidates; the margin between pass and fail is usually reading discipline, not knowledge gaps.",
+      ],
+    },
+  ],
+  references: [
+    { title: "SAP-C02 exam guide (official)", url: "https://aws.amazon.com/certification/certified-solutions-architect-professional/" },
+    { title: "AWS Prescriptive Guidance — multi-account strategies", url: "https://docs.aws.amazon.com/prescriptive-guidance/latest/migration-aws-environment/welcome.html" },
+  ],
+});
+
+ARTICLES.push({
+  slug: "how-to-pass-dea-c01-data-engineer-guide",
+  title: "How to Pass DEA-C01: The Data Engineer's Guide",
+  description:
+    "A study plan for the AWS Data Engineer Associate exam: the pipeline-oriented mindset DEA-C01 tests, the Glue/Redshift/Kinesis material that dominates it, and a 4-week schedule.",
+  domain: "dea-data-store-management",
+  topic: "dea-data-stores",
+  updatedAt: "2026-11-02",
+  readingMinutes: 7,
+  sections: [
+    {
+      paragraphs: [
+        "DEA-C01 (Data Engineer Associate) is AWS's data-pipeline certification — it tests end-to-end thinking: ingestion → storage → transformation → serving, plus the security/governance/operations wrapper around all of it. If you build data pipelines, this cert validates real skills. Plan 4 weeks at 1.5–2 hours/day; hands-on with Glue and Redshift matters more than reading.",
+      ],
+    },
+    {
+      heading: "What the exam tests",
+      list: [
+        "Ingestion & transformation (34%): Kinesis, Glue ETL, DMS, batch vs streaming trade-offs",
+        "Data store management (26%): S3 data lakes, Redshift, partitioning, storage format choices, lifecycle",
+        "Data operations & support (22%): pipeline orchestration, monitoring, incremental processing, quality",
+        "Data security & governance (18%): Lake Formation, encryption, access control, data quality",
+      ],
+    },
+    {
+      heading: "Week 1 — Ingestion and ETL (days 1–7)",
+      list: [
+        "Days 1–2: Kinesis family — Data Streams vs Firehose vs Analytics, when each fits",
+        "Days 3–4: Glue ETL — jobs, crawlers, the Data Catalog, job bookmarks for incremental processing",
+        "Days 5–6: Batch ingestion — DMS, DataSync, Snow family, Transfer Family",
+        "Day 7: practice set on ingestion questions",
+      ],
+    },
+    {
+      heading: "Week 2 — Data stores and lakes (days 8–14)",
+      list: [
+        "Days 8–9: S3 data lake patterns — partitioning, columnar formats (Parquet/ORC), lifecycle tiers",
+        "Days 10–11: Redshift — distribution/sort keys, Spectrum for lake queries, concurrency scaling, WLM",
+        "Days 12–13: When each store wins — Redshift vs Athena vs EMR vs OpenSearch decision criteria",
+        "Day 14: timed practice set on storage questions",
+      ],
+    },
+    {
+      heading: "Week 3 — Operations and governance (days 15–21)",
+      list: [
+        "Days 15–16: Pipeline orchestration — Step Functions vs MWAA, event-driven pipelines, error handling",
+        "Days 17–18: Data quality — Glue Data Quality, Deequ concepts, schema enforcement, DQDL",
+        "Days 19–20: Lake Formation — permissions model, LF-tags, cross-account sharing via RAM",
+        "Day 21: first full timed mock (65 questions, 130 minutes)",
+      ],
+    },
+    {
+      heading: "Week 4 — Security, review, and mocks (days 22–28)",
+      list: [
+        "Days 22–23: Encryption and access — KMS for data services, Macie for PII discovery, IAM + LF layering",
+        "Days 24–25: mistake review — re-do every missed question and build a weak-topic drill list",
+        "Days 26–27: second full timed mock",
+        "Day 28: final skim of the DEA cheat sheet + logistics",
+      ],
+    },
+    {
+      heading: "Exam traps specific to DEA",
+      list: [
+        "Glue job bookmarks = incremental processing state — a frequently-tested detail",
+        "Firehose buffers/batches/converts to Parquet automatically; Streams requires consumers",
+        "Redshift Spectrum queries S3 WITHOUT loading — the 'occasional lake query' answer",
+        "Lake Formation permissions layer on top of IAM — bucket policies alone bypass governance",
+        "Kinesis on-demand vs provisioned shards — know when each is right",
+      ],
+    },
+    {
+      heading: "What 'ready' looks like",
+      paragraphs: [
+        "You're ready at 75%+ on timed mocks with the ability to trace a data pipeline end-to-end: where data lands, how it's transformed, who can see it, and what happens when the pipeline breaks. DEA is newer than the associate trio — its exam is respected precisely because it tests pipeline judgment, not trivia.",
+      ],
+    },
+  ],
+  references: [
+    { title: "DEA-C01 exam guide (official)", url: "https://aws.amazon.com/certification/certified-data-engineer-associate/" },
+    { title: "AWS Glue documentation", url: "https://docs.aws.amazon.com/glue/latest/dg/what-is-glue.html" },
+    { title: "Amazon Redshift documentation", url: "https://docs.aws.amazon.com/redshift/latest/mgmt/welcome.html" },
+  ],
+});
+
+ARTICLES.push({
+  slug: "how-to-pass-scs-c03-security-specialty-guide",
+  title: "How to Pass SCS-C03: The Security Specialty Guide",
+  description:
+    "A study plan for the AWS Certified Security Specialty exam: the depth over breadth approach SCS-C03 demands, the IAM/encryption material that dominates it, and a 5-week schedule.",
+  domain: "scs-iam",
+  topic: "scs-iam-deep-dive",
+  updatedAt: "2026-11-02",
+  readingMinutes: 8,
+  sections: [
+    {
+      paragraphs: [
+        "SCS-C03 (Security Specialty) is a deep exam — the hardest of the specialty-tier certifications and arguably harder than SAP-C02 for candidates without real security backgrounds. Unlike associate exams testing 'which service', SCS asks 'which security mechanism, and how does it fail'. Plan 5–6 weeks if you're an engineer without dedicated security work, 3–4 if you do security professionally. 65 questions, 170 minutes.",
+      ],
+    },
+    {
+      heading: "What the exam tests",
+      list: [
+        "Threat detection & incident response (14%): GuardDuty, Security Hub, IR workflows, forensics",
+        "Security logging & monitoring (18%): CloudTrail, Config, centralized logging, alerting",
+        "Infrastructure security (20%): edge protection (WAF/Shield/CloudFront), network segmentation, compute hardening",
+        "IAM (16%): policy evaluation, permission boundaries, federation, cross-account access — the deepest domain",
+        "Data protection (18%): KMS/CloudHSM, encryption patterns, secrets management",
+        "Management & governance (14%): Organizations/SCPs, multi-account security, compliance frameworks",
+      ],
+    },
+    {
+      heading: "Week 1 — IAM deep dive (days 1–7)",
+      paragraphs: [
+        "IAM is the most-tested domain — go deeper than any other service. This week establishes the evaluation model everything else builds on.",
+      ],
+      list: [
+        "Days 1–2: Policy evaluation logic — explicit deny > SCP > permission boundary > identity/resource policies, exactly how evaluation chains resolve",
+        "Days 3–4: Permission boundaries, delegation patterns, role trust policies, aws:PrincipalOrgID conditions",
+        "Days 5–6: Federation — IAM Identity Center, SAML/OIDC, web identity federation, cross-account role patterns",
+        "Day 7: practice set on IAM questions — expect to miss several; that's the point",
+      ],
+    },
+    {
+      heading: "Week 2 — Detection and incident response (days 8–14)",
+      list: [
+        "Days 8–9: GuardDuty finding types, Security Hub aggregation + standards, Detective investigation",
+        "Days 10–11: Incident response — isolation patterns, forensic preservation (snapshot, don't terminate), credential invalidation",
+        "Days 12–13: Logging architecture — org-level CloudTrail, log integrity validation, centralized S3 + lockdown",
+        "Day 14: timed practice set on IR/detection scenarios",
+      ],
+    },
+    {
+      heading: "Week 3 — Infrastructure and data protection (days 15–21)",
+      list: [
+        "Days 15–16: Edge protection — WAF rules/managed rules, Shield Standard vs Advanced, CloudFront + WAF integration",
+        "Days 17–18: Network segmentation — SG vs NACL vs Network Firewall, inspection architectures, private endpoints",
+        "Days 19–20: Encryption depth — KMS key policies vs grants vs envelope encryption, CloudHSM single-tenant, secrets rotation",
+        "Day 21: first full timed mock",
+      ],
+    },
+    {
+      heading: "Weeks 4–5 — Governance and mock marathon (days 22–35)",
+      list: [
+        "Days 22–24: Governance — SCPs, multi-account security architecture, delegated admin patterns, Control Tower guardrails",
+        "Days 25–27: Compliance frameworks — Artifact, Config conformance packs, PCI/HIPAA implications on AWS",
+        "Days 28–31: two full timed mocks with deep review — SCS questions have subtle wrong answers",
+        "Days 32–35: weak-domain drilling; IAM and encryption deserve the most re-study",
+      ],
+    },
+    {
+      heading: "Exam traps specific to SCS",
+      list: [
+        "Policy evaluation: 'which statement takes precedence' — explicit deny always wins; boundaries restrict but don't grant",
+        "KMS: key policy is required AND must work with IAM policies — the dual-permission model trips people",
+        "Forensic preservation: isolate + snapshot BEFORE terminating — destroying evidence is the wrong answer",
+        "Vault Lock compliance mode: immutable even to root — the only truly irreversible control",
+        "CloudTrail is regional by default — org trails and multi-region matter for auditability",
+      ],
+    },
+    {
+      heading: "What 'ready' looks like",
+      paragraphs: [
+        "You're ready when you can evaluate a policy chain mentally, explain why a control fails under compromise, and score 75%+ on timed mocks. SCS-C03 is genuinely valuable — security skills transfer to every AWS role, and this cert is respected precisely because it can't be passed with surface knowledge.",
+      ],
+    },
+  ],
+  references: [
+    { title: "SCS-C03 exam guide (official)", url: "https://aws.amazon.com/certification/certified-security-specialty/" },
+    { title: "AWS security documentation", url: "https://docs.aws.amazon.com/security/" },
+  ],
+});
+
+ARTICLES.push({
+  slug: "how-to-pass-ans-c01-networking-guide",
+  title: "How to Pass ANS-C01: The Advanced Networking Guide",
+  description:
+    "A study plan for the AWS Advanced Networking Specialty exam: the hybrid-connectivity focus ANS-C01 demands, the TGW/DX/DNS material that dominates it, and a 5-week schedule.",
+  domain: "ans-network-design",
+  topic: "ans-hybrid-connectivity",
+  updatedAt: "2026-11-02",
+  readingMinutes: 7,
+  sections: [
+    {
+      paragraphs: [
+        "ANS-C01 (Advanced Networking Specialty) is the deepest technical exam AWS offers — it assumes you already know VPCs cold and asks you to design hybrid, multi-account, global networks. Candidates without networking backgrounds should plan 5–6 weeks; network engineers transitioning to cloud may need only 3–4. 65 questions, 170 minutes. This exam rewards diagrams: sketch the topology while you read scenarios.",
+      ],
+    },
+    {
+      heading: "What the exam tests",
+      list: [
+        "Network design (30%): hybrid connectivity (DX/VPN), TGW architectures, multi-account patterns, IPv6",
+        "Network implementation (26%): routing (BGP), Route 53 Resolver, private connectivity, load balancing deep detail",
+        "Management & operations (20%): troubleshooting, monitoring, automation, optimization",
+        "Security & compliance (24%): inspection architectures, network segmentation, DDoS protection",
+      ],
+    },
+    {
+      heading: "Week 1 — Hybrid connectivity (days 1–7)",
+      list: [
+        "Days 1–2: Direct Connect — dedicated vs hosted, public/private/transit VIFs, LAG, DX Gateway",
+        "Days 3–4: Site-to-Site VPN — tunnels, BGP vs static routing, VPN as DX backup, accelerated VPN",
+        "Days 5–6: Transit Gateway — route tables, attachments, peering, multicast, hub-spoke segmentation",
+        "Day 7: practice set on hybrid connectivity — the heaviest exam domain",
+      ],
+    },
+    {
+      heading: "Week 2 — Routing and DNS (days 8–14)",
+      list: [
+        "Days 8–9: BGP path selection — local preference, AS_PATH prepending, MED; how AWS treats BGP attributes",
+        "Days 10–11: Route 53 Resolver — inbound/outbound endpoints, forwarding rules, hybrid DNS design",
+        "Days 12–13: Private connectivity — PrivateLink, VPC endpoints (interface vs gateway), endpoint services",
+        "Day 14: timed practice set on routing/DNS",
+      ],
+    },
+    {
+      heading: "Week 3 — Load balancing and security (days 15–21)",
+      list: [
+        "Days 15–16: Load balancer depth — ALB vs NLB vs GWLB, target types, health checks, TLS termination",
+        "Days 17–18: Inspection architectures — Network Firewall, GWLB + third-party appliances, centralized egress",
+        "Days 19–20: Edge security — CloudFront + WAF, Shield Standard/Advanced, DDoS design patterns",
+        "Day 21: first full timed mock",
+      ],
+    },
+    {
+      heading: "Weeks 4–5 — Operations and mock marathon (days 22–35)",
+      list: [
+        "Days 22–24: Network operations — Reachability Analyzer, Flow Logs analysis, Network Manager, Traffic Mirroring",
+        "Days 25–27: IPv6 design — dual-stack, egress-only IGW, /64 subnet addressing",
+        "Days 28–31: two full timed mocks with topology sketches for every scenario",
+        "Days 32–35: weak-domain drilling — DX and TGW deserve the most re-study",
+      ],
+    },
+    {
+      heading: "Exam traps specific to ANS",
+      list: [
+        "DX + VPN backup: VPN over internet is the standard backup path — a second VIF on the same DX isn't redundancy",
+        "GWLB = inline third-party inspection; Traffic Mirroring = passive copy — different purposes",
+        "Route 53 Resolver direction: inbound endpoint (on-prem→AWS) vs outbound (AWS→on-prem) — reversed constantly",
+        "TGW route tables control inter-VPC routing — the attachment is not the route",
+        "IPv6: egress-only IGW for outbound-only private instances — the IPv6 NAT equivalent",
+      ],
+    },
+    {
+      heading: "What 'ready' looks like",
+      paragraphs: [
+        "You're ready when you can sketch a multi-account hybrid architecture — TGW hub, DX + VPN failover, shared services VPC, centralized inspection — from memory and score 75%+ on timed mocks. ANS-C01 is the most technically demanding AWS cert; if you pass it, your networking credibility is genuine.",
+      ],
+    },
+  ],
+  references: [
+    { title: "ANS-C01 exam guide (official)", url: "https://aws.amazon.com/certification/certified-advanced-networking-specialty/" },
+    { title: "AWS networking documentation", url: "https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html" },
+  ],
+});
+
 export function getArticle(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
 }
