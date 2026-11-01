@@ -23,7 +23,7 @@ export const PRODUCTS: Product[] = [
     description:
       "Every CloudCertPrep cheat sheet in a single branded PDF bundle — CLF, AIF, SAA, DVA, CloudOps (SOA), SAP, DEA, Security, and Advanced Networking. Condensed exam-day references, organized for printing.",
     priceUsd: 12,
-    url: process.env.NEXT_PUBLIC_PRODUCT_CHEAT_BUNDLE ?? null,
+    url: "https://jerrysf.gumroad.com/l/cnhpct",
     includes: [
       "9 cheat sheets — one per covered certification",
       "Print-optimized layout (Letter/A4 friendly)",
