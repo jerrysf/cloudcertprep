@@ -32,13 +32,11 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
-  ...(process.env.NEXT_PUBLIC_GSC_VERIFICATION
-    ? {
-        verification: {
-          google: process.env.NEXT_PUBLIC_GSC_VERIFICATION,
-        },
-      }
-    : {}),
+  verification: {
+    google:
+      process.env.NEXT_PUBLIC_GSC_VERIFICATION ??
+      "uUcGNSY4OXe-JCL2zcQTaaAvsfq2F7C2OKx83fAe-M8",
+  },
 };
 
 const websiteJsonLd = {
