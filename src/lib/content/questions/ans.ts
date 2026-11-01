@@ -744,4 +744,152 @@ export const ansQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-10-26",
   },
+  {
+    id: "ans-hyb-005",
+    slug: "dx-vpn-backup-failover",
+    cert: "ans-c01",
+    domain: "ans-network-design",
+    topic: "ans-hybrid-connectivity",
+    subtopic: "Hybrid resilience",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An office connects to AWS over Direct Connect, but a single DX failure must not sever connectivity. What's the standard cost-effective backup path while a second DX is ordered?",
+    options: [
+      { id: "A", text: "A second private VIF on the same DX connection" },
+      { id: "B", text: "A Site-to-Site VPN over the internet as the failover path" },
+      { id: "C", text: "Increase the DX bandwidth" },
+      { id: "D", text: "Enable DX gateway" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "A Site-to-Site VPN is the documented interim/backup path for DX — instant to provision, uses the internet as an independent path, and BGP failover happens automatically. A second VIF on the same connection shares the same physical failure domain; DX gateway routes traffic, it doesn't add path redundancy.",
+    optionExplanations: {
+      A: "Same physical DX — the same outage kills both VIFs.",
+      B: "Correct. Independent medium (internet) = real path diversity.",
+      C: "Bandwidth doesn't fix a dead circuit.",
+      D: "DXGW aggregates connectivity; it isn't redundant media.",
+    },
+    services: ["AWS Direct Connect", "AWS Site-to-Site VPN"],
+    references: [
+      {
+        title: "Site-to-Site VPN as a backup for Direct Connect",
+        url: "https://docs.aws.amazon.com/directconnect/latest/UserGuide/direct-connect-site-to-site-vpn.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "ans-dns-003",
+    slug: "resolver-outbound-endpoint",
+    cert: "ans-c01",
+    domain: "ans-network-implementation",
+    topic: "ans-dns-and-routing",
+    subtopic: "Hybrid DNS",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "EC2 instances in a VPC must resolve DNS names hosted in the on-premises DNS infrastructure. Which Route 53 Resolver component forwards these queries on-premises?",
+    options: [
+      { id: "A", text: "Inbound endpoint" },
+      { id: "B", text: "Outbound endpoint with forwarding rules for the on-prem domains" },
+      { id: "C", text: "A public hosted zone" },
+      { id: "D", text: "Resolver DNS Firewall" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Outbound endpoints carry queries FROM the VPC TO external resolvers — create forwarding rules matching the on-prem domains pointing at the on-prem DNS IPs. Inbound endpoints do the opposite (on-prem → AWS resolution).",
+    optionExplanations: {
+      A: "Inbound lets on-prem resolve AWS names — wrong direction.",
+      B: "Correct. Outbound endpoint + forwarding rules.",
+      C: "Public zones host your records; they don't forward queries.",
+      D: "DNS Firewall filters queries; it doesn't route them.",
+    },
+    services: ["Amazon Route 53"],
+    references: [
+      {
+        title: "Outbound Resolver endpoints",
+        url: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-forwarding-outbound-queries.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "ans-sec-005",
+    slug: "gwlb-inline-inspection",
+    cert: "ans-c01",
+    domain: "ans-network-security-compliance",
+    topic: "ans-network-security",
+    subtopic: "Traffic inspection",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "Third-party firewall appliances must inspect traffic inline between VPCs and the internet — with the appliances themselves load-balanced, scaled, and transparent to both endpoints. What integrates them into the path?",
+    options: [
+      { id: "A", text: "An Application Load Balancer in front of the firewalls" },
+      { id: "B", text: "Gateway Load Balancer with GWLB endpoints routing flows through the appliance fleet" },
+      { id: "C", text: "A Network Load Balancer with TCP listeners" },
+      { id: "D", text: "Traffic Mirroring to the appliances" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "GWLB is the purpose-built insertion point for third-party appliances: GENEVE-encapsulated flows routed via GWLB endpoints, appliances scale behind the balancer, source/destination see no proxy. Mirroring copies traffic for analysis — it doesn't sit inline.",
+    optionExplanations: {
+      A: "ALB terminates HTTP — it's not transparent L3 inline inspection.",
+      B: "Correct. GWLB endpoints put appliances in-path transparently.",
+      C: "NLB is L4 and not designed as an inspection insertion point.",
+      D: "Mirroring is passive copy — detection only, no enforcement.",
+    },
+    services: ["Gateway Load Balancer", "Amazon VPC"],
+    references: [
+      {
+        title: "Gateway Load Balancers",
+        url: "https://docs.aws.amazon.com/elasticloadbalancing/latest/gateway/introduction.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "ans-ops-005",
+    slug: "reachability-analyzer-path",
+    cert: "ans-c01",
+    domain: "ans-network-management-operations",
+    topic: "ans-network-operations",
+    subtopic: "Path analysis",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An app can't reach an RDS instance and the team wants to verify — without sending traffic — whether a network path exists between the EC2 instance and the database through route tables, SGs, and NACLs. Which tool analyzes this?",
+    options: [
+      { id: "A", text: "VPC Flow Logs" },
+      { id: "B", text: "VPC Reachability Analyzer" },
+      { id: "C", text: "CloudWatch Network Monitor" },
+      { id: "D", text: "ping and traceroute from the instance" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Reachability Analyzer performs configuration-path analysis — it evaluates routes, SGs, NACLs, TGW attachments, and peering to answer 'is a path possible' without packets. Flow Logs show what already flowed; ping tests the live path but requires the app already working.",
+    optionExplanations: {
+      A: "Flow Logs record actual traffic — they can't test a hypothetical path.",
+      B: "Correct. Config-level path analysis, no packets sent.",
+      C: "Network Monitor measures live connectivity performance.",
+      D: "Requires the path working already; doesn't isolate which rule blocks.",
+    },
+    services: ["Amazon VPC"],
+    references: [
+      {
+        title: "Reachability Analyzer",
+        url: "https://docs.aws.amazon.com/vpc/latest/reachability/what-is-reachability-analyzer.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
 ];

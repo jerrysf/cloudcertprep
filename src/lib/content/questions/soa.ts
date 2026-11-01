@@ -746,4 +746,152 @@ export const soaQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-10-28",
   },
+  {
+    id: "soa-mon-007",
+    slug: "logs-insights-vs-metric-filters",
+    cert: "soa-c03",
+    domain: "soa-monitoring-logging-remediation",
+    topic: "soa-monitoring-and-remediation",
+    subtopic: "Log analysis",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Ops needs to interactively query application logs to find how many 500 errors each API endpoint produced yesterday. Which tool is built for this ad-hoc analysis?",
+    options: [
+      { id: "A", text: "CloudWatch metric filters feeding an alarm" },
+      { id: "B", text: "CloudWatch Logs Insights queries against the log group" },
+      { id: "C", text: "CloudTrail event history" },
+      { id: "D", text: "VPC Flow Logs" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Logs Insights is purpose-built for interactive, ad-hoc queries over log data (stats by endpoint, error counts, time ranges). Metric filters + alarms are the complementary pattern for real-time alerting on a pattern — not interactive analysis. CloudTrail records API calls, not application logs.",
+    optionExplanations: {
+      A: "Metric filters alert in near-real-time but can't answer one-off analytical questions.",
+      B: "Correct. Purpose-built ad-hoc log query engine.",
+      C: "CloudTrail captures AWS API activity, not your app's error logs.",
+      D: "Flow Logs record network traffic, not application events.",
+    },
+    services: ["Amazon CloudWatch"],
+    references: [
+      {
+        title: "Analyzing log data with CloudWatch Logs Insights",
+        url: "https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/AnalyzingLogData.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "soa-dep-005",
+    slug: "soa-stack-drift-detection",
+    cert: "soa-c03",
+    domain: "soa-deployment-provisioning-automation",
+    topic: "soa-deployment-and-automation",
+    subtopic: "Stack lifecycle",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An admin suspects someone manually modified resources that a CloudFormation stack manages, so the stack no longer matches its template. What's the correct way to identify exactly which resources changed?",
+    options: [
+      { id: "A", text: "Delete and recreate the stack" },
+      { id: "B", text: "Run CloudFormation drift detection on the stack" },
+      { id: "C", text: "Check CloudTrail for all API calls in the region" },
+      { id: "D", text: "Compare the template to the AWS Config timeline manually" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Drift detection compares each stack resource's actual configuration against the expected template and reports DRIFTED / IN_SYNC / NOT_CHECKED per resource — precisely the tool for detecting out-of-band manual changes. CloudTrail shows who did it afterward, but drift detection is the designed mechanism.",
+    optionExplanations: {
+      A: "Recreating is destructive and doesn't identify what changed.",
+      B: "Correct. Per-resource drift status vs the template.",
+      C: "CloudTrail shows API calls, not a resource-vs-template diff.",
+      D: "Config shows change history but not template drift directly.",
+    },
+    services: ["AWS CloudFormation"],
+    references: [
+      {
+        title: "Detecting unmanaged configuration changes to stacks and resources",
+        url: "https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-stack-drift.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "soa-net-004",
+    slug: "route53-failover-routing",
+    cert: "soa-c03",
+    domain: "soa-networking-content-delivery",
+    topic: "soa-networking-operations",
+    subtopic: "DNS failover",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A site must fail over at the DNS layer to a standby region when the primary region's health check fails. Which Route 53 routing policy implements this active-passive failover?",
+    options: [
+      { id: "A", text: "Weighted routing with 100/0 weights" },
+      { id: "B", text: "Failover routing with primary and secondary records evaluated by health checks" },
+      { id: "C", text: "Latency-based routing" },
+      { id: "D", text: "Multivalue answer routing" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Failover routing is explicitly designed for active-passive: Route 53 returns the primary record while its health check passes, and switches to the secondary when it fails. Weighted 100/0 achieves a similar static split but isn't health-check-driven failover by design.",
+    optionExplanations: {
+      A: "Weights aren't the mechanism intended for health-based failover.",
+      B: "Correct. Primary/secondary records + health evaluation.",
+      C: "Latency routing optimizes for lowest latency, not failover semantics.",
+      D: "Multivalue returns up to 8 healthy records — an active-active pattern.",
+    },
+    services: ["Amazon Route 53"],
+    references: [
+      {
+        title: "Configuring DNS failover",
+        url: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/dns-failover.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "soa-rel-005",
+    slug: "asg-scale-on-sqs-backlog",
+    cert: "soa-c03",
+    domain: "soa-reliability-continuity",
+    topic: "soa-reliability-and-dr",
+    subtopic: "Scaling on demand",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Worker instances drain an SQS queue. During traffic spikes the backlog grows because there aren't enough workers. What's the correct way to scale the worker fleet automatically with queue depth?",
+    options: [
+      { id: "A", text: "Scheduled scaling adding instances every hour" },
+      { id: "B", text: "Target tracking scaling on CPU utilization" },
+      { id: "C", text: "Step scaling on the queue's ApproximateNumberOfMessagesVisible metric via a CloudWatch alarm" },
+      { id: "D", text: "Increase the queue's visibility timeout" },
+    ],
+    correctAnswers: ["C"],
+    explanation:
+      "Scaling on ApproximateNumberOfMessagesVisible is the canonical queue-depth pattern: a CloudWatch alarm on backlog size drives scaling steps so workers grow in proportion to actual work. CPU-based scaling lags (workers can be I/O-bound), and scheduled scaling ignores real demand.",
+    optionExplanations: {
+      A: "Schedules can't react to unplanned spikes.",
+      B: "CPU may stay low while backlog explodes — wrong signal.",
+      C: "Correct. Backlog metric → alarm → scaling steps.",
+      D: "Visibility timeout controls message lock time, not capacity.",
+    },
+    services: ["Amazon SQS", "Amazon EC2 Auto Scaling", "Amazon CloudWatch"],
+    references: [
+      {
+        title: "Scaling based on Amazon SQS",
+        url: "https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-using-sqs-queue.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
 ];

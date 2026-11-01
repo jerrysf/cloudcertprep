@@ -746,4 +746,152 @@ export const sapQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-10-26",
   },
+  {
+    id: "sap-org-006",
+    slug: "scp-restrict-regions",
+    cert: "sap-c02",
+    domain: "sap-organizational-complexity",
+    topic: "sap-multi-account-architecture",
+    subtopic: "Region governance",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An enterprise must guarantee that NO workloads — by anyone, including admins — can run in unapproved AWS regions across all member accounts. What's the enforcement mechanism?",
+    options: [
+      { id: "A", text: "IAM policies with a region condition on every role" },
+      { id: "B", text: "An SCP denying actions where aws:RequestedRegion isn't an approved region, attached at the root or OU" },
+      { id: "C", text: "AWS Config rules flagging resources in other regions" },
+      { id: "D", text: "GuardDuty regional monitoring" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "SCPs are the only mechanism that hard-caps what ANY principal (including admins) in member accounts can do — a region deny is the standard compliance pattern. IAM policies cover only the principals they're attached to; Config detects after the fact but doesn't prevent.",
+    optionExplanations: {
+      A: "Per-role policies can't cover every present and future principal.",
+      B: "Correct. Preventive, org-wide, applies to all principals.",
+      C: "Detective, not preventive — resources get created then flagged.",
+      D: "GuardDuty detects threats, not region compliance.",
+    },
+    services: ["AWS Organizations"],
+    references: [
+      {
+        title: "Service control policies (SCPs)",
+        url: "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "sap-mig-006",
+    slug: "dms-cdc-minimal-downtime",
+    cert: "sap-c02",
+    domain: "sap-migration-modernization",
+    topic: "sap-migration-strategies",
+    subtopic: "Database migration",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A 4TB production database must migrate to Aurora with downtime measured in minutes, not the days a full copy takes. Which DMS approach achieves this?",
+    options: [
+      { id: "A", text: "Full load task only, performed during a maintenance window" },
+      { id: "B", text: "Full load + ongoing replication (CDC) — sync changes continuously, then cut over" },
+      { id: "C", text: "Snapshot the database and restore it to Aurora" },
+      { id: "D", text: "Export to S3 and import into Aurora" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Full-load + CDC is the minimal-downtime pattern: the bulk copy runs while the source stays live, ongoing replication keeps the target in sync, and cutover happens when lag is near zero — minutes of downtime regardless of database size. Full-load-only requires the source offline for the entire copy.",
+    optionExplanations: {
+      A: "The source must stay down for the whole multi-day copy.",
+      B: "Correct. Bulk copy + continuous change capture + quick cutover.",
+      C: "Snapshots aren't cross-engine and still require copy downtime.",
+      D: "S3 export/import is slower and offers no change capture.",
+    },
+    services: ["AWS DMS", "Amazon Aurora"],
+    references: [
+      {
+        title: "Using ongoing replication (CDC) with AWS DMS",
+        url: "https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Task.CDC.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "sap-new-006",
+    slug: "tgw-centralized-egress-design",
+    cert: "sap-c02",
+    domain: "sap-new-solutions",
+    topic: "sap-complex-solutions",
+    subtopic: "Shared network services",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "An organization runs 80 spoke VPCs. Security requires that all outbound internet traffic pass through centrally managed inspection appliances — without deploying NAT and firewalls in every VPC. Which architecture fits?",
+    options: [
+      { id: "A", text: "Give each VPC its own NAT gateway and security groups" },
+      { id: "B", text: "Transit Gateway with a dedicated egress VPC containing NAT gateways and Network Firewall/GWLB inspection" },
+      { id: "C", text: "VPC peering all VPCs to a shared VPC" },
+      { id: "D", text: "A single NAT instance in the largest VPC" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "The centralized-egress pattern routes all spoke traffic through Transit Gateway into a dedicated egress VPC where NAT + inspection live once — spokes have no internet route of their own. This is the standard multi-account network design; per-VPC appliances don't scale operationally, and peering is non-transitive mesh chaos at 80 VPCs.",
+    optionExplanations: {
+      A: "80× duplicated NAT/firewall stacks — cost and ops nightmare.",
+      B: "Correct. TGW hub + single inspected egress path.",
+      C: "Peering is non-transitive — 80-VPC mesh is unmanageable.",
+      D: "Single instance = bandwidth bottleneck + single point of failure.",
+    },
+    services: ["AWS Transit Gateway", "AWS Network Firewall", "Amazon VPC"],
+    references: [
+      {
+        title: "Centralized egress architecture",
+        url: "https://docs.aws.amazon.com/vpc/latest/tgw/transit-gateway-centralized-egress.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "sap-opt-006",
+    slug: "gateway-endpoints-nat-cost",
+    cert: "sap-c02",
+    domain: "sap-continuous-improvement",
+    topic: "sap-optimization",
+    subtopic: "Data transfer cost",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Private-subnet EC2 instances move several TB/day to S3 through NAT gateways, generating large data-processing charges. Which change removes most of this cost with no application changes?",
+    options: [
+      { id: "A", text: "Move the instances to public subnets" },
+      { id: "B", text: "Add a gateway VPC endpoint for S3 and route traffic through it" },
+      { id: "C", text: "Use S3 Transfer Acceleration" },
+      { id: "D", text: "Replace S3 with EFS" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Gateway endpoints for S3 (and DynamoDB) are free and keep traffic on the AWS network — the classic fix for NAT data-processing charges on S3-heavy workloads. Interface endpoints would also bypass NAT but carry per-GB costs; gateway endpoints are the cost-optimized answer for S3.",
+    optionExplanations: {
+      A: "Public subnets are a security regression — never the answer.",
+      B: "Correct. Free gateway endpoint, zero NAT processing on S3 traffic.",
+      C: "Transfer Acceleration adds cost; it optimizes WAN uploads.",
+      D: "EFS is a different storage model — not a drop-in S3 replacement.",
+    },
+    services: ["Amazon VPC", "Amazon S3"],
+    references: [
+      {
+        title: "Gateway endpoints for Amazon S3",
+        url: "https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
 ];

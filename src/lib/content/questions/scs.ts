@@ -752,4 +752,152 @@ export const scsQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-10-26",
   },
+  {
+    id: "scs-iam-004",
+    slug: "access-analyzer-external-access",
+    cert: "scs-c03",
+    domain: "scs-iam",
+    topic: "scs-iam-deep-dive",
+    subtopic: "Access analysis",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Security wants continuous detection of resources (S3 buckets, KMS keys, IAM roles) shared with principals outside the account. Which tool provides this?",
+    options: [
+      { id: "A", text: "IAM credential report" },
+      { id: "B", text: "IAM Access Analyzer external-access findings" },
+      { id: "C", text: "AWS Config conformance packs" },
+      { id: "D", text: "GuardDuty" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Access Analyzer continuously evaluates resource-based policies and reports findings when a resource is accessible to external principals — the dedicated tool for unintended external sharing. Credential reports list IAM users/keys; Config checks configuration rules; neither analyzes policy reachability for external access.",
+    optionExplanations: {
+      A: "Credential report = user inventory, not resource sharing analysis.",
+      B: "Correct. Policy analysis built for external-access detection.",
+      C: "Conformance packs check configs, not policy reachability.",
+      D: "GuardDuty detects threats, not shared-resource exposure.",
+    },
+    services: ["AWS IAM Access Analyzer"],
+    references: [
+      {
+        title: "Review findings for external access",
+        url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-external-access.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "scs-inf-005",
+    slug: "network-firewall-domain-filtering",
+    cert: "scs-c03",
+    domain: "scs-infrastructure-security",
+    topic: "scs-infrastructure-security",
+    subtopic: "Egress filtering",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Outbound traffic from a VPC must be restricted to an approved list of domains, with Layer-7 inspection. Which AWS capability enforces domain-level egress filtering?",
+    options: [
+      { id: "A", text: "Security group outbound rules" },
+      { id: "B", text: "AWS Network Firewall with stateful domain-list rules" },
+      { id: "C", text: "Network ACLs" },
+      { id: "D", text: "Route 53 private hosted zones" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Network Firewall is the managed L7 network firewall — stateful domain-list rules allow/deny outbound by domain name, plus Suricata IDS/IPS rules. SGs and NACLs work at IP/port level only — domains resolve to changing IPs, so they can't express domain policy.",
+    optionExplanations: {
+      A: "SGs filter IP/port, not domain names.",
+      B: "Correct. Managed L7 domain filtering.",
+      C: "NACLs are also IP/port-level and stateless.",
+      D: "Private zones resolve names; they don't filter egress.",
+    },
+    services: ["AWS Network Firewall"],
+    references: [
+      {
+        title: "Domain list rule groups in AWS Network Firewall",
+        url: "https://docs.aws.amazon.com/network-firewall/latest/developerguide/stateful-rule-groups-domain-names.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "scs-ir-004",
+    slug: "leaked-access-key-first-action",
+    cert: "scs-c03",
+    domain: "scs-incident-response",
+    topic: "scs-incident-response",
+    subtopic: "Credential compromise",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "CloudTrail shows an IAM user's access key making API calls from an unfamiliar country — the key is compromised. What is the IMMEDIATE first action?",
+    options: [
+      { id: "A", text: "Delete the IAM user" },
+      { id: "B", text: "Deactivate (or delete) the compromised access key to stop further use" },
+      { id: "C", text: "Rotate the user's password" },
+      { id: "D", text: "Open a support case" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Kill the credential first — deactivate the access key immediately to stop the bleeding, then investigate (CloudTrail/GuardDuty), rotate remaining credentials, and check for persistence mechanisms the attacker created. Deleting the whole user destroys evidence and may break legitimate workloads; passwords are irrelevant to API-key compromise.",
+    optionExplanations: {
+      A: "Drastic, evidence-destroying — deactivate the key first.",
+      B: "Correct. Stop active misuse immediately, then investigate.",
+      C: "Console password ≠ programmatic access key.",
+      D: "Support doesn't act faster than your own IAM call.",
+    },
+    services: ["AWS IAM", "AWS CloudTrail"],
+    references: [
+      {
+        title: "What to do if your access keys are exposed",
+        url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "scs-enc-003",
+    slug: "cloudhsm-dedicated-hsm",
+    cert: "scs-c03",
+    domain: "scs-data-protection",
+    topic: "scs-encryption-and-keys",
+    subtopic: "HSM use cases",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A compliance requirement mandates dedicated, single-tenant FIPS 140-2 Level 3 HSMs where YOUR team controls the keys and AWS cannot access them. Which service meets this?",
+    options: [
+      { id: "A", text: "AWS KMS with customer-managed keys" },
+      { id: "B", text: "AWS CloudHSM" },
+      { id: "C", text: "AWS Secrets Manager" },
+      { id: "D", text: "KMS with imported key material" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "CloudHSM is the dedicated single-tenant HSM service — you manage the keys, AWS has no access, FIPS 140-2 Level 3. KMS is multi-tenant (AWS-operated) even with CMKs; imported key material still lives in KMS's shared infrastructure.",
+    optionExplanations: {
+      A: "KMS is multi-tenant — fails the single-tenant requirement.",
+      B: "Correct. Single-tenant, customer-controlled, FIPS 140-2 L3.",
+      C: "Secrets storage, not an HSM.",
+      D: "Imported keys still run on multi-tenant KMS HSMs.",
+    },
+    services: ["AWS CloudHSM", "AWS KMS"],
+    references: [
+      {
+        title: "AWS CloudHSM",
+        url: "https://docs.aws.amazon.com/cloudhsm/latest/userguide/what-is-cloudhsm.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
 ];

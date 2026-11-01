@@ -744,4 +744,152 @@ export const deaQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-10-26",
   },
+  {
+    id: "dea-ing-007",
+    slug: "firehose-near-realtime-s3",
+    cert: "dea-c01",
+    domain: "dea-ingestion-transformation",
+    topic: "dea-ingestion-and-etl",
+    subtopic: "Streaming delivery",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Clickstream events must land in S3 as Parquet files every few minutes for analytics — with no consumer fleet to manage and automatic conversion. Which service fits best?",
+    options: [
+      { id: "A", text: "Kinesis Data Streams with a custom consumer writing to S3" },
+      { id: "B", text: "Kinesis Data Firehose delivering to S3 with Parquet conversion" },
+      { id: "C", text: "Amazon MSK with a Kafka Connect sink" },
+      { id: "D", text: "EventBridge with an S3 target" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Firehose is the zero-consumer streaming-delivery service: buffers, batches, optionally converts JSON→Parquet, and delivers to S3/Redshift/OpenSearch on a schedule. Data Streams requires you to run consumers; MSK is a managed Kafka for when you need Kafka itself.",
+    optionExplanations: {
+      A: "Works, but you own consumer code, scaling, and file batching.",
+      B: "Correct. Fully managed delivery with built-in format conversion.",
+      C: "Heavyweight when you don't need Kafka semantics.",
+      D: "EventBridge routes events; it isn't a high-volume batching delivery stream.",
+    },
+    services: ["Amazon Kinesis Data Firehose", "Amazon S3"],
+    references: [
+      {
+        title: "Amazon Kinesis Data Firehose",
+        url: "https://docs.aws.amazon.com/firehose/latest/dev/what-is-this-service.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "dea-store-006",
+    slug: "redshift-spectrum-lake-query",
+    cert: "dea-c01",
+    domain: "dea-data-store-management",
+    topic: "dea-data-stores",
+    subtopic: "Lake query",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Analysts need to occasionally join a small Redshift dimension table against petabytes of historical data sitting in S3 — without loading that data into Redshift. Which feature enables this?",
+    options: [
+      { id: "A", text: "Redshift Spectrum querying external tables over S3" },
+      { id: "B", text: "COPY the entire S3 dataset into Redshift" },
+      { id: "C", text: "Redshift materialized views" },
+      { id: "D", text: "AWS DMS continuous replication into Redshift" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Spectrum lets Redshift query exabytes in S3 directly via external tables (Glue Data Catalog-backed), joining lake data with local tables — no loading required for infrequently accessed data. Loading petabytes to answer occasional queries is exactly what Spectrum exists to avoid.",
+    optionExplanations: {
+      A: "Correct. Federated queries over the data lake.",
+      B: "Petabyte COPY is slow, expensive, and wastes cluster storage.",
+      C: "Materialized views still require the data loaded first.",
+      D: "DMS replicates databases, not analytical lake queries.",
+    },
+    services: ["Amazon Redshift", "Amazon S3"],
+    references: [
+      {
+        title: "Querying external data using Amazon Redshift Spectrum",
+        url: "https://docs.aws.amazon.com/redshift/latest/dg/c-using-spectrum.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "dea-gov-006",
+    slug: "lake-formation-cross-account",
+    cert: "dea-c01",
+    domain: "dea-data-security-governance",
+    topic: "dea-data-governance",
+    subtopic: "Cross-account sharing",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A data-mesh team must grant a second AWS account SELECT access to specific tables in its data lake — with the same fine-grained (table/column) permissions Lake Formation enforces. How is this done?",
+    options: [
+      { id: "A", text: "Share the S3 bucket policy with the external account" },
+      { id: "B", text: "Lake Formation cross-account grants shared via AWS RAM, with permissions enforced in the consumer account's catalog" },
+      { id: "C", text: "Copy the Glue Data Catalog to the second account" },
+      { id: "D", text: "Give the second account's users IAM roles in the first account" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Lake Formation's cross-account model shares databases/tables to external accounts via AWS Resource Access Manager — the consumer accepts the share and Lake Formation permissions (including column-level) apply there too. Bucket policies alone bypass the fine-grained governance layer.",
+    optionExplanations: {
+      A: "Bucket policies grant object-level access — no column governance.",
+      B: "Correct. RAM share + LF permission model preserved cross-account.",
+      C: "Catalog copies drift and carry no permission semantics.",
+      D: "IAM roles grant coarse access and complicate governance.",
+    },
+    services: ["AWS Lake Formation", "AWS RAM"],
+    references: [
+      {
+        title: "Cross-account data sharing in Lake Formation",
+        url: "https://docs.aws.amazon.com/lake-formation/latest/dg/cross-account.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "dea-ops-005",
+    slug: "glue-job-bookmarks-incremental",
+    cert: "dea-c01",
+    domain: "dea-data-operations-support",
+    topic: "dea-data-operations",
+    subtopic: "Incremental ETL",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A daily Glue ETL job reprocesses the entire S3 source every run even though only new partitions change. Which feature makes the job process only new data?",
+    options: [
+      { id: "A", text: "Glue job bookmarks" },
+      { id: "B", text: "Larger worker types" },
+      { id: "C", text: "Glue crawlers on a schedule" },
+      { id: "D", text: "Enabling job metrics" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Job bookmarks persist state between runs so Glue tracks what was already processed and handles only new/changed data — the built-in incremental-ETL mechanism. Bigger workers speed the same wasted work; crawlers discover schema, not processed state.",
+    optionExplanations: {
+      A: "Correct. Bookmarks = incremental processing state.",
+      B: "Faster full reprocessing is still full reprocessing.",
+      C: "Crawlers update the catalog — they don't filter source data.",
+      D: "Metrics observe the job, not change its inputs.",
+    },
+    services: ["AWS Glue"],
+    references: [
+      {
+        title: "Tracking processed data using job bookmarks",
+        url: "https://docs.aws.amazon.com/glue/latest/dg/monitor-continuations.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
 ];

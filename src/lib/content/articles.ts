@@ -2456,6 +2456,157 @@ ARTICLES.push({
   ],
 });
 
+ARTICLES.push({
+  slug: "how-to-pass-clf-c02-first-try",
+  title: "How to Pass CLF-C02 on Your First Try (2-Week Plan)",
+  description:
+    "A practical study plan for the AWS Cloud Practitioner exam: what CLF-C02 actually tests, which domains matter most, and how to prepare in two weeks even with no AWS experience.",
+  domain: "clf-cloud-concepts",
+  topic: "clf-cloud-essentials",
+  updatedAt: "2026-11-02",
+  readingMinutes: 7,
+  sections: [
+    {
+      paragraphs: [
+        "CLF-C02 is AWS's entry-level certification — 65 questions in 90 minutes, $100, passing around 700/1000 scaled. It tests breadth, not depth: cloud concepts, security basics, core services, and billing. No hands-on is strictly required, which makes it the right first certification for career changers, managers, sales roles, and anyone who needs cloud vocabulary fast. Two weeks at 1–1.5 hours/day is a realistic timeline for most people.",
+      ],
+    },
+    {
+      heading: "What the exam actually tests (by weight)",
+      list: [
+        "Cloud Concepts (24%): value proposition, elasticity vs scalability, cloud vs on-prem economics, Well-Architected pillars",
+        "Security & Compliance (30%): shared responsibility model — the single most-tested concept — plus IAM basics, compliance programs, and security services",
+        "Cloud Technology & Services (34%): the biggest domain — compute/storage/database/networking service identification, global infrastructure, migration tools",
+        "Billing, Pricing & Support (12%): pricing models, cost tools, support plan tiers",
+      ],
+    },
+    {
+      heading: "Week 1 — Concepts and services (days 1–7)",
+      paragraphs: [
+        "Goal: recognize every major service by its one-line job. CLF questions are mostly 'which service does X' — build that mapping first.",
+      ],
+      list: [
+        "Days 1–2: cloud concepts — elasticity, high availability, CAPEX→OPEX, regions/AZs/edge locations, shared responsibility model",
+        "Days 3–4: core services — EC2, Lambda, S3, RDS, DynamoDB, VPC, CloudFront, IAM. Learn each one's job in one sentence",
+        "Days 5–6: billing & support — pricing models (On-Demand/RI/Spot), Cost Explorer vs Budgets vs Trusted Advisor, the four support plan tiers",
+        "Day 7: first practice set, untimed — you're building a service-recognition baseline",
+      ],
+    },
+    {
+      heading: "Week 2 — Security, review, and mock exams (days 8–14)",
+      paragraphs: [
+        "Goal: close the 30% security domain and train exam-day pacing.",
+      ],
+      list: [
+        "Days 8–9: IAM (users/groups/roles/policies), MFA, security services (WAF, Shield, GuardDuty, Inspector at name-recognition level), compliance (Artifact)",
+        "Day 10: weak-area review — re-do every missed question so far and write down WHY you missed each",
+        "Days 11–12: two timed practice sets (65 questions, 90 minutes) — target 75%+",
+        "Day 13: skim the CLF-C02 cheat sheet, review your notes once",
+        "Day 14: light review + logistics. Schedule the exam before day 10 — a deadline focuses everything",
+      ],
+    },
+    {
+      heading: "The concepts that trip people up",
+      list: [
+        "Shared responsibility: AWS = security OF the cloud; you = security IN the cloud. Know the IaaS/PaaS/SaaS line — e.g., AWS patches RDS, but you patch EC2 OS",
+        "Support plan tiers: Developer = business-hours email; Business = 24/7 chat/phone + Trusted Advisor checks; Enterprise = TAM + concierge + infrastructure event management",
+        "Regions vs AZs vs edge locations: region = geographic area, AZ = isolated DCs inside it, edge = CloudFront PoPs",
+        "Elasticity ≠ scalability ≠ high availability — the exam tests the distinction constantly",
+        "Free cost tools: Cost Explorer (visualize), Budgets (alert), Trusted Advisor (recommend), Pricing Calculator (estimate before you build)",
+      ],
+    },
+    {
+      heading: "What 'ready' looks like",
+      paragraphs: [
+        "You're ready when timed practice sets consistently land at 75%+ and you can name the right service for a scenario without reading all four options. CLF-C02 is genuinely passable in two weeks — but its real value is the vocabulary foundation it builds for SAA-C03, which is where career-changing credentials start.",
+      ],
+    },
+  ],
+  references: [
+    { title: "CLF-C02 exam guide (official)", url: "https://aws.amazon.com/certification/certified-cloud-practitioner/" },
+    { title: "AWS shared responsibility model", url: "https://aws.amazon.com/compliance/shared-responsibility-model/" },
+  ],
+});
+
+ARTICLES.push({
+  slug: "how-to-pass-dva-c02-developer-guide",
+  title: "How to Pass DVA-C02: The Developer's Study Guide",
+  description:
+    "A study plan built for developers taking the AWS Developer Associate exam: the API-level details DVA-C02 tests that SAA doesn't, which services to know deepest, and a 3-week preparation schedule.",
+  domain: "dva-development-with-aws",
+  topic: "dva-serverless-and-apis",
+  updatedAt: "2026-11-02",
+  readingMinutes: 8,
+  sections: [
+    {
+      paragraphs: [
+        "DVA-C02 is the associate exam closest to actual engineering work — it assumes you write code against AWS. Compared to SAA-C03 (which asks 'which architecture fits'), DVA asks 'which API call, which parameter, which SDK behavior'. Candidates who fail usually know the services but never practiced the developer-level details: DynamoDB condition expressions, Lambda execution roles vs resource policies, API Gateway integration types. Budget 3 weeks at 1.5–2 hours/day if you already use AWS at work, 4+ if you don't.",
+      ],
+    },
+    {
+      heading: "What's different from SAA-C03",
+      paragraphs: [
+        "If you're coming from SAA, don't assume the content overlaps cleanly. DVA goes deeper on a narrower set of services and tests implementation specifics:",
+      ],
+      list: [
+        "DynamoDB is the most-tested service — RCU/WCU math, partition key design, Query vs Scan, condition expressions, optimistic locking, DAX, streams",
+        "Lambda internals — execution environment lifecycle, execution role vs resource-based policy, layers, concurrency models, destination vs DLQ",
+        "API Gateway integration types — proxy vs non-proxy, mapping templates, stage variables, usage plans, Lambda authorizers vs Cognito authorizers",
+        "CI/CD services at feature level — CodeDeploy deployment configs (canary/linear/all-at-once), CodeBuild buildspec phases, CodePipeline artifact model",
+        "X-Ray — segments/subsegments, annotations vs metadata, sampling rules, daemon setup",
+      ],
+    },
+    {
+      heading: "Week 1 — Serverless core (days 1–7)",
+      list: [
+        "Days 1–3: Lambda end-to-end — write a function, attach an execution role, trigger it from API Gateway, read its CloudWatch logs. Hands-on matters here",
+        "Days 4–5: DynamoDB deep dive — capacity modes, indexes (GSI vs LSI), Query vs Scan, conditional writes",
+        "Days 6–7: API Gateway — REST vs HTTP vs WebSocket, integration types, auth options, caching, throttling",
+      ],
+    },
+    {
+      heading: "Week 2 — Security, CI/CD, and messaging (days 8–14)",
+      list: [
+        "Days 8–9: app security — IAM roles for EC2/Lambda, Cognito user pools vs identity pools, Secrets Manager vs Parameter Store, KMS from code",
+        "Days 10–11: CI/CD — CodeCommit/CodeBuild/CodeDeploy/CodePipeline flow, Elastic Beanstalk concepts, SAM basics",
+        "Days 12–13: messaging & async — SQS (visibility timeout, DLQ, FIFO), SNS, EventBridge, Step Functions basics",
+        "Day 14: timed practice set — DVA's scenario questions are LONG; train reading speed",
+      ],
+    },
+    {
+      heading: "Week 3 — Observability and mock exams (days 15–21)",
+      list: [
+        "Days 15–16: X-Ray and CloudWatch — traces, custom metrics, Logs Insights, agent setup",
+        "Days 17–18: optimization — ElastiCache use cases, API Gateway caching, Lambda cold-start mitigation, provisioned concurrency",
+        "Day 19: full timed mock (65 questions, 130 minutes)",
+        "Days 20–21: mistake review + second mock — target 75%+",
+      ],
+    },
+    {
+      heading: "Exam traps specific to DVA",
+      list: [
+        "Execution role vs resource policy: role = what Lambda CAN DO; resource policy = WHO can invoke it. The most-confused pair on the exam",
+        "SQS visibility timeout vs message retention — different clocks, both tested",
+        "Query returns ≤1MB per call and needs pagination; Scan reads the whole table and wastes RCUs",
+        "CodeDeploy can't deploy to Lambda via EC2 hooks — Lambda uses its own deployment types (canary/linear)",
+        "API Gateway caching is per-stage — enabling it on one stage doesn't cache others",
+        "DAX caches DynamoDB reads in front of the table; ElastiCache is general-purpose — don't interchange them",
+      ],
+    },
+    {
+      heading: "What 'ready' looks like",
+      paragraphs: [
+        "You're ready when you can answer questions about API parameters and SDK behavior — not just service selection — at 75%+ on timed mocks. If your misses cluster in one service (usually DynamoDB or Lambda), spend a day building something small with it before re-mocking. DVA is the highest-ROI associate certification for developers: it directly improves day-to-day AWS work, not just the resume.",
+      ],
+    },
+  ],
+  references: [
+    { title: "DVA-C02 exam guide (official)", url: "https://aws.amazon.com/certification/certified-developer-associate/" },
+    { title: "AWS Lambda developer guide", url: "https://docs.aws.amazon.com/lambda/latest/dg/welcome.html" },
+    { title: "Amazon DynamoDB developer guide", url: "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Welcome.html" },
+  ],
+});
+
 export function getArticle(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
 }
