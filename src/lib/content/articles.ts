@@ -2370,6 +2370,92 @@ ARTICLES.push({
   ],
 });
 
+ARTICLES.push({
+  slug: "how-to-pass-saa-c03-in-30-days",
+  title: "How to Pass SAA-C03 in 30 Days: A Realistic Study Schedule",
+  description:
+    "A week-by-week 30-day plan for the AWS Solutions Architect Associate exam: what to study in what order, how to use mock exams, and the week-4 tactics that actually move scores.",
+  domain: "design-resilient-architectures",
+  topic: "high-availability",
+  updatedAt: "2026-11-01",
+  readingMinutes: 8,
+  sections: [
+    {
+      paragraphs: [
+        "Thirty days is enough for SAA-C03 if you already work with AWS or have solid IT fundamentals — and it's too short if you're starting from zero. This plan assumes roughly 1.5–2 hours on weekdays and a longer block on weekends, about 40 hours total. The philosophy: SAA-C03 tests scenario judgment (which architecture fits a constraint set), so the plan spends as much time on practice questions and mock exams as on content.",
+      ],
+    },
+    {
+      heading: "Week 1 — Foundations (days 1–7)",
+      paragraphs: [
+        "Goal: fluent vocabulary across compute, storage, networking, and databases. Don't memorize console menus — learn the decision each service answers.",
+      ],
+      list: [
+        "Days 1–2: EC2 instance families and placement, EBS vs instance store vs EFS, Auto Scaling basics",
+        "Days 3–4: S3 storage classes + lifecycle, CloudFront, Route 53 routing policies, ALB vs NLB",
+        "Days 5–6: VPC layout (subnets, NAT, SGs vs NACLs), RDS vs Aurora vs DynamoDB vs ElastiCache",
+        "Day 7: first 20-question untimed practice set — you're calibrating, not scoring",
+      ],
+    },
+    {
+      heading: "Week 2 — Decoupling, security & resilience (days 8–14)",
+      paragraphs: [
+        "Goal: the exam's favorite material. Messaging services and resilience patterns generate a disproportionate share of questions.",
+      ],
+      list: [
+        "Days 8–9: SQS vs SNS vs EventBridge vs Kinesis — build the decoupling decision tree until it's reflexive",
+        "Days 10–11: IAM (roles vs users vs policies), KMS envelope encryption, Secrets Manager vs Parameter Store",
+        "Days 12–13: Multi-AZ vs multi-region, backup/pilot-light/warm-standby/active-active DR, health checks + failover",
+        "Day 14: second practice set, timed — log every wrong answer and the reason you chose it",
+      ],
+    },
+    {
+      heading: "Week 3 — Cost, performance & first full mock (days 15–21)",
+      paragraphs: [
+        "Goal: close the remaining domains and diagnose your weak spots under real time pressure.",
+      ],
+      list: [
+        "Days 15–16: Savings Plans vs RIs vs Spot, storage tiering math, data transfer costs",
+        "Days 17–18: Caching (ElastiCache vs DAX vs CloudFront), DynamoDB partition design, Lambda concurrency",
+        "Day 19: full 65-question timed mock exam — treat it like the real thing, no pausing",
+        "Days 20–21: review EVERY explanation in the mock, including questions you guessed right",
+      ],
+    },
+    {
+      heading: "Week 4 — Exam-mode polish (days 22–30)",
+      paragraphs: [
+        "Goal: convert knowledge into exam technique. Most failed candidates knew the content — they misread constraints.",
+      ],
+      list: [
+        "Days 22–24: re-attempt every missed question from weeks 1–3 until your mistake queue is empty",
+        "Days 25–26: second full timed mock — target 75%+ with margin above the ~72% passing zone",
+        "Days 27–28: skim the cheat sheet daily; drill keyword reading ('most cost-effective', 'least operational overhead')",
+        "Days 29–30: light review only, logistics check (ID, system test for online proctoring), sleep",
+      ],
+    },
+    {
+      heading: "Exam-day tactics that move scores",
+      list: [
+        "Read the last sentence first — the constraint ('most cost-effective') defines the answer, then read the scenario",
+        "Eliminate two obviously wrong options before choosing — most SAA questions have them",
+        "Flag and move at ~2 minutes; unanswered is guaranteed wrong, flagged is free",
+        "Multi-select questions state the count ('choose TWO') — there's no partial credit",
+        "If two options seem right, the difference is usually operational overhead or cost — reread for the qualifier",
+      ],
+    },
+    {
+      heading: "What 'ready' actually looks like",
+      paragraphs: [
+        "You're ready when two consecutive timed mocks land at 75%+ AND you can explain why each wrong option is wrong — not just which letter is right. If your mocks plateau below that, extend by a week and drill your weakest domain rather than re-reading material you already know. The exam costs $150; a second attempt costs another $150 — one extra week of prep is cheaper.",
+      ],
+    },
+  ],
+  references: [
+    { title: "SAA-C03 exam guide (official)", url: "https://aws.amazon.com/certification/certified-solutions-architect-associate/" },
+    { title: "AWS Well-Architected Framework", url: "https://aws.amazon.com/architecture/well-architected/" },
+  ],
+});
+
 export function getArticle(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
 }
