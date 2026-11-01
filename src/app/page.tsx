@@ -4,6 +4,7 @@ import Link from "next/link";
 import {
   ArrowRight,
   BookOpen,
+  Check,
   ClipboardList,
   Layers,
   Target,
@@ -275,6 +276,59 @@ export default function Home() {
                 </Link>
               );
             })}
+          </div>
+        </Container>
+      </section>
+
+      {/* Study pack promo */}
+      <section className="border-t border-border bg-card py-14">
+        <Container>
+          <div className="relative overflow-hidden rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 via-orange-50 to-background p-8 sm:p-10">
+            <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-amber-200/40 blur-3xl" aria-hidden />
+            <div className="relative grid items-center gap-8 lg:grid-cols-[1.5fr_1fr]">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-wide text-amber-700">
+                  New — study packs
+                </p>
+                <h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">
+                  All 9 cheat sheets. One printable bundle.
+                </h2>
+                <p className="mt-3 max-w-xl text-muted">
+                  Condensed exam-day references for every covered certification —
+                  service distinctions, decision rules, and the facts each exam
+                  repeats. Print it, annotate it, take it to exam week.
+                </p>
+                <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-1.5 text-sm text-muted">
+                  <li className="flex items-center gap-1.5">
+                    <Check className="h-4 w-4 text-amber-700" aria-hidden />
+                    9 certifications, 18 pages
+                  </li>
+                  <li className="flex items-center gap-1.5">
+                    <Check className="h-4 w-4 text-amber-700" aria-hidden />
+                    Print-optimized PDF
+                  </li>
+                  <li className="flex items-center gap-1.5">
+                    <Check className="h-4 w-4 text-amber-700" aria-hidden />
+                    Free updates forever
+                  </li>
+                </ul>
+              </div>
+              <div className="flex flex-col items-stretch gap-3 lg:items-end">
+                <div className="text-left lg:text-right">
+                  <span className="text-3xl font-bold">$12</span>
+                  <span className="ml-1.5 text-sm text-muted">one-time</span>
+                </div>
+                <ButtonLink href="/shop" className="justify-center">
+                  Get the Cheat Sheet Bundle
+                </ButtonLink>
+                <Link
+                  href="/learn/clf-c02-cheat-sheet"
+                  className="text-center text-xs text-muted hover:text-accent"
+                >
+                  Preview a cheat sheet first →
+                </Link>
+              </div>
+            </div>
           </div>
         </Container>
       </section>
