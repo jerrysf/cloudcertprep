@@ -3024,6 +3024,74 @@ ARTICLES.push({
   ],
 });
 
+ARTICLES.push({
+  slug: "how-to-pass-aif-c01-ai-practitioner-guide",
+  title: "How to Pass AIF-C01: The AI Practitioner Guide",
+  description:
+    "A study plan for the AWS Certified AI Practitioner exam: what this new certification actually tests, the GenAI/Bedrock material that dominates it, and a 2-week schedule.",
+  domain: "aif-ai-ml-fundamentals",
+  topic: "aif-ml-foundations",
+  updatedAt: "2026-11-03",
+  readingMinutes: 7,
+  sections: [
+    {
+      paragraphs: [
+        "AIF-C01 (AI Practitioner) is AWS's newest foundational certification — the AI-era equivalent of Cloud Practitioner. 65 questions, 90 minutes, $100. It tests AI/ML vocabulary and Bedrock service knowledge, not math or model training. No hands-on ML experience needed — this is accessible to managers, developers, and anyone who needs to talk credibly about AI on AWS. Two weeks at 1–1.5 hours/day is realistic for most candidates.",
+      ],
+    },
+    {
+      heading: "What the exam tests",
+      list: [
+        "AI/ML fundamentals (20%): AI vs ML vs deep learning vs GenAI, learning types, common terminology",
+        "GenAI fundamentals (24%): foundation models, tokens/context windows, prompt engineering, RAG vs fine-tuning",
+        "FM applications (28% — biggest): Amazon Bedrock end-to-end, agents, guardrails, inference modes, evaluation",
+        "Responsible AI (14%): bias, transparency, explainability, human oversight, AI Service Cards",
+        "Security & governance (14%): data privacy in Bedrock, IAM for AI services, compliance",
+      ],
+    },
+    {
+      heading: "Week 1 — AI/ML and GenAI concepts (days 1–7)",
+      list: [
+        "Days 1–2: Core vocabulary — AI/ML/deep learning/GenAI relationships, supervised/unsupervised/reinforcement, training vs inference",
+        "Days 3–4: GenAI mechanics — foundation models, tokens, context windows, embeddings, temperature/top-p",
+        "Days 5–6: Adaptation ladder — prompt engineering → RAG → fine-tuning, and when each is right",
+        "Day 7: first practice set — vocabulary calibration",
+      ],
+    },
+    {
+      heading: "Week 2 — Bedrock depth + governance (days 8–14)",
+      list: [
+        "Days 8–9: Bedrock end-to-end — model access, invocation modes (on-demand vs provisioned vs batch), playgrounds",
+        "Days 10–11: Bedrock capabilities — Knowledge Bases (managed RAG), Agents (multi-step actions), Guardrails (content filtering)",
+        "Day 12: Responsible AI — bias sources, transparency (AI Service Cards), human oversight patterns",
+        "Day 13: security & governance — the Bedrock data-privacy facts (prompts don't train base models), IAM controls",
+        "Day 14: timed mock + mistake review — the exam is vocabulary-heavy, so wrong answers are usually memorization gaps",
+      ],
+    },
+    {
+      heading: "The concepts that trip people up",
+      list: [
+        "Knowledge Bases = managed RAG (retrieval); Agents = orchestrated actions — different capabilities",
+        "Guardrails filter BOTH inputs and outputs, across models — not a model feature",
+        "Temperature controls randomness; top-p controls vocabulary pool; max tokens controls length — know which knob does what",
+        "On-demand = pay per token; Provisioned Throughput = fixed cost for steady load; Batch = offline async jobs",
+        "Bedrock does NOT use your prompts to train foundation models — the most-tested data-privacy fact",
+        "Few-shot prompting = examples in the prompt; zero-shot = instructions only",
+      ],
+    },
+    {
+      heading: "What 'ready' looks like",
+      paragraphs: [
+        "You're ready when you can answer 'which Bedrock feature' and 'which prompt lever' questions at 75%+ on timed sets. AIF-C01 is genuinely attainable in two weeks — its value is giving you structured GenAI vocabulary plus a certification that barely existed a year ago, making it a differentiation play while it's still rare.",
+      ],
+    },
+  ],
+  references: [
+    { title: "AIF-C01 exam guide (official)", url: "https://aws.amazon.com/certification/certified-ai-practitioner/" },
+    { title: "Amazon Bedrock documentation", url: "https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html" },
+  ],
+});
+
 export function getArticle(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
 }

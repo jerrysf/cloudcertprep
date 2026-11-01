@@ -166,7 +166,7 @@ export function ResultsView({
               Back to practice
             </ButtonLink>
             <ShareButton
-              text={`I scored ${Math.round(result.scorePercent)}% on a CloudCertPrep SAA-C03 mock exam — free AWS practice questions:`}
+              text={`I scored ${Math.round(result.scorePercent)}% on a CloudCertPrep ${cert?.code ?? "AWS"} mock exam — free AWS practice questions:`}
             />
           </div>
         </div>
