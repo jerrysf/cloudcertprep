@@ -892,4 +892,152 @@ export const deaQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-11-02",
   },
+  {
+    id: "dea-ing-008",
+    slug: "glue-vs-emr-serverless-etl",
+    cert: "dea-c01",
+    domain: "dea-ingestion-transformation",
+    topic: "dea-ingestion-and-etl",
+    subtopic: "ETL service choice",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A team needs Spark-based ETL jobs a few times a day with NO cluster management, paying only per job-second. Which service fits best?",
+    options: [
+      { id: "A", text: "Amazon EMR on EC2" },
+      { id: "B", text: "AWS Glue jobs — serverless Spark billed per DPU-second" },
+      { id: "C", text: "Self-managed Spark on EC2" },
+      { id: "D", text: "Amazon Athena" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Glue ETL is serverless Spark — no clusters, per-second billing, integrates natively with the Data Catalog. EMR is the answer when you need specific framework versions, fine cluster control, or long-running analytics clusters.",
+    optionExplanations: {
+      A: "EMR means cluster ops and paying for idle cluster time.",
+      B: "Correct. Serverless, per-job billing, catalog-native.",
+      C: "Maximum ops burden for a routine need.",
+      D: "Athena queries data — it doesn't run Spark ETL.",
+    },
+    services: ["AWS Glue", "Amazon EMR"],
+    references: [
+      {
+        title: "AWS Glue ETL jobs",
+        url: "https://docs.aws.amazon.com/glue/latest/dg/aws-glue-programming-etl-glue-arguments.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-03",
+  },
+  {
+    id: "dea-store-007",
+    slug: "athena-adhoc-lake-queries",
+    cert: "dea-c01",
+    domain: "dea-data-store-management",
+    topic: "dea-data-stores",
+    subtopic: "Query service",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "Analysts need occasional SQL queries over CSV/Parquet files in S3 — no database to load, no servers, pay per query. Which service?",
+    options: [
+      { id: "A", text: "Amazon Redshift" },
+      { id: "B", text: "Amazon Athena — serverless SQL directly over S3" },
+      { id: "C", text: "Amazon RDS" },
+      { id: "D", text: "Amazon EMR" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Athena queries S3 data in place (via Glue Data Catalog schemas), billed per TB scanned — the default for ad-hoc lake analytics. Redshift is for high-concurrency repeated analytical workloads; the exam contrasts them constantly.",
+    optionExplanations: {
+      A: "Redshift needs a provisioned cluster — overkill for occasional queries.",
+      B: "Correct. Serverless, per-query, zero loading.",
+      C: "OLTP database — wrong workload.",
+      D: "EMR is cluster-based processing, not ad-hoc SQL.",
+    },
+    services: ["Amazon Athena", "Amazon S3"],
+    references: [
+      {
+        title: "Amazon Athena",
+        url: "https://docs.aws.amazon.com/athena/latest/ug/what-is.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-03",
+  },
+  {
+    id: "dea-gov-007",
+    slug: "lake-at-rest-encryption",
+    cert: "dea-c01",
+    domain: "dea-data-security-governance",
+    topic: "dea-data-governance",
+    subtopic: "Encryption",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A data lake must encrypt everything at rest — S3 objects, Glue metadata, EMR temp data, and Athena results — with auditable key control. What's the standard approach?",
+    options: [
+      { id: "A", text: "SSE-S3 on the bucket only" },
+      { id: "B", text: "SSE-KMS for S3 + Glue Data Catalog encryption + KMS-encrypted Athena results — one auditable key layer" },
+      { id: "C", text: "Client-side encryption for everything" },
+      { id: "D", text: "TLS on all connections" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "KMS-based encryption covers the whole lake stack — S3 objects, the Glue catalog (metadata-at-rest encryption), EMR local disks, Athena query results — with CloudTrail key-usage auditing. SSE-S3 works for objects but offers no key control/audit and doesn't cover catalog/results.",
+    optionExplanations: {
+      A: "Covers only S3 objects — misses catalog and results.",
+      B: "Correct. One KMS layer across all lake components.",
+      C: "Maximum operational burden — KMS already handles it.",
+      D: "TLS is in-transit, not at-rest.",
+    },
+    services: ["AWS KMS", "Amazon S3", "AWS Glue"],
+    references: [
+      {
+        title: "Encrypting your data catalog",
+        url: "https://docs.aws.amazon.com/glue/latest/dg/encrypt-glue-data-catalog.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-03",
+  },
+  {
+    id: "dea-ops-006",
+    slug: "glue-job-failure-alert",
+    cert: "dea-c01",
+    domain: "dea-data-operations-support",
+    topic: "dea-data-operations",
+    subtopic: "Pipeline alerting",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "The data team must be paged immediately when a nightly Glue ETL job fails. What's the simplest serverless pattern?",
+    options: [
+      { id: "A", text: "Poll job status hourly from a cron" },
+      { id: "B", text: "EventBridge rule on Glue job state-change events (FAILED) → SNS to the on-call group" },
+      { id: "C", text: "Check CloudWatch logs each morning" },
+      { id: "D", text: "A Lambda polling the Glue API every minute" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Glue emits state-change events — an EventBridge rule on FAILED → SNS/Lambda gives push-based, instant alerting with zero polling infrastructure. This event-driven ops pattern recurs across AWS services.",
+    optionExplanations: {
+      A: "Polling adds delay and a scheduler to maintain.",
+      B: "Correct. Native events → instant notification.",
+      C: "Manual checking isn't alerting.",
+      D: "Lambda polling works but reinvents EventBridge.",
+    },
+    services: ["AWS Glue", "Amazon EventBridge", "Amazon SNS"],
+    references: [
+      {
+        title: "Automating AWS Glue with CloudWatch Events",
+        url: "https://docs.aws.amazon.com/glue/latest/dg/automating-awsglue-with-cloudwatch-events.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-03",
+  },
 ];

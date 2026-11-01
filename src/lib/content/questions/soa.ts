@@ -894,4 +894,152 @@ export const soaQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-11-02",
   },
+  {
+    id: "soa-mon-008",
+    slug: "metric-math-error-rate",
+    cert: "soa-c03",
+    domain: "soa-monitoring-logging-remediation",
+    topic: "soa-monitoring-and-remediation",
+    subtopic: "Metric math",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Ops wants to alarm on error RATE (5xx ÷ total requests), not raw error count — CloudWatch has no such metric natively. Which feature computes it?",
+    options: [
+      { id: "A", text: "CloudWatch metric math — an expression combining existing metrics" },
+      { id: "B", text: "A custom application metric published per request" },
+      { id: "C", text: "Metric filters on the load balancer logs" },
+      { id: "D", text: "CloudWatch anomaly detection" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Metric math lets you compute ratios/aggregates across metrics (e.g., m2/m1*100) and alarm on the result — no new instrumentation needed. Publishing a custom metric works but adds app changes and cost.",
+    optionExplanations: {
+      A: "Correct. Expressions over existing metrics, alarmable.",
+      B: "Works but requires code changes — metric math doesn't.",
+      C: "Filters extract counts from logs, not live ratios.",
+      D: "Anomaly detection bands metrics — doesn't combine them.",
+    },
+    services: ["Amazon CloudWatch"],
+    references: [
+      {
+        title: "Using metric math",
+        url: "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/using-metric-math.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-03",
+  },
+  {
+    id: "soa-dep-006",
+    slug: "session-manager-no-bastion",
+    cert: "soa-c03",
+    domain: "soa-deployment-provisioning-automation",
+    topic: "soa-deployment-and-automation",
+    subtopic: "Secure access",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "Admins need shell access to private-subnet EC2 instances WITHOUT opening port 22, deploying bastion hosts, or managing SSH keys. Which Systems Manager capability provides this?",
+    options: [
+      { id: "A", text: "Run Command" },
+      { id: "B", text: "Session Manager — audited shell sessions via the SSM agent" },
+      { id: "C", text: "EC2 Instance Connect" },
+      { id: "D", text: "AWS Cloud9" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Session Manager gives browser/CLI shell access through the SSM agent's outbound channel — no inbound ports, no keys, full session logging to CloudWatch/S3. It's the modern bastion replacement; Run Command is for one-off commands, not interactive shells.",
+    optionExplanations: {
+      A: "Run Command executes documents — not interactive shells.",
+      B: "Correct. Agent-based, keyless, fully audited access.",
+      C: "EC2 Instance Connect still needs SSH network reachability.",
+      D: "Cloud9 is a dev IDE — needs its own connectivity.",
+    },
+    services: ["AWS Systems Manager"],
+    references: [
+      {
+        title: "AWS Systems Manager Session Manager",
+        url: "https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-03",
+  },
+  {
+    id: "soa-net-005",
+    slug: "alb-unhealthy-targets-debug",
+    cert: "soa-c03",
+    domain: "soa-networking-content-delivery",
+    topic: "soa-networking-operations",
+    subtopic: "LB troubleshooting",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An ALB's targets all register as unhealthy and traffic 503s, though the app runs fine when hit directly. What's the FIRST thing to check?",
+    options: [
+      { id: "A", text: "The target group's health check settings — path, port, expected success codes" },
+      { id: "B", text: "Route 53 records" },
+      { id: "C", text: "The ALB's TLS certificate" },
+      { id: "D", text: "NACL ephemeral port rules only" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Health-check mismatch is the most common cause: the check hits a wrong path/port or expects 200 while the app returns a redirect/404 — targets fail despite a healthy app. Also verify the target SG allows the health-check port from the ALB's SG.",
+    optionExplanations: {
+      A: "Correct. Path/port/protocol/matcher config first.",
+      B: "DNS affects name resolution, not target health.",
+      C: "TLS affects client→ALB, not ALB→target checks (usually HTTP).",
+      D: "Could matter, but health-check config is the first suspect.",
+    },
+    services: ["Elastic Load Balancing"],
+    references: [
+      {
+        title: "Health checks for your target groups",
+        url: "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/target-group-health-checks.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-03",
+  },
+  {
+    id: "soa-sec-004",
+    slug: "alert-on-root-usage",
+    cert: "soa-c03",
+    domain: "soa-security-compliance",
+    topic: "soa-security-operations",
+    subtopic: "Root monitoring",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Security wants an immediate alert whenever the AWS account's ROOT user is used for any API call. Which pattern delivers this?",
+    options: [
+      { id: "A", text: "Daily IAM credential report review" },
+      { id: "B", text: "EventBridge rule matching CloudTrail events where userIdentity.type = \"Root\" → SNS notification" },
+      { id: "C", text: "An SCP denying root actions" },
+      { id: "D", text: "Config rule checking root MFA weekly" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "CloudTrail logs every API call including root; an EventBridge rule matching root identity events fires instantly to SNS/SSM — the standard root-usage alarm. Credential reports and periodic checks are too slow for an event that should never happen.",
+    optionExplanations: {
+      A: "Daily review is days too late.",
+      B: "Correct. Real-time event matching on API calls.",
+      C: "SCPs can't restrict the root user.",
+      D: "MFA checks don't alert on usage.",
+    },
+    services: ["Amazon EventBridge", "AWS CloudTrail", "Amazon SNS"],
+    references: [
+      {
+        title: "Creating EventBridge rules for CloudTrail events",
+        url: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudwatch-alarms-for-cloudtrail-additional-examples.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-03",
+  },
 ];

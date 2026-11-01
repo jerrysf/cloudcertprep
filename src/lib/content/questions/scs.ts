@@ -900,4 +900,152 @@ export const scsQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-11-02",
   },
+  {
+    id: "scs-det-006",
+    slug: "security-hub-compliance-standard",
+    cert: "scs-c03",
+    domain: "scs-detection",
+    topic: "scs-detection-and-response",
+    subtopic: "Compliance scoring",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "The security team needs a continuously evaluated CIS benchmark score across accounts, with findings from GuardDuty/Inspector/Config aggregated in one place. Which service provides this?",
+    options: [
+      { id: "A", text: "AWS Config alone" },
+      { id: "B", text: "Security Hub — standards (CIS, PCI DSS, FSBP) + cross-service finding aggregation" },
+      { id: "C", text: "GuardDuty" },
+      { id: "D", text: "AWS Artifact" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Security Hub is the security posture center: enables security standards (CIS AWS Foundations, PCI DSS, AWS Foundational Security Best Practices) as scored controls and normalizes findings from GuardDuty, Inspector, Macie, Config — single pane of glass. Each detector is a source; Hub aggregates.",
+    optionExplanations: {
+      A: "Config checks resource configs — no cross-service aggregation.",
+      B: "Correct. Standards scoring + finding aggregation.",
+      C: "GuardDuty is one detection source, not the aggregator.",
+      D: "Artifact distributes compliance reports — not live scoring.",
+    },
+    services: ["AWS Security Hub"],
+    references: [
+      {
+        title: "Security standards in Security Hub",
+        url: "https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-standards.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-03",
+  },
+  {
+    id: "scs-iam-005",
+    slug: "cross-account-role-external-id",
+    cert: "scs-c03",
+    domain: "scs-iam",
+    topic: "scs-iam-deep-dive",
+    subtopic: "Cross-account access",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A monitoring vendor needs read-only access to YOUR account via role assumption. Beyond least privilege, what protects against the 'confused deputy' problem where the vendor's OTHER customers could trick it into reading your account?",
+    options: [
+      { id: "A", text: "Restricting by the vendor's AWS account ID only" },
+      { id: "B", text: "Requiring an ExternalId condition in the role trust policy — a shared secret only you and the vendor associate with your account" },
+      { id: "C", text: "MFA on the role" },
+      { id: "D", text: "IP whitelisting in the trust policy" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "ExternalId is the canonical confused-deputy mitigation: the trust policy requires sts:ExternalId = a secret string unique to your vendor relationship — the vendor can't accidentally assume your role on behalf of another customer. Account ID alone doesn't distinguish which customer initiated the call.",
+    optionExplanations: {
+      A: "Vendor's account ID alone = classic confused deputy hole.",
+      B: "Correct. ExternalId binds the assumption to YOUR relationship.",
+      C: "MFA helps but doesn't solve third-party deputy scenarios.",
+      D: "IPs change; ExternalId is the designed control.",
+    },
+    services: ["AWS IAM"],
+    references: [
+      {
+        title: "Access to AWS accounts owned by third parties",
+        url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-03",
+  },
+  {
+    id: "scs-inf-006",
+    slug: "shield-advanced-vs-standard",
+    cert: "scs-c03",
+    domain: "scs-infrastructure-security",
+    topic: "scs-infrastructure-security",
+    subtopic: "DDoS protection",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An internet-facing app needs protection from large DDoS events WITH 24/7 access to AWS's DDoS Response Team and cost protection for scaling during attacks. What provides this?",
+    options: [
+      { id: "A", text: "AWS Shield Standard" },
+      { id: "B", text: "AWS Shield Advanced on the CloudFront/ALB/Route53 resources" },
+      { id: "C", text: "AWS WAF alone" },
+      { id: "D", text: "Network ACL rate limits" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Shield Advanced adds: 24/7 DDoS Response Team (DRT), visibility/reporting, and cost protection (credits for scaling during an attack) — beyond Standard's automatic L3/L4 baseline protection that's free on all AWS resources. WAF handles L7; NACLs can't rate-limit.",
+    optionExplanations: {
+      A: "Standard is free baseline — no DRT, no cost protection.",
+      B: "Correct. DRT + reporting + scaling cost protection.",
+      C: "WAF is L7 app filtering — not volumetric DDoS protection.",
+      D: "NACLs have no rate limiting.",
+    },
+    services: ["AWS Shield", "AWS WAF"],
+    references: [
+      {
+        title: "AWS Shield Advanced features",
+        url: "https://docs.aws.amazon.com/waf/latest/developerguide/ddos-advanced-summary.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-03",
+  },
+  {
+    id: "scs-log-002",
+    slug: "cloudtrail-log-integrity",
+    cert: "scs-c03",
+    domain: "scs-detection",
+    topic: "scs-logging-and-audit",
+    subtopic: "Audit integrity",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "For legal admissibility, the team must PROVE that archived CloudTrail log files haven't been modified or deleted after delivery. Which feature validates this?",
+    options: [
+      { id: "A", text: "S3 versioning" },
+      { id: "B", text: "CloudTrail log file integrity validation — digest files with SHA-256 hashes per log" },
+      { id: "C", text: "S3 Object Lock alone" },
+      { id: "D", text: "CloudTrail Insights" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Integrity validation makes each log file's hash available via digest files — you can cryptographically verify no modification/deletion occurred, which is precisely what audits/court-admissibility require. Object Lock prevents future modification but can't prove past integrity of delivered files.",
+    optionExplanations: {
+      A: "Versioning keeps copies — doesn't prove authenticity.",
+      B: "Correct. Hash-chain integrity = tamper evidence.",
+      C: "Prevents deletion, but doesn't validate delivered file hashes.",
+      D: "Insights detects unusual API activity — not integrity.",
+    },
+    services: ["AWS CloudTrail"],
+    references: [
+      {
+        title: "Validating CloudTrail log file integrity",
+        url: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-intro.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-03",
+  },
 ];

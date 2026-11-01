@@ -892,4 +892,152 @@ export const ansQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-11-02",
   },
+  {
+    id: "ans-hyb-006",
+    slug: "tgw-route-table-isolation",
+    cert: "ans-c01",
+    domain: "ans-network-design",
+    topic: "ans-hybrid-connectivity",
+    subtopic: "Spoke segmentation",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "All spoke VPCs must reach a shared-services VPC but NOT each other, through a Transit Gateway. What implements this segmentation?",
+    options: [
+      { id: "A", text: "Security groups in each spoke" },
+      { id: "B", text: "Separate TGW route tables — spokes associate to a table that only propagates shared-services routes" },
+      { id: "C", text: "VPC peering instead of TGW" },
+      { id: "D", text: "NACLs in the shared-services VPC" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "TGW route tables control which attachments can reach which — the hub-spoke isolation pattern puts spokes in one table (route only to shared services) and shared services in another (routes back to all spokes). Security groups control instance traffic, not routing reachability.",
+    optionExplanations: {
+      A: "SGs filter traffic — routing still allows the paths.",
+      B: "Correct. TGW route tables = routing segmentation.",
+      C: "Peering at scale is the mesh problem TGW solves.",
+      D: "NACLs filter; they don't segment the routing domain.",
+    },
+    services: ["AWS Transit Gateway"],
+    references: [
+      {
+        title: "Transit Gateway route tables",
+        url: "https://docs.aws.amazon.com/vpc/latest/tgw/how-transit-gateways-work.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-03",
+  },
+  {
+    id: "ans-dns-004",
+    slug: "resolver-inbound-endpoint",
+    cert: "ans-c01",
+    domain: "ans-network-implementation",
+    topic: "ans-dns-and-routing",
+    subtopic: "Hybrid DNS",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "On-premises servers must resolve private hosted zone names (app.internal.company.com) hosted in Route 53. Which component receives those queries inside AWS?",
+    options: [
+      { id: "A", text: "Outbound endpoint" },
+      { id: "B", text: "Inbound endpoint — ENIs in the VPC that on-prem DNS servers forward to" },
+      { id: "C", text: "A public hosted zone" },
+      { id: "D", text: "DNS Firewall" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Inbound endpoints place resolver ENIs in your VPC — on-premises resolvers forward queries for your private zone names to those IPs. It's the mirror of the outbound endpoint (AWS→on-prem). Remember: INbound = INto AWS.",
+    optionExplanations: {
+      A: "Outbound goes the other direction: VPC→on-prem.",
+      B: "Correct. On-prem forwards to inbound endpoint IPs.",
+      C: "Public zones answer internet queries — private names stay unresolvable on-prem.",
+      D: "Firewall filters queries — doesn't receive them.",
+    },
+    services: ["Amazon Route 53"],
+    references: [
+      {
+        title: "Inbound Resolver endpoints",
+        url: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-forwarding-inbound-queries.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-03",
+  },
+  {
+    id: "ans-sec-006",
+    slug: "cloudfront-acm-us-east-1",
+    cert: "ans-c01",
+    domain: "ans-network-security-compliance",
+    topic: "ans-network-security",
+    subtopic: "Edge TLS",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A CloudFront distribution for an eu-west-1–hosted app needs an ACM certificate for HTTPS, but the certificate won't associate with the distribution. What's the requirement?",
+    options: [
+      { id: "A", text: "The certificate must be in the same region as the app" },
+      { id: "B", text: "CloudFront ACM certificates must be issued in us-east-1 — regardless of where the app runs" },
+      { id: "C", text: "Import the cert into every region" },
+      { id: "D", text: "Use a self-signed certificate" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "CloudFront is a global service — its ACM certificates must live in us-east-1, the edge network's home region. One of the most-repeated exam traps: ALBs need same-region certs, CloudFront needs us-east-1.",
+    optionExplanations: {
+      A: "That's the ALB rule — CloudFront is global and different.",
+      B: "Correct. us-east-1 only for CloudFront.",
+      C: "Multi-region import doesn't help a global service.",
+      D: "Self-signed certs break browser trust.",
+    },
+    services: ["Amazon CloudFront", "AWS Certificate Manager"],
+    references: [
+      {
+        title: "Using HTTPS with CloudFront",
+        url: "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cnames-and-https-requirements.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-03",
+  },
+  {
+    id: "ans-ops-006",
+    slug: "vpc-flow-logs-accept-reject",
+    cert: "ans-c01",
+    domain: "ans-network-management-operations",
+    topic: "ans-network-operations",
+    subtopic: "Flow log analysis",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "An app reports connectivity failures. The team wants to see whether packets are being rejected by a security group or NACL at the VPC layer. What records ACCEPT/REJECT decisions?",
+    options: [
+      { id: "A", text: "CloudTrail" },
+      { id: "B", text: "VPC Flow Logs — capture ACCEPT/REJECT per ENI/subnet/VPC traffic" },
+      { id: "C", text: "Route 53 query logs" },
+      { id: "D", text: "ALB access logs" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Flow Logs record accept/reject metadata for IP traffic at the ENI level — the tool for diagnosing SG/NACL blocks without touching instances. CloudTrail logs API calls, not packets; ALB logs only show traffic that reached the load balancer.",
+    optionExplanations: {
+      A: "CloudTrail = control-plane API events.",
+      B: "Correct. Packet-level accept/reject records.",
+      C: "DNS logs — different layer entirely.",
+      D: "ALB logs only cover LB-received traffic.",
+    },
+    services: ["Amazon VPC"],
+    references: [
+      {
+        title: "VPC Flow Logs",
+        url: "https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-03",
+  },
 ];

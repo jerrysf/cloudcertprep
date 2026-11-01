@@ -894,4 +894,152 @@ export const sapQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-11-02",
   },
+  {
+    id: "sap-org-007",
+    slug: "ram-share-vpc-subnets",
+    cert: "sap-c02",
+    domain: "sap-organizational-complexity",
+    topic: "sap-multi-account-architecture",
+    subtopic: "Resource sharing",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A central network account owns VPCs. Application accounts must deploy workloads INTO those subnets without duplicating networking per account. Which service shares subnets across the organization?",
+    options: [
+      { id: "A", text: "VPC peering between accounts" },
+      { id: "B", text: "AWS Resource Access Manager (RAM) sharing subnets with member accounts" },
+      { id: "C", text: "Transit Gateway attachments" },
+      { id: "D", text: "Copying the CloudFormation template into each account" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "RAM is the sharing layer — subnets, TGWs, License Manager configs, etc. get shared so member accounts deploy into centrally owned networking while keeping their own workloads isolated. Peering and TGW connect networks; RAM shares the infrastructure itself.",
+    optionExplanations: {
+      A: "Peering links VPCs — doesn't let others deploy INTO your subnets.",
+      B: "Correct. RAM = cross-account resource sharing.",
+      C: "TGW routes traffic between networks — same distinction.",
+      D: "Duplicated networking defeats centralized control.",
+    },
+    services: ["AWS RAM", "Amazon VPC"],
+    references: [
+      {
+        title: "Shareable AWS resources",
+        url: "https://docs.aws.amazon.com/ram/latest/userguide/shareable.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-03",
+  },
+  {
+    id: "sap-mig-007",
+    slug: "dms-sct-heterogeneous",
+    cert: "sap-c02",
+    domain: "sap-migration-modernization",
+    topic: "sap-migration-strategies",
+    subtopic: "Schema conversion",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Migrating an Oracle database to Aurora PostgreSQL — a heterogeneous engine change. Which tool converts the schema (tables, views, stored procedures) before DMS moves the data?",
+    options: [
+      { id: "A", text: "AWS DMS alone — it auto-converts schemas" },
+      { id: "B", text: "AWS Schema Conversion Tool (SCT)" },
+      { id: "C", text: "AWS DataSync" },
+      { id: "D", text: "Manual SQL export and rewrite" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "SCT translates schemas between database engines (and warehouses) — required for heterogeneous migrations. DMS moves data and can create basic tables, but doesn't convert procedures/views/dialect-specific features. Homogeneous (e.g., MySQL→Aurora MySQL) doesn't need SCT.",
+    optionExplanations: {
+      A: "DMS migrates data; dialect/schema conversion isn't its job.",
+      B: "Correct. SCT converts heterogeneous schemas.",
+      C: "DataSync moves files/objects, not database schemas.",
+      D: "Manual conversion is error-prone and slow — SCT exists for this.",
+    },
+    services: ["AWS SCT", "AWS DMS"],
+    references: [
+      {
+        title: "AWS Schema Conversion Tool",
+        url: "https://docs.aws.amazon.com/SchemaConversionTool/latest/userguide/CHAP_Welcome.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-03",
+  },
+  {
+    id: "sap-new-007",
+    slug: "warm-standby-dr-tier",
+    cert: "sap-c02",
+    domain: "sap-new-solutions",
+    topic: "sap-complex-solutions",
+    subtopic: "DR design",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A system needs RTO/RPO measured in minutes — much cheaper than active-active but able to serve traffic after scaling up. Which DR pattern fits?",
+    options: [
+      { id: "A", text: "Backup and restore" },
+      { id: "B", text: "Pilot light" },
+      { id: "C", text: "Warm standby — a scaled-down but functional copy running in the DR region" },
+      { id: "D", text: "Multi-site active-active" },
+    ],
+    correctAnswers: ["C"],
+    explanation:
+      "Warm standby runs a minimum-capacity but WORKING environment in the DR region — failover = scale up + route traffic. Pilot light keeps only data + minimal core components (nothing serving); backup/restore is hours-scale. The exam loves the four-tier DR ladder: backup → pilot light → warm standby → active-active.",
+    optionExplanations: {
+      A: "Hours of RTO — doesn't meet minutes.",
+      B: "Pilot light has nothing running to serve traffic — only essentials replicated.",
+      C: "Correct. Live at low capacity, scales on failover.",
+      D: "Meets the RTO but at full duplicate cost — not the 'cheaper' answer.",
+    },
+    services: ["Amazon Route 53", "AWS Backup"],
+    references: [
+      {
+        title: "Disaster recovery options in the cloud",
+        url: "https://aws.amazon.com/disaster-recovery/",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-03",
+  },
+  {
+    id: "sap-opt-007",
+    slug: "s3-intelligent-tiering-unknown",
+    cert: "sap-c02",
+    domain: "sap-continuous-improvement",
+    topic: "sap-optimization",
+    subtopic: "Storage cost",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "Data in S3 has UNKNOWN and changing access patterns — the team can't predict lifecycle rules. Which storage class optimizes cost automatically?",
+    options: [
+      { id: "A", text: "S3 Standard" },
+      { id: "B", text: "S3 Intelligent-Tiering — automatic tier moves based on access" },
+      { id: "C", text: "S3 Glacier Deep Archive" },
+      { id: "D", text: "S3 One Zone-IA" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Intelligent-Tiering monitors access and moves objects between frequent/infrequent/archive tiers automatically — the answer whenever access patterns are unknown or changing, for a small per-object monitoring fee. Glacier tiers are for known-cold data with retrieval-time tradeoffs.",
+    optionExplanations: {
+      A: "No optimization — you pay Standard rates for cold data.",
+      B: "Correct. Auto-tiering for unpredictable access.",
+      C: "Hours-long retrieval — wrong for unpredictable access.",
+      D: "One Zone-IA trades availability for price — no auto-tiering.",
+    },
+    services: ["Amazon S3"],
+    references: [
+      {
+        title: "S3 Intelligent-Tiering",
+        url: "https://docs.aws.amazon.com/AmazonS3/latest/userguide/intelligent-tiering.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-03",
+  },
 ];
