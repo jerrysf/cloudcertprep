@@ -52,7 +52,7 @@ export function FlashcardsDeck() {
         <label className="text-sm font-medium">
           Domain
           <select
-            className="ml-2 rounded-lg border border-border bg-white px-3 py-2 text-sm font-normal"
+            className="ml-2 rounded-lg border border-border bg-white px-3 py-2 text-base font-normal sm:text-sm"
             value={domain}
             onChange={(e) => changeDomain(e.target.value as DomainId | "all")}
           >

@@ -105,7 +105,7 @@ function StudyPlanFormInner() {
   }
 
   const inputClass =
-    "mt-1 w-full rounded-lg border border-border bg-white px-3 py-2 text-sm";
+    "mt-1 w-full rounded-lg border border-border bg-white px-3 py-2 text-base sm:text-sm";
 
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,380px)_1fr]">

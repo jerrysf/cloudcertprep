@@ -33,7 +33,7 @@ export function SiteHeader() {
       </div>
       <nav
         aria-label="Primary mobile"
-        className="flex gap-4 overflow-x-auto border-t border-border px-4 py-2 text-xs text-muted md:hidden"
+        className="flex h-11 items-center gap-5 overflow-x-auto border-t border-border px-4 text-sm text-muted md:hidden"
       >
         <NavLinks mobile />
       </nav>

@@ -207,7 +207,7 @@ export function PracticeSession({
                 aria-label={`Go to question ${i + 1}`}
                 aria-current={i === index ? "true" : undefined}
                 className={cn(
-                  "h-8 w-8 rounded-md border text-xs font-medium transition-all hover:scale-105",
+                  "h-9 w-9 rounded-md border text-xs font-medium transition-all hover:scale-105",
                   i === index && "border-accent bg-accent text-white shadow-sm",
                   i !== index && !st && "border-border text-muted hover:border-slate-400 hover:text-foreground",
                   i !== index && st?.correct && "border-emerald-400 bg-emerald-50 text-emerald-700",

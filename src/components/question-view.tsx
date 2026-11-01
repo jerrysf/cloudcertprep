@@ -117,7 +117,7 @@ export function QuestionView({
               href={`/questions/${question.slug}`}
               aria-label="Permalink to this question's explanation page"
               title="Permalink to this question's explanation page"
-              className="rounded-md p-2 text-muted hover:bg-slate-100 hover:text-foreground"
+              className="rounded-md p-2.5 text-muted hover:bg-slate-100 hover:text-foreground"
             >
               <Link2 className="h-4 w-4" />
             </Link>
@@ -127,7 +127,7 @@ export function QuestionView({
                 onClick={onToggleBookmark}
                 aria-pressed={bookmarked}
                 aria-label={bookmarked ? "Remove bookmark" : "Bookmark question"}
-                className="rounded-md p-2 text-muted hover:bg-slate-100 hover:text-foreground"
+                className="rounded-md p-2.5 text-muted hover:bg-slate-100 hover:text-foreground"
               >
                 {bookmarked ? (
                   <BookmarkCheck className="h-4 w-4 text-accent" />
@@ -142,7 +142,7 @@ export function QuestionView({
                 onClick={onFlag}
                 aria-pressed={flagged}
                 aria-label="Flag this question for review"
-                className="rounded-md p-2 text-muted hover:bg-slate-100 hover:text-foreground"
+                className="rounded-md p-2.5 text-muted hover:bg-slate-100 hover:text-foreground"
               >
                 <Flag
                   className={cn("h-4 w-4", flagged && "fill-amber-400 text-amber-500")}

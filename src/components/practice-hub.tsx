@@ -38,7 +38,7 @@ export function PracticeHub({ questions }: { questions: Question[] }) {
   }, [questions]);
 
   const selectClass =
-    "rounded-lg border border-border bg-white px-3 py-2 text-sm";
+    "rounded-lg border border-border bg-white px-3 py-2 text-base sm:text-sm";
 
   return (
     <div className="space-y-6">

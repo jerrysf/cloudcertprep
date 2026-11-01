@@ -67,6 +67,17 @@ body {
   outline-offset: 2px;
 }
 
+/* In-page anchors (article "On this page" links) must clear the sticky header —
+   109px mobile / 64px desktop. */
+[id^="sec-"] {
+  scroll-margin-top: 7rem;
+}
+@media (min-width: 768px) {
+  [id^="sec-"] {
+    scroll-margin-top: 4.5rem;
+  }
+}
+
 @media print {
   header,
   footer,

@@ -79,7 +79,7 @@ export function QuestionBankBrowser({
 
   return (
     <div>
-      <div className="sticky top-16 z-30 -mx-4 border-b border-border bg-background/95 px-4 py-3 backdrop-blur-md sm:mx-0 sm:rounded-xl sm:border sm:px-4">
+      <div className="sticky top-[109px] z-30 -mx-4 border-b border-border bg-background/95 px-4 py-3 backdrop-blur-md sm:mx-0 sm:rounded-xl sm:border sm:px-4 md:top-16">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <label className="relative flex-1">
             <Search
@@ -91,7 +91,7 @@ export function QuestionBankBrowser({
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search questions…"
-              className="w-full rounded-lg border border-border bg-white py-2 pl-9 pr-3 text-sm shadow-sm transition-colors focus:border-accent focus:outline-none"
+              className="w-full rounded-lg border border-border bg-white py-2 pl-9 pr-3 text-base shadow-sm transition-colors focus:border-accent focus:outline-none sm:text-sm"
               aria-label="Search questions"
             />
           </label>
