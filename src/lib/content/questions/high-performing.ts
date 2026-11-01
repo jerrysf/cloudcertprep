@@ -642,4 +642,152 @@ export const highPerformingQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-10-25",
   },
+  {
+    id: "saa-perf-018",
+    slug: "alb-vs-nlb-websocket-gaming",
+    cert: "saa-c03",
+    domain: "design-high-performing-architectures",
+    topic: "compute-selection",
+    subtopic: "Load balancing",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A real-time multiplayer game needs millions of concurrent TCP connections at ultra-low latency, with a static IP for whitelisting. Which load balancer fits?",
+    options: [
+      { id: "A", text: "Application Load Balancer" },
+      { id: "B", text: "Network Load Balancer" },
+      { id: "C", text: "Classic Load Balancer" },
+      { id: "D", text: "API Gateway" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "NLB operates at Layer 4: millions of connections/sec, ultra-low latency, static IP per AZ, source-IP preservation. ALB is for HTTP(S) L7 routing rules — the game protocol is raw TCP.",
+    optionExplanations: {
+      A: "ALB handles HTTP/WebSocket with path/host routing — it terminates at L7 and doesn't fit raw TCP at this scale.",
+      B: "Correct. L4, massive connection count, static IPs.",
+      C: "Classic LB is legacy — fewer features, no static IP, weaker performance.",
+      D: "API Gateway fronts API requests, not raw TCP game traffic.",
+    },
+    services: ["Elastic Load Balancing"],
+    references: [
+      {
+        title: "Network Load Balancers",
+        url: "https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-01",
+  },
+  {
+    id: "saa-perf-019",
+    slug: "elasticache-redis-vs-memcached-choice",
+    cert: "saa-c03",
+    domain: "design-high-performing-architectures",
+    topic: "caching-and-content-delivery",
+    subtopic: "ElastiCache",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A cache needs persistence, replication with failover, pub/sub for cache invalidation events, and sorted-set data structures. Which ElastiCache engine?",
+    options: [
+      { id: "A", text: "Memcached" },
+      { id: "B", text: "Redis" },
+      { id: "C", text: "Either — they are interchangeable" },
+      { id: "D", text: "DynamoDB DAX instead" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Redis supports persistence (snapshots/AOF), replication with auto-failover, pub/sub, and rich data structures (sorted sets, lists, hashes). Memcached is a simpler pure in-memory cache — multi-threaded sharding, no persistence, no replication.",
+    optionExplanations: {
+      A: "Memcached lacks persistence, replication, pub/sub, and complex data types.",
+      B: "Correct — every listed requirement is a Redis differentiator.",
+      C: "Feature sets differ significantly — persistence and failover alone decide this.",
+      D: "DAX accelerates DynamoDB reads specifically — it's not a general cache or pub/sub system.",
+    },
+    services: ["Amazon ElastiCache"],
+    references: [
+      {
+        title: "Comparing Redis and Memcached",
+        url: "https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/SelectEngine.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-01",
+  },
+  {
+    id: "saa-perf-020",
+    slug: "lambda-provisioned-concurrency-latency",
+    cert: "saa-c03",
+    domain: "design-high-performing-architectures",
+    topic: "compute-selection",
+    subtopic: "AWS Lambda",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A latency-sensitive API on Lambda has acceptable median latency but occasional multi-second spikes on the first request after idle. What eliminates these cold-start spikes?",
+    options: [
+      { id: "A", text: "Increase function memory" },
+      { id: "B", text: "Provisioned concurrency" },
+      { id: "C", text: "Move the function into a VPC" },
+      { id: "D", text: "Reduce the deployment package size" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Provisioned concurrency keeps N execution environments initialized and warm — first-request latency stays flat regardless of idle gaps. Memory tuning speeds execution but doesn't prevent cold starts.",
+    optionExplanations: {
+      A: "More memory speeds initialization somewhat but doesn't remove the cold start itself.",
+      B: "Correct — pre-warmed environments eliminate the init spike.",
+      C: "VPC attachment historically *added* cold-start time; it's a cause, not a cure.",
+      D: "Smaller packages marginally reduce init time — provisioned concurrency is the real fix.",
+    },
+    services: ["AWS Lambda"],
+    references: [
+      {
+        title: "Configuring provisioned concurrency",
+        url: "https://docs.aws.amazon.com/lambda/latest/dg/provisioned-concurrency.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-01",
+  },
+  {
+    id: "saa-perf-021",
+    slug: "dynamodb-partition-key-cardinality",
+    cert: "saa-c03",
+    domain: "design-high-performing-architectures",
+    topic: "database-selection-and-scaling",
+    subtopic: "DynamoDB",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A DynamoDB table throttles during a promotion: reads hit a single 'promo' partition key, while the rest of the table sits idle. What's the fix?",
+    options: [
+      { id: "A", text: "Increase provisioned RCUs" },
+      { id: "B", text: "Write-shard the hot key — append a random suffix to spread the item across partitions" },
+      { id: "C", text: "Switch the table to on-demand mode" },
+      { id: "D", text: "Add a global secondary index on the promo key" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Hot partitions cap throughput regardless of table-level capacity — a single partition supports ~1,000 WCU/3,000 RCU. Write-sharding (key + random suffix) spreads the hot item's traffic across partitions; a GSI can't fix a hot partition key either.",
+    optionExplanations: {
+      A: "More RCUs don't help — the per-partition limit is the bottleneck, not table capacity.",
+      B: "Correct — sharding the hot key is the documented hot-partition remedy.",
+      C: "On-demand raises table capacity but the same per-partition ceiling still applies.",
+      D: "The GSI copies the same hot key — the problem follows the data.",
+    },
+    services: ["Amazon DynamoDB"],
+    references: [
+      {
+        title: "Choosing the right partition key",
+        url: "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-design.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-01",
+  },
 ];

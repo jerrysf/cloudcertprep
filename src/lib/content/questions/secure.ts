@@ -695,4 +695,152 @@ export const secureQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-10-25",
   },
+  {
+    id: "saa-sec-019",
+    slug: "waf-rate-based-rule-credential-stuffing",
+    cert: "saa-c03",
+    domain: "design-secure-architectures",
+    topic: "network-security",
+    subtopic: "AWS WAF",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A login API behind an ALB is under a credential-stuffing attack — thousands of requests from rotating IPs. Which WAF feature mitigates this without blocking legitimate users?",
+    options: [
+      { id: "A", text: "Geo-blocking rule" },
+      { id: "B", text: "Rate-based rule that temporarily blocks IPs exceeding a request threshold" },
+      { id: "C", text: "IP set match rule with manual blocklist updates" },
+      { id: "D", text: "AWS Shield Standard" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "A rate-based rule counts requests per IP over a 5-minute window and blocks IPs above your threshold (e.g., 100 requests) — automatically mitigating bursts while letting normal users through. Pair with a CAPTCHA rule for finer control.",
+    optionExplanations: {
+      A: "Attackers rotate through residential IPs worldwide — geo-blocking hits real users too.",
+      B: "Correct. Rate limiting per source IP is purpose-built for this pattern.",
+      C: "Manual lists can't keep up with rotating IPs — automation is the point.",
+      D: "Shield Standard absorbs L3/L4 DDoS — credential stuffing is an L7 application attack handled by WAF.",
+    },
+    services: ["AWS WAF", "Elastic Load Balancing"],
+    references: [
+      {
+        title: "Rate-based rules in AWS WAF",
+        url: "https://docs.aws.amazon.com/waf/latest/developerguide/waf-rule-statement-type-rate-based.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-01",
+  },
+  {
+    id: "saa-sec-020",
+    slug: "cognito-user-pool-vs-iam",
+    cert: "saa-c03",
+    domain: "design-secure-architectures",
+    topic: "iam-and-access-control",
+    subtopic: "Amazon Cognito",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A mobile app needs sign-up/sign-in for millions of end users, with social login and temporary AWS credentials for calling an API backend. What should you use?",
+    options: [
+      { id: "A", text: "IAM users created per app user" },
+      { id: "B", text: "Cognito user pools for authentication, plus identity pools for AWS access" },
+      { id: "C", text: "AWS SSO with external IdP" },
+      { id: "D", text: "IAM roles shared by all app users" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "User pools are the user directory (sign-up, sign-in, MFA, social IdPs); identity pools exchange the login for temporary AWS credentials. IAM users per end user don't scale and mix workforce auth with customer auth.",
+    optionExplanations: {
+      A: "Millions of IAM users is an anti-pattern — IAM is for workforce/resource access, not app users.",
+      B: "Correct. User pool = auth; identity pool = AWS credential vending.",
+      C: "SSO (Identity Center) is for workforce access to AWS accounts and apps — not millions of app end users.",
+      D: "A shared role can't express per-user identity or track individual access.",
+    },
+    services: ["Amazon Cognito", "AWS IAM"],
+    references: [
+      {
+        title: "What is Amazon Cognito",
+        url: "https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-01",
+  },
+  {
+    id: "saa-sec-021",
+    slug: "kms-key-cross-account-access",
+    cert: "saa-c03",
+    domain: "design-secure-architectures",
+    topic: "data-protection",
+    subtopic: "AWS KMS",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "Account A's KMS key encrypts S3 objects that account B must read. Both permissions exist — the key policy lists account B, and B's role allows kms:Decrypt — yet access still fails. What's missing?",
+    options: [
+      { id: "A", text: "Account B needs its own KMS key for the bucket" },
+      { id: "B", text: "The S3 bucket policy must also grant account B s3:GetObject — KMS access alone doesn't grant S3 access" },
+      { id: "C", text: "Enable automatic key rotation" },
+      { id: "D", text: "Nothing — cross-account KMS is impossible" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Cross-account encrypted S3 access requires THREE layers: KMS key policy allowing the external principal, IAM policy in B allowing kms:Decrypt, AND bucket/object permissions granting S3 access. The question shows only the KMS layer — S3 authorization is still missing.",
+    optionExplanations: {
+      A: "A second key doesn't help — objects are encrypted with A's key.",
+      B: "Correct. KMS grants and S3 grants are independent authorization layers.",
+      C: "Rotation doesn't affect cross-account permissioning.",
+      D: "Cross-account KMS access is fully supported — it just needs both layers.",
+    },
+    services: ["AWS KMS", "Amazon S3"],
+    references: [
+      {
+        title: "Allowing users in other accounts to use a KMS key",
+        url: "https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-modifying-external-accounts.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-01",
+  },
+  {
+    id: "saa-sec-022",
+    slug: "security-group-referencing-tiers",
+    cert: "saa-c03",
+    domain: "design-secure-architectures",
+    topic: "network-security",
+    subtopic: "Security groups",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Web tier → app tier → database tier. You want the app tier to accept traffic ONLY from web-tier instances, and the DB tier only from app-tier instances — without hardcoding IPs. What mechanism expresses this?",
+    options: [
+      { id: "A", text: "NACL rules per subnet" },
+      { id: "B", text: "Security group rules that reference other security groups as the source" },
+      { id: "C", text: "Route table restrictions between subnets" },
+      { id: "D", text: "Separate VPCs per tier with peering" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Security groups can reference other SGs as a source — the app SG allows inbound from the web SG regardless of IPs, so instances inherit access simply by membership. This is the canonical tiered-access pattern.",
+    optionExplanations: {
+      A: "NACLs work on CIDR ranges — you'd maintain subnet math, not tier semantics.",
+      B: "Correct. SG-to-SG referencing tracks tier membership automatically.",
+      C: "Route tables steer traffic — they don't filter per-instance access.",
+      D: "Multiple VPCs add routing complexity when one VPC with layered SGs suffices.",
+    },
+    services: ["Amazon VPC"],
+    references: [
+      {
+        title: "Security group rules referencing other security groups",
+        url: "https://docs.aws.amazon.com/vpc/latest/userguide/security-group-rules.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-01",
+  },
 ];

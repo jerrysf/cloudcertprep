@@ -492,4 +492,152 @@ export const costOptimizedQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-10-25",
   },
+  {
+    id: "saa-cost-014",
+    slug: "s3-lifecycle-glacier-transition-rule",
+    cert: "saa-c03",
+    domain: "design-cost-optimized-architectures",
+    topic: "cost-optimized-storage",
+    subtopic: "Amazon S3",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "Log objects must be kept 7 years: queried daily for 30 days, rarely after a year, almost never after that. What's the most cost-effective storage strategy?",
+    options: [
+      { id: "A", text: "Keep everything in S3 Standard for instant access" },
+      { id: "B", text: "Lifecycle rule: Standard → Standard-IA at 30 days → Glacier Deep Archive at 1 year" },
+      { id: "C", text: "Store everything in Glacier Deep Archive from day one" },
+      { id: "D", text: "Move to EBS snapshots after 30 days" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Lifecycle rules automate tier transitions matching access frequency — Standard for the hot month, IA for occasional retrieval, Deep Archive (the cheapest S3 class) for rarely-touched compliance data.",
+    optionExplanations: {
+      A: "Standard is the most expensive tier — terrible for 7-year archival.",
+      B: "Correct — tier costs track access frequency exactly.",
+      C: "Deep Archive retrieval takes ~12 hours — fails the daily-query requirement.",
+      D: "EBS snapshots aren't a queryable log store and cost more than IA/Glacier.",
+    },
+    services: ["Amazon S3"],
+    references: [
+      {
+        title: "S3 Lifecycle configuration",
+        url: "https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-01",
+  },
+  {
+    id: "saa-cost-015",
+    slug: "spot-instances-fault-tolerant-batch",
+    cert: "saa-c03",
+    domain: "design-cost-optimized-architectures",
+    topic: "cost-optimized-compute",
+    subtopic: "EC2 pricing",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Nightly video-transcoding jobs are checkpointed and can restart without data loss. Which EC2 purchasing option cuts compute cost the most?",
+    options: [
+      { id: "A", text: "On-Demand Instances" },
+      { id: "B", text: "Spot Instances" },
+      { id: "C", text: "Reserved Instances" },
+      { id: "D", text: "Dedicated Hosts" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Spot discounts up to ~90% for workloads that tolerate interruption — checkpointed batch is the textbook fit. Design for the 2-minute interruption notice and the jobs simply resume on replacement capacity.",
+    optionExplanations: {
+      A: "On-Demand is the most expensive flexible option — nothing here requires it.",
+      B: "Correct — interruption-tolerant batch is the canonical Spot workload.",
+      C: "RIs discount steady 24/7 usage; batch workloads don't run around the clock to amortize them.",
+      D: "Dedicated Hosts are the most expensive option — for licensing/compliance, not cost savings.",
+    },
+    services: ["Amazon EC2"],
+    references: [
+      {
+        title: "Amazon EC2 Spot Instances",
+        url: "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-01",
+  },
+  {
+    id: "saa-cost-016",
+    slug: "graviton-cost-performance-compute",
+    cert: "saa-c03",
+    domain: "design-cost-optimized-architectures",
+    topic: "cost-optimized-compute",
+    subtopic: "EC2 instance selection",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A stateless web tier compiles cleanly on ARM64. Which change most improves price-performance with zero app redesign?",
+    options: [
+      { id: "A", text: "Switch to larger x86 instance types" },
+      { id: "B", text: "Move to AWS Graviton-based instance families" },
+      { id: "C", text: "Purchase Convertible Reserved Instances" },
+      { id: "D", text: "Add an ElastiCache layer" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Graviton (ARM-based) instances deliver ~20% better price-performance than comparable x86 families — for portable workloads (containers, managed runtimes, compiled-for-ARM code) it's usually a drop-in instance-type change.",
+    optionExplanations: {
+      A: "Bigger x86 raises cost, not price-performance.",
+      B: "Correct — the price-performance play AWS itself promotes for portable workloads.",
+      C: "Convertible RIs discount commitment, not compute efficiency — savings come after the architecture choice.",
+      D: "Caching may cut load but adds cost and complexity — unrelated to compute price-performance.",
+    },
+    services: ["Amazon EC2"],
+    references: [
+      {
+        title: "AWS Graviton processors",
+        url: "https://aws.amazon.com/ec2/graviton/",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-01",
+  },
+  {
+    id: "saa-cost-017",
+    slug: "nat-gateway-vs-instance-low-traffic",
+    cert: "saa-c03",
+    domain: "design-cost-optimized-architectures",
+    topic: "cost-optimized-databases-and-network",
+    subtopic: "VPC costs",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A dev environment's private subnets need occasional outbound internet (package updates — a few GB/month). Production needs managed HA. Most cost-effective approach for dev?",
+    options: [
+      { id: "A", text: "NAT gateway in each AZ, same as production" },
+      { id: "B", text: "A NAT instance (or moving updates to a scheduled public-subnet task)" },
+      { id: "C", text: "VPC endpoints for all outbound traffic" },
+      { id: "D", text: "Transit Gateway for internet egress" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "NAT gateways bill hourly + per-GB (~$32+/mo each per AZ) — overkill for sporadic dev traffic. A small NAT instance or running update jobs in a public subnet costs a fraction. Keep managed NAT gateways for production where HA matters.",
+    optionExplanations: {
+      A: "Right for prod; wasteful for low-traffic dev — hourly charges dominate.",
+      B: "Correct — cheap instance or public-subnet scheduling matches sporadic usage.",
+      C: "Interface endpoints only reach AWS services — not the public internet for package repos.",
+      D: "TGW adds cost and doesn't provide internet egress itself.",
+    },
+    services: ["Amazon VPC", "Amazon EC2"],
+    references: [
+      {
+        title: "Compare NAT gateways and NAT instances",
+        url: "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-comparison.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-01",
+  },
 ];

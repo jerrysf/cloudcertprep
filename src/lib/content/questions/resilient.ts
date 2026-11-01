@@ -638,4 +638,152 @@ export const resilientQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-10-25",
   },
+  {
+    id: "saa-res-018",
+    slug: "asg-lifecycle-hook-graceful-shutdown",
+    cert: "saa-c03",
+    domain: "design-resilient-architectures",
+    topic: "high-availability",
+    subtopic: "Auto Scaling",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "When an Auto Scaling group terminates an instance, in-flight uploads must finish and a cleanup script must run before the instance dies. Which feature holds the instance in a wait state for this?",
+    options: [
+      { id: "A", text: "Termination protection" },
+      { id: "B", text: "Auto Scaling lifecycle hooks" },
+      { id: "C", text: "ELB connection draining" },
+      { id: "D", text: "Scale-in protection on the ASG" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Lifecycle hooks pause an instance in Terminating:Wait, running your custom action (upload drain, SSM command, Lambda) until a timeout or completion signal — then termination proceeds. Connection draining only waits for existing load-balanced requests.",
+    optionExplanations: {
+      A: "EC2 termination protection prevents termination entirely — the ASG needs it to happen.",
+      B: "Correct. Lifecycle hooks are designed for pre-termination custom actions.",
+      C: "Draining handles LB connections, not arbitrary cleanup work like file uploads.",
+      D: "Scale-in protection blocks termination — it doesn't run a graceful-shutdown sequence.",
+    },
+    services: ["Amazon EC2 Auto Scaling"],
+    references: [
+      {
+        title: "Amazon EC2 Auto Scaling lifecycle hooks",
+        url: "https://docs.aws.amazon.com/autoscaling/ec2/userguide/lifecycle-hooks.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-01",
+  },
+  {
+    id: "saa-res-019",
+    slug: "sqs-dlq-redrive-workflow",
+    cert: "saa-c03",
+    domain: "design-resilient-architectures",
+    topic: "decoupling-and-messaging",
+    subtopic: "Amazon SQS",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Worker failures occasionally poison SQS messages — after 3 receives they should move aside for inspection, then return to the queue once fixed. Which configuration does this?",
+    options: [
+      { id: "A", text: "Increase visibility timeout so retries take longer" },
+      { id: "B", text: "Attach a dead-letter queue with maxReceiveCount=3, then use DLQ redrive" },
+      { id: "C", text: "Delete the messages manually" },
+      { id: "D", text: "Switch to SNS for at-least-once delivery" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "A DLQ with maxReceiveCount moves repeatedly-failed messages aside automatically; the console's DLQ redrive pushes them back to the source queue after you fix the consumer — the standard poison-message workflow.",
+    optionExplanations: {
+      A: "Visibility timeout delays retries but never removes the poison message.",
+      B: "Correct. DLQ + redrive = capture, inspect, replay.",
+      C: "Manual deletion loses messages — redrive preserves them.",
+      D: "SNS fans out notifications; it has no per-message DLQ retry semantics for a consumer queue.",
+    },
+    services: ["Amazon SQS"],
+    references: [
+      {
+        title: "Amazon SQS dead-letter queues",
+        url: "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-01",
+  },
+  {
+    id: "saa-res-020",
+    slug: "aurora-failover-replica-promotion",
+    cert: "saa-c03",
+    domain: "design-resilient-architectures",
+    topic: "high-availability",
+    subtopic: "Amazon Aurora",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An Aurora cluster's writer instance fails. What happens to availability and what is the expected failover time?",
+    options: [
+      { id: "A", text: "The cluster is down until you manually promote a reader (~30 min)" },
+      { id: "B", text: "Aurora automatically promotes a reader to writer — typically within ~35 seconds" },
+      { id: "C", text: "A new writer is built from S3 backups (~15 min)" },
+      { id: "D", text: "Failover to a standby in the same AZ only" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Aurora automatically promotes the highest-priority reader to writer and the cluster endpoint follows — typically ~35 seconds. Readers share the cluster storage volume, so promotion doesn't restore from backup.",
+    optionExplanations: {
+      A: "Failover is automatic; manual promotion is only for DR drills or custom control.",
+      B: "Correct — auto-promotion with the cluster endpoint redirecting writes.",
+      C: "Backup restore would take far longer and isn't the failover path.",
+      D: "Aurora replicas span AZs — failover isn't AZ-limited.",
+    },
+    services: ["Amazon Aurora"],
+    references: [
+      {
+        title: "Fault tolerance for an Aurora DB cluster",
+        url: "https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Concepts.AuroraHighAvailability.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-01",
+  },
+  {
+    id: "saa-res-021",
+    slug: "aws-backup-cross-region-copy",
+    cert: "saa-c03",
+    domain: "design-resilient-architectures",
+    topic: "disaster-recovery",
+    subtopic: "AWS Backup",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "DR policy requires encrypted backups of RDS and EBS in a second region, managed under one policy with retention rules. What's the simplest compliant approach?",
+    options: [
+      { id: "A", text: "Manual snapshot copies via Lambda on a schedule" },
+      { id: "B", text: "AWS Backup plan with a cross-region copy rule to a vault in the DR region" },
+      { id: "C", text: "S3 replication of the database files" },
+      { id: "D", text: "Multi-AZ deployment of each resource" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "AWS Backup centralizes backup policies across services — a single plan handles scheduling, retention, and cross-region copy to a second vault (optionally cross-account). Custom snapshot Lambda reinvents managed functionality.",
+    optionExplanations: {
+      A: "Doable but fragile — scheduling, retention, encryption, and monitoring all land on you.",
+      B: "Correct. One backup plan covers RDS + EBS with a copy rule to the DR region.",
+      C: "S3 replication copies objects — not live RDS/EBS state.",
+      D: "Multi-AZ protects against AZ failure, not region loss.",
+    },
+    services: ["AWS Backup", "Amazon RDS", "Amazon EBS"],
+    references: [
+      {
+        title: "Creating backup copies across AWS Regions",
+        url: "https://docs.aws.amazon.com/aws-backup/latest/devguide/create-cross-region-backup.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-01",
+  },
 ];
