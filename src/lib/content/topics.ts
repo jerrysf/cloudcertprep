@@ -503,6 +503,47 @@ export const TOPICS: Topic[] = [
     description:
       "Azure Monitor alerts, VM insights, Azure Backup, and Site Recovery.",
   },
+  // ---- AI-900 Azure AI Fundamentals ----
+  {
+    slug: "ai900-ai-workloads",
+    name: "AI Workloads & Responsible AI",
+    cert: "ai-900",
+    domain: "ai900-ai-workloads",
+    description:
+      "AI workload types, responsible AI principles, and scenario matching.",
+  },
+  {
+    slug: "ai900-ml-fundamentals",
+    name: "Machine Learning Principles",
+    cert: "ai-900",
+    domain: "ai900-ml-principles",
+    description:
+      "Model types, features/labels, training vs inference, and Azure ML basics.",
+  },
+  {
+    slug: "ai900-computer-vision",
+    name: "Computer Vision",
+    cert: "ai-900",
+    domain: "ai900-computer-vision",
+    description:
+      "Image analysis, object detection, OCR, and Azure AI Vision.",
+  },
+  {
+    slug: "ai900-nlp-speech",
+    name: "NLP & Speech",
+    cert: "ai-900",
+    domain: "ai900-nlp",
+    description:
+      "Text analytics, language understanding, speech, and translation.",
+  },
+  {
+    slug: "ai900-generative-ai",
+    name: "Generative AI",
+    cert: "ai-900",
+    domain: "ai900-generative-ai",
+    description:
+      "Azure OpenAI, prompting, grounding/RAG, and responsible GenAI.",
+  },
 ];
 
 export function getTopic(slug: string): Topic | undefined {

@@ -3625,6 +3625,260 @@ ARTICLES.push({
   ],
 });
 
+ARTICLES.push({
+  slug: "ai-900-exam-guide",
+  title: "AI-900 Exam Guide: Azure AI Fundamentals",
+  description:
+    "The Microsoft Azure AI Fundamentals (AI-900) exam explained — format, cost, the five domains, which Azure AI services you must know by name, and how it compares to AWS AI Practitioner.",
+  domain: "ai900-ai-workloads",
+  topic: "ai900-ai-workloads",
+  updatedAt: "2026-11-03",
+  readingMinutes: 9,
+  sections: [
+    {
+      paragraphs: [
+        "AI-900 (Azure AI Fundamentals) is Microsoft's entry-level AI certification — ~40–60 questions in about 60 minutes, $99 USD, passing 700/1000. It's vocabulary-and-concepts only: no coding, no math, no model training. It validates that you can name the right Azure AI service for a scenario and understand core ML/GenAI concepts. Think of it as the Azure counterpart to AWS's AIF-C01 AI Practitioner.",
+      ],
+    },
+    {
+      heading: "Exam format",
+      list: [
+        "~40–60 questions in ~60 minutes",
+        "$99 USD (regional pricing applies)",
+        "Passing score: 700/1000",
+        "Question types: multiple choice, multiple response, matching, drag-and-drop, scenario blocks",
+        "No prerequisites; pairs naturally after AZ-900",
+      ],
+    },
+    {
+      heading: "The five domains",
+      list: [
+        "AI workloads and considerations (~15–20%): workload types + the six responsible AI principles",
+        "Fundamental ML principles on Azure (~20–25%): model types, features/labels, evaluation, Azure ML",
+        "Computer vision (~15–20%): Azure AI Vision, Custom Vision, Face, Document Intelligence, Video Indexer",
+        "Natural language processing (~15–20%): Language service, Speech, Translator, CLU, question answering",
+        "Generative AI (~15–20%): Azure OpenAI, prompts, RAG/grounding, AI Studio, Content Safety",
+      ],
+    },
+    {
+      heading: "Domain 1 — Workloads & responsible AI",
+      paragraphs: [
+        "Know the six workload families (ML prediction, vision, NLP, document intelligence, knowledge mining, generative AI) and match scenarios to them. Then the six responsible AI principles — fairness, reliability & safety, privacy & security, inclusiveness, transparency, accountability — with scenario recognition: biased outcomes = fairness, edge-case robustness = reliability, explainability docs = transparency.",
+      ],
+    },
+    {
+      heading: "Domain 2 — ML principles",
+      paragraphs: [
+        "The 'math' of the exam — but only conceptually: regression vs classification vs clustering; features vs labels; supervised vs unsupervised; train/validation/test splits; overfitting; and basic metrics (precision/recall, RMSE). Azure-side: Azure Machine Learning workspace concepts, AutoML, designer (visual pipelines), and the idea of deploying models as endpoints. You will not write code — you will match concepts to definitions.",
+      ],
+    },
+    {
+      heading: "Domain 3 — Computer vision",
+      paragraphs: [
+        "The task hierarchy: classification (label per image) → object detection (bounding boxes) → semantic segmentation (per-pixel). Service mapping is the tested skill: Azure AI Vision = prebuilt analysis + OCR; Custom Vision = train your own classifier/detector; Face = detection/verification/identification; Document Intelligence = structured fields from forms/invoices; Video Indexer = searchable insights from video.",
+      ],
+    },
+    {
+      heading: "Domain 4 — NLP & speech",
+      paragraphs: [
+        "Azure AI Language: sentiment, key phrases, NER, entity linking, PII detection, summarization, language detection. Conversational AI: CLU (intent + entities from utterances, the LUIS successor) vs question answering (FAQ-style knowledge base). Azure AI Speech: speech-to-text vs text-to-speech vs speaker recognition vs speech translation. Azure AI Translator: text/document translation.",
+      ],
+    },
+    {
+      heading: "Domain 5 — Generative AI",
+      paragraphs: [
+        "The newest and most-updated domain. Azure OpenAI Service = OpenAI models inside your Azure subscription (data not used for training). Concepts: LLMs predict tokens (why they hallucinate), prompt engineering (zero-shot vs few-shot), temperature/top-p/max tokens, RAG/grounding on your data, embeddings and vector search, and Azure AI Studio as the build platform. Responsible GenAI: content safety filters, transparency, mitigating hallucination with grounding.",
+      ],
+    },
+    {
+      heading: "AI-900 vs AWS AI Practitioner (AIF-C01)",
+      paragraphs: [
+        "Both are foundational AI vocabulary certs — overlapping heavily on ML/GenAI concepts. The differences are vendor surface: AIF centers on Amazon Bedrock (models, agents, guardrails, knowledge bases); AI-900 spreads across the Azure AI services portfolio plus Azure OpenAI. If you hold one, the other is a fast second credential — the conceptual 60% transfers; only the service names change.",
+      ],
+    },
+  ],
+  references: [
+    { title: "AI-900 certification page (Microsoft)", url: "https://learn.microsoft.com/en-us/credentials/certifications/azure-ai-fundamentals/" },
+    { title: "AI-900 study guide (Microsoft Learn)", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-900" },
+  ],
+});
+
+ARTICLES.push({
+  slug: "ai-900-cheat-sheet",
+  title: "AI-900 Cheat Sheet: Azure AI Fundamentals Quick Reference",
+  description:
+    "The AI-900 exam-day reference: responsible AI principles, ML concepts, the full Azure AI services map, and the distinctions the exam repeats.",
+  domain: "ai900-generative-ai",
+  topic: "ai900-generative-ai",
+  updatedAt: "2026-11-03",
+  readingMinutes: 8,
+  sections: [
+    {
+      paragraphs: [
+        "AI-900 is a service-mapping exam: given a scenario, name the right Azure AI service or concept. This sheet is organized for exactly that. Work the AI-900 question bank and mock exam for applied practice.",
+      ],
+    },
+    {
+      heading: "The six responsible AI principles (memorize verbatim)",
+      list: [
+        "Fairness — treat all groups equitably (biased outcomes = fairness violation)",
+        "Reliability & safety — dependable under varied conditions, fails gracefully",
+        "Privacy & security — protect data end-to-end",
+        "Inclusiveness — works for everyone regardless of ability/background",
+        "Transparency — understandable workings, disclosed limitations",
+        "Accountability — humans remain responsible for the system",
+      ],
+    },
+    {
+      heading: "AI workload families → scenario keywords",
+      list: [
+        "ML prediction — forecasting, churn, pricing, risk scoring",
+        "Computer vision — anything image/video",
+        "NLP — text/speech understanding",
+        "Document intelligence — extracting fields/tables from forms & invoices",
+        "Knowledge mining — searchable insights from unstructured corpora (Azure AI Search)",
+        "Generative AI — creating text/images/code",
+        "Anomaly detection — outliers vs learned normal patterns (fraud flagging)",
+      ],
+    },
+    {
+      heading: "ML concepts",
+      list: [
+        "Regression = continuous number | Classification = category | Clustering = unlabeled groups",
+        "Features (x) = inputs | Label (y) = the predicted output",
+        "Supervised = labeled data (regression/classification); unsupervised = unlabeled (clustering)",
+        "Train → validation → test; test set = final unbiased evaluation on unseen data",
+        "Overfitting = memorized training data, fails on new data (great train score, poor production)",
+        "Precision = of my positive predictions, how many real; recall = of real positives, how many caught",
+        "AutoML = automated algorithm/hyperparameter search; designer = visual drag-drop pipelines; endpoints = deployed model access",
+      ],
+    },
+    {
+      heading: "Computer vision services",
+      list: [
+        "Azure AI Vision = prebuilt analysis: captions, tags, objects, OCR/Read API",
+        "Custom Vision = train YOUR classifier/detector on labeled images",
+        "Azure AI Face = detection, verification (same person?), identification, liveness",
+        "Document Intelligence = structured fields/tables from forms, invoices, IDs",
+        "Video Indexer = faces, speech, OCR, scenes, topics — searchable video metadata",
+        "Task ladder: classification (whole image) → object detection (boxes) → segmentation (per-pixel)",
+      ],
+    },
+    {
+      heading: "NLP & speech services",
+      list: [
+        "Azure AI Language: sentiment, key phrases, NER, entity linking, PII detection, summarization",
+        "CLU = utterance → intent + entities (task-driven bots; LUIS successor)",
+        "Question answering = FAQ knowledge base matching (QnA Maker successor)",
+        "Speech: speech-to-text (transcription) | text-to-speech (neural voices) | speaker recognition (who) | translation (audio→other language)",
+        "Azure AI Translator = text/document machine translation",
+      ],
+    },
+    {
+      heading: "Generative AI",
+      list: [
+        "Azure OpenAI Service = GPT/DALL-E/Whisper/embeddings in your subscription, enterprise security, no training on your data",
+        "Azure AI Studio = GenAI build platform (model catalog, prompt flow, eval, deploy)",
+        "Zero-shot = instructions only; few-shot = examples in prompt",
+        "Temperature = randomness dial; top-p = nucleus sampling; max tokens = length",
+        "RAG/grounding = retrieve your docs → inject into prompt → factual answers (the 'chat on your data' pattern)",
+        "Hallucination = fluent-but-false output; mitigations: grounding, prompt constraints, human review",
+        "Azure AI Content Safety = harm-category filtering (hate/violence/self-harm/sexual) for prompts + completions",
+        "Embeddings = vectors capturing semantic meaning; enable semantic/vector search",
+      ],
+    },
+    {
+      heading: "The exam traps",
+      list: [
+        "Language (analyze text) vs Translator (convert language) vs Speech (audio) — three different services",
+        "CLU (intent/entity for tasks) vs question answering (FAQ retrieval) — different bot types",
+        "Vision (prebuilt) vs Custom Vision (train yours) vs Document Intelligence (structured forms) vs Face (identity)",
+        "Grounding (RAG = retrieve+inject) vs fine-tuning (retrain behavior) — different mechanisms for different goals",
+        "Sentiment ≠ safety — Content Safety is the harm filter, not Language",
+      ],
+    },
+  ],
+  references: [
+    { title: "AI-900 study guide (Microsoft Learn)", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-900" },
+    { title: "Azure AI fundamentals learning path", url: "https://learn.microsoft.com/en-us/training/paths/get-started-with-artificial-intelligence-on-azure/" },
+  ],
+});
+
+ARTICLES.push({
+  slug: "how-to-pass-ai-900",
+  title: "How to Pass AI-900: The 2-Week AI Fundamentals Plan",
+  description:
+    "A focused 2-week study plan for Azure AI Fundamentals — domain-by-domain schedule, the service-name memorization strategy that works for this exam, and readiness criteria.",
+  domain: "ai900-ai-workloads",
+  topic: "ai900-ai-workloads",
+  updatedAt: "2026-11-03",
+  readingMinutes: 7,
+  sections: [
+    {
+      paragraphs: [
+        "AI-900 is a vocabulary exam wearing a technical costume. There's no code, no math beyond concept-level precision/recall, and no architecture design — but it covers a WIDE surface: five domains, ~15 services to know by name, and six responsible-AI principles to recognize by scenario. Most candidates with any cloud or IT background can prepare in 1–2 weeks. If you already hold AIF-C01 or AZ-900, a single intensive week is realistic.",
+      ],
+    },
+    {
+      heading: "Week 1 — Workloads, ML, and vision (days 1–7)",
+      list: [
+        "Day 1: workload families + the six responsible AI principles — learn to map scenarios to principles (biased loan model = fairness; unpredictable edge cases = reliability)",
+        "Days 2–3: ML concepts — model types, features/labels, supervised vs unsupervised, train/val/test, overfitting, precision/recall. Drill with our ML question set",
+        "Day 4: Azure ML surface — workspace, AutoML, designer, endpoints (know what each is, not how to operate)",
+        "Days 5–6: vision — classification/detection/segmentation ladder + the service map (Vision vs Custom Vision vs Face vs Document Intelligence vs Video Indexer)",
+        "Day 7: first practice set — expect vision/NLP service-name confusion, that's normal",
+      ],
+    },
+    {
+      heading: "Week 2 — NLP, GenAI, and consolidation (days 8–14)",
+      list: [
+        "Day 8: Azure AI Language — sentiment, key phrases, NER, PII, summarization + CLU vs question answering",
+        "Day 9: Speech & Translator — direction matters: speech-to-text vs text-to-speech vs speaker recognition vs translation",
+        "Days 10–11: GenAI — Azure OpenAI, prompting (zero/few-shot), temperature, RAG/grounding, hallucination, AI Studio, Content Safety",
+        "Day 12: full timed mock — identify which domain bleeds points",
+        "Day 13: targeted review — redo every wrong answer; make your own service-mapping flashcards for whatever confused you",
+        "Day 14: second mock; book when consistently 80%+",
+      ],
+    },
+    {
+      heading: "The memorization strategy that works",
+      paragraphs: [
+        "Don't study services alphabetically — study them as DECISION TREES. 'Images?' → Vision vs Custom (prebuilt vs yours) vs Document Intelligence (structured fields) vs Face (identity). 'Text?' → Language (analyze) vs Translator (convert) vs QnA (FAQ matching). 'Audio?' → Speech (transcribe/synthesize/identify/translate). 'Generate?' → Azure OpenAI + Studio. 'Harmful content?' → Content Safety. Every AI-900 question is ultimately one of these branches.",
+      ],
+    },
+    {
+      heading: "If you're coming from AWS AIF-C01",
+      list: [
+        "The conceptual material transfers ~60%: ML types, GenAI mechanics, responsible AI, hallucination/RAG concepts",
+        "Bedrock ↔ Azure OpenAI: both are 'models as a managed service'; agents/knowledge bases ↔ AI Studio + RAG patterns",
+        "The pure-Azure surface to learn fresh: the AI services portfolio (Vision/Language/Speech/Translator/Face/Document Intelligence) — AWS has no single matching catalog",
+        "Microsoft's six responsible-AI principles have specific names — don't rely on 'close enough' recall",
+      ],
+    },
+    {
+      heading: "The concepts that trip people up",
+      list: [
+        "Object detection vs segmentation vs classification — the granularity ladder",
+        "CLU (intent for tasks) vs question answering (retrieve answers) — two different bot mechanisms",
+        "Document Intelligence vs plain OCR — structured fields vs raw text",
+        "Grounding vs fine-tuning — inject data at prompt-time vs retrain the model",
+        "Sentiment vs safety — Language analyzes opinion; Content Safety filters harm",
+        "Speaker recognition (who is speaking) vs speech recognition (what was said)",
+      ],
+    },
+    {
+      heading: "What 'ready' looks like",
+      paragraphs: [
+        "You're ready when service-name questions are reflex: see 'extract invoice fields' → Document Intelligence; see 'verify the person's identity from their face' → Face service; see 'answer from company docs only' → RAG grounding. Two weeks is genuinely enough — this is the friendliest exam in the Azure catalog after AZ-900.",
+      ],
+    },
+  ],
+  references: [
+    { title: "AI-900 certification page (Microsoft)", url: "https://learn.microsoft.com/en-us/credentials/certifications/azure-ai-fundamentals/" },
+    { title: "AI-900 study guide (Microsoft Learn)", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-900" },
+  ],
+});
+
 export function getArticle(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
 }

@@ -650,6 +650,67 @@ export const CERTIFICATIONS: Certification[] = [
       },
     ],
   },
+  {
+    id: "ai-900",
+    code: "AI-900",
+    name: "Microsoft Azure AI Fundamentals",
+    vendor: "azure",
+    level: "foundational",
+    tagline: "AI workloads, ML fundamentals, vision/NLP, and generative AI on Azure.",
+    description:
+      "Microsoft's entry-level AI certification. Validates AI/ML vocabulary, Azure AI services (vision, language, document intelligence), and generative AI concepts including Azure OpenAI — no coding or ML experience required.",
+    questionCount: 45,
+    durationMinutes: 60,
+    costUsd: 99,
+    passingScaledScore: 700,
+    scaledScoreRange: [1, 1000],
+    examGuideUrl:
+      "https://learn.microsoft.com/en-us/credentials/certifications/azure-ai-fundamentals/",
+    verified: false,
+    featured: true,
+    domains: [
+      {
+        id: "ai900-ai-workloads",
+        number: 1,
+        name: "Describe AI Workloads and Considerations",
+        weight: 15,
+        summary:
+          "Common AI workload types, responsible AI principles, and matching workloads to business scenarios.",
+      },
+      {
+        id: "ai900-ml-principles",
+        number: 2,
+        name: "Describe Fundamental Principles of Machine Learning on Azure",
+        weight: 25,
+        summary:
+          "Regression/classification/clustering, training vs inference, features/labels, and Azure Machine Learning basics.",
+      },
+      {
+        id: "ai900-computer-vision",
+        number: 3,
+        name: "Describe Features of Computer Vision Workloads on Azure",
+        weight: 20,
+        summary:
+          "Image classification, object detection, OCR, facial analysis, and Azure AI Vision services.",
+      },
+      {
+        id: "ai900-nlp",
+        number: 4,
+        name: "Describe Features of Natural Language Processing Workloads on Azure",
+        weight: 20,
+        summary:
+          "Language understanding, text analytics, speech services, translation, and Azure AI Language/Speech.",
+      },
+      {
+        id: "ai900-generative-ai",
+        number: 5,
+        name: "Describe Features of Generative AI Workloads on Azure",
+        weight: 20,
+        summary:
+          "Azure OpenAI Service, prompt engineering, grounding/RAG, and responsible generative AI.",
+      },
+    ],
+  },
 ];
 
 export const ALL_DOMAINS: CertDomain[] = CERTIFICATIONS.flatMap(
