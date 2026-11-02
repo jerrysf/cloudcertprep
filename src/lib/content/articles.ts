@@ -3879,6 +3879,85 @@ ARTICLES.push({
   ],
 });
 
+ARTICLES.push({
+  slug: "saa-c03-vs-az-104",
+  title: "SAA-C03 vs AZ-104: AWS Architect or Azure Administrator?",
+  description:
+    "The two most-pursued associate-level cloud certifications compared — difficulty, scope, question style, cost, career fit, and which to take first if you're choosing between AWS and Azure.",
+  domain: "design-resilient-architectures",
+  topic: "high-availability",
+  updatedAt: "2026-11-05",
+  readingMinutes: 8,
+  sections: [
+    {
+      paragraphs: [
+        "AWS Certified Solutions Architect – Associate (SAA-C03) and Microsoft Certified: Azure Administrator Associate (AZ-104) are the two flagship associate-level cloud certifications — and the most common pair candidates weigh against each other. They are not equivalent exams with different logos: they test different jobs. SAA asks 'can you design the right architecture?', AZ-104 asks 'can you actually run this environment?'.",
+        "This comparison covers scope, difficulty, question format, cost, and career positioning so you can pick deliberately instead of by brand loyalty.",
+      ],
+    },
+    {
+      heading: "The fundamental difference: design vs operate",
+      list: [
+        "SAA-C03 tests architecture judgment — given a scenario with constraints (cost, latency, durability, compliance), choose the right combination of services and patterns. You rarely need console muscle memory.",
+        "AZ-104 tests operational competence — configure RBAC correctly, deploy and manage VMs, fix a broken VNet, implement backup. The exam assumes you've touched the portal and CLI.",
+        "Consequence: SAA rewards knowing WHAT services do and when to pick them; AZ-104 rewards knowing HOW to configure them (exact permission scope, exact redundancy option names, exact networking rules).",
+      ],
+    },
+    {
+      heading: "Exam logistics compared",
+      list: [
+        "Cost: both $165 USD — identical.",
+        "Questions: SAA ~65 scenario-based questions in 130 minutes; AZ-104 40–60 questions including case studies and labs-style tasks in ~100–120 minutes.",
+        "Passing: SAA 720/1000; AZ-104 700/1000.",
+        "Format risk: AZ-104 has historically included hands-on lab tasks and drag-drop matching — more varied than SAA's pure multiple-choice/response.",
+      ],
+    },
+    {
+      heading: "Difficulty — which is actually harder?",
+      paragraphs: [
+        "Most candidates with comparable experience rate AZ-104 slightly harder to pass cold, because it demands operational precision: you can't reason your way to 'which RBAC role at which scope' or 'which redundancy SKU allows zone deployment' — you either know it or you don't. SAA is more forgiving to strong reasoning skills because correct answers follow architectural logic.",
+        "The difficulty flips by background. If you already work in Azure daily, AZ-104 is closer to your job. If you're an AWS architect, SAA's design-thinking style will feel more natural than Azure's memorized-operations style.",
+      ],
+    },
+    {
+      heading: "Concept translation table",
+      list: [
+        "IAM roles/policies → Entra ID + Azure RBAC (note: Azure permissions are additive at scope — no explicit deny except via deny assignments/policy)",
+        "VPC/subnets/route tables/SGs → VNet/subnets/route tables/NSGs (NSG rules have priority numbers and are stateful like SGs)",
+        "S3 storage classes → Blob storage access tiers (Hot/Cool/Cold/Archive)",
+        "Multi-AZ RDS → zone-redundant Azure SQL/VM deployment; AWS AZs ≈ Azure Availability Zones, AWS Regions ≈ Azure geographies/regions",
+        "CloudFormation → ARM templates/Bicep/Terraform; AWS Organizations + SCP → Management Groups + Azure Policy",
+        "CloudWatch → Azure Monitor; CloudTrail → Azure Activity Log",
+      ],
+    },
+    {
+      heading: "Career positioning",
+      list: [
+        "Job market: SAA appears in more job postings globally — AWS remains the largest cloud by share. AZ-104 dominates in enterprises standardized on Microsoft (Microsoft 365 + Entra shops are overwhelmingly Azure).",
+        "SAA signals you can design systems — better for architect, platform engineer, consultant tracks. AZ-104 signals you can administer them — better for ops, sysadmin, and cloud admin tracks.",
+        "Salary data is roughly equivalent; the differentiator is which ecosystem your target employers run. Check the job postings you'd actually apply to.",
+      ],
+    },
+    {
+      heading: "Which should you take first?",
+      paragraphs: [
+        "If your employer runs one cloud, take that cloud's cert — context beats market data. If you're genuinely neutral: take SAA first if you're a developer or aspiring architect (design thinking transfers better), take AZ-104 first if you come from sysadmin/ops or your region's market skews Microsoft.",
+        "Planning to take both eventually? Do SAA → AZ-104 rather than the reverse. AWS's architecture-first framing builds the mental model that makes Azure's service catalog easier to absorb afterward.",
+      ],
+    },
+    {
+      heading: "Where to practice",
+      paragraphs: [
+        "We maintain free banks for both: the SAA-C03 bank (100 questions) and the AZ-104 bank (40 questions) — plus exam guides, cheat sheets, and study plans for each. If you're deciding, try a mock exam on both and compare which question style frustrates you less.",
+      ],
+    },
+  ],
+  references: [
+    { title: "SAA-C03 certification page (AWS)", url: "https://aws.amazon.com/certification/certified-solutions-architect-associate/" },
+    { title: "AZ-104 certification page (Microsoft)", url: "https://learn.microsoft.com/en-us/credentials/certifications/azure-administrator/" },
+  ],
+});
+
 export function getArticle(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
 }

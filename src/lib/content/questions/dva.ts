@@ -2189,4 +2189,40 @@ export const dvaQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-11-03",
   },
+  {
+    id: "dva-trb-012",
+    slug: "lambda-init-duration-cold-start",
+    cert: "dva-c02",
+    domain: "dva-troubleshooting-optimization",
+    topic: "dva-debugging-and-optimization",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Lambda logs show occasional high 'Init Duration' spikes while most invocations stay fast. What's happening and what's the mitigation?",
+    options: [
+      { id: "A", text: "Cold starts — initialization runs on new environments; use provisioned concurrency or reduce init code" },
+      { id: "B", text: "Memory exhaustion — increase the timeout" },
+      { id: "C", text: "A bug in the handler — add retries" },
+      { id: "D", text: "Throttling — request a concurrency limit increase" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Init Duration = the init phase running on a NEW execution environment (cold start) — code loading, SDK clients, connections. Provisioned concurrency keeps warm environments; lighter init (lazy imports, connection reuse) reduces it.",
+    optionExplanations: {
+      A: "Init spike = cold start; warm pools or lighter init fix it. Correct.",
+      B: "Timeout doesn't address init latency.",
+      C: "Cold starts aren't bugs — retries don't help latency.",
+      D: "Throttling shows different symptoms (429s), not Init spikes.",
+    },
+    services: ["AWS Lambda"],
+    references: [
+      {
+        title: "Lambda performance optimization — AWS docs",
+        url: "https://docs.aws.amazon.com/lambda/latest/dg/performance-optimization.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  }
 ];

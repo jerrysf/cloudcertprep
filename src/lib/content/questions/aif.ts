@@ -1194,4 +1194,292 @@ export const aifQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-11-02",
   },
+  {
+    id: "aif-ml-019",
+    slug: "supervised-vs-unsupervised-sentiment",
+    cert: "aif-c01",
+    domain: "aif-ai-ml-fundamentals",
+    topic: "aif-ml-foundations",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "A team wants to classify support tickets as positive/negative/neutral using a dataset of historical tickets WITH labeled outcomes. Which ML approach?",
+    options: [
+      { id: "A", text: "Supervised learning — classification on labeled data" },
+      { id: "B", text: "Unsupervised learning — clustering unlabeled data" },
+      { id: "C", text: "Reinforcement learning" },
+      { id: "D", text: "Self-supervised pre-training" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Labeled historical data + a target category = supervised classification, the canonical AIF exam mapping. Unsupervised finds structure WITHOUT labels; reinforcement learns by rewards; self-supervised builds representations for pre-training.",
+    optionExplanations: {
+      A: "Labels + categories = supervised classification. Correct.",
+      B: "No labels are used in unsupervised — you HAVE labels here.",
+      C: "RL is for sequential decision problems — not text labeling.",
+      D: "Pre-training builds base models — not the direct classification answer.",
+    },
+    services: ["Amazon SageMaker"],
+    references: [
+      {
+        title: "Types of machine learning — AWS docs",
+        url: "https://docs.aws.amazon.com/machine-learning/latest/dg/types-of-ml-models.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aif-ml-020",
+    slug: "holdout-test-set-evaluation",
+    cert: "aif-c01",
+    domain: "aif-ai-ml-fundamentals",
+    topic: "aif-ml-foundations",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Why is a held-out TEST set required when evaluating a trained model — separate from the training and validation data?",
+    options: [
+      { id: "A", text: "It increases model accuracy during training" },
+      { id: "B", text: "It measures performance on truly unseen data, detecting overfitting" },
+      { id: "C", text: "It tunes hyperparameters" },
+      { id: "D", text: "It reduces training cost" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "The test set stays untouched until final evaluation — it estimates real-world performance on data the model never saw. The VALIDATION set guides tuning; if you tune to the test set it leaks and stops being an honest measure.",
+    optionExplanations: {
+      A: "Test data is never used in training — it doesn't increase accuracy.",
+      B: "Unseen-data evaluation = the test set's purpose. Correct.",
+      C: "Hyperparameter tuning uses the VALIDATION split.",
+      D: "Test sets don't reduce cost — they're about honest evaluation.",
+    },
+    services: ["Amazon SageMaker"],
+    references: [
+      {
+        title: "Train/validation/test splits — AWS docs",
+        url: "https://docs.aws.amazon.com/machine-learning/latest/dg/evaluation.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aif-gen-007",
+    slug: "embeddings-vector-search-rag",
+    cert: "aif-c01",
+    domain: "aif-genai-fundamentals",
+    topic: "aif-genai-concepts",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "In a RAG architecture, what do embeddings enable — the core mechanism that retrieves relevant documents for the prompt?",
+    options: [
+      { id: "A", text: "Compressing documents to smaller file sizes" },
+      { id: "B", text: "Semantic similarity search — matching meaning rather than keywords" },
+      { id: "C", text: "Encrypting documents for compliance" },
+      { id: "D", text: "Translating documents to English" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Embeddings map text to dense vectors where semantic similarity = geometric proximity. RAG retrieves docs whose embeddings are closest to the query embedding — the 'find relevant knowledge' step before generation. Core exam concept.",
+    optionExplanations: {
+      A: "Embeddings aren't compression — they're semantic representations.",
+      B: "Meaning-based retrieval = embedding similarity. Correct.",
+      C: "Embeddings aren't encryption.",
+      D: "Translation is a different capability entirely.",
+    },
+    services: ["Amazon Bedrock"],
+    references: [
+      {
+        title: "Bedrock knowledge bases — AWS docs",
+        url: "https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aif-gen-008",
+    slug: "top-p-nucleus-sampling",
+    cert: "aif-c01",
+    domain: "aif-genai-fundamentals",
+    topic: "aif-genai-concepts",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A prompt is generating repetitive, predictable text. Which inference parameter samples only from the smallest set of tokens covering a cumulative probability mass — adding controlled diversity?",
+    options: [
+      { id: "A", text: "top-p (nucleus sampling)" },
+      { id: "B", text: "max_tokens" },
+      { id: "C", text: "stop_sequences" },
+      { id: "D", text: "model weight decay" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "top-p (nucleus sampling) restricts token selection to the smallest pool whose cumulative probability exceeds p — a dynamic cutoff that adapts diversity. temperature scales randomness; top-k is a fixed count; max_tokens/stop_sequences control length.",
+    optionExplanations: {
+      A: "Probability-mass sampling = top-p. Correct.",
+      B: "max_tokens limits output length — not diversity.",
+      C: "Stop sequences end generation — unrelated to token diversity.",
+      D: "Weight decay is a TRAINING regularizer — not an inference param.",
+    },
+    services: ["Amazon Bedrock"],
+    references: [
+      {
+        title: "Inference parameters — AWS docs",
+        url: "https://docs.aws.amazon.com/bedrock/latest/userguide/inference-parameters.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aif-app-010",
+    slug: "bedrock-flows-visual-orchestration",
+    cert: "aif-c01",
+    domain: "aif-fm-applications",
+    topic: "aif-genai-and-bedrock",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A team wants to build multi-step GenAI workflows — chaining prompts, knowledge bases, agents, and Lambda functions — through a VISUAL builder without writing orchestration code. Which Bedrock feature?",
+    options: [
+      { id: "A", text: "Bedrock Agents" },
+      { id: "B", text: "Bedrock Flows" },
+      { id: "C", text: "Bedrock Guardrails" },
+      { id: "D", text: "Custom model import" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Bedrock Flows is the visual workflow builder — drag-and-drop nodes for prompts, KBs, agents, and Lambda, orchestrated into repeatable pipelines. Agents reason and act autonomously; Flows is deterministic visual chaining.",
+    optionExplanations: {
+      A: "Agents autonomously plan/act — Flows is explicit visual orchestration.",
+      B: "Visual node-based chaining = Flows. Correct.",
+      C: "Guardrails filter content — not workflow orchestration.",
+      D: "Custom import hosts your own weights — unrelated.",
+    },
+    services: ["Amazon Bedrock"],
+    references: [
+      {
+        title: "Bedrock Flows — AWS docs",
+        url: "https://docs.aws.amazon.com/bedrock/latest/userguide/flows.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aif-app-011",
+    slug: "bedrock-marketplace-open-models",
+    cert: "aif-c01",
+    domain: "aif-fm-applications",
+    topic: "aif-genai-and-bedrock",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A company wants to run a specialized open-weight model (e.g., for protein analysis) that ISN'T in the standard Bedrock foundation model catalog, managed via API. Which Bedrock capability?",
+    options: [
+      { id: "A", text: "Bedrock Marketplace — deploy 100+ specialized models as managed endpoints" },
+      { id: "B", text: "Bedrock custom model import only" },
+      { id: "C", text: "Provisioned throughput on a standard FM" },
+      { id: "D", text: "Fine-tuning Titan" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "The Bedrock Marketplace offers 100+ specialized/community models deployable as managed endpoints — accessing models beyond the standard FM catalog without self-hosting. Custom import is for weights YOU bring.",
+    optionExplanations: {
+      A: "Managed deployment of niche open models. Correct.",
+      B: "Custom import requires you to supply weights in supported formats.",
+      C: "Throughput provisioning doesn't add new models.",
+      D: "Fine-tuning adapts existing FMs — doesn't add a different model.",
+    },
+    services: ["Amazon Bedrock"],
+    references: [
+      {
+        title: "Bedrock Marketplace — AWS docs",
+        url: "https://docs.aws.amazon.com/bedrock/latest/userguide/model-catalog.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aif-resp-005",
+    slug: "guardrails-topic-filters",
+    cert: "aif-c01",
+    domain: "aif-responsible-ai",
+    topic: "aif-responsible-ai",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A customer-service chatbot must refuse to discuss competitor products and block hate speech, without retraining the model. Which Bedrock feature enforces these policies at inference time?",
+    options: [
+      { id: "A", text: "Bedrock Guardrails — denied topics + content filters" },
+      { id: "B", text: "System prompt instructions only" },
+      { id: "C", text: "Fine-tuning the model on refusals" },
+      { id: "D", text: "IAM policies on the API" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Guardrails enforce policies independent of the model: denied topics (e.g., competitors), content filters (hate/violence/etc.), PII redaction, word filters — applied to prompts and responses. Prompts can be bypassed; guardrails can't.",
+    optionExplanations: {
+      A: "Independent policy enforcement layer. Correct.",
+      B: "Prompt instructions are advisory — prompt injection can bypass them.",
+      C: "Retraining for each policy is heavyweight — guardrails are runtime rules.",
+      D: "IAM controls WHO calls the API — not WHAT it generates.",
+    },
+    services: ["Amazon Bedrock Guardrails"],
+    references: [
+      {
+        title: "Bedrock Guardrails — AWS docs",
+        url: "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aif-sec-003",
+    slug: "bedrock-data-privacy-training",
+    cert: "aif-c01",
+    domain: "aif-ai-security-governance",
+    topic: "aif-security-governance",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A compliance officer asks whether prompts sent to Amazon Bedrock are used to train foundation models. What's the documented position?",
+    options: [
+      { id: "A", text: "Prompts are used to improve models unless you opt out" },
+      { id: "B", text: "Customer prompts and completions are NEVER used to train or improve the base models" },
+      { id: "C", text: "Only anonymized prompts are used" },
+      { id: "D", text: "Prompts train models but only in your region" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Bedrock's data-protection commitment: prompts and completions are NOT used to train or improve the base FMs, aren't shared with model providers, and stay within your region — a frequently tested AIF governance fact.",
+    optionExplanations: {
+      A: "No opt-out needed — training use is off by default.",
+      B: "Documented no-training commitment. Correct.",
+      C: "Not even anonymized data is used.",
+      D: "Data doesn't train models — regionality is about residency, not training.",
+    },
+    services: ["Amazon Bedrock"],
+    references: [
+      {
+        title: "Bedrock data protection — AWS docs",
+        url: "https://docs.aws.amazon.com/bedrock/latest/userguide/data-protection.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  }
 ];
