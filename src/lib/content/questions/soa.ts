@@ -1042,4 +1042,152 @@ export const soaQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-11-03",
   },
+  {
+    id: "soa-mon-009",
+    slug: "anomaly-detection-alarms",
+    cert: "soa-c03",
+    domain: "soa-monitoring-logging-remediation",
+    topic: "soa-monitoring-and-remediation",
+    subtopic: "Alarm design",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Traffic varies 10× between day and night, so static alarm thresholds page on normal patterns. Which CloudWatch feature learns the metric's natural band?",
+    options: [
+      { id: "A", text: "Higher static thresholds" },
+      { id: "B", text: "Anomaly detection alarms — a learned band from historical data" },
+      { id: "C", text: "Composite alarms" },
+      { id: "D", text: "Longer evaluation periods" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Anomaly detection models the metric's own history (daily/weekly cycles) into a dynamic band — alarms fire only when behavior deviates from normal, not at fixed levels. Static thresholds can't express 'normal at 3am' vs 'normal at 3pm'.",
+    optionExplanations: {
+      A: "Still one threshold for all times of day.",
+      B: "Correct. Learned band adapts to cyclical traffic.",
+      C: "Composite alarms combine alarms — don't learn bands.",
+      D: "Delays alerts, doesn't fix wrong thresholds.",
+    },
+    services: ["Amazon CloudWatch"],
+    references: [
+      {
+        title: "CloudWatch anomaly detection",
+        url: "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Anomaly_Detection.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-04",
+  },
+  {
+    id: "soa-dep-007",
+    slug: "eventbridge-automation-self-heal",
+    cert: "soa-c03",
+    domain: "soa-deployment-provisioning-automation",
+    topic: "soa-deployment-and-automation",
+    subtopic: "Auto-remediation",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "When a CloudWatch alarm detects a hung service on an instance, the system should automatically restart it without human involvement. Which pattern implements self-healing?",
+    options: [
+      { id: "A", text: "Alarm → SNS → pager for manual restart" },
+      { id: "B", text: "Alarm → EventBridge → SSM Automation runbook performing the restart" },
+      { id: "C", text: "Scheduled Lambda checking every 5 minutes" },
+      { id: "D", text: "ASG replacing instances on a schedule" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "EventBridge-triggered SSM Automation is the canonical remediation loop: alarm → event → runbook executes defined fix steps. This is the pattern AWS documents for auto-remediation; polling adds latency, and instance replacement is heavier than a service restart.",
+    optionExplanations: {
+      A: "Manual response — the requirement is automatic.",
+      B: "Correct. Alarm-driven runbook execution.",
+      C: "Polling + DIY logic vs native event triggers.",
+      D: "Replaces whole instances for a service-level issue.",
+    },
+    services: ["Amazon EventBridge", "AWS Systems Manager", "Amazon CloudWatch"],
+    references: [
+      {
+        title: "Using EventBridge with Systems Manager Automation",
+        url: "https://docs.aws.amazon.com/systems-manager/latest/userguide/automation-eventbridge.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-04",
+  },
+  {
+    id: "soa-net-006",
+    slug: "cloudfront-cache-invalidation",
+    cert: "soa-c03",
+    domain: "soa-networking-content-delivery",
+    topic: "soa-networking-operations",
+    subtopic: "CDN operations",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "After a deployment, CloudFront keeps serving stale files until TTLs expire. Which approach refreshes content fastest — and what's the better long-term alternative?",
+    options: [
+      { id: "A", text: "Lower all TTLs to 0 permanently" },
+      { id: "B", text: "Create an invalidation for the changed paths — better: use versioned file names so invalidations aren't needed" },
+      { id: "C", text: "Delete and recreate the distribution" },
+      { id: "D", text: "Purge the origin bucket" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Invalidations force-expire specific paths immediately (limited free tier per month). But cache-busting file names (app.v2.js or content-hash names) is the architecturally correct pattern — deploys are instant and you never pay invalidation costs.",
+    optionExplanations: {
+      A: "TTL 0 defeats caching entirely — origin gets hammered.",
+      B: "Correct. Invalidation now; versioning as the durable fix.",
+      C: "Nuclear option — also changes the distribution domain.",
+      D: "The origin already has new files; the cache is stale.",
+    },
+    services: ["Amazon CloudFront"],
+    references: [
+      {
+        title: "Invalidating files",
+        url: "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Invalidation.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-04",
+  },
+  {
+    id: "soa-rel-006",
+    slug: "backup-cross-account-dr",
+    cert: "soa-c03",
+    domain: "soa-reliability-continuity",
+    topic: "soa-reliability-and-dr",
+    subtopic: "Backup architecture",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Backups must survive compromise of the production account itself — an attacker with admin access shouldn't be able to destroy recovery points. What's the resilience pattern?",
+    options: [
+      { id: "A", text: "More frequent backup schedules in the same account" },
+      { id: "B", text: "AWS Backup cross-account copy to a dedicated backup/security account, plus Vault Lock" },
+      { id: "C", text: "S3 versioning in the same account" },
+      { id: "D", text: "Larger backup retention" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Cross-account backup copies put recovery points outside the blast radius of a compromised account — combined with Vault Lock (WORM) they're undeletable even by admins. Same-account copies share the same failure domain.",
+    optionExplanations: {
+      A: "Same account = same compromise radius.",
+      B: "Correct. Separate account + immutability.",
+      C: "Versioning lives in the same account/bucket.",
+      D: "Retention length doesn't change who can delete them.",
+    },
+    services: ["AWS Backup"],
+    references: [
+      {
+        title: "Cross-account backup copies",
+        url: "https://docs.aws.amazon.com/aws-backup/latest/devguide/create-cross-account-backup.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-04",
+  },
 ];

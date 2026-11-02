@@ -193,6 +193,13 @@ export function ProgressDashboard() {
                 >
                   Re-attempt all missed questions
                 </Link>
+                <p className="mt-3 text-xs text-muted">
+                  Also available:{" "}
+                  <Link href="/practice/review" className="text-accent hover:underline">
+                    your bookmarked &amp; flagged review queue
+                  </Link>
+                  .
+                </p>
                 </>
               ) : (
                 <p className="mt-2 text-sm text-muted">

@@ -1040,4 +1040,152 @@ export const ansQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-11-03",
   },
+  {
+    id: "ans-des-005",
+    slug: "dual-dx-locations-resilience",
+    cert: "ans-c01",
+    domain: "ans-network-design",
+    topic: "ans-hybrid-connectivity",
+    subtopic: "DX resilience tiers",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "Per AWS's maximum-resiliency guidance, a mission-critical hybrid link should tolerate device failure AND an entire Direct Connect location outage. What does that architecture require?",
+    options: [
+      { id: "A", text: "One DX connection with two VIFs" },
+      { id: "B", text: "Two DX connections on separate devices at the same location" },
+      { id: "C", text: "Two DX connections at two DIFFERENT DX locations" },
+      { id: "D", text: "One DX plus a single VPN tunnel" },
+    ],
+    correctAnswers: ["C"],
+    explanation:
+      "AWS's resilience model: max resiliency = separate connections at separate DX locations (survives device failure, cable cuts, and full facility events). Same-location dual connections survive device failure only — a location outage kills both.",
+    optionExplanations: {
+      A: "Two VIFs on one connection share every failure domain.",
+      B: "Device-failure tolerance but NOT location failure.",
+      C: "Correct. Location-level redundancy = max resiliency tier.",
+      D: "VPN is a lower-tier backup, not 'maximum resiliency'.",
+    },
+    services: ["AWS Direct Connect"],
+    references: [
+      {
+        title: "AWS Direct Connect resiliency recommendations",
+        url: "https://docs.aws.amazon.com/directconnect/latest/UserGuide/resiliency_guide.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-04",
+  },
+  {
+    id: "ans-hyb-007",
+    slug: "as-path-prepending-inbound",
+    cert: "ans-c01",
+    domain: "ans-network-design",
+    topic: "ans-hybrid-connectivity",
+    subtopic: "BGP path control",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "Two equal paths exist from AWS to on-prem. Traffic should prefer the primary link, using the secondary only on failure. Which BGP technique steers the INBOUND path selection?",
+    options: [
+      { id: "A", text: "AS_PATH prepending on the secondary — longer AS path makes it less preferred" },
+      { id: "B", text: "Lower MED on the secondary path" },
+      { id: "C", text: "More specific prefixes on the primary" },
+      { id: "D", text: "Higher bandwidth on the primary" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "AS_PATH prepending adds your ASN to the advertised path on the less-preferred link — the remote side sees a longer path and prefers the shorter (primary) one. It's the standard BGP inbound-steering tool; AWS's own MED handling is a secondary tiebreaker.",
+    optionExplanations: {
+      A: "Correct. Longer AS path = less preferred route.",
+      B: "Backwards — LOWER MED is more preferred.",
+      C: "More-specific always wins — works, but prepending is the classic answer for equal prefixes.",
+      D: "Bandwidth isn't a BGP attribute.",
+    },
+    services: ["AWS Direct Connect", "AWS Site-to-Site VPN"],
+    references: [
+      {
+        title: "BGP best practices for Direct Connect",
+        url: "https://docs.aws.amazon.com/directconnect/latest/UserGuide/routing-and-bgp.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-04",
+  },
+  {
+    id: "ans-imp-004",
+    slug: "ipv6-egress-only-gateway",
+    cert: "ans-c01",
+    domain: "ans-network-implementation",
+    topic: "ans-dns-and-routing",
+    subtopic: "IPv6 routing",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "IPv6 instances in a VPC must reach the internet outbound but NOT be reachable inbound — the IPv6 equivalent of a NAT gateway. Which component does this?",
+    options: [
+      { id: "A", text: "NAT64 gateway" },
+      { id: "B", text: "Egress-only internet gateway (EIGW)" },
+      { id: "C", text: "A second internet gateway" },
+      { id: "D", text: "NAT gateway configured for IPv6" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Egress-only IGW is the IPv6 outbound-only device — allows return traffic for initiated connections while blocking inbound initiation. NAT gateways are IPv4 constructs; IPv6 has no address scarcity to hide behind.",
+    optionExplanations: {
+      A: "NAT64 translates IPv6→IPv4 — different problem.",
+      B: "Correct. Outbound-initiated only for IPv6.",
+      C: "A plain IGW allows bidirectional public reachability.",
+      D: "NAT gateways don't do IPv6 outbound-only semantics.",
+    },
+    services: ["Amazon VPC"],
+    references: [
+      {
+        title: "Egress-only internet gateways",
+        url: "https://docs.aws.amazon.com/vpc/latest/userguide/egress-only-internet-gateway.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-04",
+  },
+  {
+    id: "ans-sec-007",
+    slug: "privatelink-saas-private",
+    cert: "ans-c01",
+    domain: "ans-network-security-compliance",
+    topic: "ans-network-security",
+    subtopic: "Private connectivity",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Your VPC consumes a third-party SaaS API. Security requires traffic never traverse the public internet — no NAT, no peering, no public IPs. What connects privately?",
+    options: [
+      { id: "A", text: "VPC peering to the vendor" },
+      { id: "B", text: "AWS PrivateLink — an interface endpoint to the provider's endpoint service" },
+      { id: "C", text: "A public hosted zone with private records" },
+      { id: "D", text: "Transit Gateway to the vendor's VPC" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "PrivateLink exposes a provider's service inside your VPC via an interface endpoint — unidirectional, private, no overlapping-CIDR issues (unlike peering). It's how AWS services and SaaS vendors offer private connectivity.",
+    optionExplanations: {
+      A: "Peering needs CIDR alignment and gives bidirectional access.",
+      B: "Correct. Consumer endpoint → provider service, all private.",
+      C: "DNS tricks don't move traffic off the internet path.",
+      D: "TGW requires trusting the vendor's network topology.",
+    },
+    services: ["AWS PrivateLink", "Amazon VPC"],
+    references: [
+      {
+        title: "AWS PrivateLink",
+        url: "https://docs.aws.amazon.com/vpc/latest/privatelink/what-is-privatelink.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-04",
+  },
 ];

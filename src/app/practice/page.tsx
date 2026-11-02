@@ -87,7 +87,15 @@ export default function PracticePage() {
         <Link href="/mock-exam" className="font-medium text-accent hover:underline">
           take a timed mock exam
         </Link>{" "}
-        for a balanced mix across domains with a full results breakdown.
+        for a balanced mix across domains with a full results breakdown. Have
+        bookmarks?{" "}
+        <Link
+          href="/practice/review"
+          className="font-medium text-accent hover:underline"
+        >
+          Open your review queue
+        </Link>
+        .
       </Card>
     </Container>
   );

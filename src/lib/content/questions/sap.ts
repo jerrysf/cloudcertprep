@@ -1042,4 +1042,152 @@ export const sapQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-11-03",
   },
+  {
+    id: "sap-org-008",
+    slug: "control-tower-account-vending",
+    cert: "sap-c02",
+    domain: "sap-organizational-complexity",
+    topic: "sap-multi-account-architecture",
+    subtopic: "Account provisioning",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Teams need new AWS accounts provisioned in minutes, pre-configured with guardrails, logging, network baselines, and OU placement — no tickets to a central team. What delivers this?",
+    options: [
+      { id: "A", text: "Manual account creation via the console" },
+      { id: "B", text: "Control Tower Account Factory (with account vending via Service Catalog)" },
+      { id: "C", text: "Creating IAM users in the master account" },
+      { id: "D", text: "Duplicating a CloudFormation template" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Account Factory is Control Tower's self-service account vending — provisions governed accounts with baseline guardrails, enrolled in the right OU, in minutes. Manual creation can't scale governance; IAM users aren't account isolation.",
+    optionExplanations: {
+      A: "Manual = bottleneck + inconsistent baselines.",
+      B: "Correct. Self-service governed account provisioning.",
+      C: "Users share one account — no blast-radius separation.",
+      D: "Templates configure resources, not governed account creation.",
+    },
+    services: ["AWS Control Tower", "AWS Organizations"],
+    references: [
+      {
+        title: "AWS Control Tower Account Factory",
+        url: "https://docs.aws.amazon.com/controltower/latest/userguide/account-factory.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-04",
+  },
+  {
+    id: "sap-mig-008",
+    slug: "datasync-vs-snowball-online",
+    cert: "sap-c02",
+    domain: "sap-migration-modernization",
+    topic: "sap-migration-strategies",
+    subtopic: "Data transfer",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "200 TB of on-prem file data must move to S3 continuously over a 10 Gbps Direct Connect — ongoing sync during a phased migration, not a one-time bulk load. Which service?",
+    options: [
+      { id: "A", text: "Snowball Edge" },
+      { id: "B", text: "AWS DataSync — online, incremental, scheduled transfers" },
+      { id: "C", text: "S3 Transfer Acceleration" },
+      { id: "D", text: "Storage Gateway file shares only" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "DataSync is the online transfer service — agents on-prem, scheduled incremental syncs over DX/VPN/internet, built-in validation. Snowball is for offline bulk when bandwidth is insufficient; 10 Gbps DX makes online transfer clearly correct for ongoing sync.",
+    optionExplanations: {
+      A: "Snowball is offline bulk — wrong for continuous sync.",
+      B: "Correct. Online incremental transfer over the link you have.",
+      C: "TA accelerates S3 uploads — it's not a sync service.",
+      D: "File Gateway exposes SMB/NFS — not bulk migration machinery.",
+    },
+    services: ["AWS DataSync", "Amazon S3"],
+    references: [
+      {
+        title: "How AWS DataSync works",
+        url: "https://docs.aws.amazon.com/datasync/latest/userguide/how-datasync-works.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-04",
+  },
+  {
+    id: "sap-new-008",
+    slug: "centralized-observability-account",
+    cert: "sap-c02",
+    domain: "sap-new-solutions",
+    topic: "sap-complex-solutions",
+    subtopic: "Ops architecture",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An ops team needs one pane of glass: metrics, logs, and alarms from 50+ member accounts — without signing into each account. Which capability delivers cross-account observability?",
+    options: [
+      { id: "A", text: "Cross-account IAM roles to each account's console" },
+      { id: "B", text: "CloudWatch cross-account observability — a monitoring account viewing all source accounts" },
+      { id: "C", text: "Consolidated billing reports" },
+      { id: "D", text: "A shared Secrets Manager" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "CloudWatch cross-account observability designates a monitoring account that searches/logs/metrics across linked source accounts — native multi-account ops. IAM console-hopping is the friction this feature exists to remove.",
+    optionExplanations: {
+      A: "50 account switches = exactly the toil to eliminate.",
+      B: "Correct. One monitoring account, all source data.",
+      C: "Billing reports aren't operational telemetry.",
+      D: "Secrets aren't observability data.",
+    },
+    services: ["Amazon CloudWatch", "AWS Organizations"],
+    references: [
+      {
+        title: "CloudWatch cross-account observability",
+        url: "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Unified-Cross-Account.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-04",
+  },
+  {
+    id: "sap-opt-008",
+    slug: "savings-plans-vs-ris",
+    cert: "sap-c02",
+    domain: "sap-continuous-improvement",
+    topic: "sap-optimization",
+    subtopic: "Compute pricing",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Steady compute usage spans EC2, Fargate, and Lambda — the goal is max coverage with flexibility to change instance types. Which purchasing model fits best?",
+    options: [
+      { id: "A", text: "Standard Reserved Instances" },
+      { id: "B", text: "Compute Savings Plans — $/hour commitment across EC2/Fargate/Lambda regardless of instance family" },
+      { id: "C", text: "Spot Instances" },
+      { id: "D", text: "Dedicated Hosts" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Compute Savings Plans commit to spend-per-hour and apply automatically across EC2 (any family/size/region), Fargate, and Lambda — the broadest compute discount with flexibility. Standard RIs lock instance family/region; Spot is interruptible capacity, not a commitment model.",
+    optionExplanations: {
+      A: "RIs tie to instance attributes — less flexible.",
+      B: "Correct. Broadest flexible coverage across compute.",
+      C: "Spot discounts without commitment — can be interrupted.",
+      D: "Dedicated hosts are for licensing/isolation — most expensive.",
+    },
+    services: ["AWS Savings Plans", "Amazon EC2"],
+    references: [
+      {
+        title: "Savings Plans types",
+        url: "https://docs.aws.amazon.com/savingsplans/latest/userguide/what-is-savings-plans.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-04",
+  },
 ];

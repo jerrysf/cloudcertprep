@@ -1048,4 +1048,152 @@ export const scsQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-11-03",
   },
+  {
+    id: "scs-det-007",
+    slug: "guardduty-crypto-finding",
+    cert: "scs-c03",
+    domain: "scs-detection",
+    topic: "scs-detection-and-response",
+    subtopic: "Finding interpretation",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "GuardDuty reports 'CryptoCurrency:EC2/BitcoinTool.B!DNS' on an instance. What does this finding mean?",
+    options: [
+      { id: "A", text: "The instance hosts a blockchain app by design" },
+      { id: "B", text: "The instance is likely compromised — it's querying DNS for crypto-mining pools" },
+      { id: "C", text: "A routine software update" },
+      { id: "D", text: "A billing anomaly" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "The CryptoCurrency finding family detects DNS/communication with known mining pools — a strong compromise indicator (attackers monetize compute). Response: isolate the instance, check for persistence, rotate credentials on it.",
+    optionExplanations: {
+      A: "Unless you run a mining pool, it's malicious by definition.",
+      B: "Correct. Mining-pool DNS = compromised compute.",
+      C: "Updates don't contact mining pools.",
+      D: "The cost comes later — the finding is the intrusion.",
+    },
+    services: ["Amazon GuardDuty"],
+    references: [
+      {
+        title: "GuardDuty finding types",
+        url: "https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_finding-types-ec2.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-04",
+  },
+  {
+    id: "scs-iam-006",
+    slug: "principal-org-id-condition",
+    cert: "scs-c03",
+    domain: "scs-iam",
+    topic: "scs-iam-deep-dive",
+    subtopic: "Org-scoped sharing",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "An S3 bucket must be readable by ANY principal in your AWS Organization — but absolutely nothing outside it — without listing account IDs. Which condition achieves this?",
+    options: [
+      { id: "A", text: "aws:PrincipalArn listing every account's root" },
+      { id: "B", text: "aws:PrincipalOrgID equals your organization ID" },
+      { id: "C", text: "An SCP on the bucket" },
+      { id: "D", text: "aws:SourceAccount" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "aws:PrincipalOrgID matches any principal belonging to your org — the scalable way to express 'inside my organization' in resource policies. aws:SourceAccount refers to the account making the call, not org membership; SCPs govern IAM, not resource policies.",
+    optionExplanations: {
+      A: "Enumerating accounts breaks as the org grows.",
+      B: "Correct. One condition, org-wide scope.",
+      C: "SCPs don't apply to resource-based policies.",
+      D: "Different condition — source account, not org.",
+    },
+    services: ["AWS IAM", "AWS Organizations"],
+    references: [
+      {
+        title: "aws:PrincipalOrgID condition key",
+        url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html#condition-keys-principalorgid",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-04",
+  },
+  {
+    id: "scs-ir-005",
+    slug: "guardduty-auto-remediation",
+    cert: "scs-c03",
+    domain: "scs-incident-response",
+    topic: "scs-incident-response",
+    subtopic: "Automated response",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "High-severity GuardDuty findings on an instance should trigger automatic isolation — quarantine SG swap, EBS snapshots — within minutes, day or night. What's the response architecture?",
+    options: [
+      { id: "A", text: "On-call engineer checks Security Hub each morning" },
+      { id: "B", text: "EventBridge on high-severity GuardDuty findings → Lambda/SSM runbook performing quarantine + evidence capture" },
+      { id: "C", text: "Daily Config evaluation" },
+      { id: "D", text: "CloudWatch dashboard review" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "GuardDuty emits findings as EventBridge events — matching high-severity rules to a Lambda/SSM runbook enables consistent, immediate, documented response (quarantine SG, snapshot for forensics, notify). Human review follows the automated containment.",
+    optionExplanations: {
+      A: "Hours of exposure window — too slow.",
+      B: "Correct. Event-driven containment in minutes.",
+      C: "Config checks config, not threat findings.",
+      D: "Dashboards observe — they don't act.",
+    },
+    services: ["Amazon GuardDuty", "Amazon EventBridge", "AWS Lambda"],
+    references: [
+      {
+        title: "Automating response to GuardDuty findings",
+        url: "https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_findings_automated_response.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-04",
+  },
+  {
+    id: "scs-log-003",
+    slug: "config-aggregator-compliance-view",
+    cert: "scs-c03",
+    domain: "scs-detection",
+    topic: "scs-logging-and-audit",
+    subtopic: "Config at scale",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Security needs a single compliance view of AWS Config rule evaluations across ALL accounts and regions in the organization. What aggregates this?",
+    options: [
+      { id: "A", text: "AWS Config aggregator — collects config + compliance data from org accounts into one account" },
+      { id: "B", text: "CloudTrail organization trail" },
+      { id: "C", text: "Consolidated billing" },
+      { id: "D", text: "Per-account dashboards emailed weekly" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Config aggregators are the multi-account/multi-region rollup for configuration and compliance data — org-wide rule evaluation results land in the aggregator account. Org trails centralize API logs, not compliance evaluations.",
+    optionExplanations: {
+      A: "Correct. Native org-wide Config rollup.",
+      B: "Trails log API calls — different data.",
+      C: "Billing isn't configuration compliance.",
+      D: "Manual aggregation — error-prone and stale.",
+    },
+    services: ["AWS Config"],
+    references: [
+      {
+        title: "AWS Config aggregators",
+        url: "https://docs.aws.amazon.com/config/latest/developerguide/aggregate-data.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-04",
+  },
 ];

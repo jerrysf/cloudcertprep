@@ -1040,4 +1040,152 @@ export const deaQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-11-03",
   },
+  {
+    id: "dea-ing-009",
+    slug: "kinesis-partition-key-order",
+    cert: "dea-c01",
+    domain: "dea-ingestion-transformation",
+    topic: "dea-ingestion-and-etl",
+    subtopic: "Stream design",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A Kinesis stream must keep each customer's events in order while scaling to many parallel consumers. What should the partition key be?",
+    options: [
+      { id: "A", text: "A random UUID per record" },
+      { id: "B", text: "Customer ID — same key routes to the same shard preserving per-customer order" },
+      { id: "C", text: "A timestamp" },
+      { id: "D", text: "The event type" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Partition keys hash to shards; records with the same key land on the same shard in order — customer ID gives per-customer ordering with good distribution across shards. Random keys lose ordering; timestamps/types create hot shards.",
+    optionExplanations: {
+      A: "Random keys scatter each customer's events across shards — no order.",
+      B: "Correct. Key affinity preserves per-key order.",
+      C: "Timestamps hash badly (hot shard on recent data).",
+      D: "Few distinct values = skewed shard load.",
+    },
+    services: ["Amazon Kinesis Data Streams"],
+    references: [
+      {
+        title: "Partition keys in Kinesis Data Streams",
+        url: "https://docs.aws.amazon.com/streams/latest/dev/key-concepts.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-04",
+  },
+  {
+    id: "dea-store-008",
+    slug: "redshift-sort-key-time-range",
+    cert: "dea-c01",
+    domain: "dea-data-store-management",
+    topic: "dea-data-stores",
+    subtopic: "Table design",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A Redshift fact table is queried almost exclusively by date ranges (WHERE event_date BETWEEN ...). Which design makes those scans cheapest?",
+    options: [
+      { id: "A", text: "DISTKEY on event_date" },
+      { id: "B", text: "Sort key on event_date — zone maps let Redshift skip whole blocks outside the range" },
+      { id: "C", text: "More nodes" },
+      { id: "D", text: "A materialized view over the raw table" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Sort keys physically order table blocks — Redshift's zone maps (min/max per block) then skip irrelevant blocks, so range predicates touch a fraction of the table. DISTKEY controls distribution for joins, not scan selectivity.",
+    optionExplanations: {
+      A: "DISTKEY is for join colocation — not range filtering.",
+      B: "Correct. Sort key + zone maps = massive scan pruning.",
+      C: "Bigger cluster brute-forces a design problem.",
+      D: "MVs precompute specific queries — not a general fix.",
+    },
+    services: ["Amazon Redshift"],
+    references: [
+      {
+        title: "Working with sort keys",
+        url: "https://docs.aws.amazon.com/redshift/latest/dg/t_Sorting_data.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-04",
+  },
+  {
+    id: "dea-gov-008",
+    slug: "lake-formation-lf-tags",
+    cert: "dea-c01",
+    domain: "dea-data-security-governance",
+    topic: "dea-data-governance",
+    subtopic: "Tag-based access",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A lake has hundreds of databases/tables. Teams should get access based on DATA CLASSIFICATION (e.g., 'confidentiality=internal') without granting table-by-table. Which Lake Formation mechanism scales this?",
+    options: [
+      { id: "A", text: "Named resource grants per table" },
+      { id: "B", text: "LF-Tags — tag the catalog resources, grant on tag expressions" },
+      { id: "C", text: "IAM groups per table" },
+      { id: "D", text: "Bucket policies" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "LF-Tags (tag-based access control, TBAC) assign attributes to catalog objects and grant permissions on tag expressions — new resources inherit access by tags, so policies scale with classification, not enumeration. Named grants don't scale to hundreds of objects.",
+    optionExplanations: {
+      A: "Per-object grants = policy explosion at scale.",
+      B: "Correct. Attribute-based, auto-scaling access control.",
+      C: "IAM groups can't express lake-table granularity well.",
+      D: "Bucket policies are object-level — no table semantics.",
+    },
+    services: ["AWS Lake Formation"],
+    references: [
+      {
+        title: "Lake Formation tag-based access control",
+        url: "https://docs.aws.amazon.com/lake-formation/latest/dg/lf-tag-based-access-control.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-04",
+  },
+  {
+    id: "dea-ops-007",
+    slug: "athena-workgroup-cost-control",
+    cert: "dea-c01",
+    domain: "dea-data-operations-support",
+    topic: "dea-data-operations",
+    subtopic: "Query governance",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Finance wants per-team Athena query cost limits and the ability to enforce them — not just dashboards. Which feature enforces scan limits per group?",
+    options: [
+      { id: "A", text: "Cost allocation tags on queries" },
+      { id: "B", text: "Athena workgroups with per-query data-scan limits and usage caps" },
+      { id: "C", text: "Budgets alerts" },
+      { id: "D", text: "A Lambda checking the bill nightly" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Workgroups isolate teams with their own settings — per-query data-scan limits (reject oversized scans) and usage thresholds wired to SNS alarms. Budgets notify after spend happens; workgroups actively cap it.",
+    optionExplanations: {
+      A: "Tags measure spend — they don't enforce.",
+      B: "Correct. Enforced limits at the engine level.",
+      C: "Alerts, not enforcement.",
+      D: "Too late — money already spent.",
+    },
+    services: ["Amazon Athena"],
+    references: [
+      {
+        title: "Using workgroups to control query access and costs",
+        url: "https://docs.aws.amazon.com/athena/latest/ug/workgroups-benefits.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-04",
+  },
 ];
