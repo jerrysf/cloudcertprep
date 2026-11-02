@@ -1188,4 +1188,292 @@ export const ansQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-11-04",
   },
+  {
+    id: "ans-des-006",
+    slug: "ipam-multi-account-cidr-planning",
+    cert: "ans-c01",
+    domain: "ans-network-design",
+    topic: "ans-hybrid-connectivity",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An enterprise needs centralized CIDR management — allocating non-overlapping address ranges to VPCs across accounts and tracking utilization. Which feature?",
+    options: [
+      { id: "A", text: "IPAM (VPC IP Address Manager)" },
+      { id: "B", text: "AWS Organizations tag policies" },
+      { id: "C", text: "Route53 Resolver rules" },
+      { id: "D", text: "A spreadsheet of CIDRs" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "IPAM plans, tracks, and allocates IP space org-wide: hierarchical pools per region/business unit, automatic overlap detection, cross-account sharing via RAM — the enterprise CIDR governance tool.",
+    optionExplanations: {
+      A: "Centralized IP planning/allocation = IPAM. Correct.",
+      B: "Tag policies enforce metadata — not address space.",
+      C: "Resolver handles DNS forwarding — not CIDR allocation.",
+      D: "Manual tracking fails at scale — no overlap enforcement.",
+    },
+    services: ["VPC IPAM"],
+    references: [
+      {
+        title: "IPAM — AWS docs",
+        url: "https://docs.aws.amazon.com/vpc/latest/ipam/what-is-it-ipam.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "ans-des-007",
+    slug: "ipv6-dual-stack-transition",
+    cert: "ans-c01",
+    domain: "ans-network-design",
+    topic: "ans-hybrid-connectivity",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A VPC must serve IPv6 clients while keeping the existing IPv4 infrastructure running during a gradual migration. What's the right approach?",
+    options: [
+      { id: "A", text: "Dual-stack — add IPv6 CIDRs to the VPC/subnets alongside IPv4" },
+      { id: "B", text: "IPv6-only subnets immediately" },
+      { id: "C", text: "NAT64 translation on a custom instance" },
+      { id: "D", text: "A separate IPv6-only VPC with peering" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Dual-stack associates IPv6 CIDR blocks with the existing VPC/subnets — resources get both IPv4+IPv6 addresses and either protocol works during transition. Egress-only IGW handles outbound-only IPv6 for private resources.",
+    optionExplanations: {
+      A: "IPv6 alongside IPv4 = the transition pattern. Correct.",
+      B: "IPv6-only breaks the running IPv4 workloads.",
+      C: "NAT64 is a translation hack — native dual-stack is cleaner.",
+      D: "A second VPC duplicates infrastructure — no benefit over dual-stack.",
+    },
+    services: ["Amazon VPC"],
+    references: [
+      {
+        title: "IPv6 in VPC — AWS docs",
+        url: "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-migrate-ipv6.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "ans-hyb-008",
+    slug: "bgp-local-preference-outbound",
+    cert: "ans-c01",
+    domain: "ans-network-design",
+    topic: "ans-hybrid-connectivity",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "With two Direct Connect links to AWS, the company wants outbound traffic (on-prem→AWS) to prefer the primary link. Which BGP mechanism influences the OUTBOUND path from on-premises?",
+    options: [
+      { id: "A", text: "AS_PATH prepending on the backup link" },
+      { id: "B", text: "Higher local preference on the primary link's received routes" },
+      { id: "C", text: "Lower MED on the secondary link" },
+      { id: "D", text: "Longer prefix advertisements" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Local preference controls YOUR outbound path — higher local-pref on routes learned via the primary link makes your edge prefer it for outbound. AS_PATH prepending influences the RETURN (inbound) path; MED suggests preference to the neighbor; prefix length is more specific routing.",
+    optionExplanations: {
+      A: "AS_PATH affects how OTHERS choose paths to you — inbound direction.",
+      B: "Local-pref = outbound path selection on your edge. Correct.",
+      C: "MED hints inbound preference TO the peer — wrong direction.",
+      D: "More specific prefixes win regardless of preference settings.",
+    },
+    services: ["AWS Direct Connect"],
+    references: [
+      {
+        title: "BGP routing policies — AWS docs",
+        url: "https://docs.aws.amazon.com/directconnect/latest/UserGuide/routing-and-bgp.html",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "ans-hyb-009",
+    slug: "dx-lag-aggregation-bandwidth",
+    cert: "ans-c01",
+    domain: "ans-network-design",
+    topic: "ans-hybrid-connectivity",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A Direct Connect deployment needs more than 10 Gbps aggregate. How do you scale bandwidth on a single logical connection?",
+    options: [
+      { id: "A", text: "Request a 100 Gbps dedicated connection only" },
+      { id: "B", text: "Link Aggregation Group (LAG) — bundle multiple DX connections into one logical link" },
+      { id: "C", text: "Add a second VPN tunnel" },
+      { id: "D", text: "Enable jumbo frames" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "DX LAG bundles up to 4 (or 2 for 100G) physical connections into a single logical link for aggregated bandwidth and failover — the standard scale-out for dedicated connections. Jumbo frames help per-flow throughput, not aggregate.",
+    optionExplanations: {
+      A: "100G ports exist but LAG is the modular scale-and-resilience answer.",
+      B: "Port aggregation = LAG. Correct.",
+      C: "VPN caps ~1.25 Gbps — not a scaling path for DX.",
+      D: "MTU affects frame size — not aggregate capacity.",
+    },
+    services: ["AWS Direct Connect"],
+    references: [
+      {
+        title: "LAG for Direct Connect — AWS docs",
+        url: "https://docs.aws.amazon.com/directconnect/latest/UserGuide/lags.html",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "ans-imp-005",
+    slug: "route53-phz-cross-account",
+    cert: "ans-c01",
+    domain: "ans-network-implementation",
+    topic: "ans-dns-and-routing",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A Route53 private hosted zone lives in the shared-services account. VPCs in other accounts must resolve its records. What's required?",
+    options: [
+      { id: "A", text: "Associate each spoke VPC with the PHZ using cross-account authorization" },
+      { id: "B", text: "Create identical zones per account" },
+      { id: "C", text: "Public zone delegation" },
+      { id: "D", text: "Route53 Resolver forwarding only" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "PHZ→VPC association is explicit: for cross-account, the zone owner authorizes each VPC association (CLI/authorization request → accept in the VPC's account). Resolver rules can also share zones, but the direct mechanism is cross-account VPC association.",
+    optionExplanations: {
+      A: "Cross-account authorization + association. Correct.",
+      B: "Duplicate zones fork the records — unmaintainable.",
+      C: "Public zones expose names to the internet — not the requirement.",
+      D: "Resolver forwards to on-prem DNS — not the PHZ-sharing mechanism.",
+    },
+    services: ["Amazon Route 53"],
+    references: [
+      {
+        title: "PHZ cross-account association — AWS docs",
+        url: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/hosted-zone-private-associate-vpcs-different-accounts.html",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "ans-imp-006",
+    slug: "alb-listener-rules-host-path",
+    cert: "ans-c01",
+    domain: "ans-network-implementation",
+    topic: "ans-dns-and-routing",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An ALB must route api.example.com/images/* to the image service AND api.example.com/* to the API service. How are listener rules evaluated?",
+    options: [
+      { id: "A", text: "By rule number — lowest priority number wins, first match applies" },
+      { id: "B", text: "Longest match always wins regardless of priority" },
+      { id: "C", text: "Host conditions always beat path conditions" },
+      { id: "D", text: "Rules can't combine host and path conditions" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "ALB listener rules evaluate in ascending priority order — first match wins, then the default rule. You ORDER rules so specific paths (images) evaluate before general ones. Conditions CAN combine host + path + headers + methods + query + source IP.",
+    optionExplanations: {
+      A: "Priority order, first match. Correct.",
+      B: "No longest-match semantics — pure priority order.",
+      C: "No condition-type precedence — just rule priority.",
+      D: "Conditions compose freely — ANDed within a rule.",
+    },
+    services: ["Elastic Load Balancing"],
+    references: [
+      {
+        title: "ALB listener rules — AWS docs",
+        url: "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/listener-update-rules.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "ans-sec-008",
+    slug: "nfw-domain-egress-filtering",
+    cert: "ans-c01",
+    domain: "ans-network-security-compliance",
+    topic: "ans-network-security",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Outbound traffic from VPCs must be filtered to allow only approved domains — a managed firewall inspecting egress at L3–L7. Which service?",
+    options: [
+      { id: "A", text: "Security groups with domain rules" },
+      { id: "B", text: "AWS Network Firewall with domain-list rule groups" },
+      { id: "C", text: "NACLs with hostname rules" },
+      { id: "D", text: "Route53 Resolver DNS Firewall only" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Network Firewall is the managed L3–L7 stateful firewall: Suricata rules + domain-list rule groups filter outbound traffic by hostname/domain (TLS SNI/HTTP Host). SGs/NACLs are IP/port-level — no domain awareness. DNS Firewall filters DNS resolution only.",
+    optionExplanations: {
+      A: "SGs take IPs/ports/SG-refs — not domains.",
+      B: "Managed domain-aware egress filtering. Correct.",
+      C: "NACLs are also IP-level — no hostname support.",
+      D: "DNS Firewall stops resolution but traffic to raw IPs bypasses it.",
+    },
+    services: ["AWS Network Firewall"],
+    references: [
+      {
+        title: "Domain filtering — AWS docs",
+        url: "https://docs.aws.amazon.com/network-firewall/latest/developerguide/stateful-rules.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "ans-sec-009",
+    slug: "shield-advanced-l7-ddos-waf",
+    cert: "ans-c01",
+    domain: "ans-network-security-compliance",
+    topic: "ans-network-security",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A public API needs protection against BOTH infrastructure-layer DDoS floods AND application-layer HTTP floods with 24/7 response support. Which combination?",
+    options: [
+      { id: "A", text: "Shield Standard only" },
+      { id: "B", text: "Shield Advanced + WAF + access to the SRT (Shield Response Team)" },
+      { id: "C", text: "AWS Network Firewall" },
+      { id: "D", text: "WAF alone" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Shield Advanced adds enhanced L3–L7 DDoS protection, cost protection, and the 24/7 Shield Response Team; WAF rules handle L7 floods (rate-based, geo-blocking). Shield Standard is L3/4 automatic baseline — no SRT, no L7 logic.",
+    optionExplanations: {
+      A: "Standard covers L3/4 automatically — no L7 mitigation or response team.",
+      B: "Advanced + WAF + SRT = the full answer. Correct.",
+      C: "Network Firewall does L3–L7 inspection — not purpose-built DDoS response.",
+      D: "WAF alone handles L7 but lacks DDoS economics/response support.",
+    },
+    services: ["AWS Shield", "AWS WAF"],
+    references: [
+      {
+        title: "Shield Advanced — AWS docs",
+        url: "https://docs.aws.amazon.com/waf/latest/developerguide/ddos-overview.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  }
 ];

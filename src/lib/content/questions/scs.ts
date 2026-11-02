@@ -1196,4 +1196,292 @@ export const scsQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-11-04",
   },
+  {
+    id: "scs-det-008",
+    slug: "security-hub-aggregation-custom-action",
+    cert: "scs-c03",
+    domain: "scs-detection",
+    topic: "scs-detection-and-response",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Security Hub aggregates GuardDuty/Inspector/Config findings across the org. A team wants one-click remediation — sending a finding to a Lambda that isolates the instance. Which feature connects findings to actions?",
+    options: [
+      { id: "A", text: "Security Hub custom actions → EventBridge → Lambda" },
+      { id: "B", text: "CloudTrail event history" },
+      { id: "C", text: "Config remediation rules" },
+      { id: "D", text: "Inspector suppression rules" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Security Hub custom actions send findings to EventBridge as events — the standard pattern for semi-automated response: operator reviews → clicks action → EventBridge → Lambda/SSM remediation.",
+    optionExplanations: {
+      A: "Finding → custom action → EventBridge → remediation. Correct.",
+      B: "CloudTrail is audit history — not a response trigger on findings.",
+      C: "Config remediation fixes config drift — not generic finding actions.",
+      D: "Suppression hides findings — opposite of acting on them.",
+    },
+    services: ["AWS Security Hub", "Amazon EventBridge"],
+    references: [
+      {
+        title: "Custom actions — AWS docs",
+        url: "https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-custom-actions.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "scs-det-009",
+    slug: "amazon-detective-investigation",
+    cert: "scs-c03",
+    domain: "scs-detection",
+    topic: "scs-detection-and-response",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A GuardDuty finding flags an EC2 instance for unusual API calls. Security needs to visualize relationships — which IPs it talked to, what the IAM role did — to scope the incident. Which service?",
+    options: [
+      { id: "A", text: "Amazon Detective" },
+      { id: "B", text: "AWS Security Hub" },
+      { id: "C", text: "Amazon Inspector" },
+      { id: "D", text: "VPC Flow Logs alone" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Detective builds behavior graphs from CloudTrail/VPC Flow Logs/GuardDuty to investigate incidents — entity timelines, connected IPs, API call patterns. Security Hub aggregates findings; Detective investigates them.",
+    optionExplanations: {
+      A: "Behavior-graph investigation = Detective. Correct.",
+      B: "Hub aggregates findings — it doesn't do deep entity analysis.",
+      C: "Inspector scans for vulnerabilities — not incident investigation.",
+      D: "Flow logs are raw data — Detective makes them investigable.",
+    },
+    services: ["Amazon Detective"],
+    references: [
+      {
+        title: "Amazon Detective — AWS docs",
+        url: "https://docs.aws.amazon.com/detective/latest/userguide/what-is-detective.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "scs-iam-007",
+    slug: "permission-boundary-effective-permissions",
+    cert: "scs-c03",
+    domain: "scs-iam",
+    topic: "scs-iam-deep-dive",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A role has an identity policy allowing s3:* and a permissions boundary allowing only s3:GetObject. What can the role actually do?",
+    options: [
+      { id: "A", text: "Everything s3:* allows — identity policy wins" },
+      { id: "B", text: "Only s3:GetObject — effective permissions are the intersection" },
+      { id: "C", text: "Nothing — the policies conflict" },
+      { id: "D", text: "Whatever the boundary allows plus s3:*" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Permissions boundaries are maximum-permission ceilings: effective = identity policy ∩ boundary (and ∩ SCP if orgs). The role gets GetObject only — the boundary can't grant, only constrain. Classic least-privilege delegation pattern.",
+    optionExplanations: {
+      A: "Boundaries override — they set the ceiling regardless of grants.",
+      B: "Intersection semantics. Correct.",
+      C: "No conflict — overlap is computed, not errored.",
+      D: "Union is wrong — boundaries restrict, never expand.",
+    },
+    services: ["AWS IAM"],
+    references: [
+      {
+        title: "Permissions boundaries — AWS docs",
+        url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "scs-iam-008",
+    slug: "session-policy-assume-role-temp",
+    cert: "scs-c03",
+    domain: "scs-iam",
+    topic: "scs-iam-deep-dive",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A service assumes a role hourly and needs THAT SESSION restricted to read-only on a single bucket — narrower than the role's identity policy. How?",
+    options: [
+      { id: "A", text: "Edit the role's identity policy" },
+      { id: "B", text: "Pass a session policy in the AssumeRole call" },
+      { id: "C", text: "Create a second role" },
+      { id: "D", text: "Use a permissions boundary" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Session policies are inline policies passed at AssumeRole time — effective session permissions = identity policy ∩ session policy. Purpose-built for per-session restriction without changing the role itself.",
+    optionExplanations: {
+      A: "Editing the role changes it for ALL sessions — not per-call restriction.",
+      B: "Session policy = runtime narrowing. Correct.",
+      C: "A second role duplicates — session policy is lighter.",
+      D: "Boundaries are persistent caps — not per-session params.",
+    },
+    services: ["AWS IAM", "AWS STS"],
+    references: [
+      {
+        title: "Session policies — AWS docs",
+        url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html#policies_session",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "scs-ir-006",
+    slug: "incident-isolation-sg-swap",
+    cert: "scs-c03",
+    domain: "scs-incident-response",
+    topic: "scs-incident-response",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An EC2 instance is confirmed compromised and must be isolated NOW while preserving it for forensics. What's the FIRST containment step?",
+    options: [
+      { id: "A", text: "Terminate it immediately" },
+      { id: "B", text: "Replace its security group with an isolated/deny-all SG, then snapshot its volumes" },
+      { id: "C", text: "Stop the instance" },
+      { id: "D", text: "Enable flow logs on it" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Standard IR playbook: isolate first (swap to a quarantine SG with no inbound/outbound) — cuts the attacker without destroying evidence. THEN snapshot EBS volumes for forensics. Terminating loses memory/state evidence; stopping takes longer and allows continued activity until stopped.",
+    optionExplanations: {
+      A: "Termination destroys forensic evidence.",
+      B: "Isolate → snapshot = containment without destruction. Correct.",
+      C: "Stopping takes time and still leaves it compromised during shutdown.",
+      D: "Logging is monitoring — not containment.",
+    },
+    services: ["Amazon EC2", "Amazon EBS"],
+    references: [
+      {
+        title: "Incident response — AWS docs",
+        url: "https://docs.aws.amazon.com/whitepapers/latest/aws-security-incident-response-guide/containment.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "scs-ir-007",
+    slug: "quarantine-iam-user-deny-policy",
+    cert: "scs-c03",
+    domain: "scs-incident-response",
+    topic: "scs-incident-response",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A user access key is compromised and actively used by an attacker. What's the FASTEST way to revoke access while preserving the user for investigation?",
+    options: [
+      { id: "A", text: "Delete the IAM user" },
+      { id: "B", text: "Attach an explicit deny-all policy to the user and deactivate the access key" },
+      { id: "C", text: "Remove the user from groups" },
+      { id: "D", text: "Rotate the key to a new value" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Deactivate the compromised key (instant — kills future API calls from it) AND attach deny-all to cover other credentials/attached policies (explicit deny overrides everything). Deletion loses attribution; rotation creates a NEW working key but doesn't kill active sessions as cleanly.",
+    optionExplanations: {
+      A: "Deletion destroys identity attribution needed for forensics.",
+      B: "Deactivate + deny-all = fastest full revocation. Correct.",
+      C: "Group removal leaves directly-attached policies and active sessions.",
+      D: "Rotation doesn't guarantee existing session invalidation.",
+    },
+    services: ["AWS IAM"],
+    references: [
+      {
+        title: "Compromised credentials response — AWS docs",
+        url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_getting-report.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "scs-log-004",
+    slug: "cloudtrail-insights-unusual-activity",
+    cert: "scs-c03",
+    domain: "scs-detection",
+    topic: "scs-logging-and-audit",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Security wants automatic detection of unusual API activity patterns — spikes in DeleteBucket calls or IAM changes outside normal baselines — rather than just logging events. Which CloudTrail feature?",
+    options: [
+      { id: "A", text: "CloudTrail event history" },
+      { id: "B", text: "CloudTrail Insights" },
+      { id: "C", text: "CloudTrail log file validation" },
+      { id: "D", text: "AWS Config timeline" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "CloudTrail Insights analyzes write API calls against baselines and flags unusual activity automatically (insight events) — the 'detect anomalies in the trail' feature, vs raw event history which is just lookup.",
+    optionExplanations: {
+      A: "Event history is raw search — no anomaly detection.",
+      B: "Baseline anomaly detection = Insights. Correct.",
+      C: "Validation proves log integrity — not behavioral detection.",
+      D: "Config tracks resource config changes, not API call patterns.",
+    },
+    services: ["AWS CloudTrail"],
+    references: [
+      {
+        title: "CloudTrail Insights — AWS docs",
+        url: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-insights-events-with-cloudtrail.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "scs-log-005",
+    slug: "flow-logs-vs-traffic-mirroring",
+    cert: "scs-c03",
+    domain: "scs-infrastructure-security",
+    topic: "scs-infrastructure-security",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A forensic investigation needs FULL packet payloads from a suspect instance — not just metadata (IP, port, bytes). Flow logs don't have content. What captures complete packets?",
+    options: [
+      { id: "A", text: "VPC Traffic Mirroring to a monitoring target" },
+      { id: "B", text: "DNS query logging" },
+      { id: "C", text: "CloudTrail data events" },
+      { id: "D", text: "NAT gateway logs" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "VPC Traffic Mirroring copies actual packet payloads from ENIs to a target (NLB, GWLB, or monitoring instance) — the packet-capture capability. Flow logs = metadata only; CloudTrail = control/data-plane API calls.",
+    optionExplanations: {
+      A: "Full packet capture = traffic mirroring. Correct.",
+      B: "DNS logs show queries — not packet content.",
+      C: "Data events log API actions on resources — not network packets.",
+      D: "NAT gateways don't offer packet-level logs.",
+    },
+    services: ["VPC Traffic Mirroring"],
+    references: [
+      {
+        title: "Traffic Mirroring — AWS docs",
+        url: "https://docs.aws.amazon.com/vpc/latest/mirroring/what-is-traffic-mirroring.html",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  }
 ];

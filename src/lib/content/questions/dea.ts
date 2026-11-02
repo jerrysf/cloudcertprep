@@ -1188,4 +1188,292 @@ export const deaQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-11-04",
   },
+  {
+    id: "dea-ing-010",
+    slug: "msk-vs-kinesis-data-streams",
+    cert: "dea-c01",
+    domain: "dea-ingestion-transformation",
+    topic: "dea-ingestion-and-etl",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A company migrating from self-managed Kafka wants a managed service that keeps full Kafka API compatibility for existing producers/consumers. Which fits?",
+    options: [
+      { id: "A", text: "Amazon Kinesis Data Streams" },
+      { id: "B", text: "Amazon MSK (Managed Streaming for Kafka)" },
+      { id: "C", text: "Amazon SQS" },
+      { id: "D", text: "Amazon EventBridge" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "MSK = managed Apache Kafka — same APIs, consumer groups, topic semantics, so existing Kafka apps migrate without rewrite. Kinesis is AWS-native streaming with different APIs. Choose MSK when Kafka compatibility is the constraint.",
+    optionExplanations: {
+      A: "Kinesis has different APIs — existing Kafka clients can't connect.",
+      B: "Managed Kafka, API-compatible. Correct.",
+      C: "SQS is message queuing — not a streaming log.",
+      D: "EventBridge is event routing — not Kafka.",
+    },
+    services: ["Amazon MSK", "Amazon Kinesis"],
+    references: [
+      {
+        title: "Amazon MSK — AWS docs",
+        url: "https://docs.aws.amazon.com/msk/latest/developerguide/what-is-msk.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "dea-ing-011",
+    slug: "appflow-saas-to-s3-ingestion",
+    cert: "dea-c01",
+    domain: "dea-ingestion-transformation",
+    topic: "dea-ingestion-and-etl",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Salesforce records must flow into S3 on a schedule for downstream analytics — no custom connector code. Which service does this?",
+    options: [
+      { id: "A", text: "AWS Glue crawlers" },
+      { id: "B", text: "Amazon AppFlow" },
+      { id: "C", text: "AWS DataSync" },
+      { id: "D", text: "Amazon Kinesis Firehose" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "AppFlow is the managed SaaS-integration service — Salesforce, Zendesk, ServiceNow, etc. → S3/Redshift on schedule, event, or demand, with no code. Glue is ETL on existing data; DataSync is file/object transfer.",
+    optionExplanations: {
+      A: "Crawlers catalog existing data — they don't pull SaaS sources.",
+      B: "SaaS→S3 connector service. Correct.",
+      C: "DataSync moves files between storage systems — not SaaS APIs.",
+      D: "Firehose delivers streams — Salesforce isn't a stream source.",
+    },
+    services: ["Amazon AppFlow"],
+    references: [
+      {
+        title: "Amazon AppFlow — AWS docs",
+        url: "https://docs.aws.amazon.com/appflow/latest/userguide/what-is-appflow.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "dea-store-009",
+    slug: "redshift-distkey-join-locality",
+    cert: "dea-c01",
+    domain: "dea-data-store-management",
+    topic: "dea-data-stores",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A fact table joins frequently with a dimension table on customer_id. To minimize data shuffling between nodes during joins, which distribution strategy fits?",
+    options: [
+      { id: "A", text: "EVEN distribution on both" },
+      { id: "B", text: "KEY distribution on customer_id for both tables" },
+      { id: "C", text: "ALL distribution on the fact table" },
+      { id: "D", text: "AUTO — let Redshift decide" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "KEY distribution co-locates rows with the same distkey value on the same node — joining both tables on customer_id becomes node-local (no shuffle). ALL copies small dimension tables to every node; EVEN round-robins (forces shuffles); AUTO lets Redshift optimize but the explicit join-locality answer is KEY.",
+    optionExplanations: {
+      A: "EVEN spreads evenly — joins require shuffling.",
+      B: "Same distkey → co-located joins. Correct.",
+      C: "ALL duplicates the whole table per node — right for SMALL dims, wrong for a big fact table.",
+      D: "AUTO can work but 'explicitly ensure co-location' is KEY.",
+    },
+    services: ["Amazon Redshift"],
+    references: [
+      {
+        title: "Distribution styles — AWS docs",
+        url: "https://docs.aws.amazon.com/redshift/latest/dg/c_choosing_dist_sort.html",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "dea-store-010",
+    slug: "redshift-concurrency-scaling",
+    cert: "dea-c01",
+    domain: "dea-data-store-management",
+    topic: "dea-data-stores",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Dashboard queries spike unpredictably at month-end — the warehouse gets slow for ~2 days. Which Redshift feature adds transient capacity on demand?",
+    options: [
+      { id: "A", text: "Resize the cluster permanently" },
+      { id: "B", text: "Concurrency scaling" },
+      { id: "C", text: "Read replicas" },
+      { id: "D", text: "RA3 managed storage scaling" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Concurrency scaling adds transient cluster capacity automatically when queries queue — billed per-second (with a free daily allowance). Resizing is permanent and disruptive; RA3 separates storage from compute but doesn't add burst query capacity.",
+    optionExplanations: {
+      A: "Permanent resize over-provisions for a 2-day spike.",
+      B: "Burst capacity on demand = concurrency scaling. Correct.",
+      C: "Redshift doesn't use read replicas — that's Aurora/RDS.",
+      D: "Managed storage handles data volume, not query concurrency.",
+    },
+    services: ["Amazon Redshift"],
+    references: [
+      {
+        title: "Concurrency scaling — AWS docs",
+        url: "https://docs.aws.amazon.com/redshift/latest/dg/concurrency-scaling.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "dea-gov-009",
+    slug: "lake-formation-row-cell-security",
+    cert: "dea-c01",
+    domain: "dea-data-security-governance",
+    topic: "dea-data-governance",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "Regional analysts must only see rows for THEIR region in a shared sales table, and never see the salary column. Which Lake Formation capability enforces this?",
+    options: [
+      { id: "A", text: "Table-level grants only" },
+      { id: "B", text: "Row-level and cell-level (column) security via data filters" },
+      { id: "C", text: "IAM policies on the S3 prefix" },
+      { id: "D", text: "Athena workgroup query limits" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Lake Formation data filters implement row-level security (filter expressions like region='US') and cell-level security (column masking/exclusion) — granular access beyond table/column grants. This is the fine-grained governance differentiator.",
+    optionExplanations: {
+      A: "Table grants are all-or-nothing per table.",
+      B: "Row filters + column restrictions = fine-grained access. Correct.",
+      C: "IAM on S3 can't express row-level conditions.",
+      D: "Workgroups limit resources, not data visibility.",
+    },
+    services: ["AWS Lake Formation"],
+    references: [
+      {
+        title: "Row-level security — AWS docs",
+        url: "https://docs.aws.amazon.com/lake-formation/latest/dg/data-filtering.html",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "dea-gov-010",
+    slug: "glue-crawler-schema-discovery",
+    cert: "dea-c01",
+    domain: "dea-data-security-governance",
+    topic: "dea-data-governance",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "New Parquet files land in S3 hourly under evolving schemas. What automatically discovers schema changes and registers them in the Glue Data Catalog?",
+    options: [
+      { id: "A", text: "Glue crawlers on a schedule" },
+      { id: "B", text: "Athena DDL by hand" },
+      { id: "C", text: "S3 event notifications" },
+      { id: "D", text: "Glue DataBrew profiling" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Crawlers scan S3 paths on a schedule (or on-demand), infer schemas, and update Data Catalog tables/partitions automatically — the schema-discovery mechanism feeding Athena/EMR/Redshift Spectrum queries.",
+    optionExplanations: {
+      A: "Scheduled schema inference + catalog updates. Correct.",
+      B: "Manual DDL doesn't track schema evolution.",
+      C: "S3 events can TRIGGER crawlers but don't infer schemas themselves.",
+      D: "DataBrew profiles data visually — doesn't update the catalog.",
+    },
+    services: ["AWS Glue"],
+    references: [
+      {
+        title: "Glue crawlers — AWS docs",
+        url: "https://docs.aws.amazon.com/glue/latest/dg/add-crawler.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "dea-ops-008",
+    slug: "mwaa-vs-step-functions-orchestration",
+    cert: "dea-c01",
+    domain: "dea-data-operations-support",
+    topic: "dea-data-operations",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A data team with existing Airflow DAGs and Python-heavy dependencies wants managed orchestration without rewriting workflows. Which service?",
+    options: [
+      { id: "A", text: "AWS Step Functions" },
+      { id: "B", text: "Amazon MWAA (Managed Workflows for Apache Airflow)" },
+      { id: "C", text: "EventBridge Scheduler" },
+      { id: "D", text: "AWS Glue workflow triggers" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "MWAA = managed Apache Airflow — runs existing DAGs with managed infra (schedulers, workers, autoscaling). Step Functions is AWS-native state machines; Glue triggers orchestrate only Glue jobs.",
+    optionExplanations: {
+      A: "Step Functions would require rewriting DAGs as state machines.",
+      B: "Managed Airflow = MWAA. Correct.",
+      C: "Scheduler triggers on time — no DAG orchestration.",
+      D: "Glue workflows orchestrate Glue jobs only.",
+    },
+    services: ["Amazon MWAA"],
+    references: [
+      {
+        title: "Amazon MWAA — AWS docs",
+        url: "https://docs.aws.amazon.com/mwaa/latest/userguide/what-is-mwaa.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "dea-ops-009",
+    slug: "glue-data-quality-rules",
+    cert: "dea-c01",
+    domain: "dea-data-operations-support",
+    topic: "dea-data-operations",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A pipeline must automatically stop when incoming data fails quality checks — null rates above threshold, invalid value ranges. Which AWS feature validates data quality declaratively?",
+    options: [
+      { id: "A", text: "Glue Data Quality rulesets" },
+      { id: "B", text: "CloudWatch metric alarms" },
+      { id: "C", text: "Athena views" },
+      { id: "D", text: "S3 object tagging" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Glue Data Quality evaluates declarative rulesets (completeness, uniqueness, ranges, referential integrity) inside jobs or pipelines — scoring datasets and enabling failure gates. CloudWatch monitors metrics, not record-level quality.",
+    optionExplanations: {
+      A: "Declarative data-quality evaluation + actions. Correct.",
+      B: "Metrics watch infrastructure — not data content.",
+      C: "Athena views query data — no validation gates.",
+      D: "Tags label objects — no quality logic.",
+    },
+    services: ["AWS Glue"],
+    references: [
+      {
+        title: "Glue Data Quality — AWS docs",
+        url: "https://docs.aws.amazon.com/glue/latest/dg/glue-data-quality.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  }
 ];

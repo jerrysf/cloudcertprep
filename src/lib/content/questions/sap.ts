@@ -1190,4 +1190,292 @@ export const sapQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-11-04",
   },
+  {
+    id: "sap-org-009",
+    slug: "delegated-admin-security-hub-guardduty",
+    cert: "sap-c02",
+    domain: "sap-organizational-complexity",
+    topic: "sap-multi-account-architecture",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A central security team needs GuardDuty and Security Hub visibility across all org accounts WITHOUT operating from the management account. What's the mechanism?",
+    options: [
+      { id: "A", text: "Enable the services in each account manually" },
+      { id: "B", text: "Delegated administrator account — a dedicated security account manages the org-wide services" },
+      { id: "C", text: "Cross-account IAM role assumed per account" },
+      { id: "D", text: "Export findings to a shared S3 bucket" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Delegated administrator = the Organizations pattern for security services: register a member account (typically a dedicated security tooling account) as admin for GuardDuty/Security Hub/Inspector/Config aggregators — keeping the management account hands-off. The standard multi-account security architecture.",
+    optionExplanations: {
+      A: "Manual per-account enablement doesn't scale or auto-cover new accounts.",
+      B: "Delegated admin = managed org-wide security. Correct.",
+      C: "Role assumption is per-account plumbing — not native aggregation.",
+      D: "Exporting findings is reporting, not centralized management.",
+    },
+    services: ["AWS Organizations", "Amazon GuardDuty", "AWS Security Hub"],
+    references: [
+      {
+        title: "Delegated administrator — AWS docs",
+        url: "https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_organizations.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "sap-org-010",
+    slug: "centralized-logging-cross-account-kinesis",
+    cert: "sap-c02",
+    domain: "sap-organizational-complexity",
+    topic: "sap-multi-account-architecture",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "Log data from 50 accounts must stream into one central logging account's S3 data lake in near-real-time. What's the architecture?",
+    options: [
+      { id: "A", text: "Each account exports logs to its own S3, central crawls them" },
+      { id: "B", text: "CloudWatch subscription filters → Kinesis Data Streams/Firehose in the central account → S3" },
+      { id: "C", text: "Scheduled S3 replication per account" },
+      { id: "D", text: "CloudWatch cross-account dashboards" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "The canonical pattern: log subscription filters on each account's CloudWatch log groups stream to a destination (Kinesis/Firehose) in the central account → lands in the S3 lake. Dashboards view metrics — they don't centralize log DATA.",
+    optionExplanations: {
+      A: "Per-account buckets with periodic crawling is slower and fragmented.",
+      B: "Subscription filters + central Firehose. Correct.",
+      C: "Scheduled replication has replication lag — not near-real-time streaming.",
+      D: "Dashboards are visualization — no data centralization.",
+    },
+    services: ["Amazon CloudWatch Logs", "Amazon Kinesis"],
+    references: [
+      {
+        title: "Cross-account log subscriptions — AWS docs",
+        url: "https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/SubscriptionFilters.html",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "sap-mig-009",
+    slug: "mgn-vs-dms-migration-choice",
+    cert: "sap-c02",
+    domain: "sap-migration-modernization",
+    topic: "sap-migration-strategies",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "200 on-premises Windows and Linux servers need lift-and-shift migration to EC2 with minimal downtime and continuous replication. Which service is purpose-built for server rehosting?",
+    options: [
+      { id: "A", text: "AWS Database Migration Service" },
+      { id: "B", text: "AWS Application Migration Service (MGN)" },
+      { id: "C", text: "AWS DataSync" },
+      { id: "D", text: "AWS Snowball" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "MGN is the block-level replication service for rehosting servers (lift-and-shift) — continuous replication, short cutover windows, test instances. DMS = databases; DataSync = file/object data; Snowball = offline bulk transfer.",
+    optionExplanations: {
+      A: "DMS migrates databases, not whole servers.",
+      B: "Server rehosting = MGN. Correct.",
+      C: "DataSync transfers files — doesn't capture OS/app stacks.",
+      D: "Snowball is offline data transfer — not live replication.",
+    },
+    services: ["AWS MGN", "AWS DMS"],
+    references: [
+      {
+        title: "Application Migration Service — AWS docs",
+        url: "https://docs.aws.amazon.com/mgn/latest/ug/what-is-application-migration-service.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "sap-mig-010",
+    slug: "migration-hub-portfolio-discovery",
+    cert: "sap-c02",
+    domain: "sap-migration-modernization",
+    topic: "sap-migration-strategies",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Before migrating, a company needs discovery of its on-prem estate — servers, dependencies, utilization — to group applications into migration waves. Which tools provide this?",
+    options: [
+      { id: "A", text: "AWS Migration Hub + Application Discovery Service" },
+      { id: "B", text: "AWS Trusted Advisor" },
+      { id: "C", text: "AWS Config" },
+      { id: "D", text: "Amazon Inspector" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Migration Hub is the central tracking console for migrations; Application Discovery Service gathers on-prem inventory + dependency maps (agentless or agent-based) to plan waves. Trusted Advisor/Config/Inspector assess cloud resources — not on-prem estates.",
+    optionExplanations: {
+      A: "Discovery + wave planning = Migration Hub + ADS. Correct.",
+      B: "Advisor checks AWS best practices — not on-prem discovery.",
+      C: "Config audits AWS resource configs.",
+      D: "Inspector finds vulnerabilities — not migration data.",
+    },
+    services: ["AWS Migration Hub", "Application Discovery Service"],
+    references: [
+      {
+        title: "Application Discovery Service — AWS docs",
+        url: "https://docs.aws.amazon.com/application-discovery/latest/userguide/what-is-appdiscovery.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "sap-new-009",
+    slug: "aurora-global-database-multi-region",
+    cert: "sap-c02",
+    domain: "sap-new-solutions",
+    topic: "sap-complex-solutions",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A global app needs sub-second read latency for users on three continents plus cross-region DR for its Aurora PostgreSQL database. What's the architecture?",
+    options: [
+      { id: "A", text: "Aurora Global Database — one primary writer region + up to 10 read-only secondary regions" },
+      { id: "B", text: "Cross-region read replicas only" },
+      { id: "C", text: "S3 replication for the data files" },
+      { id: "D", text: "Three independent Aurora clusters synced via DMS" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Aurora Global Database replicates storage-level changes to up to 10 secondary regions at ~<1s latency — fast local reads worldwide plus managed cross-region failover (RTO ~1 min for DR writes). Read replicas alone lack the managed global failover.",
+    optionExplanations: {
+      A: "Global storage replication + local reads. Correct.",
+      B: "Replicas help reads but no unified global failover management.",
+      C: "S3 isn't a database engine.",
+      D: "DMS syncing three live clusters is fragile DIY replication.",
+    },
+    services: ["Amazon Aurora"],
+    references: [
+      {
+        title: "Aurora Global Database — AWS docs",
+        url: "https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "sap-new-010",
+    slug: "eventbridge-schema-vs-step-functions",
+    cert: "sap-c02",
+    domain: "sap-new-solutions",
+    topic: "sap-complex-solutions",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A payments workflow needs durable orchestration — multi-step execution surviving hours, retries per step, human-approval pause, and compensation on failure. Which fits?",
+    options: [
+      { id: "A", text: "EventBridge rules to Lambda targets" },
+      { id: "B", text: "Step Functions Standard workflow" },
+      { id: "C", text: "SQS + Lambda chain" },
+      { id: "D", text: "EventBridge Scheduler" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Step Functions Standard = durable state-machine orchestration: steps can wait hours/days, built-in retry/catch/compensation (Saga), human-approval via task tokens. EventBridge routes events but has no durable multi-step state.",
+    optionExplanations: {
+      A: "EventBridge fires events — no long-running state or compensation.",
+      B: "Stateful durable orchestration = Step Functions. Correct.",
+      C: "SQS decouples but you'd hand-build orchestration/compensation.",
+      D: "Scheduler only triggers on time — no workflow state.",
+    },
+    services: ["AWS Step Functions", "Amazon EventBridge"],
+    references: [
+      {
+        title: "Step Functions — AWS docs",
+        url: "https://docs.aws.amazon.com/step-functions/latest/dg/welcome.html",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "sap-opt-009",
+    slug: "compute-optimizer-ml-rightsizing",
+    cert: "sap-c02",
+    domain: "sap-continuous-improvement",
+    topic: "sap-optimization",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Across 300 accounts, which service analyzes CloudWatch utilization history and recommends right-sized EC2/EBS/Lambda configurations at scale?",
+    options: [
+      { id: "A", text: "AWS Trusted Advisor" },
+      { id: "B", text: "AWS Compute Optimizer" },
+      { id: "C", text: "AWS Cost Explorer" },
+      { id: "D", text: "Amazon Inspector" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Compute Optimizer uses ML over utilization metrics to recommend right-sizing for EC2, EBS, Lambda, ECS, and ASGs — including projected performance risk. Cost Explorer reports spend; Trusted Advisor gives broad best-practice checks.",
+    optionExplanations: {
+      A: "Advisor flags underutilized instances — Compute Optimizer is the deeper ML-based rightsizer.",
+      B: "ML-based rightsizing recommendations. Correct.",
+      C: "Explorer shows cost history — not configuration recommendations.",
+      D: "Inspector scans vulnerabilities — unrelated to sizing.",
+    },
+    services: ["AWS Compute Optimizer"],
+    references: [
+      {
+        title: "Compute Optimizer — AWS docs",
+        url: "https://docs.aws.amazon.com/compute-optimizer/latest/ug/what-is-compute-optimizer.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "sap-opt-010",
+    slug: "savings-plans-org-consolidated",
+    cert: "sap-c02",
+    domain: "sap-continuous-improvement",
+    topic: "sap-optimization",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An org with consolidated billing wants compute savings that float automatically across all accounts, instance families, sizes, and even Fargate/Lambda. Which commitment type?",
+    options: [
+      { id: "A", text: "Standard Reserved Instances" },
+      { id: "B", text: "Compute Savings Plans" },
+      { id: "C", text: "EC2 Instance Savings Plans" },
+      { id: "D", text: "Spot blocks" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Compute Savings Plans = $/hour commitment applied automatically to EC2 (any family/size/region/OS), Fargate, and Lambda — max flexibility under consolidated billing sharing. EC2 Instance SP and Standard RIs lock to instance families.",
+    optionExplanations: {
+      A: "Standard RIs lock to family + region — least flexible.",
+      B: "Broadest compute coverage = Compute SP. Correct.",
+      C: "EC2 SP covers only EC2 in a chosen family.",
+      D: "Spot is interruptible capacity — not a commitment.",
+    },
+    services: ["AWS Savings Plans"],
+    references: [
+      {
+        title: "Savings Plans types — AWS docs",
+        url: "https://docs.aws.amazon.com/savingsplans/latest/userguide/what-is-savings-plans.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  }
 ];

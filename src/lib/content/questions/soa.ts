@@ -1190,4 +1190,292 @@ export const soaQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-11-04",
   },
+  {
+    id: "soa-mon-010",
+    slug: "cloudwatch-synthetics-canary-endpoint",
+    cert: "soa-c03",
+    domain: "soa-monitoring-logging-remediation",
+    topic: "soa-monitoring-and-remediation",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Ops needs proactive detection when the login page breaks — a scripted check hitting the site every 5 minutes from outside the VPC, alerting before users report it. Which feature?",
+    options: [
+      { id: "A", text: "CloudWatch Synthetics canaries" },
+      { id: "B", text: "CloudWatch metric alarms" },
+      { id: "C", text: "Application Load Balancer health checks" },
+      { id: "D", text: "AWS Config rules" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Synthetics canaries are scheduled Lambda scripts that simulate user journeys against endpoints from outside your infra — the proactive 'is the site actually working' monitor. ALB health checks test instances, not the end-user experience.",
+    optionExplanations: {
+      A: "External scripted probes = canaries. Correct.",
+      B: "Metric alarms react to emitted metrics — nothing hits the endpoint externally.",
+      C: "Health checks measure instance liveness, not page-level user journeys.",
+      D: "Config audits resource configuration, not endpoint availability.",
+    },
+    services: ["Amazon CloudWatch Synthetics"],
+    references: [
+      {
+        title: "CloudWatch Synthetics — AWS docs",
+        url: "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Synthetics_Canaries.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "soa-mon-011",
+    slug: "cloudwatch-logs-export-s3-retention",
+    cert: "soa-c03",
+    domain: "soa-monitoring-logging-remediation",
+    topic: "soa-monitoring-and-remediation",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Compliance requires retaining application logs for 7 years, but CloudWatch Logs costs too much at that horizon. What's the cost-efficient archive pattern?",
+    options: [
+      { id: "A", text: "Keep logs in CloudWatch with 7-year retention" },
+      { id: "B", text: "Export logs to S3 with lifecycle policies to Glacier Deep Archive" },
+      { id: "C", text: "Reduce log verbosity to save cost" },
+      { id: "D", text: "Use metric filters instead of storage" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Export logs to S3 (subscription filters to Kinesis Firehose or scheduled export) and lifecycle them to Glacier Deep Archive for pennies/GB — the standard long-retention cost pattern. CloudWatch retention is priced for operational use, not archival.",
+    optionExplanations: {
+      A: "7 years in CloudWatch is the expensive answer.",
+      B: "S3 + lifecycle to Deep Archive. Correct.",
+      C: "Verbosity changes what you keep — not where archives live.",
+      D: "Metric filters extract metrics — they don't store logs.",
+    },
+    services: ["Amazon CloudWatch Logs", "Amazon S3"],
+    references: [
+      {
+        title: "Export log data to S3 — AWS docs",
+        url: "https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/S3Export.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "soa-dep-008",
+    slug: "cloudformation-stacksets-multi-account",
+    cert: "soa-c03",
+    domain: "soa-deployment-provisioning-automation",
+    topic: "soa-deployment-and-automation",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A baseline IAM role and Config recorder must deploy identically across 200 accounts in 3 regions, and stay consistent as new accounts join the org. Which CloudFormation feature?",
+    options: [
+      { id: "A", text: "Nested stacks in a single template" },
+      { id: "B", text: "StackSets with service-managed (Organizations) deployment" },
+      { id: "C", text: "A Lambda that loops over accounts" },
+      { id: "D", text: "Change sets per region" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "StackSets deploy a template across accounts AND regions from one operation; service-managed mode integrates with Organizations — auto-deploys to new accounts as they join (auto-deployment), the enterprise baseline-provisioning pattern.",
+    optionExplanations: {
+      A: "Nested stacks organize within a stack — not cross-account replication.",
+      B: "StackSets + Organizations = fleet-wide deployment. Correct.",
+      C: "Custom Lambda duplicates what StackSets already does.",
+      D: "Change sets preview changes — not multi-account distribution.",
+    },
+    services: ["AWS CloudFormation"],
+    references: [
+      {
+        title: "Working with StackSets — AWS docs",
+        url: "https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/what-is-cfnstacksets.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "soa-dep-009",
+    slug: "ssm-patch-manager-maintenance-window",
+    cert: "soa-c03",
+    domain: "soa-deployment-provisioning-automation",
+    topic: "soa-deployment-and-automation",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Fleet of 500 instances must be patched weekly on Sundays 2–4 AM, only installing approved security patches, with compliance reporting. Which SSM feature combination?",
+    options: [
+      { id: "A", text: "Patch Manager baseline + maintenance window + Compliance dashboard" },
+      { id: "B", text: "User-data script with cron yum update" },
+      { id: "C", text: "Run Command once with a patch-all script" },
+      { id: "D", text: "Systems Manager Inventory only" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "The full patching stack: patch baseline (approved patches/rules) + maintenance window (schedule, targets, rate control) + Compliance reporting (who's missing patches). Inventory collects software data but doesn't patch.",
+    optionExplanations: {
+      A: "Baseline + schedule + compliance = the managed patching answer. Correct.",
+      B: "Cron in user data is unmanaged — no central compliance view.",
+      C: "One-off Run Command lacks scheduling, baselines, and reporting.",
+      D: "Inventory is read-only — it reports, doesn't patch.",
+    },
+    services: ["AWS Systems Manager"],
+    references: [
+      {
+        title: "AWS Systems Manager Patch Manager — AWS docs",
+        url: "https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-patch-manager.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "soa-rel-007",
+    slug: "dlm-ebs-snapshot-lifecycle",
+    cert: "soa-c03",
+    domain: "soa-reliability-continuity",
+    topic: "soa-reliability-and-dr",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Daily EBS snapshots must be created automatically at midnight and deleted after 30 days — no scripts, no manual work. Which service manages this lifecycle?",
+    options: [
+      { id: "A", text: "AWS Backup only" },
+      { id: "B", text: "Amazon Data Lifecycle Manager (DLM)" },
+      { id: "C", text: "EventBridge + Lambda snapshot script" },
+      { id: "D", text: "EBS fast snapshot restore" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "DLM automates EBS snapshot/AMI creation and retention via tag-based policies — 'snapshots daily, keep 30 days' is its exact purpose. AWS Backup also works but DLM is the EBS-native answer; FSR accelerates restore, doesn't schedule.",
+    optionExplanations: {
+      A: "Backup works too, but 'EBS-native lifecycle' = DLM — the narrower purpose-built tool.",
+      B: "DLM = snapshot/AMI lifecycle policies. Correct.",
+      C: "Custom automation duplicates a managed feature.",
+      D: "FSR speeds restore from snapshot — doesn't create them.",
+    },
+    services: ["Amazon EBS", "Amazon DLM"],
+    references: [
+      {
+        title: "Amazon DLM — AWS docs",
+        url: "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/snapshot-lifecycle.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "soa-rel-008",
+    slug: "route53-health-check-failover-pair",
+    cert: "soa-c03",
+    domain: "soa-reliability-continuity",
+    topic: "soa-reliability-and-dr",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Route53 must automatically route traffic to a standby region when the primary endpoint fails a health check. Which record configuration enables this?",
+    options: [
+      { id: "A", text: "Failover routing policy — PRIMARY record with health check + SECONDARY record" },
+      { id: "B", text: "Weighted routing with equal weights" },
+      { id: "C", text: "Multivalue answer routing" },
+      { id: "D", text: "Latency-based routing" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Failover routing = active-passive: PRIMARY record evaluated by health check; on failure DNS resolves to SECONDARY. This is Route53's DR mechanism — different from latency/weighted which distribute traffic normally.",
+    optionExplanations: {
+      A: "Active-passive + health check = failover policy. Correct.",
+      B: "Weighted splits traffic — doesn't do health-triggered switchover.",
+      C: "Multivalue returns several healthy IPs — not primary/standby semantics.",
+      D: "Latency optimizes speed — not failover design.",
+    },
+    services: ["Amazon Route 53"],
+    references: [
+      {
+        title: "Failover routing — AWS docs",
+        url: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-policy-failover.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "soa-net-007",
+    slug: "nat-gateway-per-subnet-ha",
+    cert: "soa-c03",
+    domain: "soa-networking-content-delivery",
+    topic: "soa-networking-operations",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Private subnets in 3 AZs all route outbound through a single NAT gateway in AZ-a. An AZ-a outage breaks internet access for the other two. What's the resilient design?",
+    options: [
+      { id: "A", text: "One NAT gateway per AZ, each private subnet routes to its local NAT" },
+      { id: "B", text: "Bigger NAT gateway instance" },
+      { id: "C", text: "NAT instances instead of managed NAT" },
+      { id: "D", text: "A second IGW for failover" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "NAT gateways are zonal — a single NAT is an AZ-level single point of failure. Best practice: one NAT per AZ and per-AZ route tables pointing at the local NAT. It's costlier (3 NATs) but removes the dependency.",
+    optionExplanations: {
+      A: "Per-AZ NAT = the resilient pattern. Correct.",
+      B: "NAT gateways scale bandwidth automatically — sizing isn't the issue, locality is.",
+      C: "NAT instances are older/manual — worse HA than managed NAT.",
+      D: "IGWs are regional — not the bottleneck here.",
+    },
+    services: ["Amazon VPC", "NAT gateway"],
+    references: [
+      {
+        title: "NAT gateway high availability — AWS docs",
+        url: "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "soa-net-008",
+    slug: "alb-vs-nlb-tls-termination",
+    cert: "soa-c03",
+    domain: "soa-networking-content-delivery",
+    topic: "soa-networking-operations",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An application needs TLS terminated at the load balancer with certificates managed by ACM, plus path-based routing. Which balancer type supports this?",
+    options: [
+      { id: "A", text: "Application Load Balancer" },
+      { id: "B", text: "Network Load Balancer" },
+      { id: "C", text: "Gateway Load Balancer" },
+      { id: "D", text: "Classic Load Balancer" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "ALB = L7: TLS termination with ACM + host/path/header-based routing. NLB supports TLS listeners for termination but routes on TCP-level attributes (no path routing). GWLB is for inline appliances; CLB is legacy.",
+    optionExplanations: {
+      A: "L7 features (path routing + TLS). Correct.",
+      B: "NLB can terminate TLS but can't route on HTTP paths.",
+      C: "GWLB is for firewall/inspection chains — not app traffic termination.",
+      D: "CLB is legacy — avoid for new designs.",
+    },
+    services: ["Elastic Load Balancing", "AWS Certificate Manager"],
+    references: [
+      {
+        title: "ALB listeners and TLS — AWS docs",
+        url: "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-listeners.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  }
 ];
