@@ -12,6 +12,7 @@ import { scsQuestions } from "./scs";
 import { ansQuestions } from "./ans";
 import { sapQuestions } from "./sap";
 import { az900Questions } from "./az900";
+import { az104Questions } from "./az104";
 
 export const ALL_QUESTIONS: Question[] = [
   ...secureQuestions,
@@ -27,6 +28,7 @@ export const ALL_QUESTIONS: Question[] = [
   ...ansQuestions,
   ...sapQuestions,
   ...az900Questions,
+  ...az104Questions,
 ];
 
 /** Parsed + cross-validated. Throws at import time if content is invalid. */

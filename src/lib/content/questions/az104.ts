@@ -1,0 +1,1449 @@
+import type { Question } from "../schema";
+
+export const az104Questions: Question[] = [
+  // ---- Identity & Governance (az104-identity-governance) ----
+  {
+    id: "azad-ids-001",
+    slug: "az104-rbac-built-in-roles",
+    cert: "az-104",
+    domain: "az104-identities-governance",
+    topic: "az104-identity-governance",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "A user needs full access to manage all resources in a resource group but must NOT be able to assign roles to others. Which built-in role fits?",
+    options: [
+      { id: "A", text: "Owner" },
+      { id: "B", text: "Contributor" },
+      { id: "C", text: "Reader" },
+      { id: "D", text: "User Access Administrator" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "The key built-in trio plus one: Owner = everything INCLUDING role assignments; Contributor = manage all resources but CANNOT grant access; Reader = view only; User Access Administrator = manage access only. 'Manage everything except RBAC' = Contributor.",
+    optionExplanations: {
+      A: "Owner can also delegate access — the requirement explicitly excludes that.",
+      B: "Contributor manages resources without access-granting rights. Correct.",
+      C: "Reader is view-only — can't manage anything.",
+      D: "User Access Admin is the inverse — manages access, not resources.",
+    },
+    services: ["Azure RBAC"],
+    references: [
+      {
+        title: "Azure built-in roles — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-ids-002",
+    slug: "az104-rbac-scope-inheritance",
+    cert: "az-104",
+    domain: "az104-identities-governance",
+    topic: "az104-identity-governance",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An admin assigns 'Reader' at the subscription level and 'Contributor' on one resource group. What can the user do in that resource group?",
+    options: [
+      { id: "A", text: "Read only — the most restrictive assignment wins" },
+      { id: "B", text: "Manage resources — the effective access is the union of both assignments" },
+      { id: "C", text: "Nothing — conflicting assignments cancel out" },
+      { id: "D", text: "Manage resources only after re-authenticating" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Azure RBAC is additive: effective permissions are the UNION of all applicable role assignments (there is no deny in RBAC — denies require Azure Policy or explicit deny assignments). Reader at subscription + Contributor at the RG = Contributor capabilities in that RG.",
+    optionExplanations: {
+      A: "RBAC has no 'most restrictive wins' — that's a firewall-ACL mental model.",
+      B: "Assignments are additive; the broader grant applies in its scope. Correct.",
+      C: "Assignments never cancel each other.",
+      D: "Role changes take effect within minutes; no special re-auth step is required.",
+    },
+    services: ["Azure RBAC"],
+    references: [
+      {
+        title: "Understand role assignments — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/role-based-access-control/role-assignments",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-ids-003",
+    slug: "az104-dynamic-groups",
+    cert: "az-104",
+    domain: "az104-identities-governance",
+    topic: "az104-identity-governance",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An organization wants group membership updated automatically based on user attributes like department or job title. Which Entra ID feature provides this — and which license tier does it require?",
+    options: [
+      { id: "A", text: "Assigned groups — Free tier" },
+      { id: "B", text: "Dynamic groups — Entra ID P1" },
+      { id: "C", text: "Administrative units — Free tier" },
+      { id: "D", text: "Security groups — any tier" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Dynamic group membership uses attribute-based rules to add/remove members automatically — a Premium feature requiring Entra ID P1 (each dynamic-member user needs a P1 license). Assigned groups are manual; administrative units scope admin delegation.",
+    optionExplanations: {
+      A: "Assigned groups are manual membership — the opposite of attribute-driven.",
+      B: "Dynamic groups = automatic rule-based membership, P1+. Correct.",
+      C: "Administrative units restrict admin scope — they don't automate membership.",
+      D: "Security group is a type (vs M365 group), not a membership mechanism.",
+    },
+    services: ["Microsoft Entra ID"],
+    references: [
+      {
+        title: "Dynamic groups — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/entra/identity/users/groups-dynamic-membership",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-ids-004",
+    slug: "az104-policy-initiative",
+    cert: "az-104",
+    domain: "az104-identities-governance",
+    topic: "az104-identity-governance",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A team must apply 15 related policy definitions (location, tagging, SKU restrictions) consistently across multiple subscriptions. What should they create?",
+    options: [
+      { id: "A", text: "15 separate policy assignments" },
+      { id: "B", text: "An initiative definition containing the policies, assigned once" },
+      { id: "C", text: "A blueprint deployment per subscription" },
+      { id: "D", text: "A management group lock" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "An initiative (policy set) groups multiple policy definitions into one assignable unit — assign the initiative once and all included policies apply. This is the standard 'simplify at-scale policy' answer. Azure Blueprints is being deprecated in favor of template specs/policy.",
+    optionExplanations: {
+      A: "Works but is unmaintainable — initiatives exist precisely to avoid this.",
+      B: "Initiative = grouped policies assigned as a unit. Correct.",
+      C: "Blueprints are deprecated; initiatives + management groups are the modern pattern.",
+      D: "Locks prevent delete/modify — they don't group policies.",
+    },
+    services: ["Azure Policy"],
+    references: [
+      {
+        title: "Initiative definitions — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/governance/policy/concepts/definition-structure",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-ids-005",
+    slug: "az104-conditional-access",
+    cert: "az-104",
+    domain: "az104-identities-governance",
+    topic: "az104-identity-governance",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Security requires MFA only when users sign in from outside the corporate network — not when on-premises. Which Entra ID feature enforces this if/then logic?",
+    options: [
+      { id: "A", text: "Identity Protection risk policies" },
+      { id: "B", text: "Conditional Access" },
+      { id: "C", text: "Access reviews" },
+      { id: "D", text: "Privileged Identity Management" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Conditional Access is the if/then policy engine: signals (location, device, app, risk) → controls (MFA, block, compliant device). Requires P1. PIM is just-in-time privileged role activation; access reviews recertify group/role membership.",
+    optionExplanations: {
+      A: "Risk policies react to leaked-credential/impossible-travel signals — not the general if/then mechanism.",
+      B: "Conditional Access = signal-based policy engine. Correct.",
+      C: "Access reviews recertify access — not sign-in conditions.",
+      D: "PIM governs privileged role elevation, not routine sign-in rules.",
+    },
+    services: ["Microsoft Entra Conditional Access"],
+    references: [
+      {
+        title: "What is Conditional Access — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/entra/identity/conditional-access/overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-ids-006",
+    slug: "az104-pim-just-in-time",
+    cert: "az-104",
+    domain: "az104-identities-governance",
+    topic: "az104-identity-governance",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "To reduce standing privileged access, admins should be 'eligible' for Global Administrator and activate it only when needed, with approval and time limits. Which feature provides this?",
+    options: [
+      { id: "A", text: "Conditional Access" },
+      { id: "B", text: "Privileged Identity Management (PIM)" },
+      { id: "C", text: "Administrative units" },
+      { id: "D", text: "Entra ID access reviews" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "PIM (P2 feature) provides just-in-time privileged access: eligible assignments activated on demand with MFA, approval, justification, and time-bound expiry — plus audit history. This is the 'least privilege, zero standing admin' mechanism.",
+    optionExplanations: {
+      A: "Conditional Access applies conditions to sign-ins — not role elevation workflows.",
+      B: "PIM = JIT privileged role activation. Correct.",
+      C: "Administrative units scope admin authority — not activation workflow.",
+      D: "Access reviews recertify membership — no time-bound activation.",
+    },
+    services: ["Microsoft Entra PIM"],
+    references: [
+      {
+        title: "What is PIM — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/entra/id-governance/privileged-identity-management/pim-configure",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-ids-007",
+    slug: "az104-resource-locks-precedence",
+    cert: "az-104",
+    domain: "az104-identities-governance",
+    topic: "az104-identity-governance",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A storage account has a CanNotDelete lock. A user with Owner rights on the subscription tries to delete it. What happens?",
+    options: [
+      { id: "A", text: "Deletion succeeds — Owner overrides all locks" },
+      { id: "B", text: "Deletion is blocked until the lock is removed" },
+      { id: "C", text: "Deletion succeeds after MFA confirmation" },
+      { id: "D", text: "The resource moves to a 'soft deleted' state" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Locks apply at the control-plane level for ALL users — including Owners. The lock must be explicitly removed before the protected action succeeds. Locks also inherit downward (subscription lock → all child resources).",
+    optionExplanations: {
+      A: "Locks override permissions by design — that's their entire purpose.",
+      B: "Block stands until lock removal. Correct.",
+      C: "Locks don't have an MFA bypass path.",
+      D: "Soft delete is a storage data-protection feature — unrelated to the lock.",
+    },
+    services: ["Azure resource locks"],
+    references: [
+      {
+        title: "Lock your resources — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/lock-resources",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-ids-008",
+    slug: "az104-sspr-requirements",
+    cert: "az-104",
+    domain: "az104-identities-governance",
+    topic: "az104-identity-governance",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "Self-service password reset (SSPR) is enabled for a group, but users report the option isn't available. The users are synced from on-premises AD and password writeback isn't configured. What's missing?",
+    options: [
+      { id: "A", text: "Users need Entra ID P2 licenses" },
+      { id: "B", text: "Password writeback must be enabled in Entra Connect for synced users" },
+      { id: "C", text: "Conditional Access is blocking the reset flow" },
+      { id: "D", text: "Users must register security info via My Apps portal instead" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "For cloud-only users SSPR works out of the box. For HYBRID (synced) users, password writeback must be enabled in Entra Connect — otherwise the cloud-side reset can't push the new password back to on-premises AD. This is the classic SSPR gotcha.",
+    optionExplanations: {
+      A: "SSPR needs P1 for synced users — not P2.",
+      B: "Writeback is the required hybrid piece. Correct.",
+      C: "Conditional Access doesn't gate the SSPR flow itself.",
+      D: "Security info registration happens in My Sign-Ins — but registration isn't the issue described.",
+    },
+    services: ["Microsoft Entra ID", "Microsoft Entra Connect"],
+    references: [
+      {
+        title: "Enable SSPR — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/entra/identity/authentication/tutorial-enable-sspr",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  // ---- Storage (az104-storage) ----
+  {
+    id: "azad-sto-001",
+    slug: "az104-storage-account-kinds",
+    cert: "az-104",
+    domain: "az104-storage",
+    topic: "az104-storage",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Which storage account type is required to use Azure Files premium (SSD-backed) file shares?",
+    options: [
+      { id: "A", text: "Standard general-purpose v2" },
+      { id: "B", text: "FileStorage (premium file shares) account" },
+      { id: "C", text: "BlockBlobStorage premium account" },
+      { id: "D", text: "Any account with ZRS replication" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Premium file shares require a FileStorage account kind. The account-kind ↔ capability mapping: general-purpose v2 = everything standard; BlockBlobStorage = premium block blobs; FileStorage = premium files; BlobStorage = legacy blob-only.",
+    optionExplanations: {
+      A: "GPv2 supports Azure Files but only standard (HDD) tier.",
+      B: "FileStorage is the premium files account kind. Correct.",
+      C: "BlockBlobStorage is premium BLOCK BLOBS, not file shares.",
+      D: "Replication choice is independent of performance tier.",
+    },
+    services: ["Azure Files", "Azure Storage"],
+    references: [
+      {
+        title: "Storage account overview — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-sto-002",
+    slug: "az104-lifecycle-management",
+    cert: "az-104",
+    domain: "az104-storage",
+    topic: "az104-storage",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Blobs should automatically move to Cool after 30 days untouched and to Archive after 180 days — no manual intervention. What implements this?",
+    options: [
+      { id: "A", text: "Object replication policy" },
+      { id: "B", text: "Lifecycle management policy" },
+      { id: "C", text: "Immutable storage policy" },
+      { id: "D", text: "AzCopy scheduled task" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Lifecycle management policies are rule-based automation: tier blobs (Hot→Cool→Cold→Archive) or delete them based on last-modified/last-accessed age. The standard 'automatic tier transitions' answer.",
+    optionExplanations: {
+      A: "Object replication copies blobs between accounts — doesn't change tiers.",
+      B: "Lifecycle policy = age-based tiering/deletion automation. Correct.",
+      C: "Immutability prevents modification — nothing to do with tiering.",
+      D: "AzCopy is a transfer tool, not a lifecycle engine.",
+    },
+    services: ["Azure Blob Storage"],
+    references: [
+      {
+        title: "Lifecycle management — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/storage/blobs/lifecycle-management-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-sto-003",
+    slug: "az104-sas-token-types",
+    cert: "az-104",
+    domain: "az104-storage",
+    topic: "az104-storage",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A partner app needs read access to one blob container for 8 hours, revocable instantly without rotating account keys. What is the best approach?",
+    options: [
+      { id: "A", text: "Share the account access key with an 8-hour expiry note" },
+      { id: "B", text: "Service SAS tied to a stored access policy" },
+      { id: "C", text: "Account SAS on the whole storage account" },
+      { id: "D", text: "Anonymous read access on the container" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "A service SAS scoped to the container + a stored access policy is the only option that's both narrowly scoped AND instantly revocable — delete/modify the policy and the SAS dies. Account keys are too broad and require rotation; account SAS is too broad; anonymous access can't expire or be scoped per-partner.",
+    optionExplanations: {
+      A: "Account keys grant full account access — massive over-privilege, and 'revoking' means rotating keys for everyone.",
+      B: "Stored access policy = instant revocation. Correct.",
+      C: "Account SAS covers all services/containers — wider than needed.",
+      D: "Anonymous is public — no scoping, no expiry control, no revocation.",
+    },
+    services: ["Azure Blob Storage"],
+    references: [
+      {
+        title: "Grant limited access with SAS — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-sto-004",
+    slug: "az104-azure-files-ad-auth",
+    cert: "az-104",
+    domain: "az104-storage",
+    topic: "az104-storage",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A company wants Azure file shares mounted with NTFS-style per-user permissions enforced by on-premises Active Directory identities. Which auth method supports this?",
+    options: [
+      { id: "A", text: "Storage account key" },
+      { id: "B", text: "Identity-based authentication (AD DS or Entra Kerberos) on the share" },
+      { id: "C", text: "SAS tokens per user" },
+      { id: "D", text: "Anonymous read/write" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Azure Files supports identity-based auth: on-prem AD DS (domain-joined machines) or Microsoft Entra Kerberos for hybrid identities — enabling share-level RBAC + NTFS ACLs on files. Account key mounts authenticate as the share itself — no per-user identity.",
+    optionExplanations: {
+      A: "Key auth = share-level access only, no per-user ACLs.",
+      B: "Identity-based auth enables NTFS-style enforcement. Correct.",
+      C: "SAS grants delegate access but don't give per-user NTFS semantics.",
+      D: "Anonymous = no auth at all.",
+    },
+    services: ["Azure Files"],
+    references: [
+      {
+        title: "Azure Files identity auth — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/storage/files/storage-files-active-directory-overview",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-sto-005",
+    slug: "az104-azcopy-vs-import-export",
+    cert: "az-104",
+    domain: "az104-storage",
+    topic: "az104-storage",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A company must move 80 TB to Azure but has only 50 Mbps of internet bandwidth. Which method fits?",
+    options: [
+      { id: "A", text: "AzCopy over the internet" },
+      { id: "B", text: "Azure Import/Export — ship physical disks to a datacenter" },
+      { id: "C", text: "Azure File Sync upload" },
+      { id: "D", text: "Storage Explorer drag-and-drop" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "The bandwidth math is the tell: 80 TB at 50 Mbps would take ~5 months. Offline transfer options exist exactly for this: Import/Export (ship your drives) or Data Box (Microsoft ships an appliance). Online tools can't escape physics.",
+    optionExplanations: {
+      A: "AzCopy is online — bandwidth-bound, same problem.",
+      B: "Disk shipping bypasses bandwidth entirely. Correct.",
+      C: "File Sync is an online sync service, not bulk migration.",
+      D: "Storage Explorer is a UI over online transfer.",
+    },
+    services: ["Azure Import/Export", "Azure Data Box"],
+    references: [
+      {
+        title: "Data transfer options — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/storage/common/storage-choose-data-transfer-solution",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-sto-006",
+    slug: "az104-soft-delete-recovery",
+    cert: "az-104",
+    domain: "az104-storage",
+    topic: "az104-storage",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Users accidentally delete blobs regularly. The team needs undelete capability for 14 days without snapshots or versioning overhead. What should be enabled?",
+    options: [
+      { id: "A", text: "Blob versioning" },
+      { id: "B", text: "Blob soft delete with a 14-day retention" },
+      { id: "C", text: "Immutable blob policy" },
+      { id: "D", text: "Object replication to another account" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Blob soft delete retains deleted blobs for a configurable retention window (1–365 days) allowing undelete — designed exactly for accidental deletion. Versioning keeps every version (more overhead); immutability prevents deletion entirely; replication is for DR not undelete.",
+    optionExplanations: {
+      A: "Versioning preserves prior versions on overwrite — heavier than needed.",
+      B: "Soft delete = the native undelete window. Correct.",
+      C: "Immutability (WORM) blocks deletion — the requirement is recovery, not prevention.",
+      D: "Replication copies data but deleted blobs replicate deletes too.",
+    },
+    services: ["Azure Blob Storage"],
+    references: [
+      {
+        title: "Soft delete for blobs — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/storage/blobs/soft-delete-blob-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-sto-007",
+    slug: "az104-ragrs-read-access",
+    cert: "az-104",
+    domain: "az104-storage",
+    topic: "az104-storage",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A global app must keep reading storage data even during a regional outage, without waiting for Microsoft to fail over the account. Which redundancy option provides read access to the secondary region at all times?",
+    options: [
+      { id: "A", text: "LRS" },
+      { id: "B", text: "ZRS" },
+      { id: "C", text: "GRS" },
+      { id: "D", text: "RA-GRS (read-access geo-redundant storage)" },
+    ],
+    correctAnswers: ["D"],
+    explanation:
+      "GRS replicates to the paired region but the secondary is NOT readable until Microsoft declares failover. RA-GRS adds continuous read access to the secondary endpoint — required when apps must read through an outage without failover orchestration.",
+    optionExplanations: {
+      A: "LRS = one datacenter, no region protection.",
+      B: "ZRS = zones within one region.",
+      C: "GRS secondary is offline-readable only after failover is declared.",
+      D: "RA-GRS = always-readable secondary. Correct.",
+    },
+    services: ["Azure Storage"],
+    references: [
+      {
+        title: "Storage redundancy — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-sto-008",
+    slug: "az104-file-sync",
+    cert: "az-104",
+    domain: "az104-storage",
+    topic: "az104-storage",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Branch offices need a local-cached copy of a central Azure file share on their Windows file servers, keeping frequently used files local and tiering cold files to the cloud. Which service does this?",
+    options: [
+      { id: "A", text: "Azure Blob Storage with lifecycle policies" },
+      { id: "B", text: "Azure File Sync with cloud tiering" },
+      { id: "C", text: "Azure Data Box" },
+      { id: "D", text: "AzCopy scheduled jobs" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Azure File Sync transforms Windows Servers into caches of an Azure file share — cloud tiering keeps hot files local and replaces cold files with pointers that recall on demand. The classic 'extend on-prem file server into Azure' service.",
+    optionExplanations: {
+      A: "Blob lifecycle moves data between tiers — doesn't provide local file-server caching.",
+      B: "File Sync + cloud tiering = the exact feature described. Correct.",
+      C: "Data Box is offline transfer, not ongoing sync.",
+      D: "AzCopy is point-in-time copy, not bidirectional tiering sync.",
+    },
+    services: ["Azure File Sync"],
+    references: [
+      {
+        title: "Azure File Sync — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/storage/file-sync/file-sync-planning",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  // ---- Compute (az104-compute) ----
+  {
+    id: "azad-cmp-001",
+    slug: "az104-availability-sets",
+    cert: "az-104",
+    domain: "az104-compute",
+    topic: "az104-compute",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Two VMs run the same tier of an app and must not share hardware failure points within a single datacenter. Availability zones aren't supported in this region. What should be used?",
+    options: [
+      { id: "A", text: "An availability set with fault domains and update domains" },
+      { id: "B", text: "Proximity placement groups" },
+      { id: "C", text: "Azure Site Recovery" },
+      { id: "D", text: "A Virtual Machine Scale Set with flexible orchestration" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Availability sets distribute VMs across fault domains (separate racks/power/network) and update domains (sequential host patching) — the in-datacenter anti-affinity tool when AZs aren't available. PPGs do the opposite (colocate for low latency).",
+    optionExplanations: {
+      A: "Fault/update domains = availability sets. Correct.",
+      B: "Proximity groups put VMs physically CLOSE together — opposite intent.",
+      C: "Site Recovery is DR replication, not in-datacenter placement.",
+      D: "Flexible scale sets CAN work but the classic answer for two VMs + fault isolation is an availability set.",
+    },
+    services: ["Azure Virtual Machines"],
+    references: [
+      {
+        title: "Availability options for VMs — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/virtual-machines/availability",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-cmp-002",
+    slug: "az104-vmss-uniform-vs-flexible",
+    cert: "az-104",
+    domain: "az104-compute",
+    topic: "az104-compute",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "Which statement correctly compares the two VM Scale Set orchestration modes?",
+    options: [
+      { id: "A", text: "Uniform = heterogeneous VM configs; Flexible = identical VMs only" },
+      { id: "B", text: "Uniform = identical VMs managed as a group; Flexible = individual VM control with orchestration benefits" },
+      { id: "C", text: "Flexible mode cannot use availability zones" },
+      { id: "D", text: "Uniform mode is required for stateful workloads" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Uniform orchestration manages a fleet of identical VMs as one entity (classic autoscale scenario). Flexible orchestration lets you mix VM sizes/images and manage VMs individually while still getting scale-set features like fault domains and zone spreading.",
+    optionExplanations: {
+      A: "Reversed — Uniform is the identical-VM mode.",
+      B: "Correct distinction between the two modes.",
+      C: "Flexible mode fully supports availability zones.",
+      D: "Stateful workloads lean Flexible (individual control), not Uniform.",
+    },
+    services: ["Virtual Machine Scale Sets"],
+    references: [
+      {
+        title: "Orchestration modes — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-orchestration-modes",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-cmp-003",
+    slug: "az104-vm-custom-script-extension",
+    cert: "az-104",
+    domain: "az104-compute",
+    topic: "az104-compute",
+    difficulty: "medium",
+    format: "multiple-response",
+    question:
+      "A VM is deployed but its application configuration script failed mid-way. The admin wants to rerun post-deployment configuration tasks without redeploying or RDPing in. Which options can execute commands remotely? (Choose TWO)",
+    options: [
+      { id: "A", text: "Custom Script Extension" },
+      { id: "B", text: "Run Command" },
+      { id: "C", text: "Azure Bastion" },
+      { id: "D", text: "Serial console" },
+    ],
+    correctAnswers: ["A", "B"],
+    explanation:
+      "Custom Script Extension downloads and executes scripts on VMs post-deployment (idempotent reruns supported). Run Command executes scripts/PowerShell on-demand through the VM agent. Bastion is RDP/SSH connectivity; serial console is for boot debugging.",
+    optionExplanations: {
+      A: "Custom Script Extension = remote script execution. Correct.",
+      B: "Run Command = on-demand remote execution via the agent. Correct.",
+      C: "Bastion provides browser-based RDP/SSH — interactive, not script execution.",
+      D: "Serial console is a low-level debug channel, not a deployment tool.",
+    },
+    services: ["Azure Virtual Machines"],
+    references: [
+      {
+        title: "Custom Script Extension — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-windows",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-cmp-004",
+    slug: "az104-bastion",
+    cert: "az-104",
+    domain: "az104-compute",
+    topic: "az104-compute",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "VMs must be administered via RDP/SSH but should never expose public IPs or inbound ports to the internet. What provides secure browser-based connectivity?",
+    options: [
+      { id: "A", text: "Azure Bastion" },
+      { id: "B", text: "Just-in-time VM access" },
+      { id: "C", text: "A public IP with NSG restrictions" },
+      { id: "D", text: "Serial console" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Azure Bastion is a fully managed PaaS providing RDP/SSH over TLS through the Azure portal — no public IP needed on the VM. JIT access limits exposure windows but still requires reachable ports; serial console is a debug channel, not a general admin path.",
+    optionExplanations: {
+      A: "Bastion = no public IPs, browser-based RDP/SSH. Correct.",
+      B: "JIT reduces the time window but ports still must be reachable.",
+      C: "Still exposes an inbound path — contradicts the requirement.",
+      D: "Serial console is for boot/OS-level debugging, not standard admin.",
+    },
+    services: ["Azure Bastion"],
+    references: [
+      {
+        title: "What is Azure Bastion — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/bastion/bastion-overview",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-cmp-005",
+    slug: "az104-app-service-slots",
+    cert: "az-104",
+    domain: "az104-compute",
+    topic: "az104-compute",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A web app needs zero-downtime deployments with the ability to warm up a new version and swap it into production instantly, keeping a rollback path. Which App Service feature does this?",
+    options: [
+      { id: "A", text: "Scale out rules" },
+      { id: "B", text: "Deployment slots with swap" },
+      { id: "C", text: "Application Insights monitoring" },
+      { id: "D", text: "App Service Environment" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Deployment slots (e.g., 'staging') host app versions alongside production — deploy to staging, warm it up, then 'swap' slot ↔ production instantly. Rollback = swap back. Requires Standard tier or above.",
+    optionExplanations: {
+      A: "Autoscaling adds instances — doesn't deploy or roll back versions.",
+      B: "Slots + swap = the zero-downtime deployment mechanism. Correct.",
+      C: "Monitoring is observability, not deployment.",
+      D: "ASE is a dedicated isolated hosting environment — unrelated to deployment mechanics.",
+    },
+    services: ["Azure App Service"],
+    references: [
+      {
+        title: "Deployment slots — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/app-service/deploy-staging-slots",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-cmp-006",
+    slug: "az104-app-service-plan-scaling",
+    cert: "az-104",
+    domain: "az104-compute",
+    topic: "az104-compute",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An App Service app must scale to 20 instances during peak but billing shows it caps at 10. What's the limiting factor?",
+    options: [
+      { id: "A", text: "The App Service plan's tier defines the maximum instance count" },
+      { id: "B", text: "The subscription quota — it must be raised" },
+      { id: "C", text: "Autoscale can't exceed 10 by design" },
+      { id: "D", text: "The app's deployment slot count" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "The App Service plan (not the app) defines compute tier and scale limits — e.g., Basic caps at 3, Standard at 10, Premium higher. To scale beyond the tier limit you change the PLAN SKU, not app settings.",
+    optionExplanations: {
+      A: "Plan tier sets the ceiling — correct, the 'which layer controls scale' distinction.",
+      B: "Quota issues exist but the standard exam answer is plan-tier limits.",
+      C: "Autoscale goes to the plan max; no arbitrary 10-instance rule.",
+      D: "Slots are for deployment — unrelated to scaling.",
+    },
+    services: ["Azure App Service"],
+    references: [
+      {
+        title: "App Service plans — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/app-service/overview-hosting-plans",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-cmp-007",
+    slug: "az104-aci-quick-container",
+    cert: "az-104",
+    domain: "az104-compute",
+    topic: "az104-compute",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "A batch job needs a single container that starts in seconds, runs to completion, and is billed per-second with no cluster management. Which service fits best?",
+    options: [
+      { id: "A", text: "Azure Kubernetes Service" },
+      { id: "B", text: "Azure Container Instances" },
+      { id: "C", text: "Azure Virtual Machines" },
+      { id: "D", text: "Azure App Service" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "ACI is the 'run a container fast' primitive: no orchestrator, per-second billing, second-level startup, supports restart policies for batch jobs. AKS is full orchestration — overkill for one container.",
+    optionExplanations: {
+      A: "AKS adds cluster management overhead for a single job.",
+      B: "ACI = simplest container execution. Correct.",
+      C: "A VM carries full OS management and slow boot.",
+      D: "App Service is for long-running web workloads, not per-second batch.",
+    },
+    services: ["Azure Container Instances"],
+    references: [
+      {
+        title: "Container Instances — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/container-instances/container-instances-overview",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-cmp-008",
+    slug: "az104-arm-template-deployment",
+    cert: "az-104",
+    domain: "az104-compute",
+    topic: "az104-compute",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "What happens when you redeploy an ARM template in incremental mode to a resource group that already contains resources NOT defined in the template?",
+    options: [
+      { id: "A", text: "The unlisted resources are deleted" },
+      { id: "B", text: "Unlisted resources are left unchanged — only template resources are created/updated" },
+      { id: "C", text: "Deployment fails due to drift detection" },
+      { id: "D", text: "Unlisted resources lose their tags" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Incremental mode (default) adds/updates only what the template defines and ignores everything else. Complete mode is the dangerous one — it DELETES resources not in the template. The incremental-vs-complete distinction is a classic exam point.",
+    optionExplanations: {
+      A: "That's COMPLETE mode behavior — the exam loves this trap.",
+      B: "Incremental = leave everything else alone. Correct.",
+      C: "Drift doesn't block ARM deployments.",
+      D: "Tags aren't touched on unlisted resources.",
+    },
+    services: ["Azure Resource Manager"],
+    references: [
+      {
+        title: "Deployment modes — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deployment-modes",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-cmp-009",
+    slug: "az104-vm-resize-downtime",
+    cert: "az-104",
+    domain: "az104-compute",
+    topic: "az104-compute",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An admin must change a running production VM to a larger size. What's true about resizing?",
+    options: [
+      { id: "A", text: "Resizing is always instant with no downtime" },
+      { id: "B", text: "The VM is deallocated during resize — expect a brief downtime and note that public IPs may change if not static" },
+      { id: "C", text: "VMs cannot be resized after deployment" },
+      { id: "D", text: "Resizing requires rebuilding from the OS disk" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Resizing deallocates the VM briefly (downtime), and any DYNAMIC public IP is released — a classic operational gotcha. Data on the temporary disk is also lost during certain resize paths.",
+    optionExplanations: {
+      A: "There's a restart — not instant.",
+      B: "Deallocation + possible dynamic-IP loss. Correct.",
+      C: "Resize is fully supported — it's a standard operation.",
+      D: "The OS disk persists through resize — no rebuild needed.",
+    },
+    services: ["Azure Virtual Machines"],
+    references: [
+      {
+        title: "Resize a VM — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/virtual-machines/resize-vm",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-cmp-010",
+    slug: "az104-vm-managed-identities",
+    cert: "az-104",
+    domain: "az104-compute",
+    topic: "az104-compute",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Code on a VM must call Key Vault without storing any credential in code, config, or environment variables. What should be enabled?",
+    options: [
+      { id: "A", text: "A service principal with a stored client secret" },
+      { id: "B", text: "A managed identity on the VM, granted Key Vault access" },
+      { id: "C", text: "The VM's public IP allowlisted on Key Vault" },
+      { id: "D", text: "A SAS token for the vault" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Managed identities give Azure resources an automatically-managed Entra identity — tokens issued via the IMDS endpoint, zero credentials to store or rotate. System-assigned (tied to the VM lifecycle) or user-assigned (reusable across resources).",
+    optionExplanations: {
+      A: "Service principals still need secrets — the credential-storage problem persists.",
+      B: "Managed identity = credential-free auth. Correct.",
+      C: "IP allowlisting is network filtering, not authentication.",
+      D: "SAS tokens are a storage-access mechanism — not Key Vault auth.",
+    },
+    services: ["Managed identities", "Azure Key Vault"],
+    references: [
+      {
+        title: "Managed identities — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  // ---- Networking (az104-networking) ----
+  {
+    id: "azad-net-001",
+    slug: "az104-nsg-priority-rules",
+    cert: "az-104",
+    domain: "az104-networking",
+    topic: "az104-networking",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An NSG has rule priority 100 allowing HTTPS inbound and priority 200 denying all inbound. What traffic reaches the associated subnet?",
+    options: [
+      { id: "A", text: "All traffic — allow rules always win" },
+      { id: "B", text: "Only HTTPS — rules are evaluated lowest-priority-number first" },
+      { id: "C", text: "Nothing — deny all blocks everything" },
+      { id: "D", text: "Traffic randomly load-balanced between rules" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "NSG rules process in ascending priority order (lower number = higher precedence); first match wins, evaluation stops. Priority 100 allow hits before 200 deny. NSGs are stateful — return traffic is automatically allowed.",
+    optionExplanations: {
+      A: "Order matters — allow doesn't globally override deny.",
+      B: "Lowest number evaluated first, first match wins. Correct.",
+      C: "The 100-priority allow matches HTTPS before the deny is reached.",
+      D: "Rules are deterministic, not load-balanced.",
+    },
+    services: ["Network security groups"],
+    references: [
+      {
+        title: "How NSGs filter traffic — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/virtual-network/network-security-groups-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-net-002",
+    slug: "az104-vnet-peering",
+    cert: "az-104",
+    domain: "az104-networking",
+    topic: "az104-networking",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Two VNets in different Azure regions must communicate privately. Which statement about VNet peering is correct?",
+    options: [
+      { id: "A", text: "Peering is transitive — VNet A peered to B and B to C lets A reach C" },
+      { id: "B", text: "Peering is non-transitive and requires non-overlapping address spaces; global VNet peering works across regions" },
+      { id: "C", text: "Peered VNets must be in the same subscription" },
+      { id: "D", text: "Peering requires a VPN gateway on each VNet" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Peering uses the Microsoft backbone (no gateway needed), works across regions (global peering) and subscriptions/tenants — but is NON-transitive: A↔B and B↔C does NOT give A↔C. Overlapping CIDRs cannot peer. Hub-spoke transitivity needs a hub NVA/gateway.",
+    optionExplanations: {
+      A: "Non-transitivity is THE most-tested peering fact.",
+      B: "Correct — non-transitive, non-overlapping, cross-region supported.",
+      C: "Cross-subscription and cross-tenant peering are both supported.",
+      D: "Peering rides the Microsoft backbone — no gateways required.",
+    },
+    services: ["Virtual network peering"],
+    references: [
+      {
+        title: "VNet peering — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-net-003",
+    slug: "az104-private-endpoint-vs-service-endpoint",
+    cert: "az-104",
+    domain: "az104-networking",
+    topic: "az104-networking",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A storage account must be reachable from a VNet without ANY exposure to the public internet — traffic needs a private IP on the VNet. Which approach is correct?",
+    options: [
+      { id: "A", text: "Service endpoint — extends the VNet to the service's public IP" },
+      { id: "B", text: "Private endpoint (Private Link) — injects a private IP into the VNet" },
+      { id: "C", text: "Public endpoint with a firewall rule" },
+      { id: "D", text: "NAT gateway for outbound-only access" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Private endpoint puts the service's private IP inside YOUR VNet — traffic never traverses public space and the service's public endpoint can be disabled entirely. Service endpoints keep the service on public IP (traffic stays on Microsoft backbone but destination remains public-addressed). The private-IP-in-VNet requirement = Private Link.",
+    optionExplanations: {
+      A: "Service endpoints don't give the service a private IP — the service stays publicly addressed.",
+      B: "Private endpoint = private IP in your VNet. Correct.",
+      C: "Still a public endpoint — just filtered.",
+      D: "NAT gateway handles outbound source NAT — unrelated to private service access.",
+    },
+    services: ["Azure Private Link"],
+    references: [
+      {
+        title: "Private endpoints — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-net-004",
+    slug: "az104-lb-vs-app-gateway",
+    cert: "az-104",
+    domain: "az104-networking",
+    topic: "az104-networking",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An application needs load balancing WITH URL-path routing (/api → one pool, /images → another), TLS termination, and WAF. Which service fits?",
+    options: [
+      { id: "A", text: "Azure Load Balancer" },
+      { id: "B", text: "Azure Application Gateway" },
+      { id: "C", text: "Azure Front Door" },
+      { id: "D", text: "Azure Traffic Manager" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Application Gateway = regional L7 (HTTP) load balancer with path-based routing, TLS offload, cookie affinity, and integrated WAF. Load Balancer is L4 (TCP/UDP, no HTTP awareness); Front Door is the GLOBAL L7 equivalent; Traffic Manager is DNS-based routing.",
+    optionExplanations: {
+      A: "LB is L4 — can't route on URL paths or terminate TLS.",
+      B: "App Gateway = regional L7 + WAF. Correct.",
+      C: "Front Door is global L7 — overkill for single-region, and 'regional L7 + WAF' is App Gateway's identity.",
+      D: "Traffic Manager does DNS-level traffic steering — no HTTP routing.",
+    },
+    services: ["Azure Application Gateway", "Azure Load Balancer"],
+    references: [
+      {
+        title: "Application Gateway — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/application-gateway/overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-net-005",
+    slug: "az104-azure-dns-private-zones",
+    cert: "az-104",
+    domain: "az104-networking",
+    topic: "az104-networking",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "VMs across several VNets must resolve a private zone name (e.g., db.corp.internal) to private IPs automatically. What's needed?",
+    options: [
+      { id: "A", text: "A public Azure DNS zone" },
+      { id: "B", text: "A Private DNS zone linked to each VNet with autoregistration" },
+      { id: "C", text: "Azure-provided DNS (168.63.129.16) does this by default" },
+      { id: "D", text: "A custom DNS VM in each VNet" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Azure Private DNS zones provide internal name resolution — link the zone to VNets (resolution works only from linked VNets) and enable autoregistration to create records automatically for VMs. Public zones resolve internet names; 168.63.129.16 is the platform resolver, not a zone host.",
+    optionExplanations: {
+      A: "Public zones serve internet-facing names — not VNet-internal resolution.",
+      B: "Private DNS zone + VNet links. Correct.",
+      C: "The platform resolver handles Azure names, not custom private zones.",
+      D: "Custom DNS VMs are a workaround — Private DNS is the native service.",
+    },
+    services: ["Azure Private DNS"],
+    references: [
+      {
+        title: "Private DNS zones — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/dns/private-dns-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-net-006",
+    slug: "az104-nat-gateway",
+    cert: "az-104",
+    domain: "az104-networking",
+    topic: "az104-networking",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Outbound connections from a subnet's VMs must use a static, predictable public IP that partners can allowlist — and scale beyond SNAT port limits of default outbound access. What provides this?",
+    options: [
+      { id: "A", text: "Public IP on each VM" },
+      { id: "B", text: "NAT gateway associated to the subnet" },
+      { id: "C", text: "An NSG outbound rule" },
+      { id: "D", text: "Azure Firewall basic tier" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "NAT gateway provides dedicated outbound SNAT with static public IPs, up to 16 addresses, and up to 64K ports per IP — far beyond default outbound access (which uses ephemeral IPs and is being phased out). It's the 'predictable outbound IP' answer.",
+    optionExplanations: {
+      A: "Per-VM public IPs don't scale and increase attack surface.",
+      B: "NAT gateway = static egress IP + massive SNAT port pool. Correct.",
+      C: "NSGs filter traffic — they don't NAT anything.",
+      D: "Firewall could do it but is far heavier for pure egress NAT.",
+    },
+    services: ["Azure NAT Gateway"],
+    references: [
+      {
+        title: "NAT gateway — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/nat-gateway/nat-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-net-007",
+    slug: "az104-network-watcher-troubleshoot",
+    cert: "az-104",
+    domain: "az104-networking",
+    topic: "az104-networking",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A VM can't reach a database on another subnet. Which Network Watcher tool simulates a packet from source to destination and shows which NSG rule or route blocks it?",
+    options: [
+      { id: "A", text: "Packet capture" },
+      { id: "B", text: "IP flow verify" },
+      { id: "C", text: "Connection monitor" },
+      { id: "D", text: "NSG flow logs" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "IP flow verify tests a specific 5-tuple (src/dst IP+port+protocol) and reports allow/deny plus the responsible NSG rule. Packet capture records actual packets; connection monitor is ongoing latency/connectivity tracking; flow logs record what happened, not simulate it.",
+    optionExplanations: {
+      A: "Capture records real packets — doesn't identify blocking rules.",
+      B: "IP flow verify = point-in-time 'which rule blocks this flow'. Correct.",
+      C: "Connection monitor is continuous monitoring, not diagnostic simulation.",
+      D: "Flow logs log flows — analysis requires reading logs, not instant verdicts.",
+    },
+    services: ["Network Watcher"],
+    references: [
+      {
+        title: "IP flow verify — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/network-watcher/network-watcher-ip-flow-verify-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-net-008",
+    slug: "az104-vpn-gateway-s2s",
+    cert: "az-104",
+    domain: "az104-networking",
+    topic: "az104-networking",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Connecting an on-premises network to an Azure VNet site-to-site over the internet requires which Azure-side resource?",
+    options: [
+      { id: "A", text: "ExpressRoute circuit" },
+      { id: "B", text: "VPN Gateway + local network gateway" },
+      { id: "C", text: "Application Gateway" },
+      { id: "D", text: "NAT gateway" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Site-to-site VPN needs a VPN Gateway in the Azure VNet plus a local network gateway representing the on-prem VPN device (public IP + shared key + address spaces). ExpressRoute is the private-circuit alternative — completely different connectivity model.",
+    optionExplanations: {
+      A: "ExpressRoute is dedicated private circuits — the OTHER option, not internet VPN.",
+      B: "VPN GW + local network GW = the S2S pair. Correct.",
+      C: "Application Gateway is L7 load balancing — unrelated.",
+      D: "NAT gateway is outbound SNAT — unrelated.",
+    },
+    services: ["Azure VPN Gateway"],
+    references: [
+      {
+        title: "Site-to-site VPN — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/vpn-gateway/tutorial-site-to-site-portal",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  // ---- Monitoring & Backup (az104-monitoring-backup) ----
+  {
+    id: "azad-mon-001",
+    slug: "az104-metrics-vs-logs",
+    cert: "az-104",
+    domain: "az104-monitoring",
+    topic: "az104-monitoring-backup",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Which statement correctly distinguishes Azure Monitor metrics from logs?",
+    options: [
+      { id: "A", text: "Metrics = structured event records; logs = numeric time series" },
+      { id: "B", text: "Metrics = lightweight numeric time series for near-real-time alerting; logs = rich event data queried with KQL in Log Analytics" },
+      { id: "C", text: "Metrics require an agent; logs are always platform-collected" },
+      { id: "D", text: "Logs are stored for 93 days by default; metrics are permanent" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Metrics are pre-aggregated numeric time series — cheap, fast, ideal for dashboards and near-real-time alerts (93-day default retention). Logs are detailed events/traces stored in Log Analytics workspaces and queried with KQL — deeper analysis, higher cost.",
+    optionExplanations: {
+      A: "Reversed — metrics are numeric; logs are event records.",
+      B: "Correct — that's the canonical distinction.",
+      C: "Platform metrics need no agent; guest/OS-level data does.",
+      D: "Retention is reversed — metrics default to 93 days.",
+    },
+    services: ["Azure Monitor"],
+    references: [
+      {
+        title: "Metrics vs logs — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/azure-monitor/data-platform",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-mon-002",
+    slug: "az104-alert-types",
+    cert: "az-104",
+    domain: "az104-monitoring",
+    topic: "az104-monitoring-backup",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An admin needs an alert when a specific VM's CPU exceeds 90% for 5 minutes, emailing the on-call group. Which components are required?",
+    options: [
+      { id: "A", text: "Activity log alert + runbook" },
+      { id: "B", text: "Metric alert rule on the VM + action group with email" },
+      { id: "C", text: "Log Analytics query alone" },
+      { id: "D", text: "Service Health alert" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "CPU% is a platform metric — a metric alert rule (signal + condition + window) fires on it, and an action group delivers notifications (email/SMS/webhook/ITSM). Alert rules and action groups are separate objects — the rule defines WHEN, the action group defines WHO/HOW.",
+    optionExplanations: {
+      A: "Activity log alerts fire on control-plane events (create/delete) — not performance thresholds.",
+      B: "Metric alert + action group = the standard pattern. Correct.",
+      C: "A query returns data but can't notify without an alert rule wrapping it.",
+      D: "Service Health alerts are for Azure platform issues, not VM metrics.",
+    },
+    services: ["Azure Monitor"],
+    references: [
+      {
+        title: "Alert types — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-mon-003",
+    slug: "az104-vm-insights-agent",
+    cert: "az-104",
+    domain: "az104-monitoring",
+    topic: "az104-monitoring-backup",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Platform metrics show VM CPU/memory, but the team needs per-process data, OS-level logs, and dependency maps between VMs. What must be installed?",
+    options: [
+      { id: "A", text: "Azure Monitor Agent (AMA) with VM insights" },
+      { id: "B", text: "The diagnostics extension for boot diagnostics" },
+      { id: "C", text: "Azure Bastion" },
+      { id: "D", text: "Network Watcher agent" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Platform metrics come free from the hypervisor but OS-level telemetry (guest memory, processes, logs) requires an agent inside the VM. VM insights (AMA + dependency agent) adds process discovery and connection maps — the modern replacement for the retired Log Analytics agent.",
+    optionExplanations: {
+      A: "AMA + VM insights = guest telemetry + dependency maps. Correct.",
+      B: "Boot diagnostics captures console output only.",
+      C: "Bastion is RDP/SSH connectivity, not monitoring.",
+      D: "Network Watcher handles network diagnostics, not OS telemetry.",
+    },
+    services: ["Azure Monitor Agent", "VM insights"],
+    references: [
+      {
+        title: "VM insights — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/azure-monitor/vm/vminsights-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-mon-004",
+    slug: "az104-backup-recovery-vault",
+    cert: "az-104",
+    domain: "az104-monitoring",
+    topic: "az104-monitoring-backup",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "To back up Azure VMs with daily snapshots and retention policies (keep dailies 30 days, weeklies 12 weeks), what must be configured first?",
+    options: [
+      { id: "A", text: "A storage account with GRS" },
+      { id: "B", text: "A Recovery Services vault + backup policy" },
+      { id: "C", text: "Azure Site Recovery replication" },
+      { id: "D", text: "Managed disk snapshots in each region" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Azure Backup requires a Recovery Services vault (the management/storage container) plus a backup policy (schedule + retention) applied to protected VMs. Site Recovery is replication for DR — different goal; manual disk snapshots lack policy management and restores.",
+    optionExplanations: {
+      A: "Backup service handles its own storage — you don't create accounts for it.",
+      B: "Vault + policy = the Azure Backup pattern. Correct.",
+      C: "ASR replicates for failover — not backup/retention.",
+      D: "Manual snapshots can't do scheduled retention or app-consistent restores.",
+    },
+    services: ["Azure Backup"],
+    references: [
+      {
+        title: "Azure Backup overview — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/backup/backup-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-mon-005",
+    slug: "az104-backup-vs-site-recovery",
+    cert: "az-104",
+    domain: "az104-monitoring",
+    topic: "az104-monitoring-backup",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Which correctly distinguishes Azure Backup from Azure Site Recovery (ASR)?",
+    options: [
+      { id: "A", text: "Backup = failover orchestration; ASR = long-term retention" },
+      { id: "B", text: "Backup = point-in-time restore for data loss/corruption; ASR = replication + failover to keep workloads running during regional outage" },
+      { id: "C", text: "They are interchangeable — both do both" },
+      { id: "D", text: "ASR works only for on-premises VMs" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Backup answers 'my data is gone/corrupt — restore a copy' (RPO hours, retention weeks-years). ASR answers 'my region is down — fail the app over elsewhere' (RPO seconds-minutes, RTO minutes). They complement each other — most production workloads need both.",
+    optionExplanations: {
+      A: "Roles are reversed — Backup restores data, ASR fails over workloads.",
+      B: "Correct — data protection vs business continuity.",
+      C: "Different tools for different failure modes.",
+      D: "ASR supports Azure-to-Azure and hybrid replication.",
+    },
+    services: ["Azure Backup", "Azure Site Recovery"],
+    references: [
+      {
+        title: "Backup vs Site Recovery — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/site-recovery/site-recovery-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+  {
+    id: "azad-mon-006",
+    slug: "az104-activity-log",
+    cert: "az-104",
+    domain: "az104-monitoring",
+    topic: "az104-monitoring-backup",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Security wants an audit trail answering 'who deleted this resource group and when' — control-plane operations at the subscription level. Which provides this?",
+    options: [
+      { id: "A", text: "Azure Monitor metrics" },
+      { id: "B", text: "Azure Activity Log" },
+      { id: "C", text: "NSG flow logs" },
+      { id: "D", text: "Resource health" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "The Activity Log records all control-plane (ARM) operations — creates, deletes, updates, RBAC changes — per subscription, retained 90 days. Data-plane access (reading blobs) requires diagnostic settings or Storage analytics, not the Activity Log.",
+    optionExplanations: {
+      A: "Metrics are numeric performance data — no audit info.",
+      B: "Activity Log = control-plane audit trail. Correct.",
+      C: "Flow logs capture network traffic — unrelated.",
+      D: "Resource health reports platform-caused availability issues, not user actions.",
+    },
+    services: ["Azure Activity Log"],
+    references: [
+      {
+        title: "Activity Log — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/azure-monitor/platform/activity-log",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-02-14",
+  },
+];

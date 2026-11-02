@@ -589,6 +589,67 @@ export const CERTIFICATIONS: Certification[] = [
       },
     ],
   },
+  {
+    id: "az-104",
+    code: "AZ-104",
+    name: "Microsoft Azure Administrator Associate",
+    vendor: "azure",
+    level: "associate",
+    tagline: "Implement, manage, and monitor Azure environments — identity, storage, compute, networking.",
+    description:
+      "The core Azure role-based certification. Tests hands-on administration: identity and governance, storage configuration, compute deployment, virtual networking, and monitoring/backup. The standard next step after AZ-900.",
+    questionCount: 55,
+    durationMinutes: 100,
+    costUsd: 165,
+    passingScaledScore: 700,
+    scaledScoreRange: [1, 1000],
+    examGuideUrl:
+      "https://learn.microsoft.com/en-us/credentials/certifications/azure-administrator/",
+    verified: false,
+    featured: true,
+    domains: [
+      {
+        id: "az104-identities-governance",
+        number: 1,
+        name: "Manage Azure Identities and Governance",
+        weight: 20,
+        summary:
+          "Microsoft Entra ID users/groups, RBAC at scope, Azure Policy, management groups, and resource governance.",
+      },
+      {
+        id: "az104-storage",
+        number: 2,
+        name: "Implement and Manage Storage",
+        weight: 20,
+        summary:
+          "Storage accounts, redundancy options, access tiers, blob/file configuration, SAS/access keys, and data transfer tools.",
+      },
+      {
+        id: "az104-compute",
+        number: 3,
+        name: "Deploy and Manage Azure Compute Resources",
+        weight: 25,
+        summary:
+          "VMs, availability options, scale sets, App Service, containers (ACI/AKS), and ARM template deployments.",
+      },
+      {
+        id: "az104-networking",
+        number: 4,
+        name: "Implement and Manage Virtual Networking",
+        weight: 20,
+        summary:
+          "VNets, peering, NSGs, DNS, load balancing (LB/Application Gateway), VPN/ExpressRoute connectivity.",
+      },
+      {
+        id: "az104-monitoring",
+        number: 5,
+        name: "Monitor and Maintain Azure Resources",
+        weight: 15,
+        summary:
+          "Azure Monitor metrics/logs/alerts, VM insights, Azure Backup, and Azure Site Recovery.",
+      },
+    ],
+  },
 ];
 
 export const ALL_DOMAINS: CertDomain[] = CERTIFICATIONS.flatMap(

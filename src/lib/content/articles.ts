@@ -3352,6 +3352,279 @@ ARTICLES.push({
   ],
 });
 
+ARTICLES.push({
+  slug: "az-104-exam-guide",
+  title: "AZ-104 Exam Guide: Azure Administrator Associate",
+  description:
+    "The AZ-104 Azure Administrator exam explained — format, cost, the five domains and their weights, the hands-on depth it actually requires, and who should take it.",
+  domain: "az104-identities-governance",
+  topic: "az104-identity-governance",
+  updatedAt: "2026-11-03",
+  readingMinutes: 9,
+  sections: [
+    {
+      paragraphs: [
+        "AZ-104 (Azure Administrator Associate) is Microsoft's core role-based certification — the Azure equivalent of a sysadmin credential and the most-taken Azure associate exam. ~40–60 questions in 100 minutes, $165 USD, passing score 700/1000. Unlike AZ-900's vocabulary focus, AZ-104 tests real administrative capability: configuring RBAC, deploying VMs and networks, managing storage, and operating monitoring — expect scenario questions that assume you've used the Azure portal, CLI, and PowerShell.",
+      ],
+    },
+    {
+      heading: "Exam format",
+      list: [
+        "~40–60 questions in 100 minutes (plus case-study blocks that eat time)",
+        "$165 USD (regional pricing applies)",
+        "Passing score: 700/1000",
+        "Question types: multiple choice, multiple response, drag-and-drop, ordering, hot-area, and hands-on-flavored case studies",
+        "Prerequisite in practice: AZ-900-level fundamentals, though not formally required",
+      ],
+    },
+    {
+      heading: "The five domains",
+      paragraphs: [
+        "AZ-104's domain weights shift with exam updates, but the current shape is:",
+      ],
+      list: [
+        "Manage Azure identities and governance (~15–20%): Entra ID users/groups, RBAC, policy, management groups",
+        "Implement and manage storage (~15–20%): storage accounts, redundancy, files, secure access",
+        "Deploy and manage Azure compute (~20–25% — biggest): VMs, scale sets, App Service, containers, ARM deployments",
+        "Implement and manage virtual networking (~15–20%): VNets, NSGs, peering, DNS, load balancing, hybrid",
+        "Monitor and maintain Azure resources (~10–15%): Monitor, alerts, Backup, Site Recovery",
+      ],
+    },
+    {
+      heading: "Domain 1 — Identities and governance",
+      paragraphs: [
+        "Beyond AZ-900's 'what is Entra ID', AZ-104 asks you to OPERATE it: create users/groups (assigned vs dynamic), configure guest access, understand administrative units, and know the licensing gates (dynamic groups, Conditional Access = P1; PIM, Identity Protection = P2). RBAC gets operational depth — built-in roles, custom roles, scope inheritance, and the additive-permission model. Governance: policy definitions vs initiatives, remediation tasks, management group hierarchy, locks, tags, and moving resources between groups/subscriptions.",
+      ],
+    },
+    {
+      heading: "Domain 2 — Storage",
+      paragraphs: [
+        "Administrative storage: account kinds and what each enables (GPv2, FileStorage premium, BlockBlobStorage), redundancy options (LRS/ZRS/GRS/RA-GRS/GZRS) and their failover behavior, access tiers plus lifecycle management automation, soft delete and versioning. Access control depth: account keys vs SAS (service/account/user-delegation) vs stored access policies vs Entra-based auth for files. Azure Files specifics — file shares, NTFS ACLs via identity auth, File Sync with cloud tiering. Plus the tooling: AzCopy, Storage Explorer, Import/Export.",
+      ],
+    },
+    {
+      heading: "Domain 3 — Compute (the heavyweight)",
+      paragraphs: [
+        "VMs thoroughly: sizes/series, availability options (sets/fault domains, zones), managed disks, images, extensions (custom script, DSC), Run Command, Bastion. Scale sets — uniform vs flexible orchestration. App Service: plans and their tier limits, deployment slots/swaps, scaling, networking integration. Containers: ACI vs AKS positioning (you don't need deep Kubernetes, but know when each service applies). ARM templates and Bicep at a 'read and deploy' level — deployment modes (incremental vs complete) are a favorite trap.",
+      ],
+    },
+    {
+      heading: "Domain 4 — Virtual networking",
+      paragraphs: [
+        "The most failure-prone domain for candidates without network background: VNet/subnet CIDR planning, peering (non-transitive! global peering, gateway transit), NSGs (priority order, ASGs, default rules), route tables/UDRs, Azure DNS public + private zones with VNet links. Load balancing portfolio: Load Balancer (L4) vs Application Gateway (regional L7 + WAF) vs Front Door (global L7) vs Traffic Manager (DNS). Connectivity: VPN Gateway S2S/P2S, ExpressRoute, VNet-to-VNet. Diagnostics: Network Watcher tools (IP flow verify is the star), NSG flow logs, connection monitor.",
+      ],
+    },
+    {
+      heading: "Domain 5 — Monitoring and backup",
+      paragraphs: [
+        "The lightest domain but detail-dense: metrics vs logs (when each, KQL basics), alert rules + action groups + alert processing rules, Activity Log vs diagnostic settings vs resource logs, VM insights and the AMA agent. Data protection: Recovery Services vault, backup policies (schedule + retention), VM/file-share/backup-restore flows, soft delete for backups. Site Recovery: replication, failover/failback — and the conceptual line between backup (data protection) and ASR (business continuity).",
+      ],
+    },
+    {
+      heading: "Who should take it — and how it compares",
+      paragraphs: [
+        "AZ-104 is for Azure administrators, cloud engineers, and anyone building toward architecture/security Azure roles. Compared to AWS SAA-C03: AZ-104 is more operational (configure X, fix Y) while SAA is more design-flavored (choose the architecture). If you hold SAA, much of the infrastructure vocabulary maps over — but Azure's identity/governance and networking naming require dedicated study. Plan 4–8 weeks of prep with real portal time.",
+      ],
+    },
+  ],
+  references: [
+    { title: "AZ-104 certification page (Microsoft)", url: "https://learn.microsoft.com/en-us/credentials/certifications/azure-administrator/" },
+    { title: "AZ-104 study guide (Microsoft Learn)", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-104" },
+  ],
+});
+
+ARTICLES.push({
+  slug: "az-104-cheat-sheet",
+  title: "AZ-104 Cheat Sheet: Azure Administrator Quick Reference",
+  description:
+    "The AZ-104 exam-day reference: RBAC roles, storage redundancy, VM/networking constructs, monitoring tools, and the distinctions the exam repeats.",
+  domain: "az104-compute",
+  topic: "az104-compute",
+  updatedAt: "2026-11-03",
+  readingMinutes: 8,
+  sections: [
+    {
+      paragraphs: [
+        "AZ-104 is an operational exam — it tests whether you can pick the right tool AND the right configuration detail. This sheet organizes the repeated distinctions. Work the AZ-104 question bank and mock exam for applied practice.",
+      ],
+    },
+    {
+      heading: "RBAC & identity",
+      list: [
+        "Owner = everything + grant access | Contributor = manage all, can't grant | Reader = view | User Access Admin = manage access only",
+        "RBAC is additive: effective = union of all assignments at all scopes; no 'most restrictive wins'",
+        "Scope chain: management group → subscription → resource group → resource; inherits downward",
+        "Dynamic groups, Conditional Access = P1 | PIM, Identity Protection = P2",
+        "SSPR for synced users needs password writeback via Entra Connect — classic gotcha",
+        "Managed identity = credential-free resource auth (system-assigned dies with resource; user-assigned is reusable)",
+      ],
+    },
+    {
+      heading: "Governance",
+      list: [
+        "Policy = enforce config rules; Initiative = grouped policies assigned once; remediation tasks fix existing non-compliance",
+        "Locks: CanNotDelete / ReadOnly — override ALL permissions including Owner; inherit downward",
+        "Management groups = governance above subscriptions; up to 6 levels deep",
+        "Moving resources: most move between RGs/subscriptions — validate dependencies, expect downtime planning",
+      ],
+    },
+    {
+      heading: "Storage",
+      list: [
+        "Account kinds: GPv2 (default, all standard) | FileStorage (premium files) | BlockBlobStorage (premium block blobs)",
+        "LRS = 1 DC | ZRS = zones, 1 region | GRS = + paired region (secondary NOT readable) | RA-GRS = readable secondary | GZRS = both",
+        "Access tiers: Hot → Cool → Cold → Archive; lifecycle policies automate transitions by age",
+        "SAS types: user-delegation (Entra-signed, best) > service SAS > account SAS; stored access policy = instant revocation",
+        "Soft delete = undelete window; versioning = every version kept; immutability = WORM compliance",
+        "Azure Files: SMB/NFS shares, NTFS ACLs need identity-based auth; File Sync = on-prem cache + cloud tiering",
+        "AzCopy = CLI copy | Import/Export = ship disks | Data Box = appliance | File Sync = ongoing sync",
+      ],
+    },
+    {
+      heading: "Compute",
+      list: [
+        "Availability: sets (fault+update domains, 1 DC) → zones (DC-level, regional) → region pairs (regional DR)",
+        "VMSS: Uniform = identical fleet managed as group; Flexible = individual control + orchestration",
+        "Bastion = browser RDP/SSH, no VM public IP | JIT access = time-limited port opening",
+        "Custom Script Extension vs Run Command — both execute remotely; extension is deploy-time, Run Command is on-demand",
+        "App Service: plan tier sets scale ceiling; deployment slots = swap for zero-downtime + rollback",
+        "ACI = run one container fast (per-second billing) | AKS = orchestrated container fleets",
+        "ARM modes: Incremental (default) = add/update only; Complete = DELETES unlisted resources",
+        "Resize = brief deallocation; dynamic public IPs released on deallocate",
+      ],
+    },
+    {
+      heading: "Networking",
+      list: [
+        "NSG: lowest priority number wins, first match stops; stateful (return traffic auto-allowed); subnet + NIC attachment",
+        "VNet peering: non-transitive, non-overlapping CIDRs, cross-region (global) + cross-subscription OK; transitive needs hub NVA/gateway",
+        "Private endpoint = service's private IP in YOUR VNet | service endpoint = service stays public-addressed but backbone-only",
+        "Load balancing: LB = L4 regional | App Gateway = L7 regional + WAF + path routing | Front Door = L7 global | Traffic Manager = DNS-level",
+        "NAT gateway = static egress IP + huge SNAT port pool; default outbound access is ephemeral (being phased out)",
+        "Private DNS zone + VNet link + autoregistration = internal name resolution",
+        "VPN Gateway = encrypted over internet (S2S needs local network gateway); ExpressRoute = private dedicated",
+        "Network Watcher: IP flow verify = 'which NSG rule blocks this flow'; NSG diagnostics; connection troubleshoot",
+      ],
+    },
+    {
+      heading: "Monitoring & backup",
+      list: [
+        "Metrics = fast numeric time series (93d default) | Logs = KQL in Log Analytics, richer, pricier",
+        "Alert rule (WHEN) + action group (WHO/HOW) — separate objects",
+        "Activity Log = control-plane audit (who deleted what, 90 days) | diagnostic settings route data-plane logs",
+        "VM insights needs Azure Monitor Agent — platform metrics alone don't see guest OS",
+        "Azure Backup: Recovery Services vault + policy (schedule+retention) — data protection",
+        "Site Recovery: replication + failover — business continuity during regional loss",
+      ],
+    },
+  ],
+  references: [
+    { title: "AZ-104 study guide (Microsoft Learn)", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-104" },
+    { title: "Azure Administrator learning path", url: "https://learn.microsoft.com/en-us/training/paths/microsoft-azure-administrator-manage-identity-governance/" },
+  ],
+});
+
+ARTICLES.push({
+  slug: "how-to-pass-az-104",
+  title: "How to Pass AZ-104: The 6-Week Administrator Plan",
+  description:
+    "A realistic 6-week study plan for the Azure Administrator exam — week-by-week by domain, where to get hands-on practice, and the operational traps that fail AWS-trained candidates.",
+  domain: "az104-compute",
+  topic: "az104-compute",
+  updatedAt: "2026-11-03",
+  readingMinutes: 8,
+  sections: [
+    {
+      paragraphs: [
+        "AZ-104 is a real jump from AZ-900 — it expects operational fluency, not vocabulary. Candidates who've actually deployed VMs, configured NSGs, and broken a storage firewall in the portal pass much more reliably than pure-readers. Six weeks at ~1–1.5 hours/day is realistic with a free Azure account (the $200 credit covers everything you'll practice). Coming from AWS? Your architecture knowledge transfers, but Azure's identity model, networking names, and portal workflows need dedicated reps.",
+      ],
+    },
+    {
+      heading: "Week 1 — Identity & governance",
+      list: [
+        "Entra ID operations: users, groups (assigned vs dynamic), guest B2B, administrative units",
+        "RBAC deep-dive: built-in roles, custom role JSON, scope levels, additive model — do the lab",
+        "Policy: definitions vs initiatives, effects (deny/audit/append/modify/deployIfNotExists), remediation",
+        "Management groups, locks, tags, moving resources between subscriptions",
+        "License gates: P1 (dynamic groups, CA) vs P2 (PIM, Identity Protection) — memorize this table",
+      ],
+    },
+    {
+      heading: "Week 2 — Storage",
+      list: [
+        "Account kinds + what each unlocks; redundancy options including the RA-GRS readable-secondary nuance",
+        "Access control lab: account key vs SAS types vs stored access policy — create, revoke, observe",
+        "Access tiers + lifecycle policies; soft delete/undelete flow",
+        "Azure Files: mount a share, identity-based auth for ACLs, File Sync concept",
+        "Transfer tools: AzCopy a large folder, know when Import/Export or Data Box wins instead",
+      ],
+    },
+    {
+      heading: "Week 3 — Compute (biggest domain)",
+      list: [
+        "Deploy VMs: sizes, disks, availability sets vs zones; resize one and watch the deallocation/IP release",
+        "Scale sets uniform vs flexible; extensions and Run Command",
+        "Bastion setup — RDP without public IPs",
+        "App Service: deploy an app, create a staging slot, swap — this is a guaranteed exam scenario",
+        "ACI vs AKS lab: run one container in each; know when each is the right answer",
+        "ARM templates: deploy from a template, understand incremental vs complete mode",
+      ],
+    },
+    {
+      heading: "Week 4 — Virtual networking",
+      list: [
+        "Build a 2-VNet design: subnets, CIDR, NSG rules with priority ordering — then break it and trace with IP flow verify",
+        "Peer the VNets; test transitivity yourself (it fails — that's the lesson)",
+        "Private endpoint vs service endpoint — configure both, feel the difference",
+        "Load balancers: internal LB, then Application Gateway with path rules",
+        "DNS: private zone + VNet link; NAT gateway for outbound",
+        "VPN Gateway S2S concepts + ExpressRoute positioning (hands-on S2S optional — it's slow)",
+      ],
+    },
+    {
+      heading: "Week 5 — Monitoring, backup + first full mock",
+      list: [
+        "Monitor: metrics vs logs; write a KQL query; build a metric alert + action group",
+        "Activity Log vs diagnostic settings — find a deletion event in the log",
+        "VM insights: enable, look at dependency maps",
+        "Backup: Recovery Services vault, policy, backup + restore a VM",
+        "Site Recovery concepts: replication, test failover vs real failover",
+        "Timed full mock exam — expect networking and governance gaps to surface",
+      ],
+    },
+    {
+      heading: "Week 6 — Targeted review + exam tactics",
+      list: [
+        "Redo every wrong question; drill the 'which tool/service' distinctions (LB vs AppGW vs Front Door, SAS types, alert types)",
+        "Case-study practice: AZ-104 case studies eat time — read the requirements list FIRST, then the scenario",
+        "Portal muscle memory: know where RBAC assignments, NSG rules, backup policies, and locks live in the UI",
+        "Final mock: target 80%+ before booking",
+      ],
+    },
+    {
+      heading: "The traps that fail AWS-trained candidates",
+      list: [
+        "RBAC is additive — there's no 'deny overrides allow' like IAM's evaluation logic (denies need Policy/deny assignments)",
+        "NSGs are stateful; unlike AWS NACLs, return traffic is auto-allowed — the security-group model maps closer",
+        "Resource groups ≈ nothing in AWS — a lifecycle/management container that isn't a VPC or an account",
+        "Management groups ≈ AWS OUs but above subscriptions; Azure Policy ≈ SCP + Config rules combined",
+        "AZ-104 is operational (configure/fix), SAA is design (choose architecture) — study for implementation detail",
+        "Case studies dominate time — budget 2 minutes/question max on non-case items",
+      ],
+    },
+    {
+      heading: "What 'ready' looks like",
+      paragraphs: [
+        "You're ready when the tool-distinction questions are automatic: RBAC vs Policy vs locks, private vs service endpoint, LB vs App Gateway vs Front Door, Backup vs Site Recovery, metric vs log vs activity-log alert. If you can configure each of the five domains' core tasks in the portal without docs, the exam is passable — aim for consistent 80%+ on timed mocks before booking.",
+      ],
+    },
+  ],
+  references: [
+    { title: "AZ-104 certification page (Microsoft)", url: "https://learn.microsoft.com/en-us/credentials/certifications/azure-administrator/" },
+    { title: "AZ-104 study guide (Microsoft Learn)", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-104" },
+  ],
+});
+
 export function getArticle(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
 }

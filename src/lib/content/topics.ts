@@ -462,6 +462,47 @@ export const TOPICS: Topic[] = [
     description:
       "Cost tools, Azure Policy, resource locks, monitoring, and deployment options.",
   },
+  // ---- AZ-104 Azure Administrator ----
+  {
+    slug: "az104-identity-governance",
+    name: "Identity & Governance",
+    cert: "az-104",
+    domain: "az104-identities-governance",
+    description:
+      "Entra ID administration, RBAC roles/scopes, Azure Policy, and resource governance.",
+  },
+  {
+    slug: "az104-storage",
+    name: "Storage Implementation",
+    cert: "az-104",
+    domain: "az104-storage",
+    description:
+      "Storage accounts, redundancy, access tiers, file shares, and secure access.",
+  },
+  {
+    slug: "az104-compute",
+    name: "Compute Deployment",
+    cert: "az-104",
+    domain: "az104-compute",
+    description:
+      "VMs, scale sets, App Service, containers, and ARM deployments.",
+  },
+  {
+    slug: "az104-networking",
+    name: "Virtual Networking",
+    cert: "az-104",
+    domain: "az104-networking",
+    description:
+      "VNets, NSGs, peering, DNS, load balancers, and hybrid connectivity.",
+  },
+  {
+    slug: "az104-monitoring-backup",
+    name: "Monitoring & Backup",
+    cert: "az-104",
+    domain: "az104-monitoring",
+    description:
+      "Azure Monitor alerts, VM insights, Azure Backup, and Site Recovery.",
+  },
 ];
 
 export function getTopic(slug: string): Topic | undefined {
