@@ -35,6 +35,8 @@ export interface Certification {
   scaledScoreRange: readonly [number, number];
   examGuideUrl: string;
   domains: CertDomain[];
+  /** Cert vendor — defaults to "aws" for the original bank. */
+  vendor?: "aws" | "azure";
   /** True once exam details have been re-verified against the official guide. */
   verified: boolean;
   /** Emphasized in navigation/homepage ordering. */
@@ -539,6 +541,51 @@ export const CERTIFICATIONS: Certification[] = [
         weight: 20,
         summary:
           "Migration strategies, application modernization, and cutover planning.",
+      },
+    ],
+  },
+  {
+    id: "az-900",
+    code: "AZ-900",
+    name: "Microsoft Azure Fundamentals",
+    vendor: "azure",
+    level: "foundational",
+    tagline: "Cloud concepts, Azure architecture, and management & governance basics.",
+    description:
+      "Microsoft's entry-level cloud certification. Validates foundational knowledge of cloud concepts, Azure services, and management/governance tooling — no technical experience required.",
+    questionCount: 45,
+    durationMinutes: 45,
+    costUsd: 99,
+    passingScaledScore: 700,
+    scaledScoreRange: [1, 1000],
+    examGuideUrl:
+      "https://learn.microsoft.com/en-us/credentials/certifications/azure-fundamentals/",
+    verified: false,
+    featured: true,
+    domains: [
+      {
+        id: "az-cloud-concepts",
+        number: 1,
+        name: "Describe Cloud Concepts",
+        weight: 30,
+        summary:
+          "Cloud models (public/private/hybrid), consumption-based pricing, shared responsibility, and the benefits of cloud services.",
+      },
+      {
+        id: "az-architecture-services",
+        number: 2,
+        name: "Describe Azure Architecture and Services",
+        weight: 35,
+        summary:
+          "Regions and availability zones, compute/networking/storage services, and identity & access (Microsoft Entra, RBAC, zero trust).",
+      },
+      {
+        id: "az-management-governance",
+        number: 3,
+        name: "Describe Azure Management and Governance",
+        weight: 35,
+        summary:
+          "Cost management tools, governance (Azure Policy, resource locks, tags), monitoring (Azure Monitor, Advisor, Service Health), and deployment tools.",
       },
     ],
   },

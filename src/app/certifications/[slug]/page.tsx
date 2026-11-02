@@ -46,6 +46,7 @@ export default async function CertificationPage({ params }: Props) {
   const { slug } = await params;
   const cert = getCertification(slug);
   if (!cert) notFound();
+  const vendor = cert.vendor === "azure" ? "Microsoft" : "AWS";
 
   const questions = publishedByCert(cert.id);
   const topics = topicsByCert(cert.id);
@@ -135,7 +136,7 @@ export default async function CertificationPage({ params }: Props) {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 text-slate-200 underline decoration-slate-500 underline-offset-2 hover:text-white"
               >
-                Official AWS certification page
+                Official {vendor} certification page
                 <ExternalLink className="h-3 w-3" aria-hidden />
               </a>
             </p>
@@ -381,7 +382,7 @@ export default async function CertificationPage({ params }: Props) {
                 name: `How many questions are on the ${cert.code} exam?`,
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: `The ${cert.name} (${cert.code}) exam has ${cert.questionCount} questions in ${cert.durationMinutes} minutes. AWS exams include scored questions plus unscored pilot items.`,
+                  text: `The ${cert.name} (${cert.code}) exam has ${cert.questionCount} questions in ${cert.durationMinutes} minutes. Certification exams include scored questions plus unscored pilot items.`,
                 },
               },
               {
@@ -389,7 +390,7 @@ export default async function CertificationPage({ params }: Props) {
                 name: `How much does the ${cert.code} exam cost?`,
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: `The ${cert.code} exam costs $${cert.costUsd} USD. AWS typically includes a free retake option and 50% off your next exam after passing.`,
+                  text: `The ${cert.code} exam costs $${cert.costUsd} USD (regional pricing applies). Check the official page for current retake policies and discount offers.`,
                 },
               },
               {

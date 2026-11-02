@@ -3,7 +3,7 @@ export const SITE = {
   tagline: "Learn AWS Architecture. Practice with Confidence.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.cloudcertprep.cloud",
   description:
-    "Free practice questions, per-option explanations, timed mock exams, and study plans for AWS certifications — Cloud Practitioner, Solutions Architect, Developer, and more.",
+    "Free practice questions, per-option explanations, timed mock exams, and study plans for AWS and Azure certifications — Cloud Practitioner, Azure Fundamentals, Solutions Architect, Developer, and more.",
   nav: [
     { label: "Certifications", href: "/certifications" },
     { label: "Practice Questions", href: "/practice" },
@@ -24,4 +24,4 @@ export const SITE = {
 } as const;
 
 export const AWS_TRADEMARK_DISCLAIMER =
-  "CloudCertPrep is an independent study resource and is not affiliated with, endorsed by, or sponsored by Amazon Web Services, Inc. AWS, Amazon Web Services, and all related marks are trademarks of Amazon.com, Inc. or its affiliates.";
+  "CloudCertPrep is an independent study resource and is not affiliated with, endorsed by, or sponsored by Amazon Web Services, Inc. or Microsoft Corporation. AWS, Amazon Web Services, and all related marks are trademarks of Amazon.com, Inc. or its affiliates. Microsoft, Azure, and related marks are trademarks of the Microsoft group of companies.";

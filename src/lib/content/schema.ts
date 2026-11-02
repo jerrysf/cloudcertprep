@@ -18,6 +18,7 @@ export const CERTIFICATION_IDS = [
   "scs-c03",
   "ans-c01",
   "sap-c02",
+  "az-900",
 ] as const;
 
 export const certificationSchema = z.enum(CERTIFICATION_IDS);

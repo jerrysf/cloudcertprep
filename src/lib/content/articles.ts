@@ -3092,6 +3092,266 @@ ARTICLES.push({
   ],
 });
 
+ARTICLES.push({
+  slug: "az-900-exam-guide",
+  title: "AZ-900 Exam Guide: Azure Fundamentals Explained",
+  description:
+    "Everything about the Microsoft Azure Fundamentals (AZ-900) exam — format, cost, the three domains and their weights, who it's for, and how it compares to AWS Cloud Practitioner.",
+  domain: "az-cloud-concepts",
+  topic: "az-cloud-concepts",
+  updatedAt: "2026-11-03",
+  readingMinutes: 9,
+  sections: [
+    {
+      paragraphs: [
+        "AZ-900 (Azure Fundamentals) is Microsoft's entry-level cloud certification — the Azure equivalent of AWS Cloud Practitioner. Roughly 40–60 questions in about 45 minutes, $99 USD, passing score 700/1000. It validates foundational cloud vocabulary and Azure service awareness; no hands-on experience or technical background is required. It's the standard first step before role-based certs like AZ-104 (Administrator) or DP-900/AI-900 (data/AI fundamentals).",
+      ],
+    },
+    {
+      heading: "Exam format",
+      list: [
+        "~40–60 questions in about 45 minutes (budget ~60 min seat time including intro screens)",
+        "$99 USD in the US (regional pricing applies)",
+        "Passing score: 700 out of 1000",
+        "Question types: multiple choice, multiple response, matching/drag-and-drop, and occasional case-study blocks",
+        "Taken at a Pearson VUE test center or online proctored",
+      ],
+    },
+    {
+      heading: "The three domains",
+      paragraphs: [
+        "AZ-900 has three domains — fewer than AWS fundamentals exams, but deeper coverage of Azure's specific governance tooling:",
+      ],
+      list: [
+        "Describe cloud concepts (~25–30%): cloud models, shared responsibility, consumption pricing, cloud benefits",
+        "Describe Azure architecture and services (~35–40%): regions/AZs, resource hierarchy, compute/networking/storage, identity & access",
+        "Describe Azure management and governance (~30–35%): cost tools, Azure Policy, locks, monitoring, deployment options",
+      ],
+    },
+    {
+      heading: "Domain 1 — Cloud concepts",
+      paragraphs: [
+        "Vendor-neutral material that you may already know if you've studied any cloud: the difference between public/private/hybrid cloud, IaaS vs PaaS vs SaaS with Azure examples, and the shared responsibility model — what Microsoft manages vs what remains yours in each service model. CapEx vs OpEx and the consumption-based ('pay-as-you-go') model are tested directly. Know the benefit vocabulary precisely: high availability ≠ scalability ≠ elasticity ≠ agility — the exam loves asking which benefit a scenario demonstrates.",
+      ],
+    },
+    {
+      heading: "Domain 2 — Architecture and services",
+      paragraphs: [
+        "The biggest domain and the most Azure-specific. Know the infrastructure hierarchy: region → availability zones (physically separate datacenters in a region) → region pairs for disaster recovery. Then the management hierarchy: management groups → subscriptions → resource groups → resources, and which governance constructs live at which level. Services to recognize by name: VMs vs App Service vs Functions vs AKS vs Container Instances; VNet, VPN Gateway, ExpressRoute, Load Balancer, Front Door, CDN; Blob storage tiers and LRS/ZRS/GRS redundancy; and the identity stack — Microsoft Entra ID (formerly Azure AD), MFA, SSO, RBAC, conditional access, and the Zero Trust principles.",
+      ],
+    },
+    {
+      heading: "Domain 3 — Management and governance",
+      paragraphs: [
+        "This is where AZ-900 differentiates from AWS exams — Azure's governance tooling is heavily tested. Learn the cost tools by purpose: Pricing Calculator (estimate before deployment), TCO Calculator (on-prem vs Azure comparison), Cost Management (analyze actual spend, budgets, alerts), and tags (organize for cost reporting). Governance: Azure Policy (enforce rules like allowed locations), resource locks (CanNotDelete/ReadOnly), Azure Blueprints concepts, and Microsoft Purview. Monitoring: Azure Monitor vs Advisor vs Service Health — the exam tests which tool answers which question. Plus deployment methods: portal, CLI, PowerShell, ARM templates, and Bicep.",
+      ],
+    },
+    {
+      heading: "AZ-900 vs AWS Cloud Practitioner (CLF-C02)",
+      list: [
+        "Both are foundational, vocabulary-driven, non-technical certs — either works as a first cloud credential",
+        "AZ-900 has 3 domains vs CLF's 4, and devotes more weight to governance tooling (Policy, locks, Cost Management)",
+        "CLF covers a much larger service catalog; AZ-900's service list is shorter but Microsoft-specific naming trips people up (Entra ID, not 'Azure AD' anymore)",
+        "Cost: $99 (AZ-900) vs $100 (CLF); passing: 700/1000 vs 700/1000 — nearly identical logistics",
+        "Choose by ecosystem: Azure if your org runs Microsoft 365/Entra/Windows-heavy stacks; AWS for the broader cloud market share",
+      ],
+    },
+    {
+      heading: "Who should take it",
+      paragraphs: [
+        "AZ-900 makes sense for anyone in a Microsoft-environment org, sales/PM/support roles who need Azure vocabulary, and engineers starting the Azure certification path toward AZ-104. If you're multicloud-curious after CLF-C02, AZ-900 is a fast second credential — the cloud-concepts domain overlaps significantly, so experienced candidates can prepare in a week.",
+      ],
+    },
+  ],
+  references: [
+    { title: "AZ-900 certification page (Microsoft)", url: "https://learn.microsoft.com/en-us/credentials/certifications/azure-fundamentals/" },
+    { title: "AZ-900 study guide (Microsoft Learn)", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-900" },
+  ],
+});
+
+ARTICLES.push({
+  slug: "az-900-cheat-sheet",
+  title: "AZ-900 Cheat Sheet: Azure Fundamentals Quick Reference",
+  description:
+    "The AZ-900 exam-day reference: cloud models, service categories, the resource hierarchy, cost and governance tools, and the distinctions the exam repeats.",
+  domain: "az-architecture-services",
+  topic: "az-core-services",
+  updatedAt: "2026-11-03",
+  readingMinutes: 8,
+  sections: [
+    {
+      paragraphs: [
+        "Print this. AZ-900 is vocabulary-dense — the exam tests whether you can match a scenario to the right service or concept name. This sheet organizes the material so the distinctions are scannable. For detailed answers with explanations, work through the AZ-900 question bank and mock exam.",
+      ],
+    },
+    {
+      heading: "Cloud models & economics",
+      list: [
+        "Public cloud = provider-owned, internet-delivered, shared infrastructure",
+        "Private cloud = dedicated to one organization (on-prem or hosted)",
+        "Hybrid cloud = private + public integrated — the classic 'data on-prem, burst to cloud' pattern",
+        "CapEx = upfront infrastructure purchase (on-prem); OpEx = pay-as-you-consume (cloud)",
+        "Consumption model = pay only for what you use — the foundation of cloud economics",
+        "Economies of scale = provider's volume purchasing lowers per-unit cost",
+      ],
+    },
+    {
+      heading: "Cloud benefit vocabulary (know the difference)",
+      list: [
+        "High availability = uptime despite failures (SLA-driven: 99.9%, 99.95%)",
+        "Scalability = ability to grow capacity",
+        "Elasticity = automatic scaling up AND down with demand",
+        "Agility = speed of provisioning (minutes, not procurement cycles)",
+        "Vertical scaling (scale up) = bigger instance; horizontal (scale out) = more instances",
+        "Geo-distribution = multiple regions for latency + disaster recovery",
+      ],
+    },
+    {
+      heading: "Service models",
+      list: [
+        "IaaS = Azure VMs — you manage OS upward; most control, most responsibility",
+        "PaaS = App Service, Functions — provider manages OS/runtime; you bring code",
+        "SaaS = Microsoft 365, Dynamics 365 — finished software; least responsibility",
+        "Shared responsibility: data, accounts, and identities are ALWAYS yours — in every model",
+      ],
+    },
+    {
+      heading: "Azure infrastructure hierarchy",
+      list: [
+        "Region = geography of networked datacenters (choose for latency/compliance/features)",
+        "Availability zone = physically separate datacenters within a region (zone = anti-datacenter-failure)",
+        "Region pair = paired region in same geography for DR + sequential updates + data residency",
+        "Management groups → subscriptions → resource groups → resources (governance hierarchy)",
+        "Management group = policy/RBAC above subscriptions; resource group = lifecycle container, one per resource",
+      ],
+    },
+    {
+      heading: "Compute & networking",
+      list: [
+        "VMs = IaaS full control | App Service = managed web apps | Functions = serverless per-execution",
+        "Container Instances = run one container fast; AKS = orchestrate many (managed Kubernetes)",
+        "VM Scale Sets = autoscaling identical VMs",
+        "VNet = isolated network | VNet peering = connect two VNets",
+        "VPN Gateway = encrypted over internet; ExpressRoute = private dedicated circuit (NOT internet)",
+        "Load Balancer = L4 regional; Front Door = L7 global entry; CDN = cached content at edge",
+      ],
+    },
+    {
+      heading: "Storage",
+      list: [
+        "Blob tiers: Hot (frequent) → Cool (≥30d infrequent) → Cold (≥90d rare) → Archive (cheapest, hours to rehydrate)",
+        "LRS = 3 copies, one datacenter | ZRS = across zones, one region | GRS = + paired region | GZRS = both",
+        "Azure Files = SMB/NFS file shares | Disk Storage = VM block storage | Data Lake = analytics-scale storage",
+      ],
+    },
+    {
+      heading: "Identity & security",
+      list: [
+        "Microsoft Entra ID = the IdP (formerly Azure AD — old name still appears in docs)",
+        "Authentication (AuthN) = who you are; Authorization (AuthZ) = what you can do",
+        "MFA = ≥2 factor categories: know / have / are",
+        "RBAC = role + principal + scope (management group/sub/RG/resource); inherits downward",
+        "Zero Trust = verify explicitly + least privilege + assume breach",
+        "Defense in depth = layered controls: physical → identity → perimeter → network → compute → app → data",
+        "Defender for Cloud = secure score + posture + workload protection (CSPM + CWPP)",
+      ],
+    },
+    {
+      heading: "Cost & governance tools (heavily tested)",
+      list: [
+        "Pricing Calculator = estimate BEFORE you build",
+        "TCO Calculator = on-premises vs Azure comparison for migration business cases",
+        "Cost Management = analyze actual spend, budgets, alerts",
+        "Tags = metadata for cost reporting/organization (not enforcement)",
+        "Azure Policy = enforce rules (allowed locations, SKUs, required tags); blocks non-compliant deployments",
+        "Resource locks = CanNotDelete / ReadOnly — accidental-change protection, overrides permissions",
+      ],
+    },
+    {
+      heading: "Monitoring & deployment",
+      list: [
+        "Azure Monitor = metrics + logs platform (Log Analytics, KQL, alerts)",
+        "Application Insights = APM within Monitor",
+        "Azure Advisor = recommendations for YOUR resources (cost/security/reliability/performance/op-ex)",
+        "Service Health = personalized Azure platform issues/maintenance affecting you",
+        "Deploy via: portal, Azure CLI, PowerShell, ARM templates (JSON), Bicep (compiles to ARM)",
+      ],
+    },
+  ],
+  references: [
+    { title: "AZ-900 study guide (Microsoft Learn)", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-900" },
+    { title: "Azure fundamentals learning path", url: "https://learn.microsoft.com/en-us/training/paths/microsoft-azure-fundamentals-describe-cloud-concepts/" },
+  ],
+});
+
+ARTICLES.push({
+  slug: "how-to-pass-az-900",
+  title: "How to Pass AZ-900 in Two Weeks",
+  description:
+    "A 2-week study plan for Azure Fundamentals: week-by-week schedule by exam domain, the Azure-specific concepts that trip up AWS-trained candidates, and readiness criteria.",
+  domain: "az-cloud-concepts",
+  topic: "az-cloud-concepts",
+  updatedAt: "2026-11-03",
+  readingMinutes: 7,
+  sections: [
+    {
+      paragraphs: [
+        "AZ-900 is achievable in 1–2 weeks for anyone with general IT background — faster if you already hold AWS CLF-C02 (the cloud-concepts domain overlaps heavily). The trap is assuming 'fundamentals' means 'easy pass': the management/governance domain tests specific Azure tools that require actual memorization. Plan ~1–1.5 hours/day for two weeks.",
+      ],
+    },
+    {
+      heading: "Week 1 — Cloud concepts + Azure architecture (days 1–7)",
+      list: [
+        "Days 1–2: cloud models, CapEx/OpEx, shared responsibility, IaaS/PaaS/SaaS — mostly transferable vocabulary",
+        "Days 3–4: infrastructure hierarchy — regions, availability zones, region pairs; then management groups → subscriptions → resource groups → resources",
+        "Day 5: compute (VMs vs App Service vs Functions vs AKS vs ACI) + storage tiers and LRS/ZRS/GRS",
+        "Day 6: networking — VNet, VPN Gateway vs ExpressRoute, Load Balancer vs Front Door vs CDN",
+        "Day 7: first practice set — expect architecture/service questions to be the weak spot",
+      ],
+    },
+    {
+      heading: "Week 2 — Identity, governance, and monitoring (days 8–14)",
+      list: [
+        "Day 8: Microsoft Entra ID — AuthN vs AuthZ, MFA factors, SSO, conditional access basics",
+        "Day 9: RBAC scopes + Zero Trust principles + defense-in-depth layers",
+        "Day 10: cost tools — Pricing Calculator vs TCO Calculator vs Cost Management vs tags (memorize the mapping)",
+        "Day 11: governance — Azure Policy vs resource locks vs tags; what each one can and cannot do",
+        "Day 12: monitoring trio — Azure Monitor vs Advisor vs Service Health (the most-tested tool distinction)",
+        "Day 13: deployment methods — portal/CLI/PowerShell + ARM templates/Bicep; then full timed mock",
+        "Day 14: mock exam + mistake review — AZ-900 wrong answers are almost always tool-confusion, not concept gaps",
+      ],
+    },
+    {
+      heading: "If you're coming from AWS",
+      paragraphs: [
+        "The cloud-concepts material transfers directly — skip-review it and spend your time on Azure naming. The concepts that feel 'same but different': Entra ID ≈ IAM (but identity-only, not policy documents); management groups ≈ AWS Organizations OUs; Azure Policy ≈ SCPs + Config rules combined; Cost Management ≈ Cost Explorer; Advisor ≈ Trusted Advisor; Service Health ≈ AWS Health Dashboard/Personal Health Dashboard; ARM/Bicep ≈ CloudFormation. Learn the mapping — the exam tests the Azure names.",
+      ],
+    },
+    {
+      heading: "The concepts that trip people up",
+      list: [
+        "Availability zones protect against DATACENTER failure within a region; region pairs against REGIONAL failure — different scopes",
+        "Resource group = exactly one per resource, lifecycle container; management group = governance above subscriptions — different levels",
+        "RBAC controls WHO can do WHAT; Policy controls WHICH configurations are allowed; locks prevent delete/modify — three different mechanisms",
+        "Pricing Calculator ≠ TCO Calculator ≠ Cost Management — before-build / compare / after-build",
+        "Advisor (your resources' recommendations) vs Service Health (Microsoft's platform status) — reversed constantly in questions",
+        "ExpressRoute = private dedicated, VPN Gateway = encrypted over internet — the 'does it touch the internet' test",
+        "Entra ID is the new name for Azure AD — questions may use either",
+      ],
+    },
+    {
+      heading: "What 'ready' looks like",
+      paragraphs: [
+        "You're ready when you can consistently place tools into their category ('which service does X') at 80%+ on timed sets. AZ-900 rarely tests deep architecture — it tests whether the Azure vocabulary is solid. If your wrong answers cluster in governance/monitoring (Domain 3), one more review pass on that section is the highest-ROI hour available.",
+      ],
+    },
+  ],
+  references: [
+    { title: "AZ-900 certification page (Microsoft)", url: "https://learn.microsoft.com/en-us/credentials/certifications/azure-fundamentals/" },
+    { title: "AZ-900 study guide (Microsoft Learn)", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-900" },
+  ],
+});
+
 export function getArticle(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
 }

@@ -4,7 +4,7 @@ test("homepage renders positioning and CTAs", async ({ page }) => {
   await page.goto("/");
   await expect(
     page.getByRole("heading", {
-      name: "Free AWS Certification Practice Exams & Questions",
+      name: "Free AWS & Azure Certification Practice Exams & Questions",
     }),
   ).toBeVisible();
   await expect(

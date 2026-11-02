@@ -7,9 +7,9 @@ import { PUBLISHED_QUESTIONS, publishedByCert } from "@/lib/content/questions";
 import { Badge, Card, CertLevelBadge, Container } from "@/components/ui";
 
 export const metadata: Metadata = pageMetadata({
-  title: "AWS Certification Practice Exams — All Certifications",
+  title: "AWS & Azure Certification Practice Exams — All Certifications",
   description:
-    "Free practice questions and exam guides for AWS certifications — Cloud Practitioner, AI Practitioner, Solutions Architect, Developer, SysOps, Data Engineer, Security, Networking, and Professional tracks.",
+    "Free practice questions and exam guides for AWS and Azure certifications — Cloud Practitioner, AI Practitioner, Azure Fundamentals (AZ-900), Solutions Architect, Developer, SysOps, Data Engineer, Security, Networking, and Professional tracks.",
   path: "/certifications",
 });
 
@@ -43,12 +43,12 @@ export default function CertificationsPage() {
   return (
     <Container className="py-10">
       <h1 className="text-3xl font-bold tracking-tight">
-        AWS certification practice
+        Cloud certification practice
       </h1>
       <p className="mt-3 max-w-2xl text-muted">
         Choose your certification to see exam details, domain weights, and
         available practice questions. Every question includes per-option
-        explanations and official AWS documentation links.
+        explanations and official AWS or Microsoft Learn documentation links.
       </p>
 
       <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 rounded-xl border border-border bg-card px-5 py-4 text-sm">
@@ -158,9 +158,9 @@ export default function CertificationsPage() {
       </div>
 
       <Card className="mt-10 text-sm text-muted">
-        Exam details are compiled from AWS&apos;s public certification pages.
-        Always confirm current exam codes, costs, and domain weights on the
-        official AWS certification page before booking.
+        Exam details are compiled from the vendors&apos; public certification
+        pages. Always confirm current exam codes, costs, and domain weights on
+        the official AWS or Microsoft certification page before booking.
       </Card>
     </Container>
   );

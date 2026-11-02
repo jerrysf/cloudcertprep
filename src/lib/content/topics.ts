@@ -429,6 +429,39 @@ export const TOPICS: Topic[] = [
     description:
       "Improving existing solutions — cost, performance, security, and reliability trade-offs.",
   },
+  // ---- AZ-900 Azure Fundamentals ----
+  {
+    slug: "az-cloud-concepts",
+    name: "Cloud Concepts",
+    cert: "az-900",
+    domain: "az-cloud-concepts",
+    description:
+      "Cloud models, consumption pricing, shared responsibility, and cloud benefits.",
+  },
+  {
+    slug: "az-core-services",
+    name: "Core Azure Services",
+    cert: "az-900",
+    domain: "az-architecture-services",
+    description:
+      "Regions & AZs, compute, networking, storage, and resource hierarchy.",
+  },
+  {
+    slug: "az-identity-access",
+    name: "Identity & Access",
+    cert: "az-900",
+    domain: "az-architecture-services",
+    description:
+      "Microsoft Entra ID, authentication vs authorization, MFA, RBAC, and zero trust.",
+  },
+  {
+    slug: "az-management-governance",
+    name: "Management & Governance",
+    cert: "az-900",
+    domain: "az-management-governance",
+    description:
+      "Cost tools, Azure Policy, resource locks, monitoring, and deployment options.",
+  },
 ];
 
 export function getTopic(slug: string): Topic | undefined {

@@ -47,16 +47,16 @@ export default function Home() {
           <div className="grid items-center gap-12 lg:grid-cols-[1.15fr_1fr]">
             <div className="max-w-3xl">
               <Badge tone="accent">
-                {CERTIFICATIONS.length} AWS certifications covered
+                {CERTIFICATIONS.length} AWS &amp; Azure certifications covered
               </Badge>
               <h1 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
-                Free AWS Certification Practice Exams &amp; Questions
+                Free AWS &amp; Azure Certification Practice Exams &amp; Questions
               </h1>
               <p className="mt-4 text-lg leading-relaxed text-muted">
                 Original practice questions with per-option explanations, timed
                 mock exams, and study guides — covering{" "}
-                {CERTIFICATIONS.length} AWS certifications from Cloud
-                Practitioner to Professional.
+                {CERTIFICATIONS.length} certifications from Cloud Practitioner
+                and Azure Fundamentals to Professional.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <ButtonLink href="/practice" className="px-6 py-3 text-base">
@@ -239,8 +239,8 @@ export default function Home() {
         <Container>
           <SectionHeading
             eyebrow="All certifications"
-            title="Choose your AWS certification"
-            description="Practice banks, exam guides, and domain breakdowns for every AWS certification we cover."
+            title="Choose your certification"
+            description="Practice banks, exam guides, and domain breakdowns for every certification we cover — AWS and Azure."
           />
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {CERTIFICATIONS.map((c) => {
