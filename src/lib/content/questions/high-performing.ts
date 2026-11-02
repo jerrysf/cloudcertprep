@@ -790,4 +790,184 @@ export const highPerformingQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-11-01",
   },
+  {
+    id: "saa-perf-022",
+    slug: "ebs-gp3-vs-io2-high-iops",
+    cert: "saa-c03",
+    domain: "design-high-performing-architectures",
+    topic: "compute-selection",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A database workload needs consistent >16,000 IOPS on a single EBS volume. Which volume type is designed for this?",
+    options: [
+      { id: "A", text: "gp3 general purpose" },
+      { id: "B", text: "io2 Block Express provisioned IOPS" },
+      { id: "C", text: "st1 throughput-optimized HDD" },
+      { id: "D", text: "sc1 cold HDD" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "gp3 caps at 16,000 IOPS; io2/io2 Block Express scales to 256,000 IOPS with sub-millisecond latency — designed for critical I/O-intensive databases. st1/sc1 are HDD classes for throughput/sequential workloads, not high IOPS.",
+    optionExplanations: {
+      A: "gp3 tops out at 16K IOPS — above that you need io2.",
+      B: "Provisioned IOPS class = io2. Correct.",
+      C: "st1 is throughput (MB/s) optimized, not IOPS.",
+      D: "sc1 is cheapest cold HDD — lowest performance.",
+    },
+    services: ["Amazon EBS"],
+    references: [
+      {
+        title: "EBS volume types — AWS docs",
+        url: "https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volume-types.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "saa-perf-023",
+    slug: "caching-lazy-loading-vs-write-through",
+    cert: "saa-c03",
+    domain: "design-high-performing-architectures",
+    topic: "caching-and-content-delivery",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A read-heavy app caches user profiles in Redis. Which caching strategy loads data into the cache ONLY on first read (cache miss → fetch from DB → populate)?",
+    options: [
+      { id: "A", text: "Write-through" },
+      { id: "B", text: "Lazy loading (cache-aside)" },
+      { id: "C", text: "Write-behind" },
+      { id: "D", text: "TTL-only eviction" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Lazy loading/cache-aside: app checks cache → miss → fetch DB → store in cache → return. Stale data possible until TTL/eviction. Write-through writes to cache AND DB simultaneously (always fresh, slower writes). The two named strategies are a classic SAA distinction.",
+    optionExplanations: {
+      A: "Write-through updates cache on writes — not on-demand loading.",
+      B: "Populate-on-miss = lazy loading. Correct.",
+      C: "Write-behind defers DB writes — a different pattern.",
+      D: "TTL is eviction timing, not a loading strategy.",
+    },
+    services: ["Amazon ElastiCache"],
+    references: [
+      {
+        title: "Caching strategies — AWS docs",
+        url: "https://docs.aws.amazon.com/whitepapers/latest/database-caching-strategies-using-redis/caching-strategies.html",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "saa-perf-024",
+    slug: "dax-for-dynamodb-microsecond-reads",
+    cert: "saa-c03",
+    domain: "design-high-performing-architectures",
+    topic: "database-selection-and-scaling",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A DynamoDB table serves extremely read-heavy item lookups and needs microsecond-level read latency with zero application code changes. What should be deployed?",
+    options: [
+      { id: "A", text: "ElastiCache for Redis in front of DynamoDB" },
+      { id: "B", text: "DAX (DynamoDB Accelerator)" },
+      { id: "C", text: "DynamoDB Global Tables" },
+      { id: "D", text: "Read replicas on the table" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "DAX is DynamoDB's purpose-built in-memory cache — microsecond reads, fully managed, API-compatible (just change the endpoint). ElastiCache requires writing cache logic yourself. Global Tables is multi-region; DynamoDB has no read replicas.",
+    optionExplanations: {
+      A: "ElastiCache works but requires app-level cache logic — DAX is transparent.",
+      B: "DynamoDB-native cache, code-transparent. Correct.",
+      C: "Global Tables = multi-region replication, not read latency caching.",
+      D: "DynamoDB doesn't use read replicas — that's an RDS concept.",
+    },
+    services: ["Amazon DynamoDB", "DAX"],
+    references: [
+      {
+        title: "DAX overview — AWS docs",
+        url: "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "saa-perf-025",
+    slug: "kinesis-on-demand-vs-provisioned",
+    cert: "saa-c03",
+    domain: "design-high-performing-architectures",
+    topic: "scalability-and-elasticity",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A Kinesis data stream has highly variable, unpredictable traffic — sometimes near zero, sometimes bursting. Which capacity mode avoids over/under-provisioning?",
+    options: [
+      { id: "A", text: "Provisioned shards — fixed cost predictability" },
+      { id: "B", text: "On-demand mode — automatic shard scaling" },
+      { id: "C", text: "Kinesis Firehose instead of Data Streams" },
+      { id: "D", text: "SQS standard queue" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "On-demand mode scales shard capacity automatically (4MB/s in, up to 200MB/s out baseline expanding as needed) — best for variable/unpredictable loads, ~40% cheaper for spiky traffic. Provisioned mode is for predictable high-volume streams.",
+    optionExplanations: {
+      A: "Provisioned wastes money on idle capacity during troughs.",
+      B: "Auto-scaling capacity = on-demand. Correct.",
+      C: "Firehose is a different delivery service — not a capacity answer.",
+      D: "SQS is message queuing — different ordering/consumer model.",
+    },
+    services: ["Amazon Kinesis"],
+    references: [
+      {
+        title: "On-demand vs provisioned — AWS docs",
+        url: "https://docs.aws.amazon.com/streams/latest/dev/how-do-i-size-a-stream.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "saa-perf-026",
+    slug: "s3-transfer-acceleration-long-distance-upload",
+    cert: "saa-c03",
+    domain: "design-high-performing-architectures",
+    topic: "caching-and-content-delivery",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Field teams worldwide upload large files to a single S3 bucket in us-east-1 — uploads from Asia are painfully slow over the internet. Which feature speeds up these uploads?",
+    options: [
+      { id: "A", text: "S3 Transfer Acceleration — uploads via CloudFront edge locations" },
+      { id: "B", text: "Multipart upload alone" },
+      { id: "C", text: "S3 Versioning" },
+      { id: "D", text: "A second bucket in another region" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Transfer Acceleration routes uploads through CloudFront edge locations → AWS backbone → the bucket — typically 50–500% faster for long-distance uploads. Multipart helps large-file reliability/parallelism but still travels the public path.",
+    optionExplanations: {
+      A: "Edge ingestion + backbone routing. Correct.",
+      B: "Multipart parallelizes parts but doesn't shorten the network path.",
+      C: "Versioning is data protection — unrelated to speed.",
+      D: "A second bucket changes the destination, not the path speed.",
+    },
+    services: ["Amazon S3", "Amazon CloudFront"],
+    references: [
+      {
+        title: "S3 Transfer Acceleration — AWS docs",
+        url: "https://docs.aws.amazon.com/AmazonS3/latest/userguide/transfer-acceleration.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  }
 ];

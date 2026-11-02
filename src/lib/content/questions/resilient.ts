@@ -786,4 +786,184 @@ export const resilientQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-11-01",
   },
+  {
+    id: "saa-res-022",
+    slug: "rds-multiaz-ha-vs-read-replica-scaling",
+    cert: "saa-c03",
+    domain: "design-resilient-architectures",
+    topic: "high-availability",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "A production MySQL database must survive an AZ failure with automatic failover and no manual intervention. Offloading read queries is a secondary nice-to-have. What is the PRIMARY mechanism?",
+    options: [
+      { id: "A", text: "Multi-AZ deployment — synchronous standby in another AZ" },
+      { id: "B", text: "Read replicas in another AZ" },
+      { id: "C", text: "Automated snapshots every hour" },
+      { id: "D", text: "Multi-region active-active" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Multi-AZ = synchronous replication to a standby in another AZ with automatic failover on infrastructure failure — the HA feature. Read replicas are async and serve reads (scaling), not automatic standby. Snapshots are backups (RPO gaps), not HA.",
+    optionExplanations: {
+      A: "Synchronous standby + auto-failover = HA. Correct.",
+      B: "Replicas are async — designed for read scaling, not HA failover.",
+      C: "Backups restore after failure — they don't prevent downtime.",
+      D: "Multi-region is DR, not AZ-failure HA.",
+    },
+    services: ["Amazon RDS"],
+    references: [
+      {
+        title: "Multi-AZ deployments — AWS docs",
+        url: "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "saa-res-023",
+    slug: "sqs-standard-vs-fifo-ordering",
+    cert: "saa-c03",
+    domain: "design-resilient-architectures",
+    topic: "decoupling-and-messaging",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An order-processing pipeline requires messages processed exactly once in strict sequence per order. Which SQS queue type and why?",
+    options: [
+      { id: "A", text: "Standard queue — higher throughput" },
+      { id: "B", text: "FIFO queue — strict ordering and exactly-once processing" },
+      { id: "C", text: "Standard queue with a visibility timeout" },
+      { id: "D", text: "Either — ordering is guaranteed in both" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "FIFO queues guarantee first-in-first-out ordering within a message group and exactly-once processing via deduplication — at lower throughput (~300 msg/s, ~3000 batched). Standard queues are best-effort ordering and at-least-once delivery with virtually unlimited throughput.",
+    optionExplanations: {
+      A: "Throughput is higher but ordering/exactly-once aren't guaranteed.",
+      B: "Ordering + deduplication = FIFO. Correct.",
+      C: "Visibility timeout controls re-processing windows — not ordering.",
+      D: "Ordering is explicitly NOT guaranteed on standard queues.",
+    },
+    services: ["Amazon SQS"],
+    references: [
+      {
+        title: "FIFO queues — AWS docs",
+        url: "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "saa-res-024",
+    slug: "asg-target-tracking-vs-step-scaling",
+    cert: "saa-c03",
+    domain: "design-resilient-architectures",
+    topic: "high-availability",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An ASG should maintain average CPU around 50% — scaling out when higher, in when lower — with minimal policy tuning. Which scaling policy type best fits?",
+    options: [
+      { id: "A", text: "Target tracking" },
+      { id: "B", text: "Step scaling" },
+      { id: "C", text: "Scheduled scaling" },
+      { id: "D", text: "Predictive scaling" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Target tracking is 'set the thermostat': pick a metric target (CPU 50%, requests/target) and ASG manages scale-in/out continuously — simplest to configure. Step scaling = explicit tiered adjustments; scheduled = known time patterns; predictive = ML forecast-based pre-scaling.",
+    optionExplanations: {
+      A: "Metric-target thermostat = target tracking. Correct.",
+      B: "Step scaling needs manual threshold/amount tuning — more control, more work.",
+      C: "Scheduled handles predictable time patterns — not reactive CPU maintenance.",
+      D: "Predictive forecasts ahead — useful for known cyclical load, not the simple 'keep CPU at X' requirement.",
+    },
+    services: ["Amazon EC2 Auto Scaling"],
+    references: [
+      {
+        title: "Target tracking scaling — AWS docs",
+        url: "https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scaling-target-tracking.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "saa-res-025",
+    slug: "route53-weighted-a-b-testing",
+    cert: "saa-c03",
+    domain: "design-resilient-architectures",
+    topic: "high-availability",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A team wants to send 5% of production traffic to a new app version for canary testing, ramping gradually. Which Route 53 routing policy enables this?",
+    options: [
+      { id: "A", text: "Latency-based routing" },
+      { id: "B", text: "Weighted routing" },
+      { id: "C", text: "Failover routing" },
+      { id: "D", text: "Geolocation routing" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Weighted routing splits traffic by configurable weights across endpoints — the DNS-level canary/blue-green mechanism. Latency routes to fastest region; failover is active-passive for DR; geolocation routes by user geography.",
+    optionExplanations: {
+      A: "Latency picks the best-performing endpoint per user — not percentage splits.",
+      B: "Percentage-based traffic split = weighted routing. Correct.",
+      C: "Failover only activates the secondary when the primary fails health checks.",
+      D: "Geolocation targets users' countries — not version percentages.",
+    },
+    services: ["Amazon Route 53"],
+    references: [
+      {
+        title: "Weighted routing — AWS docs",
+        url: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-policy-weighted.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "saa-res-026",
+    slug: "elasticache-session-state-stateless-tier",
+    cert: "saa-c03",
+    domain: "design-resilient-architectures",
+    topic: "high-availability",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A web tier is being made stateless so any instance can be replaced without losing user sessions. Where should session data live?",
+    options: [
+      { id: "A", text: "On each instance's local disk" },
+      { id: "B", text: "In a shared ElastiCache (Redis) layer or DynamoDB" },
+      { id: "C", text: "In the ALB's sticky sessions" },
+      { id: "D", text: "In CloudFront edge caches" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Statelessness = externalize session state to a shared store — ElastiCache for sub-millisecond access or DynamoDB for durable sessions. Sticky sessions are the OPPOSITE anti-pattern (ties users to instances); local disk loses state on instance termination.",
+    optionExplanations: {
+      A: "Local state dies with the instance — that's stateful design.",
+      B: "Shared external session store = stateless tier. Correct.",
+      C: "Stickiness pins users to instances — masks statefulness rather than removing it.",
+      D: "Edge cache is for content — not session state.",
+    },
+    services: ["Amazon ElastiCache", "Amazon DynamoDB"],
+    references: [
+      {
+        title: "Stateless applications — Well-Architected",
+        url: "https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/design-principles.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  }
 ];

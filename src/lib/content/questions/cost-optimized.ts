@@ -640,4 +640,148 @@ export const costOptimizedQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-11-01",
   },
+  {
+    id: "saa-cost-018",
+    slug: "standard-vs-convertible-reserved-instances",
+    cert: "saa-c03",
+    domain: "design-cost-optimized-architectures",
+    topic: "cost-optimized-compute",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A company wants Reserved Instance savings but needs flexibility to change instance families/OS later as the workload evolves. Which RI type supports this?",
+    options: [
+      { id: "A", text: "Standard RI — fixed instance attributes" },
+      { id: "B", text: "Convertible RI — exchangeable for different families/sizes/OS" },
+      { id: "C", text: "Scheduled RI — for recurring time windows" },
+      { id: "D", text: "Spot Instances" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Convertible RIs (~54% discount vs Standard's ~72%) can be exchanged for different instance families, sizes, tenancy, or OS during the term — the flexibility option. Standard RI offers max discount with attribute lock; Scheduled RIs are time-window-bound.",
+    optionExplanations: {
+      A: "Standard locks attributes — deeper discount, less flexibility.",
+      B: "Exchangeable attributes = Convertible. Correct.",
+      C: "Scheduled is for specific daily/weekly windows — different need.",
+      D: "Spot has no commitment or attribute flexibility — interruptible capacity.",
+    },
+    services: ["Amazon EC2"],
+    references: [
+      {
+        title: "RI types — AWS docs",
+        url: "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/reserved-instances-types.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "saa-cost-019",
+    slug: "asg-mixed-instance-spot-pools",
+    cert: "saa-c03",
+    domain: "design-cost-optimized-architectures",
+    topic: "cost-optimized-compute",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A batch-processing ASG wants maximum Spot savings while tolerating interruptions — the fleet should draw from many instance types and Spot capacity pools. Which feature does this?",
+    options: [
+      { id: "A", text: "One Spot request per instance type" },
+      { id: "B", text: "Mixed Instances Policy with multiple instance types + allocation strategy" },
+      { id: "C", text: "On-Demand with scheduled scaling" },
+      { id: "D", text: "EC2 Fleet without an ASG" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Mixed Instances Policy lets an ASG blend On-Demand + Spot across multiple instance types; capacity-optimized Spot allocation picks pools least likely to interrupt. Diversification across pools is THE Spot resilience strategy.",
+    optionExplanations: {
+      A: "Single-type Spot requests have no diversification or auto-replacement.",
+      B: "Multi-type + multi-pool + allocation strategy. Correct.",
+      C: "On-Demand doesn't get Spot discounts.",
+      D: "Fleet is one-time launch — ASG provides ongoing desired-capacity management.",
+    },
+    services: ["Amazon EC2 Auto Scaling", "EC2 Spot"],
+    references: [
+      {
+        title: "Mixed Instances Policy — AWS docs",
+        url: "https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-mixed-instances-groups.html",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "saa-cost-020",
+    slug: "cost-allocation-tags-and-cur",
+    cert: "saa-c03",
+    domain: "design-cost-optimized-architectures",
+    topic: "cost-optimized-databases-and-network",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Finance wants per-team cost breakdowns including untaggable resources and the most granular usage data possible for chargeback. Which tools provide this?",
+    options: [
+      { id: "A", text: "Cost Explorer alone" },
+      { id: "B", text: "Cost allocation tags + AWS Cost and Usage Report (CUR)" },
+      { id: "C", text: "AWS Budgets" },
+      { id: "D", text: "Trusted Advisor cost checks" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Cost allocation tags (activated in Billing) group spend by team/environment/project; CUR delivers the most granular hourly resource-level usage+cost data to S3 — the deepest chargeback datasource. Cost Explorer visualizes trends; Budgets alerts.",
+    optionExplanations: {
+      A: "Explorer visualizes but lacks CUR's resource-level granularity.",
+      B: "Tags for grouping + CUR for granularity. Correct.",
+      C: "Budgets monitors thresholds — not reporting.",
+      D: "Advisor gives recommendations, not detailed reporting.",
+    },
+    services: ["AWS Cost Explorer", "AWS CUR"],
+    references: [
+      {
+        title: "Cost allocation tags — AWS docs",
+        url: "https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "saa-cost-021",
+    slug: "inter-az-data-transfer-cost",
+    cert: "saa-c03",
+    domain: "design-cost-optimized-architectures",
+    topic: "cost-optimized-databases-and-network",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A bill shows surprising data-transfer charges. Review reveals a chatty microservice pair deployed across different AZs in the same VPC. What's the cost-effective fix while keeping AZ redundancy?",
+    options: [
+      { id: "A", text: "Same-AZ placement only — accept reduced resilience" },
+      { id: "B", text: "Co-locate chatty services per-AZ with a redundant copy in each AZ (affinity-aware placement)" },
+      { id: "C", text: "Move one service to a different region" },
+      { id: "D", text: "Increase NAT gateway capacity" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Inter-AZ traffic within a VPC is billed ~$0.01/GB each way — chatty cross-AZ calls are a classic hidden cost. The pattern: deploy independent service pairs per AZ and prefer same-AZ routing, keeping redundancy (each AZ has a full stack) while eliminating cross-AZ chatter.",
+    optionExplanations: {
+      A: "Single-AZ sacrifices the resilience requirement.",
+      B: "Per-AZ full-stack placement keeps HA without cross-AZ calls. Correct.",
+      C: "Cross-region is worse — higher transfer costs and worse latency.",
+      D: "NAT capacity is unrelated to inter-AZ pricing.",
+    },
+    services: ["Amazon EC2", "Amazon VPC"],
+    references: [
+      {
+        title: "Data transfer pricing — AWS docs",
+        url: "https://aws.amazon.com/ec2/pricing/on-demand/#Data_Transfer",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  }
 ];

@@ -843,4 +843,184 @@ export const secureQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-11-01",
   },
+  {
+    id: "saa-sec-023",
+    slug: "secrets-manager-rotation-vs-parameter-store",
+    cert: "saa-c03",
+    domain: "design-secure-architectures",
+    topic: "iam-and-access-control",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A database password must rotate automatically every 30 days with zero application code changes. Which service provides built-in automatic rotation with Lambda-based rotation workflows?",
+    options: [
+      { id: "A", text: "AWS Secrets Manager" },
+      { id: "B", text: "SSM Parameter Store (SecureString)" },
+      { id: "C", text: "AWS KMS" },
+      { id: "D", text: "Encrypted environment variables" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Secrets Manager's differentiator over Parameter Store is NATIVE rotation — it manages the rotation Lambda and updates the database credential for supported engines automatically. Parameter Store stores secrets cheaply but rotation is DIY. KMS encrypts keys; env vars are static and visible in configs.",
+    optionExplanations: {
+      A: "Managed rotation is Secrets Manager's signature feature. Correct.",
+      B: "SecureString encrypts storage but has no built-in rotation engine.",
+      C: "KMS encrypts data — it doesn't manage credential lifecycle.",
+      D: "Env vars are static values — rotation requires redeploys.",
+    },
+    services: ["AWS Secrets Manager", "SSM Parameter Store"],
+    references: [
+      {
+        title: "Rotate secrets automatically — AWS Secrets Manager",
+        url: "https://docs.aws.amazon.com/secretsmanager/latest/userguide/rotate-secrets_overview.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "saa-sec-024",
+    slug: "waf-cloudfront-global-edge-protection",
+    cert: "saa-c03",
+    domain: "design-secure-architectures",
+    topic: "network-security",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A company wants to block malicious traffic before it reaches any AWS region — filtering at edge locations worldwide. Where should AWS WAF rules be attached?",
+    options: [
+      { id: "A", text: "To an Application Load Balancer in the primary region" },
+      { id: "B", text: "To the CloudFront distribution — WAF evaluates at edge locations" },
+      { id: "C", text: "To the Network Load Balancer" },
+      { id: "D", text: "To the API Gateway in each region" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Attaching WAF to CloudFront evaluates rules at edge PoPs — bad traffic is dropped before entering AWS's backbone or your region. ALB-attached WAF is regional (traffic reaches the region first). NLB doesn't integrate with WAF (L4).",
+    optionExplanations: {
+      A: "ALB-WAF filters regionally — traffic already arrived in-region.",
+      B: "Edge evaluation = global pre-filtering. Correct.",
+      C: "NLB is Layer 4 — WAF doesn't attach to it.",
+      D: "API Gateway WAF works per-region — not global edge filtering.",
+    },
+    services: ["AWS WAF", "Amazon CloudFront"],
+    references: [
+      {
+        title: "AWS WAF with CloudFront — AWS docs",
+        url: "https://docs.aws.amazon.com/waf/latest/developerguide/cloudfront-features.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "saa-sec-025",
+    slug: "saas-vendor-role-external-id",
+    cert: "saa-c03",
+    domain: "design-secure-architectures",
+    topic: "iam-and-access-control",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A SaaS monitoring vendor needs read access to a customer's AWS account. The customer worries other vendor customers could guess the role ARN and get confused-deputy access. What should the trust policy include?",
+    options: [
+      { id: "A", text: "MFA condition on the role" },
+      { id: "B", text: "An ExternalId condition unique to this customer" },
+      { id: "C", text: "A resource-based policy on each resource" },
+      { id: "D", text: "IP allowlist of the vendor's office" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "The confused-deputy problem: third parties assume your cross-account role — without a secret ExternalId, anyone who learns the role ARN could attempt assumption. ExternalId acts as a shared secret only the legitimate vendor knows — the standard third-party-access mitigation.",
+    optionExplanations: {
+      A: "MFA doesn't prevent a deputy who legitimately has creds from misusing them.",
+      B: "ExternalId = the confused-deputy countermeasure. Correct.",
+      C: "Resource policies alone don't solve role-ARN knowledge abuse.",
+      D: "Vendor systems may not have static IPs — ExternalId is the designed solution.",
+    },
+    services: ["AWS IAM"],
+    references: [
+      {
+        title: "External ID for third-party access — AWS docs",
+        url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_common-scenarios_third-party.html",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "saa-sec-026",
+    slug: "s3-bucket-policy-vpce-condition",
+    cert: "saa-c03",
+    domain: "design-secure-architectures",
+    topic: "data-protection",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "An S3 bucket must be accessible ONLY through a specific VPC endpoint — requests from the internet or other networks must be denied even for authenticated IAM users. Which mechanism enforces this?",
+    options: [
+      { id: "A", text: "Security group rules on the bucket" },
+      { id: "B", text: "Bucket policy with aws:SourceVpce condition denying other access" },
+      { id: "C", text: "Block Public Access alone" },
+      { id: "D", text: "KMS encryption on all objects" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "A bucket policy can condition access on aws:SourceVpce (specific endpoint) or aws:SourceVpc — deny all requests not originating through the approved endpoint. Even valid IAM creds get denied from other networks — the 'private path only' pattern. SGs don't attach to S3; BPA doesn't restrict authenticated access.",
+    optionExplanations: {
+      A: "Security groups are instance-level — S3 has no SG concept.",
+      B: "SourceVpce condition = endpoint-bound access. Correct.",
+      C: "BPA blocks public/anonymous access — authenticated users from elsewhere still work.",
+      D: "Encryption protects content, not the access path.",
+    },
+    services: ["Amazon S3", "VPC endpoints"],
+    references: [
+      {
+        title: "Restrict access to a VPC endpoint — AWS docs",
+        url: "https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-vpce-bucket.html",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  },
+  {
+    id: "saa-sec-027",
+    slug: "macie-pii-sensitive-data-discovery",
+    cert: "saa-c03",
+    domain: "design-secure-architectures",
+    topic: "data-protection",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Compliance requires continuously discovering and reporting PII (names, credit cards, addresses) stored across all S3 buckets in the organization. Which service does this?",
+    options: [
+      { id: "A", text: "Amazon Macie" },
+      { id: "B", text: "AWS Config" },
+      { id: "C", text: "Amazon Inspector" },
+      { id: "D", text: "AWS CloudTrail" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Macie uses ML + pattern matching to discover sensitive data (PII, credentials) in S3 and report where it lives — purpose-built for data classification. Config tracks resource configuration; Inspector scans for vulnerabilities; CloudTrail logs API calls.",
+    optionExplanations: {
+      A: "Sensitive-data discovery = Macie. Correct.",
+      B: "Config audits resource configuration state, not data content.",
+      C: "Inspector finds software/network vulnerabilities, not PII.",
+      D: "CloudTrail records API activity, not data inspection.",
+    },
+    services: ["Amazon Macie"],
+    references: [
+      {
+        title: "Amazon Macie — AWS docs",
+        url: "https://docs.aws.amazon.com/macie/latest/user/what-is-macie.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-02",
+  }
 ];
