@@ -55,6 +55,14 @@ export default function LearnPage() {
               <span className="ml-2 text-sm font-normal text-muted">
                 ({articles.length})
               </span>
+              {category === "Comparisons" && (
+                <Link
+                  href="/compare"
+                  className="ml-3 text-sm font-normal text-accent hover:underline"
+                >
+                  View the AWS vs Azure comparison hub →
+                </Link>
+              )}
             </h2>
             <div className="mt-4 grid gap-4 md:grid-cols-2">
               {articles.map((a) => {

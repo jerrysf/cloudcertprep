@@ -30,6 +30,7 @@ export function getSitemapEntries(): MetadataRoute.Sitemap {
     { path: "/mock-exam", priority: 0.8 },
     { path: "/services", priority: 0.8 },
     { path: "/learn", priority: 0.8 },
+    { path: "/compare", priority: 0.7 },
     { path: "/shop", priority: 0.7 },
     { path: "/flashcards", priority: 0.7 },
     { path: "/study-plan", priority: 0.7 },
