@@ -10,6 +10,16 @@ const nextConfig: NextConfig = {
       },
     },
   },
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "cloudcertprep-neon.vercel.app" }],
+        destination: "https://www.cloudcertprep.cloud/:path*",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {
