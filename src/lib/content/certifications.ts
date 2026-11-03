@@ -764,6 +764,59 @@ export const CERTIFICATIONS: Certification[] = [
       },
     ],
   },
+  {
+    id: "az-305",
+    code: "AZ-305",
+    name: "Microsoft Certified: Azure Solutions Architect Expert",
+    vendor: "azure",
+    level: "professional",
+    tagline: "Design enterprise-grade Azure solutions — identity, data, continuity, and infrastructure architecture.",
+    description:
+      "Microsoft's expert-level architecture certification. Validates the ability to design solutions across identity/governance, data storage, business continuity, and infrastructure. Requires the AZ-104 Azure Administrator credential first — the capstone of the Azure architect path.",
+    questionCount: 55,
+    durationMinutes: 120,
+    costUsd: 165,
+    passingScaledScore: 700,
+    scaledScoreRange: [1, 1000],
+    examGuideUrl:
+      "https://learn.microsoft.com/en-us/credentials/certifications/azure-solutions-architect/",
+    verified: false,
+    featured: true,
+    domains: [
+      {
+        id: "az305-identity-governance",
+        number: 1,
+        name: "Design Identity, Governance, and Monitoring Solutions",
+        weight: 28,
+        summary:
+          "Entra ID architecture, hybrid identity, RBAC design, management groups/subscriptions, governance at scale, and monitoring/logging design.",
+      },
+      {
+        id: "az305-data-storage",
+        number: 2,
+        name: "Design Data Storage Solutions",
+        weight: 28,
+        summary:
+          "Relational/non-relational data services, data integration, and storage account design for performance, scale, and cost.",
+      },
+      {
+        id: "az305-business-continuity",
+        number: 3,
+        name: "Design Business Continuity Solutions",
+        weight: 14,
+        summary:
+          "Backup and disaster recovery design, high availability architectures, and RTO/RPO-driven service selection.",
+      },
+      {
+        id: "az305-infrastructure",
+        number: 4,
+        name: "Design Infrastructure Solutions",
+        weight: 30,
+        summary:
+          "Compute, networking (hybrid connectivity, load balancing, security), application architecture, and migration/modernization design.",
+      },
+    ],
+  },
 ];
 
 export const ALL_DOMAINS: CertDomain[] = CERTIFICATIONS.flatMap(

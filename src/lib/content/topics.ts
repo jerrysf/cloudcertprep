@@ -577,6 +577,39 @@ export const TOPICS: Topic[] = [
     description:
       "Data warehouses, lakehouses, Synapse, Fabric, Power BI, and real-time analytics.",
   },
+  // ---- AZ-305 Azure Solutions Architect Expert ----
+  {
+    slug: "az305-identity-governance",
+    name: "Identity, Governance & Monitoring",
+    cert: "az-305",
+    domain: "az305-identity-governance",
+    description:
+      "Hybrid identity, RBAC design, management groups, governance, and monitoring architecture.",
+  },
+  {
+    slug: "az305-data-storage",
+    name: "Data Storage Design",
+    cert: "az-305",
+    domain: "az305-data-storage",
+    description:
+      "Relational and non-relational data solutions, storage tiers, and data platform architecture.",
+  },
+  {
+    slug: "az305-business-continuity",
+    name: "Business Continuity",
+    cert: "az-305",
+    domain: "az305-business-continuity",
+    description:
+      "High availability, disaster recovery, backup design, and RTO/RPO architecture.",
+  },
+  {
+    slug: "az305-infrastructure",
+    name: "Infrastructure Design",
+    cert: "az-305",
+    domain: "az305-infrastructure",
+    description:
+      "Compute, networking, hybrid connectivity, application architecture, and migration design.",
+  },
 ];
 
 export function getTopic(slug: string): Topic | undefined {

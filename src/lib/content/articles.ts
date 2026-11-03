@@ -4390,6 +4390,242 @@ ARTICLES.push({
   ],
 });
 
+ARTICLES.push({
+  slug: "az-305-exam-guide",
+  title: "AZ-305 Exam Guide: Azure Solutions Architect Expert Explained",
+  description:
+    "Everything about the Azure Solutions Architect Expert (AZ-305) exam — the AZ-104 prerequisite, format, the four domains, difficulty, and how it compares to AWS SAP-C02.",
+  domain: "az305-infrastructure",
+  topic: "az305-infrastructure",
+  updatedAt: "2026-11-05",
+  readingMinutes: 7,
+  sections: [
+    {
+      paragraphs: [
+        "AZ-305 is Microsoft's expert-level architecture certification — the capstone of the Azure path. It validates that you can DESIGN solutions (not just administer them) across identity/governance, data, business continuity, and infrastructure. It's the credential that signals 'cloud architect' in Azure environments.",
+      ],
+    },
+    {
+      heading: "The prerequisite gate",
+      paragraphs: [
+        "AZ-305 cannot be earned standalone: Microsoft requires AZ-104 (Azure Administrator Associate) first. This makes the expert path a deliberate two-step — administration depth first, then design breadth. Budget both exams (~$330 total) and treat AZ-104 as mandatory groundwork, not a formality — its operational content (RBAC, networking, monitoring) shows up again at design level.",
+      ],
+    },
+    {
+      heading: "Exam basics",
+      list: [
+        "Cost: $165 USD",
+        "Questions: ~40–60 including case studies with multi-requirement scenarios",
+        "Duration: ~120 minutes",
+        "Passing: 700/1000",
+        "Style: design-decision questions — 'which architecture meets ALL requirements', not console procedures",
+      ],
+    },
+    {
+      heading: "The four domains",
+      list: [
+        "Identity, governance & monitoring (~28%) — hybrid identity design, RBAC/PIM architecture, management groups, policy strategy, monitoring design",
+        "Data storage solutions (~28%) — relational vs non-relational selection, Cosmos consistency trade-offs, storage tiers/redundancy, data integration",
+        "Business continuity (~14%) — HA vs DR design, RTO/RPO mapping, zones vs sets, ASR vs Backup, multi-region patterns",
+        "Infrastructure (~30%) — compute selection, networking (hub-spoke, vWAN, private endpoints), hybrid connectivity, migration design",
+      ],
+    },
+    {
+      heading: "How it compares to AWS SAP-C02",
+      paragraphs: [
+        "Both are expert-tier design exams, but AZ-305 is structurally more bounded — questions tend to reward knowing Microsoft's documented reference architectures (landing zones, hub-spoke, well-architected guidance) and the 'correct' answer follows official design patterns more predictably. SAP-C02 deliberately engineers ambiguity between two plausible answers. See our full SAP-C02 vs AZ-305 comparison for the detailed breakdown.",
+      ],
+    },
+    {
+      heading: "How to prepare",
+      list: [
+        "Work through our AZ-305 question bank — 40 design questions across all four domains with per-option reasoning.",
+        "Study the cheat sheet — the service-selection and architecture-pattern tables map directly to exam scenarios.",
+        "Follow the 6-week study plan — assuming AZ-104-level knowledge already.",
+        "Memorize the reference architectures: hub-spoke vs Virtual WAN, landing zones, private endpoint patterns, DR tiers by RTO/RPO.",
+      ],
+    },
+  ],
+  references: [
+    { title: "AZ-305 certification page (Microsoft)", url: "https://learn.microsoft.com/en-us/credentials/certifications/azure-solutions-architect/" },
+    { title: "AZ-305 study guide (Microsoft Learn)", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-305" },
+  ],
+});
+
+ARTICLES.push({
+  slug: "az-305-cheat-sheet",
+  title: "AZ-305 Cheat Sheet: Design Decisions at a Glance",
+  description:
+    "The essential AZ-305 reference — architecture patterns, service selection tables, continuity design by RTO/RPO, and the governance/identity decisions the exam tests.",
+  domain: "az305-identity-governance",
+  topic: "az305-identity-governance",
+  updatedAt: "2026-11-05",
+  readingMinutes: 9,
+  sections: [
+    {
+      paragraphs: [
+        "AZ-305 is a design exam — every question presents requirements and asks which architecture satisfies them. These decision tables cover the recurring design spaces.",
+      ],
+    },
+    {
+      heading: "Identity & governance design",
+      list: [
+        "Hybrid identity: PHS (simplest, hash to cloud) → PTA (on-prem validation) → AD FS (full federation, most complex)",
+        "Zero standing privilege → PIM (eligible→activate with MFA/approval/audit)",
+        "Per-context access rules (role + location + device) → Conditional Access (P1+)",
+        "Credential-free app→service auth → managed identity (never service principal secrets if avoidable)",
+        "Partner users with own credentials → B2B guests; consumer sign-up/sign-in apps → B2C",
+        "Policy at scale → management groups + Azure Policy inheritance; auto-remediate drift → DeployIfNotExists/Modify",
+        "Enterprise foundation → landing zones (CAF: platform/workload subs, MG hierarchy, policy-as-code)",
+        "Hybrid/multi-cloud management → Azure Arc (project external resources into ARM)",
+      ],
+    },
+    {
+      heading: "Data design — pick by shape",
+      list: [
+        "JSON docs + global low-latency + elastic scale → Cosmos DB (multi-model APIs: NoSQL/Mongo/Cassandra/Table/Gremlin)",
+        "Relational OLTP, fully managed → Azure SQL Database; near-full SQL Server compat → Managed Instance",
+        "Multi-tenant SaaS DBs with uncorrelated load → elastic pools",
+        "PB-scale MPP analytics → Synapse dedicated SQL pools (or Fabric warehouse)",
+        "Object storage → Blob; analytics lake → ADLS Gen2 (hierarchical + ACLs); SMB shares → Azure Files",
+        "Simple key-attribute → Table Storage; WORM compliance → immutable blob policies",
+        "ETL orchestration → Data Factory/pipelines; Spark engineering → Databricks",
+      ],
+    },
+    {
+      heading: "Storage redundancy ladder",
+      list: [
+        "LRS — one DC; ZRS — AZ resilient in-region; GRS — geo pair (LRS locally); RA-GRS — geo + readable secondary",
+        "GZRS/RA-GZRS — zonal locally + geo (+ read access) — the maximum",
+        "Blob tiers: Hot (frequent) → Cool/Cold (infrequent online) → Archive (offline, hours to rehydrate)",
+        "Automate transitions → lifecycle management policies by age",
+      ],
+    },
+    {
+      heading: "Cosmos consistency (strong → weak)",
+      list: [
+        "Strong — linearizable, but writes blocked during partition",
+        "Bounded staleness — bounded lag; strongest level that survives regional issues for writes",
+        "Session — default; consistent within a client session",
+        "Consistent prefix — ordered reads, may lag",
+        "Eventual — max availability, no guarantees",
+        "Active-active multi-region writes → multi-region writes + conflict resolution (LWW/merge/custom)",
+      ],
+    },
+    {
+      heading: "Continuity design — map requirements to pattern",
+      list: [
+        "RPO = max data loss; RTO = max downtime — always extract these two numbers first",
+        "Rack-level protection → Availability Sets; DC-level → Availability Zones; region-level → ASR/geo-replication",
+        "DR for VMs/workloads → Azure Site Recovery; data protection/restore → Azure Backup",
+        "Global L7 entry + instant failover + WAF/cache → Front Door; DNS-based routing only → Traffic Manager",
+        "Composite SLA = serial dependencies MULTIPLY (99.95% × 99.99% ≈ 99.94%)",
+        "Near-zero RTO/RPO active-active → Cosmos multi-region writes; readable geo secondary → SQL active geo-replication",
+      ],
+    },
+    {
+      heading: "Infrastructure design",
+      list: [
+        "Private dedicated link to Azure → ExpressRoute (never internet); IPsec over internet → S2S VPN; backup path → VPN over ER",
+        "Centralized shared services + spoke workloads → hub-spoke; 200+ branch/global transit → Virtual WAN",
+        "Regional L7 LB + WAF + TLS → Application Gateway; global edge L7 → Front Door; L4 → Load Balancer",
+        "Private PaaS access in-VNet → Private Link + private DNS zone; backbone-only (public IP stays) → service endpoints",
+        "Centralized egress FQDN/TLS filtering → Azure Firewall Premium; per-subnet IP rules → NSGs",
+        "Containers + orchestration depth → AKS; simpler serverless containers → Container Apps; PaaS web → App Service",
+        "Stateless scale-out fleet + self-healing → VMSS (zone spread + auto-repair)",
+        "Assessment + right-sizing before migrating → Azure Migrate; replication/failover tool → ASR",
+      ],
+    },
+  ],
+  references: [
+    { title: "Azure Architecture Center", url: "https://learn.microsoft.com/en-us/azure/architecture/" },
+    { title: "AZ-305 study guide (Microsoft Learn)", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-305" },
+  ],
+});
+
+ARTICLES.push({
+  slug: "how-to-pass-az-305",
+  title: "How to Pass AZ-305: The 6-Week Architect Plan",
+  description:
+    "A realistic 6-week study plan for the Azure Solutions Architect Expert exam — assuming AZ-104 knowledge, week-by-week by domain, and the design patterns to memorize.",
+  domain: "az305-infrastructure",
+  topic: "az305-infrastructure",
+  updatedAt: "2026-11-05",
+  readingMinutes: 6,
+  sections: [
+    {
+      paragraphs: [
+        "AZ-305 is a design exam, not an operations exam — your AZ-104 knowledge is the floor. Six weeks is realistic with consistent effort; less if you already design Azure systems daily. The exam rewards pattern-matching to Microsoft's reference architectures, so study is more about internalizing design vocabulary than learning new services.",
+      ],
+    },
+    {
+      heading: "Week 1 — identity & governance design",
+      list: [
+        "Hybrid identity decision tree (PHS/PTA/ADFS — when each wins)",
+        "RBAC design at scale + PIM for zero standing privilege",
+        "Management group hierarchies + policy inheritance + DeployIfNotExists",
+        "Conditional Access policy construction; B2B vs B2C",
+        "Landing zone concepts — what the CAF actually prescribes",
+      ],
+    },
+    {
+      heading: "Week 2 — data storage design",
+      list: [
+        "Relational selection: SQL DB vs MI vs VM vs PostgreSQL/MySQL vs elastic pools",
+        "Cosmos DB: APIs, consistency trade-offs (esp. bounded staleness), partition design, multi-region writes",
+        "Storage: account kinds, redundancy ladder, tiers, lifecycle, immutable/WORM",
+        "Data integration: ADF vs Databricks vs Synapse roles",
+      ],
+    },
+    {
+      heading: "Week 3 — business continuity",
+      list: [
+        "RTO/RPO → architecture mapping (extract the two numbers from every scenario first)",
+        "HA ladder: Availability Sets → Zones → region pairs; ASR vs Backup boundary",
+        "Front Door vs Traffic Manager; SLA multiplication math",
+        "SQL continuity: zone-redundant vs geo-replication vs geo-restore; Cosmos active-active",
+      ],
+    },
+    {
+      heading: "Week 4 — infrastructure design",
+      list: [
+        "Compute selection tree: VMSS vs AKS vs Container Apps vs App Service vs Functions",
+        "Networking: hub-spoke vs Virtual WAN, private endpoint vs service endpoint",
+        "Load balancing map: Front Door vs App Gateway vs Load Balancer vs Traffic Manager",
+        "Hybrid: ExpressRoute vs S2S VPN (+VPN as ER backup); Azure Firewall vs NSG scope",
+        "Migration tooling: Azure Migrate vs ASR vs Data Box",
+      ],
+    },
+    {
+      heading: "Week 5 — full-coverage practice",
+      list: [
+        "Complete the AZ-305 question bank — read every option explanation, not just the right answer",
+        "For each wrong answer, trace which requirement it fails — AZ-305 wrong options usually miss ONE constraint",
+        "Drill case-study format: multiple requirements, one architecture, identify which constraint kills each option",
+      ],
+    },
+    {
+      heading: "Week 6 — consolidation",
+      list: [
+        "Re-attempt every missed question until the reasoning is automatic",
+        "Cheat-sheet skim: service-selection tables, consistency levels, redundancy ladder, DR patterns",
+        "Review the architecture center reference diagrams for hub-spoke, landing zones, and multi-region patterns",
+        "Take a timed mock — AZ-305 is shorter than SAP but case studies eat minutes",
+      ],
+    },
+    {
+      heading: "What 'ready' looks like",
+      paragraphs: [
+        "You're ready when you read 'must survive an AZ failure' and instantly think zones; 'private PaaS access' → Private Link + DNS zone; 'central egress FQDN' → Firewall; 'active-active writes' → Cosmos multi-region. If AZ-104 felt natural, this is a genuinely passable exam — the design vocabulary is the whole game.",
+      ],
+    },
+  ],
+  references: [
+    { title: "AZ-305 study guide (Microsoft Learn)", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-305" },
+    { title: "Azure Architecture Center", url: "https://learn.microsoft.com/en-us/azure/architecture/" },
+  ],
+});
+
 export function getArticle(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
 }

@@ -1,0 +1,1448 @@
+import type { Question } from "../schema";
+
+export const az305Questions: Question[] = [
+  // ---- Identity, Governance & Monitoring ----
+  {
+    id: "aza-ig-001",
+    slug: "aza-hybrid-identity-phs-vs-pta",
+    cert: "az-305",
+    domain: "az305-identity-governance",
+    topic: "az305-identity-governance",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "An enterprise wants on-prem AD users to sign into Azure with the SAME password, syncing hash copies to Entra ID — simplest ops, no on-prem auth infrastructure. Which hybrid identity option?",
+    options: [
+      { id: "A", text: "Password Hash Synchronization (PHS)" },
+      { id: "B", text: "Pass-through Authentication (PTA)" },
+      { id: "C", text: "Federation with AD FS" },
+      { id: "D", text: "Azure AD Domain Services" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "PHS syncs password hashes to Entra ID — cloud-side authentication, simplest to operate, no on-prem auth servers. PTA validates on-prem (auth survives cloud outages but needs agents); AD FS is full federation (most complex). 'Same password, simplest' = PHS.",
+    optionExplanations: {
+      A: "Hash sync + cloud auth = PHS. Correct.",
+      B: "PTA authenticates ON-PREM — requires auth agents running.",
+      C: "AD FS adds federation servers — the heaviest option.",
+      D: "Domain Services is managed AD — not a sign-in sync method.",
+    },
+    services: ["Microsoft Entra ID"],
+    references: [
+      {
+        title: "Hybrid identity options — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/entra/identity/hybrid/connect/whatis-azure-ad-connect",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-ig-002",
+    slug: "aza-management-group-design",
+    cert: "az-305",
+    domain: "az305-identity-governance",
+    topic: "az305-identity-governance",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A company runs 40 subscriptions and must enforce region restrictions and required tags consistently — applying governance ONCE above the subscription level. What should the design use?",
+    options: [
+      { id: "A", text: "Management groups with Azure Policy assigned at the MG level" },
+      { id: "B", text: "A separate policy assignment per subscription" },
+      { id: "C", text: "Resource group locks" },
+      { id: "D", text: "Azure Blueprints only" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Management groups hierarchically organize subscriptions; policies/RBAC assigned at MG level inherit down to all child subscriptions — the scale-out governance pattern. Per-subscription assignments don't scale and drift.",
+    optionExplanations: {
+      A: "Inheritance hierarchy for governance = MGs. Correct.",
+      B: "40 manual assignments = drift and toil.",
+      C: "Locks prevent deletion — not policy enforcement.",
+      D: "Blueprints bundled this — but MG+Policy is the modern answer.",
+    },
+    services: ["Azure Management Groups", "Azure Policy"],
+    references: [
+      {
+        title: "Management groups — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/governance/management-groups/overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-ig-003",
+    slug: "aza-conditional-access-design",
+    cert: "az-305",
+    domain: "az305-identity-governance",
+    topic: "az305-identity-governance",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Design requirement: admins must use MFA from ANY network, while regular staff need MFA only outside the corporate IP range. Which feature implements this?",
+    options: [
+      { id: "A", text: "Entra Conditional Access policies" },
+      { id: "B", text: "Per-user MFA enforcement" },
+      { id: "C", text: "NSG rules on the VNet" },
+      { id: "D", text: "PIM eligible assignments" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Conditional Access = if/then policies over signals (user, role, location, device, app) → controls (MFA, compliant device, block). Different rules per group/location is exactly its design space. Requires P1 licensing.",
+    optionExplanations: {
+      A: "Signal-based per-group policies = CA. Correct.",
+      B: "Per-user MFA is legacy — no location/group granularity.",
+      C: "NSGs filter network traffic — not identity signals.",
+      D: "PIM manages privileged role activation — complementary, not this logic.",
+    },
+    services: ["Microsoft Entra ID"],
+    references: [
+      {
+        title: "Conditional Access — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/entra/identity/conditional-access/overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-ig-004",
+    slug: "aza-pim-just-in-time-admin",
+    cert: "az-305",
+    domain: "az305-identity-governance",
+    topic: "az305-identity-governance",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Design goal: eliminate standing Global Administrator rights — admins should activate elevated roles only when needed, with approval and audit trail. Which capability?",
+    options: [
+      { id: "A", text: "Entra Privileged Identity Management (PIM)" },
+      { id: "B", text: "RBAC role assignments" },
+      { id: "C", text: "Access reviews" },
+      { id: "D", text: "Conditional Access" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "PIM = just-in-time privileged access: eligible assignments activated on demand, with MFA, approval, time-bound expiry, and full audit. The standard zero-standing-privilege design.",
+    optionExplanations: {
+      A: "JIT elevation + approval + audit = PIM. Correct.",
+      B: "Static RBAC = standing privilege — what we're eliminating.",
+      C: "Reviews attest access — don't gate activation.",
+      D: "CA controls sign-in — not role activation.",
+    },
+    services: ["Microsoft Entra PIM"],
+    references: [
+      {
+        title: "Privileged Identity Management — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/entra/id-governance/privileged-identity-management/pim-configure",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-ig-005",
+    slug: "aza-managed-identity-vs-service-principal",
+    cert: "az-305",
+    domain: "az305-identity-governance",
+    topic: "az305-identity-governance",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An Azure-hosted app must call Key Vault and Storage without storing credentials in code or config. What should the design use?",
+    options: [
+      { id: "A", text: "Managed identity" },
+      { id: "B", text: "Service principal with client secret in Key Vault" },
+      { id: "C", text: "A shared access key in app settings" },
+      { id: "D", text: "User credentials via connection string" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Managed identity gives the app an Entra identity managed by the platform — no secrets to store, rotate, or leak. System-assigned (tied to resource lifecycle) vs user-assigned (shared across resources) — the modern credential-free pattern.",
+    optionExplanations: {
+      A: "No stored secrets at all = managed identity. Correct.",
+      B: "Still stores/rotates a secret — inferior to MI.",
+      C: "Access keys in settings = credential sprawl.",
+      D: "User credentials for a service = anti-pattern.",
+    },
+    services: ["Managed identities", "Azure Key Vault"],
+    references: [
+      {
+        title: "Managed identities — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-ig-006",
+    slug: "aza-subscription-design-strategy",
+    cert: "az-305",
+    domain: "az305-identity-governance",
+    topic: "az305-identity-governance",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Which is a valid reason to design with MULTIPLE subscriptions rather than one?",
+    options: [
+      { id: "A", text: "Billing separation, different policy boundaries, and subscription-level limits" },
+      { id: "B", text: "More subscriptions always improve performance" },
+      { id: "C", text: "Resource groups can't separate environments" },
+      { id: "D", text: "Required for multi-region deployments" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Subscriptions are billing/policy/management boundaries — split when you need separate billing, different RBAC/policy per environment, or to work around subscription quotas. They're NOT required for multi-region and don't add performance.",
+    optionExplanations: {
+      A: "Boundary-driven design = correct rationale.",
+      B: "Subscription count doesn't change performance.",
+      C: "RGs can separate environments fine — subs are a harder boundary when needed.",
+      D: "Regions are independent of subscription count.",
+    },
+    services: ["Azure subscriptions", "Azure Management Groups"],
+    references: [
+      {
+        title: "Subscription design — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-setup-guide/organize-resources",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-ig-007",
+    slug: "aza-log-analytics-workspace-design",
+    cert: "az-305",
+    domain: "az305-identity-governance",
+    topic: "az305-identity-governance",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Monitoring design: a central security team must query ALL diagnostic logs across 30 subscriptions, while app teams see only their own. What architecture fits?",
+    options: [
+      { id: "A", text: "One central Log Analytics workspace + RBAC-scoped access for app teams" },
+      { id: "B", text: "A workspace per subscription with no central view" },
+      { id: "C", text: "Email alerts only" },
+      { id: "D", text: "Storage accounts with manual log review" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Centralized workspace consolidates org-wide logs for security/compliance; resource-centric RBAC (or workspace-context vs resource-context access modes) scopes app teams to their own data — the standard enterprise monitoring design.",
+    optionExplanations: {
+      A: "Central workspace + scoped access = canonical design. Correct.",
+      B: "Fragmented workspaces lose the central security view.",
+      C: "Alerts aren't queryable log retention.",
+      D: "Raw storage ≠ queryable monitoring.",
+    },
+    services: ["Azure Monitor", "Log Analytics"],
+    references: [
+      {
+        title: "Log Analytics workspace design — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/azure-monitor/logs/workspace-design",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-ig-008",
+    slug: "aza-b2b-vs-b2c-identity",
+    cert: "az-305",
+    domain: "az305-identity-governance",
+    topic: "az305-identity-governance",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Design an identity model: partner-company employees need access to your internal apps using THEIR OWN corporate credentials. Which approach?",
+    options: [
+      { id: "A", text: "Entra B2B collaboration — invite partners as guests" },
+      { id: "B", text: "Entra B2C — consumer identity platform" },
+      { id: "C", text: "Create full member accounts for partners" },
+      { id: "D", text: "Shared admin credentials" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "B2B = partner identities federate as GUESTS in your tenant — they authenticate against their own IdP, you control resource access. B2C is for customer-facing apps (consumer sign-up/sign-in) — the exam loves this distinction.",
+    optionExplanations: {
+      A: "External org users as guests = B2B. Correct.",
+      B: "B2C is consumer-facing apps — not partner access.",
+      C: "Member accounts for externals = governance nightmare.",
+      D: "Shared credentials violate every identity principle.",
+    },
+    services: ["Microsoft Entra B2B"],
+    references: [
+      {
+        title: "B2B collaboration — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/entra/external-id/what-is-b2b",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-ig-009",
+    slug: "aza-azure-policy-deny-vs-deployifnotexists",
+    cert: "az-305",
+    domain: "az305-identity-governance",
+    topic: "az305-identity-governance",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "Governance design: every new storage account MUST have HTTPS-only enabled — non-compliant resources should be automatically remediated, not just blocked. Which policy effect?",
+    options: [
+      { id: "A", text: "Deny" },
+      { id: "B", text: "DeployIfNotExists" },
+      { id: "C", text: "Audit" },
+      { id: "D", text: "Disabled" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "DeployIfNotExists (and Modify) auto-remediates: deploys the missing configuration when a resource is non-compliant. Deny blocks creation entirely; Audit only flags. 'Auto-fix, don't just block' = DINE/Modify.",
+    optionExplanations: {
+      A: "Deny prevents creation — doesn't remediate existing drift.",
+      B: "Automatic remediation deployment = DINE. Correct.",
+      C: "Audit reports only — no enforcement.",
+      D: "Disabled does nothing.",
+    },
+    services: ["Azure Policy"],
+    references: [
+      {
+        title: "Policy effects — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/governance/policy/concepts/effects",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-ig-010",
+    slug: "aza-azure-advisor-vs-monitor",
+    cert: "az-305",
+    domain: "az305-identity-governance",
+    topic: "az305-identity-governance",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Which provides proactive best-practice RECOMMENDATIONS across cost, security, reliability, and performance for existing Azure deployments?",
+    options: [
+      { id: "A", text: "Azure Advisor" },
+      { id: "B", text: "Azure Monitor" },
+      { id: "C", text: "Azure Service Health" },
+      { id: "D", text: "Azure Policy" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Advisor analyzes deployments and recommends improvements across the five pillars (cost, security, reliability, operational excellence, performance). Monitor = telemetry platform; Service Health = Azure-side incident status; Policy = governance enforcement.",
+    optionExplanations: {
+      A: "Best-practice recommendations = Advisor. Correct.",
+      B: "Monitor collects/acts on telemetry — doesn't recommend design.",
+      C: "Service Health reports Azure platform issues.",
+      D: "Policy enforces rules — not advisory recommendations.",
+    },
+    services: ["Azure Advisor"],
+    references: [
+      {
+        title: "Azure Advisor — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/advisor/advisor-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  // ---- Data Storage Solutions ----
+  {
+    id: "aza-ds-001",
+    slug: "aza-sql-vs-cosmos-design-choice",
+    cert: "az-305",
+    domain: "az305-data-storage",
+    topic: "az305-data-storage",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Design a data layer for a global retail app: product catalog in JSON with varying attributes per category, single-digit-ms reads worldwide, unpredictable bursts. Which service?",
+    options: [
+      { id: "A", text: "Azure Cosmos DB" },
+      { id: "B", text: "Azure SQL Database" },
+      { id: "C", text: "Azure Database for PostgreSQL" },
+      { id: "D", text: "Azure Table Storage" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "JSON documents + global low latency + elastic scale = Cosmos DB's design sweet spot. Relational options fit when you need joins/ACID across entities; Table Storage lacks the query richness and global distribution.",
+    optionExplanations: {
+      A: "Document model + global scale = Cosmos. Correct.",
+      B: "Relational engine — wrong shape for schemaless JSON catalog.",
+      C: "Same relational mismatch.",
+      D: "Table is simple key-attribute — no rich querying.",
+    },
+    services: ["Azure Cosmos DB"],
+    references: [
+      {
+        title: "Cosmos DB — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/cosmos-db/introduction",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-ds-002",
+    slug: "aza-blob-tier-design-lifecycle",
+    cert: "az-305",
+    domain: "az305-data-storage",
+    topic: "az305-data-storage",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Design cost-optimized blob storage: logs are read daily for 30 days, monthly for a year, then archived for compliance. What implements the transitions?",
+    options: [
+      { id: "A", text: "Blob lifecycle management policies — Hot → Cool → Archive by age" },
+      { id: "B", text: "Manual tier changes via script" },
+      { id: "C", text: "Three separate storage accounts" },
+      { id: "D", text: "Azure Files sync" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Lifecycle management automates tier transitions by rules (age since created/modified) — Hot→Cool→Cold→Archive and delete policies. The designed-answer; manual scripts and account-splitting are anti-patterns.",
+    optionExplanations: {
+      A: "Automated age-based tiering = lifecycle policies. Correct.",
+      B: "Scripting duplicates a managed feature.",
+      C: "Account splitting doesn't automate tiering.",
+      D: "Files is SMB shares — not blob lifecycle.",
+    },
+    services: ["Azure Blob Storage"],
+    references: [
+      {
+        title: "Lifecycle management — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/storage/blobs/lifecycle-management-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-ds-003",
+    slug: "aza-data-redundancy-grs-zrs",
+    cert: "az-305",
+    domain: "az305-data-storage",
+    topic: "az305-data-storage",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Design requirement: storage must survive a full AZ outage within a region AND a whole-region disaster — with read access to the secondary. Which redundancy option?",
+    options: [
+      { id: "A", text: "LRS" },
+      { id: "B", text: "ZRS" },
+      { id: "C", text: "RA-GZRS" },
+      { id: "D", text: "GRS" },
+    ],
+    correctAnswers: ["C"],
+    explanation:
+      "Requirements stack: AZ resilience (zone-redundant) + region resilience (geo) + READ access to secondary (RA-). RA-GZRS = zone redundancy locally + geo replica with read access — the maximum option. GRS is geo but not zonal locally.",
+    optionExplanations: {
+      A: "LRS = single DC — fails both requirements.",
+      B: "ZRS = AZ-safe but no geo copy.",
+      C: "Zonal + geo + readable secondary = RA-GZRS. Correct.",
+      D: "GRS has geo but LRS locally — fails the AZ requirement.",
+    },
+    services: ["Azure Storage"],
+    references: [
+      {
+        title: "Storage redundancy — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-ds-004",
+    slug: "aza-sql-elastic-pool-design",
+    cert: "az-305",
+    domain: "az305-data-storage",
+    topic: "az305-data-storage",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Design for a SaaS ISV: 500 customer databases, each with unpredictable individual load but predictable aggregate. Most cost-efficient Azure SQL deployment?",
+    options: [
+      { id: "A", text: "One single database per customer, individually sized" },
+      { id: "B", text: "Elastic pools — shared compute across the databases" },
+      { id: "C", text: "One huge hyperscale database sharded" },
+      { id: "D", text: "SQL on VMs" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Elastic pools share provisioned capacity across many DBs with uncorrelated usage — the canonical multi-tenant SaaS cost pattern: pay for the aggregate, not the per-DB peak.",
+    optionExplanations: {
+      A: "Per-DB sizing pays for 500 individual peaks.",
+      B: "Shared pool for aggregate load = elastic pool. Correct.",
+      C: "Sharding one DB adds app complexity — not cost-optimal here.",
+      D: "VMs lose PaaS benefits and don't solve per-DB peaks.",
+    },
+    services: ["Azure SQL Database"],
+    references: [
+      {
+        title: "Elastic pools — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/azure-sql/database/elastic-pool-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-ds-005",
+    slug: "aza-data-factory-vs-synapse-pipelines",
+    cert: "az-305",
+    domain: "az305-data-storage",
+    topic: "az305-data-storage",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Design needs orchestrated data movement — 60 sources into a lake on schedules with transformations. Which service is the ETL/ELT orchestrator?",
+    options: [
+      { id: "A", text: "Azure Data Factory" },
+      { id: "B", text: "Azure Databricks" },
+      { id: "C", text: "Power BI dataflows" },
+      { id: "D", text: "Azure Logic Apps" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "ADF (also inside Synapse/Fabric as pipelines) is the data-integration service — Copy activity over 90+ connectors, data flows for transform, triggers/schedules. Databricks does heavy transformation but isn't the pipeline orchestrator.",
+    optionExplanations: {
+      A: "Orchestrated data movement = ADF. Correct.",
+      B: "Databricks transforms — not scheduled multi-source ingestion.",
+      C: "Dataflows prep data FOR BI — limited orchestration.",
+      D: "Logic Apps = workflow automation, not data pipelines.",
+    },
+    services: ["Azure Data Factory"],
+    references: [
+      {
+        title: "Azure Data Factory — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/data-factory/introduction",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-ds-006",
+    slug: "aza-storage-account-kinds",
+    cert: "az-305",
+    domain: "az305-data-storage",
+    topic: "az305-data-storage",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Design constraint: a storage account must support page blobs for VM disks AND block blobs — which account kind covers both?",
+    options: [
+      { id: "A", text: "StorageV2 (general-purpose v2)" },
+      { id: "B", text: "Premium block blobs" },
+      { id: "C", text: "Premium page blobs" },
+      { id: "D", text: "FileStorage premium" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "StorageV2 = the default general-purpose account: blobs (block/page/append), files, queues, tables. Premium SKUs are specialized — block blob premium, page blob premium, or file premium — each optimized for one workload.",
+    optionExplanations: {
+      A: "General-purpose covers both blob types. Correct.",
+      B: "Block-blob premium doesn't do page blobs.",
+      C: "Page-blob premium doesn't do block blobs.",
+      D: "FileStorage is Azure Files only.",
+    },
+    services: ["Azure Storage"],
+    references: [
+      {
+        title: "Storage account types — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-ds-007",
+    slug: "aza-azure-files-vs-blob-design",
+    cert: "az-305",
+    domain: "az305-data-storage",
+    topic: "az305-data-storage",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Design decision: lift-and-shift apps need a shared filesystem mounted via SMB from multiple VMs. Which storage choice?",
+    options: [
+      { id: "A", text: "Azure Files" },
+      { id: "B", text: "Azure Blob Storage" },
+      { id: "C", text: "Azure Table Storage" },
+      { id: "D", text: "Managed disks shared between VMs" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Azure Files = managed SMB/NFS shares mountable from many VMs and on-prem — the file-server replacement. Blob is object storage (no native SMB mount); shared managed disks have severe constraints (max nodes, SCSI PR).",
+    optionExplanations: {
+      A: "Shared SMB filesystem = Azure Files. Correct.",
+      B: "Object storage — not a mounted filesystem.",
+      C: "Key-attribute store — not files.",
+      D: "Shared disks exist but are constrained — Files is the design answer.",
+    },
+    services: ["Azure Files"],
+    references: [
+      {
+        title: "Azure Files — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/storage/files/storage-files-introduction",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-ds-008",
+    slug: "aza-cosmos-consistency-design",
+    cert: "az-305",
+    domain: "az305-data-storage",
+    topic: "az305-data-storage",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "Design trade-off: a global app needs the STRONGEST consistency still allowing multi-region writes to complete during a regional outage. Which consistency level?",
+    options: [
+      { id: "A", text: "Strong" },
+      { id: "B", text: "Bounded staleness" },
+      { id: "C", text: "Session" },
+      { id: "D", text: "Eventual" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Strong consistency can't serve writes in a partition during failover (availability trade-off). Bounded staleness is the strongest level that tolerates bounded lag — the exam's favorite 'strongest-but-still-available' answer.",
+    optionExplanations: {
+      A: "Strong blocks writes during partition/outage.",
+      B: "Bounded staleness = strongest with bounded lag. Correct.",
+      C: "Session is weaker — per-client view only.",
+      D: "Eventual is weakest — no ordering/recency guarantee.",
+    },
+    services: ["Azure Cosmos DB"],
+    references: [
+      {
+        title: "Consistency tradeoffs — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/cosmos-db/consistency-levels",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-ds-009",
+    slug: "aza-immutable-storage-compliance",
+    cert: "az-305",
+    domain: "az305-data-storage",
+    topic: "az305-data-storage",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Compliance design: financial records must be stored WORM-style (write once, read many) — undeletable and unmodifiable for 7 years. Which storage capability?",
+    options: [
+      { id: "A", text: "Blob immutable storage policies (time-based retention/legal hold)" },
+      { id: "B", text: "Resource locks on the storage account" },
+      { id: "C", text: "RBAC deny assignments" },
+      { id: "D", text: "Archive tier storage" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Immutable storage policies enforce WORM at the data layer — time-based retention and legal holds prevent modification/deletion even by admins. Locks protect the account config, not object content; RBAC can be changed by owners.",
+    optionExplanations: {
+      A: "WORM enforcement = immutable policies. Correct.",
+      B: "Locks prevent resource deletion — not object modification.",
+      C: "RBAC can be revoked — not immutable compliance.",
+      D: "Archive is a cost tier — not immutability.",
+    },
+    services: ["Azure Blob Storage"],
+    references: [
+      {
+        title: "Immutable storage — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/storage/blobs/immutable-storage-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-ds-010",
+    slug: "aza-synapse-vs-sql-design",
+    cert: "az-305",
+    domain: "az305-data-storage",
+    topic: "az305-data-storage",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Design requirement: petabyte-scale analytics over historical data with MPP query processing and T-SQL — separate from the OLTP estate. Which service?",
+    options: [
+      { id: "A", text: "Azure SQL Database" },
+      { id: "B", text: "Azure Synapse Analytics dedicated SQL pools" },
+      { id: "C", text: "Azure Cosmos DB" },
+      { id: "D", text: "Azure Database for PostgreSQL" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Dedicated SQL pools in Synapse = MPP data warehousing — distributed compute across nodes for petabyte analytical workloads. Operational relational engines (SQL DB, PostgreSQL) aren't built for PB-scale scans; Cosmos is operational NoSQL.",
+    optionExplanations: {
+      A: "OLTP engine — wrong scale/model for analytics.",
+      B: "MPP warehouse = Synapse dedicated pools. Correct.",
+      C: "Operational NoSQL — not analytical MPP.",
+      D: "PostgreSQL is OLTP — not warehousing.",
+    },
+    services: ["Azure Synapse Analytics"],
+    references: [
+      {
+        title: "Dedicated SQL pools — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-overview-what-is",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  // ---- Business Continuity ----
+  {
+    id: "aza-bc-001",
+    slug: "aza-availability-sets-vs-zones",
+    cert: "az-305",
+    domain: "az305-business-continuity",
+    topic: "az305-business-continuity",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Design for VM resilience: app must survive a datacenter-level failure WITHIN the region — which offers stronger fault isolation than Availability Sets?",
+    options: [
+      { id: "A", text: "Availability Zones" },
+      { id: "B", text: "Larger VM size" },
+      { id: "C", text: "Proximity placement groups" },
+      { id: "D", text: "Azure Site Recovery" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Availability Sets protect against rack/hardware failures (fault/update domains within a DC). Availability Zones spread across physically separate datacenters in the region — stronger isolation. ASR covers region-level DR, not intra-region HA.",
+    optionExplanations: {
+      A: "DC-level isolation in-region = zones. Correct.",
+      B: "Size doesn't change failure domains.",
+      C: "Proximity groups pull VMs CLOSER — opposite of isolation.",
+      D: "ASR is for regional DR — not in-region HA.",
+    },
+    services: ["Azure Availability Zones", "Azure Virtual Machines"],
+    references: [
+      {
+        title: "Availability options — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/virtual-machines/availability",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-bc-002",
+    slug: "aza-sla-composite-calculation",
+    cert: "az-305",
+    domain: "az305-business-continuity",
+    topic: "az305-business-continuity",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "An app chain: App Service (99.95%) → Azure SQL (99.99%). What's the composite SLA — the availability of the combined dependency chain?",
+    options: [
+      { id: "A", text: "99.99% — the higher of the two" },
+      { id: "B", text: "99.94% — multiplied probabilities" },
+      { id: "C", text: "99.95% — the lower of the two" },
+      { id: "D", text: "100% — SLAs stack additively" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Serial dependencies multiply: 0.9995 × 0.9999 ≈ 0.9994 = 99.94%. Each added serial dependency LOWERS composite availability — the reason for parallel/redundant paths and SLA math questions on AZ-305.",
+    optionExplanations: {
+      A: "Composite can't exceed the weakest dependency.",
+      B: "0.9995 × 0.9999 ≈ 99.94%. Correct.",
+      C: "It's lower than either individual SLA.",
+      D: "Probabilities multiply — never add.",
+    },
+    services: ["Azure App Service", "Azure SQL Database"],
+    references: [
+      {
+        title: "SLA summary — Microsoft Learn",
+        url: "https://azure.microsoft.com/en-us/support/legal/sla/summary/",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-bc-003",
+    slug: "aza-backup-vs-site-recovery",
+    cert: "az-305",
+    domain: "az305-business-continuity",
+    topic: "az305-business-continuity",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A regional outage takes down a production VM fleet — business needs workloads running in a SECONDARY region within an hour. Which service?",
+    options: [
+      { id: "A", text: "Azure Backup" },
+      { id: "B", text: "Azure Site Recovery (ASR)" },
+      { id: "C", text: "Geo-redundant storage" },
+      { id: "D", text: "Snapshot copies to another region" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "ASR = disaster recovery: continuous replication to a secondary region, orchestrated failover with recovery plans — meets RTO for regional failover. Azure Backup = data protection/restore (data loss recovery), not running workloads elsewhere quickly.",
+    optionExplanations: {
+      A: "Backup restores DATA — doesn't stand up workloads fast.",
+      B: "Replication + orchestrated failover = ASR. Correct.",
+      C: "GRS covers storage only — not compute failover.",
+      D: "Snapshots help restore — not automated DR.",
+    },
+    services: ["Azure Site Recovery"],
+    references: [
+      {
+        title: "Azure Site Recovery — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/site-recovery/site-recovery-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-bc-004",
+    slug: "aza-traffic-manager-vs-front-door",
+    cert: "az-305",
+    domain: "az305-business-continuity",
+    topic: "az305-business-continuity",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "Design multi-region web app: instant failover between regions AND TLS termination/caching/WAF at the edge. Which service?",
+    options: [
+      { id: "A", text: "Azure Traffic Manager" },
+      { id: "B", text: "Azure Front Door" },
+      { id: "C", text: "Azure Load Balancer" },
+      { id: "D", text: "Azure DNS" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Front Door = global L7 entry: instant failover (anycast, not DNS TTL-bound), TLS offload, caching, WAF. Traffic Manager = DNS-based routing (TTL-limited failover, no TLS/caching). The 'global + L7 features' answer is Front Door.",
+    optionExplanations: {
+      A: "TM is DNS routing — slower failover, no L7 features.",
+      B: "Anycast edge + L7 + failover = Front Door. Correct.",
+      C: "Load Balancer is regional L4 — not global.",
+      D: "DNS resolves names — no traffic management features.",
+    },
+    services: ["Azure Front Door", "Azure Traffic Manager"],
+    references: [
+      {
+        title: "Front Door vs Traffic Manager — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/frontdoor/front-door-overview",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-bc-005",
+    slug: "aza-rpo-rto-design",
+    cert: "az-305",
+    domain: "az305-business-continuity",
+    topic: "az305-business-continuity",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Requirement: data loss tolerance = max 15 minutes; recovery time = max 1 hour. In DR design terms, which values do these set?",
+    options: [
+      { id: "A", text: "RPO 15 min, RTO 1 hour" },
+      { id: "B", text: "RTO 15 min, RPO 1 hour" },
+      { id: "C", text: "SLA 15 min, MTTR 1 hour" },
+      { id: "D", text: "Backup frequency 15 min, retention 1 hour" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "RPO (Recovery Point Objective) = how much data you can lose (15 min). RTO (Recovery Time Objective) = how fast you must be back (1 hour). Every DR exam question starts by mapping these two.",
+    optionExplanations: {
+      A: "Data loss = RPO; downtime = RTO. Correct.",
+      B: "Reversed — data loss is RPO, downtime is RTO.",
+      C: "SLA/MTTR are different metrics.",
+      D: "Frequency relates to RPO but mislabels the pair.",
+    },
+    services: ["Azure Site Recovery", "Azure Backup"],
+    references: [
+      {
+        title: "RTO and RPO — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/site-recovery/site-recovery-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-bc-006",
+    slug: "aza-backup-vault-design",
+    cert: "az-305",
+    domain: "az305-business-continuity",
+    topic: "az305-business-continuity",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Design data protection for Azure VMs: centralized backup policies, soft delete, encryption, cross-region restore. Which service?",
+    options: [
+      { id: "A", text: "Azure Backup with Recovery Services vault" },
+      { id: "B", text: "Managed disk snapshots" },
+      { id: "C", text: "Geo-redundant storage alone" },
+      { id: "D", text: "Azure Site Recovery" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Azure Backup (RSV/Backup vault) = managed backup: policy-driven schedules, retention, soft delete, immutable vaults, cross-region restore. Snapshots are point-in-time and unmanaged; ASR is DR — not backup.",
+    optionExplanations: {
+      A: "Policy + retention + soft delete = Backup vault. Correct.",
+      B: "Snapshots lack lifecycle/retention management.",
+      C: "GRS replicates storage — not restore points.",
+      D: "ASR = workload failover — not data backup.",
+    },
+    services: ["Azure Backup"],
+    references: [
+      {
+        title: "Azure Backup — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/backup/backup-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-bc-007",
+    slug: "aza-active-active-multi-region",
+    cert: "az-305",
+    domain: "az305-business-continuity",
+    topic: "az305-business-continuity",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "Design for near-zero RTO/RPO: app must serve writes in TWO regions simultaneously with automatic conflict resolution — which data-tier pattern?",
+    options: [
+      { id: "A", text: "Cosmos DB multi-region writes" },
+      { id: "B", text: "Azure SQL active geo-replication (readable secondary)" },
+      { id: "C", text: "RA-GRS blob storage" },
+      { id: "D", text: "Backup-restore to the second region" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Active-active writes in multiple regions = Cosmos multi-master with conflict resolution policies (LWW/merge/custom). SQL geo-replication is readable-secondary (single writer); storage RA-GRS is read-only secondary; backup is restore-based DR.",
+    optionExplanations: {
+      A: "Multi-region write = Cosmos multi-master. Correct.",
+      B: "Geo-replication = one writer + readable copies.",
+      C: "RA-GRS secondary is read-only storage.",
+      D: "Restore-based = hours of RTO/RPO.",
+    },
+    services: ["Azure Cosmos DB"],
+    references: [
+      {
+        title: "Multi-region writes — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/cosmos-db/multi-region-writes",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-bc-008",
+    slug: "aza-zone-redundant-sql",
+    cert: "az-305",
+    domain: "az305-business-continuity",
+    topic: "az305-business-continuity",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Azure SQL Database must tolerate an AZ failure with automatic failover and no data loss — which deployment option?",
+    options: [
+      { id: "A", text: "Zone-redundant configuration (premium/business-critical tier)" },
+      { id: "B", text: "Locally-redundant backups only" },
+      { id: "C", text: "Manual restore from geo-backup" },
+      { id: "D", text: "Read replicas" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Zone-redundant Azure SQL replicates across AZs with automatic failover — in-region AZ resilience. LRS backups don't survive AZ loss quickly; geo-restore is slow; replicas are for read scale/DR not automatic AZ failover.",
+    optionExplanations: {
+      A: "Zone redundancy = automatic AZ failover. Correct.",
+      B: "Backups aren't HA — they're DR.",
+      C: "Manual restore = high RTO/RPO.",
+      D: "Replicas serve reads — not automatic AZ failover.",
+    },
+    services: ["Azure SQL Database"],
+    references: [
+      {
+        title: "Zone-redundant availability — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/azure-sql/database/high-availability-sla",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-bc-009",
+    slug: "aza-vmss-orchestration",
+    cert: "az-305",
+    domain: "az305-business-continuity",
+    topic: "az305-business-continuity",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Design a stateless web tier: auto-scale instances on load, spread across zones, automatic repair of unhealthy instances. Which compute option?",
+    options: [
+      { id: "A", text: "Virtual Machine Scale Sets with zone spread + automatic repairs" },
+      { id: "B", text: "Individual VMs behind a load balancer" },
+      { id: "C", text: "Azure Batch" },
+      { id: "D", text: "Availability Sets only" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "VMSS = elastic fleet: autoscale rules, zone-spanning deployment, health-based automatic instance repair/replacement — the designed answer for stateless scale-out. Individual VMs can't self-heal or autoscale.",
+    optionExplanations: {
+      A: "Autoscale + zonal spread + self-healing = VMSS. Correct.",
+      B: "Manual fleet has no scaling or repair.",
+      C: "Batch is for parallel compute jobs — not web tiers.",
+      D: "ASets protect against rack failure — no scaling.",
+    },
+    services: ["Azure Virtual Machine Scale Sets"],
+    references: [
+      {
+        title: "VMSS — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/virtual-machine-scale-sets/overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-bc-010",
+    slug: "aza-geo-restore-sql-dr",
+    cert: "az-305",
+    domain: "az305-business-continuity",
+    topic: "az305-business-continuity",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A secondary region needs a readable, continuously-updated copy of the primary Azure SQL database for DR — NOT just backup restores. Which feature?",
+    options: [
+      { id: "A", text: "Active geo-replication" },
+      { id: "B", text: "Geo-redundant backups + manual restore" },
+      { id: "C", text: "Long-term retention (LTR)" },
+      { id: "D", text: "Snapshot replication" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Active geo-replication maintains a readable secondary continuously synced from the primary — usable for DR failover or read scale. Geo-restore recreates from backups (slow); LTR is long-term backup retention.",
+    optionExplanations: {
+      A: "Continuous readable replica = geo-replication. Correct.",
+      B: "Manual restore is a different, slower DR pattern.",
+      C: "LTR = backup retention — not a live replica.",
+      D: "Snapshots aren't continuously-synced secondaries.",
+    },
+    services: ["Azure SQL Database"],
+    references: [
+      {
+        title: "Active geo-replication — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/azure-sql/database/active-geo-replication-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  // ---- Infrastructure ----
+  {
+    id: "aza-inf-001",
+    slug: "aza-vpn-vs-expressroute-design",
+    cert: "az-305",
+    domain: "az305-infrastructure",
+    topic: "az305-infrastructure",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Design hybrid connectivity for a bank: dedicated private link to Azure — never traverses the public internet, predictable latency, high bandwidth. Which connectivity?",
+    options: [
+      { id: "A", text: "Site-to-site VPN over the internet" },
+      { id: "B", text: "ExpressRoute private peering" },
+      { id: "C", text: "Point-to-site VPN" },
+      { id: "D", text: "VNet peering" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "ExpressRoute = private dedicated circuit via connectivity provider — never touches public internet, predictable bandwidth/latency, enterprise-grade. S2S VPN rides the internet (IPsec) — cheaper, no SLA on path. Classic hybrid connectivity trade-off.",
+    optionExplanations: {
+      A: "VPN uses public internet — fails the requirement.",
+      B: "Private dedicated link = ExpressRoute. Correct.",
+      C: "P2S is for individual clients — not site connectivity.",
+      D: "Peering connects Azure VNets — not on-prem.",
+    },
+    services: ["Azure ExpressRoute"],
+    references: [
+      {
+        title: "ExpressRoute — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/expressroute/expressroute-introduction",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-inf-002",
+    slug: "aza-hub-spoke-topology",
+    cert: "az-305",
+    domain: "az305-infrastructure",
+    topic: "az305-infrastructure",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Design: 30 workload VNets must share centralized egress (firewall) and hybrid connectivity, without direct VNet-to-VNet links everywhere. Which topology?",
+    options: [
+      { id: "A", text: "Hub-and-spoke — shared services in hub VNet, workloads peered as spokes" },
+      { id: "B", text: "Full mesh peering between all VNets" },
+      { id: "C", text: "Single flat VNet for everything" },
+      { id: "D", text: "Separate subscriptions, no networking" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Hub-spoke centralizes shared services (firewall, DNS, ExpressRoute gateway) in the hub; spokes peer to the hub — scale without N² peering. Mesh explodes management; flat VNet loses isolation/blast-radius control.",
+    optionExplanations: {
+      A: "Centralized shared services = hub-spoke. Correct.",
+      B: "N² peerings don't scale to 30 VNets.",
+      C: "Flat VNet loses workload isolation.",
+      D: "Subs alone don't solve network sharing.",
+    },
+    services: ["Azure Virtual Network", "Azure Firewall"],
+    references: [
+      {
+        title: "Hub-spoke topology — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/architecture/networking/architecture/hub-spoke",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-inf-003",
+    slug: "aza-app-gateway-vs-front-door",
+    cert: "az-305",
+    domain: "az305-infrastructure",
+    topic: "az305-infrastructure",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Design L7 load balancing WITHIN one region: path-based routing, WAF, TLS offload for a regional web app. Which service?",
+    options: [
+      { id: "A", text: "Azure Application Gateway" },
+      { id: "B", text: "Azure Front Door" },
+      { id: "C", text: "Azure Load Balancer" },
+      { id: "D", text: "Traffic Manager" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Application Gateway = regional L7 LB: path/host routing, WAF, TLS termination. Front Door is GLOBAL edge entry; Load Balancer is L4; Traffic Manager is DNS routing. Regional + L7 = App Gateway.",
+    optionExplanations: {
+      A: "Regional L7 + WAF = App Gateway. Correct.",
+      B: "Front Door is global/edge — different scope.",
+      C: "LB is L4 — no path routing/WAF.",
+      D: "TM is DNS — not in-path L7.",
+    },
+    services: ["Azure Application Gateway"],
+    references: [
+      {
+        title: "Application Gateway — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/application-gateway/overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-inf-004",
+    slug: "aza-private-endpoint-design",
+    cert: "az-305",
+    domain: "az305-infrastructure",
+    topic: "az305-infrastructure",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Security requirement: app in a VNet must reach Azure SQL and Storage over PRIVATE IP only — no public endpoints exposed. Which design element?",
+    options: [
+      { id: "A", text: "Private endpoints (Private Link) + DNS zone integration" },
+      { id: "B", text: "Service endpoints" },
+      { id: "C", text: "Public endpoints with NSG rules" },
+      { id: "D", text: "ExpressRoute only" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Private endpoints project the PaaS service as a private IP inside your VNet — public access can be fully disabled; Private DNS zones resolve the service name to the private IP. Service endpoints keep the public address (traffic just rides the backbone).",
+    optionExplanations: {
+      A: "Private IP in-VNet + DNS = Private Link. Correct.",
+      B: "Service endpoints keep public addressing — not private IP.",
+      C: "NSG can't make a public endpoint private.",
+      D: "ER is for on-prem connectivity — not in-VNet PaaS privacy.",
+    },
+    services: ["Azure Private Link", "Azure Private DNS"],
+    references: [
+      {
+        title: "Private Link — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/private-link/private-link-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-inf-005",
+    slug: "aza-aks-vs-appservice-design",
+    cert: "az-305",
+    domain: "az305-infrastructure",
+    topic: "az305-infrastructure",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Design compute for a microservices platform: container orchestration, service mesh needs, custom networking, team has Kubernetes skills. Which service?",
+    options: [
+      { id: "A", text: "Azure Kubernetes Service" },
+      { id: "B", text: "Azure App Service" },
+      { id: "C", text: "Azure Container Apps" },
+      { id: "D", text: "Azure Functions" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "AKS = managed Kubernetes — full orchestration control, service mesh (Istio/OSM), custom CNI, team expertise. Container Apps = simpler serverless containers; App Service = PaaS web apps; Functions = event-driven compute. 'Kubernetes skills + orchestration depth' = AKS.",
+    optionExplanations: {
+      A: "Full K8s orchestration = AKS. Correct.",
+      B: "App Service abstracts orchestration — less control.",
+      C: "Container Apps are simpler — no mesh/CNI depth like AKS.",
+      D: "Functions are for event-driven code — not platform hosting.",
+    },
+    services: ["Azure Kubernetes Service"],
+    references: [
+      {
+        title: "AKS — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/aks/intro-kubernetes",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-inf-006",
+    slug: "aza-vwan-global-transit",
+    cert: "az-305",
+    domain: "az305-infrastructure",
+    topic: "az305-infrastructure",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "Design a global network: 200 branches, multiple regions, unified transit for VNets + on-prem (VPN + ExpressRoute + SD-WAN) through managed hubs. Which architecture?",
+    options: [
+      { id: "A", text: "Azure Virtual WAN" },
+      { id: "B", text: "Manual hub-spoke with custom hubs" },
+      { id: "C", text: "VNet global peering mesh" },
+      { id: "D", text: "Azure Front Door" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Virtual WAN = Microsoft-managed global transit: vHubs per region interconnect VNets, VPN, ExpressRoute, and SD-WAN branches into one routed fabric — the enterprise-scale answer vs hand-built hub-spoke at that scale.",
+    optionExplanations: {
+      A: "Managed global transit fabric = vWAN. Correct.",
+      B: "Manual hub-spoke works but doesn't scale to 200 branches cleanly.",
+      C: "Peering mesh isn't transitive routing.",
+      D: "Front Door is L7 edge — not network transit.",
+    },
+    services: ["Azure Virtual WAN"],
+    references: [
+      {
+        title: "Virtual WAN — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/virtual-wan/virtual-wan-about",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-inf-007",
+    slug: "aza-azure-firewall-vs-nsg",
+    cert: "az-305",
+    domain: "az305-infrastructure",
+    topic: "az305-infrastructure",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Design egress security: all outbound traffic from multiple VNets must be centrally inspected/filtered by FQDN and TLS-inspected. Which service?",
+    options: [
+      { id: "A", text: "Azure Firewall Premium" },
+      { id: "B", text: "NSGs on each subnet" },
+      { id: "C", text: "Azure Front Door WAF" },
+      { id: "D", text: "Application Gateway WAF" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Azure Firewall = centralized stateful firewall for VNets: FQDN filtering, threat intel, TLS inspection (Premium SKU), SNAT'd egress. NSGs are IP/port-level per-subnet — no FQDN or TLS inspection. WAFs protect INBOUND web traffic.",
+    optionExplanations: {
+      A: "Centralized egress FQDN/TLS inspection = Firewall Premium. Correct.",
+      B: "NSGs are per-subnet IP rules — no FQDN/TLS.",
+      C: "Front Door WAF protects inbound web — not egress.",
+      D: "App GW WAF also protects inbound apps.",
+    },
+    services: ["Azure Firewall"],
+    references: [
+      {
+        title: "Azure Firewall — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/firewall/overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-inf-008",
+    slug: "aza-landing-zone-architecture",
+    cert: "az-305",
+    domain: "az305-infrastructure",
+    topic: "az305-infrastructure",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "Design an enterprise Azure foundation: identity, management groups, policy, networking, and subscription vending standardized before workloads land. What's this called?",
+    options: [
+      { id: "A", text: "Azure Landing Zone" },
+      { id: "B", text: "A resource group" },
+      { id: "C", text: "Azure Blueprints" },
+      { id: "D", text: "An availability zone" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Azure Landing Zone = the Cloud Adoption Framework's reference architecture: platform vs workload subscriptions, management-group hierarchy, policy-as-code, hub networking, and subscription vending — the enterprise-foundation pattern.",
+    optionExplanations: {
+      A: "CAF enterprise foundation = landing zone. Correct.",
+      B: "A resource group is one container — not an architecture.",
+      C: "Blueprints deploy artifacts — not the foundation pattern.",
+      D: "AZ is a datacenter concept — not governance.",
+    },
+    services: ["Azure landing zones", "Azure Management Groups"],
+    references: [
+      {
+        title: "Azure landing zones — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-inf-009",
+    slug: "aza-migration-assess-vs-migrate",
+    cert: "az-305",
+    domain: "az305-infrastructure",
+    topic: "az305-infrastructure",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Migration design phase: inventory on-prem servers, right-size Azure targets, estimate monthly cost BEFORE migrating. Which toolset?",
+    options: [
+      { id: "A", text: "Azure Migrate discovery/assessment" },
+      { id: "B", text: "Azure Site Recovery" },
+      { id: "C", text: "Azure Data Box" },
+      { id: "D", text: "ARM template deployment" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Azure Migrate covers the full lifecycle: discovery/dependency mapping → assessment (readiness + right-sizing + cost) → migration execution. ASR replicates/fails over (a migration tool, not assessment); Data Box is offline data transfer.",
+    optionExplanations: {
+      A: "Discovery + assessment + right-sizing = Azure Migrate. Correct.",
+      B: "ASR does the move — not the pre-migration assessment.",
+      C: "Data Box ships disks — not server assessment.",
+      D: "ARM deploys resources — doesn't assess on-prem.",
+    },
+    services: ["Azure Migrate"],
+    references: [
+      {
+        title: "Azure Migrate — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/migrate/migrate-services-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-inf-010",
+    slug: "aza-azure-arc-hybrid-management",
+    cert: "az-305",
+    domain: "az305-infrastructure",
+    topic: "az305-infrastructure",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Design unified management: servers and K8s clusters running on-prem AND in other clouds must appear in Azure for policy, monitoring, and updates via a single control plane. Which capability?",
+    options: [
+      { id: "A", text: "Azure Arc" },
+      { id: "B", text: "Azure Migrate" },
+      { id: "C", text: "ExpressRoute" },
+      { id: "D", text: "Azure Lighthouse" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Azure Arc projects non-Azure resources (servers, K8s, SQL) into Azure Resource Manager — apply Azure Policy, Defender, Monitor, and update management uniformly across hybrid/multi-cloud estates.",
+    optionExplanations: {
+      A: "Extend Azure control plane everywhere = Arc. Correct.",
+      B: "Migrate moves workloads TO Azure — not manage elsewhere.",
+      C: "ER is connectivity — not management.",
+      D: "Lighthouse manages customer tenants — not infra.",
+    },
+    services: ["Azure Arc"],
+    references: [
+      {
+        title: "Azure Arc — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/azure-arc/overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  }
+];
