@@ -711,6 +711,59 @@ export const CERTIFICATIONS: Certification[] = [
       },
     ],
   },
+  {
+    id: "dp-900",
+    code: "DP-900",
+    name: "Microsoft Azure Data Fundamentals",
+    vendor: "azure",
+    level: "foundational",
+    tagline: "Core data concepts, relational and non-relational data, and analytics workloads on Azure.",
+    description:
+      "Microsoft's entry-level data certification. Covers relational vs non-relational data, Azure database services (SQL Database, Cosmos DB), analytics concepts (Synapse, Fabric, Power BI), and batch vs streaming processing — no database experience required.",
+    questionCount: 45,
+    durationMinutes: 60,
+    costUsd: 99,
+    passingScaledScore: 700,
+    scaledScoreRange: [1, 1000],
+    examGuideUrl:
+      "https://learn.microsoft.com/en-us/credentials/certifications/azure-data-fundamentals/",
+    verified: false,
+    featured: true,
+    domains: [
+      {
+        id: "dp-core-data-concepts",
+        number: 1,
+        name: "Describe Core Data Concepts",
+        weight: 30,
+        summary:
+          "Data types (structured/semi/unstructured), workloads (transactional vs analytical), roles, and core data concepts like batch/streaming.",
+      },
+      {
+        id: "dp-relational-data",
+        number: 2,
+        name: "Identify Considerations for Relational Data on Azure",
+        weight: 22,
+        summary:
+          "Relational concepts (tables, keys, normalization), SQL basics, and Azure relational services (SQL Database, PostgreSQL, MySQL).",
+      },
+      {
+        id: "dp-non-relational-data",
+        number: 3,
+        name: "Describe Considerations for Working with Non-Relational Data on Azure",
+        weight: 18,
+        summary:
+          "Non-relational data types, Azure Cosmos DB APIs/consistency, Blob/ADLS/Table/Files storage, and when each fits.",
+      },
+      {
+        id: "dp-analytics-workloads",
+        number: 4,
+        name: "Describe an Analytics Workload on Azure",
+        weight: 30,
+        summary:
+          "Data warehouses, lakes, ETL/ELT, Synapse Analytics, Fabric, Power BI, and real-time analytics.",
+      },
+    ],
+  },
 ];
 
 export const ALL_DOMAINS: CertDomain[] = CERTIFICATIONS.flatMap(

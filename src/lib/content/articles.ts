@@ -3958,6 +3958,296 @@ ARTICLES.push({
   ],
 });
 
+ARTICLES.push({
+  slug: "dp-900-exam-guide",
+  title: "DP-900 Exam Guide: Azure Data Fundamentals Explained",
+  description:
+    "Everything about the Microsoft Azure Data Fundamentals (DP-900) exam — format, cost, the four domains and their weights, and how it compares to AWS's data certifications.",
+  domain: "dp-core-data-concepts",
+  topic: "dp-core-data-concepts",
+  updatedAt: "2026-11-05",
+  readingMinutes: 7,
+  sections: [
+    {
+      paragraphs: [
+        "DP-900 is Microsoft's entry-level data certification — the data-track equivalent of AZ-900. It validates that you understand core data concepts and can place workloads on the right Azure data service: relational databases, Cosmos DB, storage services, and the analytics stack (Synapse, Fabric, Power BI).",
+        "No database administration experience is required — this is a concepts-and-service-recognition exam, not a hands-on SQL test.",
+      ],
+    },
+    {
+      heading: "Exam basics",
+      list: [
+        "Cost: $99 USD",
+        "Questions: ~40–60, single-choice + multiple-response",
+        "Duration: ~60 minutes",
+        "Passing score: 700/1000",
+        "Format: entirely knowledge-based — no labs",
+      ],
+    },
+    {
+      heading: "The four domains",
+      list: [
+        "Describe core data concepts (~30%) — data types, transactional vs analytical workloads, batch vs streaming, roles",
+        "Identify considerations for relational data on Azure (~22%) — relational model basics, SQL, Azure SQL/PostgreSQL/MySQL services",
+        "Describe considerations for non-relational data (~18%) — Cosmos DB, Blob/ADLS/Table/Files storage",
+        "Describe an analytics workload (~30%) — warehouses, lakes, ETL/ELT, Synapse, Fabric, Power BI, real-time",
+      ],
+    },
+    {
+      heading: "What the exam actually tests",
+      paragraphs: [
+        "DP-900 is mostly service-selection questions: 'a company needs X — which service?' You need to know what each Azure data service DOES and when it's the right fit — not how to configure it. The heaviest memorization is the analytics stack: Synapse vs Fabric vs Databricks vs Power BI, and Event Hubs vs Stream Analytics for real-time.",
+        "Cosmos DB gets outsized attention for an 18% domain — consistency levels, APIs, and partition keys are all fair game.",
+      ],
+    },
+    {
+      heading: "DP-900 vs AWS equivalents",
+      paragraphs: [
+        "AWS doesn't have a direct DP-900 equivalent — the closest is the data portion of CLF-C02 (Cloud Practitioner) or the specialty-level Database Specialty (retired). If you know AWS data services, the concepts transfer: RDS ≈ Azure SQL Database, DynamoDB ≈ Cosmos DB (multi-model aside), S3 ≈ Blob/ADLS, Redshift ≈ Synapse dedicated SQL pools, Kinesis ≈ Event Hubs, QuickSight ≈ Power BI.",
+      ],
+    },
+    {
+      heading: "How to prepare",
+      list: [
+        "Work through our DP-900 question bank — every question maps to one of the four domains with per-option explanations.",
+        "Read the DP-900 cheat sheet — the service-selection decision tables cover most of what the exam asks.",
+        "Follow the how-to-pass guide — a 2-week plan is realistic for this exam.",
+        "If you're coming from AWS, review the concept translation table in the study plan — the vocabulary mapping is the fastest ramp.",
+      ],
+    },
+  ],
+  references: [
+    { title: "DP-900 certification page (Microsoft)", url: "https://learn.microsoft.com/en-us/credentials/certifications/azure-data-fundamentals/" },
+    { title: "DP-900 study guide (Microsoft Learn)", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/dp-900" },
+  ],
+});
+
+ARTICLES.push({
+  slug: "dp-900-cheat-sheet",
+  title: "DP-900 Cheat Sheet: Azure Data Services at a Glance",
+  description:
+    "The essential DP-900 reference — data types, every Azure data service and when to pick it, Cosmos DB consistency levels, analytics stack, and the decision tables the exam loves.",
+  domain: "dp-relational-data",
+  topic: "dp-relational-data",
+  updatedAt: "2026-11-05",
+  readingMinutes: 9,
+  sections: [
+    {
+      paragraphs: [
+        "DP-900 is a service-selection exam: nearly every question reduces to 'scenario → correct service or concept.' This cheat sheet organizes everything into decision tables.",
+      ],
+    },
+    {
+      heading: "Data types",
+      list: [
+        "Structured — fixed schema, rows/columns (SQL tables)",
+        "Semi-structured — organizational markers, no rigid schema (JSON, XML)",
+        "Unstructured — no structure (images, video, free text)",
+        "Schema-on-write = enforce structure on ingest (warehouse); schema-on-read = interpret at query time (lake)",
+      ],
+    },
+    {
+      heading: "Workloads",
+      list: [
+        "OLTP — many small transactions, low latency, current data (order entry) → operational databases",
+        "OLAP — large scans/aggregations over history (reporting) → data warehouse",
+        "Batch — accumulated data on a schedule (minutes–hours latency)",
+        "Streaming — continuous processing as data arrives (sub-second to seconds)",
+        "ETL = transform then load; ELT = load raw first, transform in the target (modern lakehouse pattern)",
+      ],
+    },
+    {
+      heading: "Relational services — pick by requirement",
+      list: [
+        "Azure SQL Database — PaaS, single database, managed everything, no instance features",
+        "Azure SQL Managed Instance — PaaS with ~full SQL Server compat (Agent, linked servers, CLR, cross-DB) — migration target",
+        "SQL Server on Azure VMs — IaaS, full control (any version, OS agents) — you manage it",
+        "Azure Database for PostgreSQL / MySQL — managed open-source engines",
+        "Elastic pools — share DTU/vCore capacity across many databases with variable load",
+      ],
+    },
+    {
+      heading: "Relational concepts (quick)",
+      list: [
+        "Primary key — uniquely identifies a row; foreign key — references a PK in another table",
+        "Normalization — removes redundancy/update anomalies (OLTP); denormalization/star schema — fewer joins for analytics",
+        "Index — speeds filtered lookups at the cost of write overhead",
+        "View — saved query as a virtual table (abstraction + column/row restriction)",
+        "SELECT reads; INSERT/UPDATE/DELETE write; CREATE/ALTER/DROP are DDL",
+      ],
+    },
+    {
+      heading: "Non-relational — pick by model",
+      list: [
+        "Azure Cosmos DB — globally distributed multi-model NoSQL: NoSQL (JSON), MongoDB, Cassandra, Table, Gremlin APIs; tunable consistency; single-digit-ms latency",
+        "Azure Table Storage — simple key-attribute store (PartitionKey + RowKey)",
+        "Azure Blob Storage — object storage for files/media; tiers: Hot / Cool / Cold / Archive (archive = offline, hours to rehydrate)",
+        "Azure Data Lake Storage Gen2 — Blob + hierarchical namespace (real directories, POSIX ACLs) — the analytics lake foundation",
+        "Azure Files — managed SMB/NFS shares (file-server replacement)",
+      ],
+    },
+    {
+      heading: "Cosmos DB consistency levels (strong → weak)",
+      list: [
+        "Strong — linearizable, always latest write (lowest availability during partitions)",
+        "Bounded staleness — lag bounded by time or versions",
+        "Session — consistent within a client session (default, the sweet spot)",
+        "Consistent prefix — reads never out of order, but may lag",
+        "Eventual — fastest/most available, no ordering guarantee",
+      ],
+    },
+    {
+      heading: "Analytics stack — pick by role",
+      list: [
+        "Azure Synapse Analytics — integrated analytics workspace: dedicated SQL pools (warehouse), serverless SQL, Spark, pipelines",
+        "Microsoft Fabric — unified SaaS analytics: OneLake, lakehouse, warehouse, real-time (KQL), Power BI — the newer consolidated platform",
+        "Azure Databricks — managed Spark notebooks for big-data engineering/ML",
+        "Azure Data Factory — ETL/ELT orchestration: Copy activity (90+ connectors), data flows, triggers",
+        "Azure Event Hubs — event ingestion front door (millions/sec, Kafka-compatible)",
+        "Azure Stream Analytics — SQL queries over streams; windowing (tumbling/hopping/session) bounds calculations",
+        "Azure IoT Hub — Event Hubs + device management for IoT scenarios",
+        "Power BI — dashboards/reports; the visualization layer at the pipeline's end",
+        "Azure HDInsight — managed open-source clusters (Hadoop/Spark/HBase) — legacy-heavy option",
+      ],
+    },
+    {
+      heading: "Analytics concepts",
+      list: [
+        "Data warehouse — curated, structured, BI-optimized (schema-on-write, star schemas, MPP)",
+        "Data lake — raw data at scale in native format (schema-on-read)",
+        "Lakehouse — lake storage + warehouse semantics; medallion layers: bronze (raw) → silver (cleaned) → gold (business aggregates)",
+        "Fact table = measurable events (sales, clicks); dimension table = descriptive context (customer, product, date)",
+        "Star schema = fact table surrounded by denormalized dimensions — the analytics standard",
+      ],
+    },
+  ],
+  references: [
+    { title: "Explore relational data on Azure (Microsoft Learn)", url: "https://learn.microsoft.com/en-us/training/modules/explore-relational-data-offerings/" },
+    { title: "Explore non-relational data on Azure (Microsoft Learn)", url: "https://learn.microsoft.com/en-us/training/modules/explore-non-relational-data-offerings-azure/" },
+    { title: "Explore analytics workloads (Microsoft Learn)", url: "https://learn.microsoft.com/en-us/training/modules/explore-data-analytics-azure/" },
+  ],
+});
+
+ARTICLES.push({
+  slug: "how-to-pass-dp-900",
+  title: "How to Pass DP-900: The 2-Week Study Plan",
+  description:
+    "A realistic 2-week plan for the Azure Data Fundamentals exam — what to study in what order, the AWS-to-Azure concept mapping, and which details actually get tested.",
+  domain: "dp-core-data-concepts",
+  topic: "dp-core-data-concepts",
+  updatedAt: "2026-11-05",
+  readingMinutes: 6,
+  sections: [
+    {
+      paragraphs: [
+        "DP-900 is a genuinely beginner-friendly exam — two weeks of focused study is realistic for most people, less if you already work with data. The trap is the breadth of the analytics domain: Synapse, Fabric, Databricks, Event Hubs, Stream Analytics, and Power BI all look similar until you learn the one-line job description of each.",
+      ],
+    },
+    {
+      heading: "Week 1 — core concepts + relational/non-relational",
+      list: [
+        "Day 1–2: data types (structured/semi/unstructured), OLTP vs OLAP, batch vs streaming, ETL vs ELT — the vocabulary foundation",
+        "Day 3–4: relational model — keys, normalization, views, indexes, basic SQL statement roles; Azure relational services and when each fits (SQL Database vs Managed Instance vs VM vs PostgreSQL/MySQL)",
+        "Day 5–6: non-relational — Cosmos DB (APIs, consistency levels, partition keys), Blob tiers, ADLS Gen2 vs Blob, Table Storage vs Cosmos Table API, Azure Files",
+        "Day 7: review + first pass through our question bank — target the core-concepts and relational topics",
+      ],
+    },
+    {
+      heading: "Week 2 — analytics + consolidation",
+      list: [
+        "Day 8–9: the analytics stack — warehouse vs lake vs lakehouse, Synapse components, Fabric, Databricks, Data Factory",
+        "Day 10: real-time — Event Hubs vs IoT Hub vs Stream Analytics; windowing basics; medallion architecture (bronze/silver/gold)",
+        "Day 11: Power BI + fact/dimension/star schema concepts",
+        "Day 12–13: full question-bank pass + mock exam; drill every wrong answer",
+        "Day 14: cheat-sheet skim, Cosmos consistency levels one more time, exam",
+      ],
+    },
+    {
+      heading: "Coming from AWS? Translation table",
+      list: [
+        "RDS / Aurora → Azure SQL Database (+ Managed Instance for near-full compat)",
+        "DynamoDB → Cosmos DB (note Cosmos is multi-model — NoSQL/Mongo/Cassandra/Table/Gremlin APIs)",
+        "S3 → Blob Storage / ADLS Gen2; S3 tiers → Hot/Cool/Cold/Archive",
+        "Redshift → Synapse dedicated SQL pools (or Fabric warehouse)",
+        "Kinesis → Event Hubs; Kinesis Data Analytics → Stream Analytics",
+        "Glue → Azure Data Factory; QuickSight → Power BI",
+        "EMR → Azure Databricks / HDInsight / Synapse Spark",
+      ],
+    },
+    {
+      heading: "What 'ready' looks like",
+      paragraphs: [
+        "You're ready when service-selection is reflex: 'JSON documents at global scale' → Cosmos DB; 'SMB file share in the cloud' → Azure Files; 'event ingestion millions/sec' → Event Hubs; 'interactive dashboards' → Power BI. And you can recite the five Cosmos consistency levels in order — that question shows up for almost everyone.",
+      ],
+    },
+  ],
+  references: [
+    { title: "DP-900 study guide (Microsoft Learn)", url: "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/dp-900" },
+    { title: "Azure data fundamentals learning path (Microsoft Learn)", url: "https://learn.microsoft.com/en-us/training/courses/dp-900t00" },
+  ],
+});
+
+ARTICLES.push({
+  slug: "clf-c02-vs-az-900",
+  title: "CLF-C02 vs AZ-900: Which Entry-Level Cloud Cert Should You Take?",
+  description:
+    "AWS Cloud Practitioner vs Azure Fundamentals compared — difficulty, format, cost, career value, and which one makes sense as your first cloud certification.",
+  domain: "clf-cloud-concepts",
+  topic: "clf-cloud-essentials",
+  updatedAt: "2026-11-05",
+  readingMinutes: 7,
+  sections: [
+    {
+      paragraphs: [
+        "AWS Certified Cloud Practitioner (CLF-C02) and Microsoft Azure Fundamentals (AZ-900) are the two most-taken entry-level cloud certifications — the standard 'first cert' choices. They're remarkably similar in format and difficulty, so the decision usually comes down to which cloud your career path runs on, not which exam is easier.",
+      ],
+    },
+    {
+      heading: "Side-by-side basics",
+      list: [
+        "Cost: CLF $100 / AZ-900 $99 — effectively identical",
+        "Questions: CLF ~65 / AZ-900 ~40–60 — both in 60–90 minutes",
+        "Passing: CLF 700/1000 / AZ-900 700/1000",
+        "Format: both knowledge-only — no labs, no console access",
+        "Prerequisites: none for either — both designed for non-technical and technical beginners",
+      ],
+    },
+    {
+      heading: "What each exam emphasizes",
+      paragraphs: [
+        "CLF-C02 splits roughly: Cloud Concepts (~24%), Security & Compliance (~30%), Cloud Technology & Services (~34%), Billing & Pricing (~12%). AWS leans heavier on billing/pricing mechanics (support plans, pricing models, cost tools) than any other topic relative to its weight.",
+        "AZ-900 splits: Cloud Concepts (~25–30%), Azure Architecture & Services (~35–40%), Management & Governance (~30–35%). Microsoft leans harder on the service catalog — expect more 'which service does X' questions and more governance detail (management groups, Policy, Defender for Cloud) than CLF.",
+      ],
+    },
+    {
+      heading: "Difficulty — is one easier?",
+      paragraphs: [
+        "Both are passable in 2–4 weeks of part-time study for someone new to cloud. Most candidates rate AZ-900 marginally easier because the question phrasing is more literal, while CLF throws slightly more scenario-style 'which is the MOST cost-effective' questions. The difference is small — pick by career direction, not perceived ease.",
+      ],
+    },
+    {
+      heading: "Career value",
+      list: [
+        "Job postings: CLF appears more often — AWS has the larger market share and Cloud Practitioner is a recognized checkbox for sales, PM, and junior roles.",
+        "AZ-900 is the better pick if your employer (or target employer) is a Microsoft shop — enterprises on Microsoft 365/Entra overwhelmingly run Azure.",
+        "Neither cert alone lands a technical role — both are foot-in-the-door credentials; the associate-level cert (SAA or AZ-104) is what hiring managers weight.",
+        "Doing both is cheap and fast (~$200, ~1 month) and signals multi-cloud awareness — a reasonable play for consultants.",
+      ],
+    },
+    {
+      heading: "Which first?",
+      paragraphs: [
+        "Take CLF-C02 if you have no cloud preference — AWS vocabulary (EC2, S3, IAM) shows up everywhere, even in Azure conversations. Take AZ-900 first if you know you're entering a Microsoft environment — its governance content maps directly to enterprise reality.",
+        "Then ladder up: CLF → SAA-C03 for AWS; AZ-900 → AZ-104 for Azure. Our site has question banks, exam guides, cheat sheets, and study plans for all four.",
+      ],
+    },
+  ],
+  references: [
+    { title: "CLF-C02 certification page (AWS)", url: "https://aws.amazon.com/certification/certified-cloud-practitioner/" },
+    { title: "AZ-900 certification page (Microsoft)", url: "https://learn.microsoft.com/en-us/credentials/certifications/azure-fundamentals/" },
+  ],
+});
+
 export function getArticle(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
 }

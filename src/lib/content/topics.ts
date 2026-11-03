@@ -544,6 +544,39 @@ export const TOPICS: Topic[] = [
     description:
       "Azure OpenAI, prompting, grounding/RAG, and responsible GenAI.",
   },
+  // ---- DP-900 Azure Data Fundamentals ----
+  {
+    slug: "dp-core-data-concepts",
+    name: "Core Data Concepts",
+    cert: "dp-900",
+    domain: "dp-core-data-concepts",
+    description:
+      "Data types, transactional vs analytical workloads, and batch vs streaming processing.",
+  },
+  {
+    slug: "dp-relational-data",
+    name: "Relational Data on Azure",
+    cert: "dp-900",
+    domain: "dp-relational-data",
+    description:
+      "Relational model basics and Azure SQL Database, PostgreSQL, and MySQL services.",
+  },
+  {
+    slug: "dp-non-relational-data",
+    name: "Non-Relational Data on Azure",
+    cert: "dp-900",
+    domain: "dp-non-relational-data",
+    description:
+      "Cosmos DB, Blob storage, ADLS, Table storage, and when to choose non-relational.",
+  },
+  {
+    slug: "dp-analytics-workloads",
+    name: "Analytics on Azure",
+    cert: "dp-900",
+    domain: "dp-analytics-workloads",
+    description:
+      "Data warehouses, lakehouses, Synapse, Fabric, Power BI, and real-time analytics.",
+  },
 ];
 
 export function getTopic(slug: string): Topic | undefined {
