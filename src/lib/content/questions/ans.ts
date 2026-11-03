@@ -1475,5 +1475,365 @@ export const ansQuestions: Question[] = [
     estimatedMinutes: 2,
     reviewStatus: "published",
     lastReviewed: "2026-11-05",
+  },
+  {
+    id: "ans-des-008",
+    slug: "dx-gateway-vs-tgw-architecture",
+    cert: "ans-c01",
+    domain: "ans-network-design",
+    topic: "ans-hybrid-connectivity",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "On-prem must reach 20 VPCs across multiple regions over one Direct Connect link. Which architecture terminates the DX and fans out to the VPCs?",
+    options: [
+      { id: "A", text: "DX → Direct Connect Gateway → Transit Gateway → VPCs" },
+      { id: "B", text: "DX → separate private VIF per VPC" },
+      { id: "C", text: "DX → public VIF → internet routing" },
+      { id: "D", text: "Site-to-site VPN instead" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "DX Gateway terminates the physical connection and associates with Transit Gateway (or Transit VIFs) — one link fans to many VPCs/regions. Private VIF per VPC caps at ~50 VIFs and doesn't scale cleanly; public VIF reaches public endpoints only.",
+    optionExplanations: {
+      A: "DXGW + TGW = the multi-VPC hybrid fabric. Correct.",
+      B: "Per-VPC VIFs don't scale to 20+ regions.",
+      C: "Public VIF reaches AWS public services — not VPCs.",
+      D: "VPN caps ~1.25Gbps — not the architecture answer.",
+    },
+    services: ["AWS Direct Connect", "AWS Transit Gateway"],
+    references: [
+      {
+        title: "DX Gateway — AWS docs",
+        url: "https://docs.aws.amazon.com/directconnect/latest/UserGuide/direct-connect-gateways.html",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "ans-des-009",
+    slug: "multi-region-vpc-design",
+    cert: "ans-c01",
+    domain: "ans-network-design",
+    topic: "ans-hybrid-connectivity",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Designing VPCs for a multi-region app, which is a HARD constraint when planning CIDR blocks?",
+    options: [
+      { id: "A", text: "VPC CIDRs that must ever peer/TGW-connect or join hybrid DNS must not overlap — plan non-overlapping ranges upfront" },
+      { id: "B", text: "All regions must share identical CIDRs" },
+      { id: "C", text: "CIDRs can't be larger than /24" },
+      { id: "D", text: "Only /16 blocks are allowed" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Overlapping CIDRs can't peer or route through TGW — once chosen, a VPC's primary CIDR can't shrink (you can only add secondary CIDRs in the same region). Upfront IP planning (IPAM) prevents un-fixable overlap debt.",
+    optionExplanations: {
+      A: "Non-overlap is the binding constraint. Correct.",
+      B: "Identical CIDRs GUARANTEE the overlap problem.",
+      C: "VPCs go up to /16 — /24 is not the cap.",
+      D: "/16 is max size — not a requirement.",
+    },
+    services: ["Amazon VPC", "VPC IPAM"],
+    references: [
+      {
+        title: "VPC CIDR planning — AWS docs",
+        url: "https://docs.aws.amazon.com/vpc/latest/userguide/configure-your-vpc.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "ans-hyb-010",
+    slug: "vpn-over-dx-public-vif",
+    cert: "ans-c01",
+    domain: "ans-network-design",
+    topic: "ans-hybrid-connectivity",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A company wants encryption over their Direct Connect link — traffic between on-prem and AWS services must be IPsec-encrypted end-to-end. What's the pattern?",
+    options: [
+      { id: "A", text: "Site-to-site VPN over a DX PUBLIC VIF — encrypted tunnel riding the dedicated link" },
+      { id: "B", text: "DX is already encrypted — nothing needed" },
+      { id: "C", text: "TLS at the app layer only" },
+      { id: "D", text: "MACsec on every router" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "DX is private but NOT encrypted. The standard encryption pattern: public VIF → establish an IPsec Site-to-Site VPN tunnel over it — private path + encryption. MACsec exists on dedicated ports but requires compatible hardware.",
+    optionExplanations: {
+      A: "VPN over public VIF = encrypted DX. Correct.",
+      B: "DX is private connectivity — explicitly not encrypted.",
+      C: "App TLS works but isn't network-layer encryption.",
+      D: "MACsec only works on specific port speeds/hardware.",
+    },
+    services: ["AWS Direct Connect", "AWS Site-to-Site VPN"],
+    references: [
+      {
+        title: "VPN over DX — AWS docs",
+        url: "https://docs.aws.amazon.com/directconnect/latest/UserGuide/private-link-access.html",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "ans-imp-007",
+    slug: "route53-alias-vs-cname",
+    cert: "ans-c01",
+    domain: "ans-network-implementation",
+    topic: "ans-dns-and-routing",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An apex domain (example.com, no www) must point at an ALB. Which Route53 record type works where CNAME can't?",
+    options: [
+      { id: "A", text: "Alias record (A record pointed at the AWS resource)" },
+      { id: "B", text: "CNAME record" },
+      { id: "C", text: "MX record" },
+      { id: "D", text: "TXT record" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "DNS spec forbids CNAME at zone apex (it conflicts with SOA/NS records). Route53 alias records solve it — A/AAAA records that resolve to AWS resource IPs (ALB/CloudFront/S3), free, health-check-aware.",
+    optionExplanations: {
+      A: "Apex → AWS resource = alias. Correct.",
+      B: "CNAME is forbidden at apex per DNS spec.",
+      C: "MX is mail routing.",
+      D: "TXT holds verification/metadata.",
+    },
+    services: ["Amazon Route 53"],
+    references: [
+      {
+        title: "Alias records — AWS docs",
+        url: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resource-record-sets-choosing-alias-non-alias.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "ans-imp-008",
+    slug: "nlb-static-ip-preservation",
+    cert: "ans-c01",
+    domain: "ans-network-implementation",
+    topic: "ans-dns-and-routing",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Clients hardcode firewall allowlists by IP — the load balancer must present FIXED static IPs per AZ, which ALB can't do. Which LB type?",
+    options: [
+      { id: "A", text: "Network Load Balancer — static IP per enabled AZ" },
+      { id: "B", text: "Application Load Balancer" },
+      { id: "C", text: "Classic Load Balancer" },
+      { id: "D", text: "Gateway Load Balancer" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "NLB exposes a static IP (or Elastic IP) per enabled AZ — the answer for IP-allowlisting clients. ALB IPs are dynamic (only a DNS name is stable); CLB is legacy; GWLB is for appliances.",
+    optionExplanations: {
+      A: "Static/EIP per AZ = NLB. Correct.",
+      B: "ALB has dynamic IPs — DNS-only stability.",
+      C: "CLB legacy — same dynamic limitation.",
+      D: "GWLB is for inline inspection chains.",
+    },
+    services: ["Elastic Load Balancing"],
+    references: [
+      {
+        title: "NLB static IPs — AWS docs",
+        url: "https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "ans-dns-005",
+    slug: "route53-resolver-directions",
+    cert: "ans-c01",
+    domain: "ans-network-implementation",
+    topic: "ans-dns-and-routing",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "On-premises DNS must resolve names in a Route53 PRIVATE hosted zone. Which Resolver component enables this direction?",
+    options: [
+      { id: "A", text: "INBOUND endpoint — on-prem forwards to Resolver IPs in the VPC" },
+      { id: "B", text: "OUTBOUND endpoint" },
+      { id: "C", text: "Public hosted zone delegation" },
+      { id: "D", text: "VPC DNS server directly" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Direction mapping: on-prem→AWS resolution = INBOUND endpoint (resolver IPs in your VPC that on-prem targets); AWS→on-prem = OUTBOUND endpoint + forwarding rules. 'Private zone resolvable from on-prem' = inbound.",
+    optionExplanations: {
+      A: "Inbound = on-prem resolving AWS names. Correct.",
+      B: "Outbound is the opposite direction.",
+      C: "Public zones expose names externally — wrong approach.",
+      D: "The VPC resolver (.2) doesn't accept external queries.",
+    },
+    services: ["Route 53 Resolver"],
+    references: [
+      {
+        title: "Resolver endpoints — AWS docs",
+        url: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "ans-dns-006",
+    slug: "route53-geolocation-vs-latency-routing",
+    cert: "ans-c01",
+    domain: "ans-network-implementation",
+    topic: "ans-dns-and-routing",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Requirements differ: (1) route EU users to EU resources BY THEIR LOCATION, and (2) route users to whichever region responds FASTEST. Which two routing policies?",
+    options: [
+      { id: "A", text: "Geolocation + latency-based" },
+      { id: "B", text: "Latency + geolocation (same answer either way)" },
+      { id: "C", text: "Weighted + failover" },
+      { id: "D", text: "Multivalue + simple" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Geolocation routes by user LOCATION (continent/country/state) — compliance/sovereignty. Latency-based routes by measured response time — performance. Geoproximity (bias by location) vs geolocation (hard boundary) is the adjacent trap.",
+    optionExplanations: {
+      A: "Location-based = geolocation; speed-based = latency. Correct.",
+      B: "The order matters — these map 1:1 to requirements.",
+      C: "Weighted = traffic split; failover = DR.",
+      D: "Multivalue = multiple IPs; simple = single resource.",
+    },
+    services: ["Amazon Route 53"],
+    references: [
+      {
+        title: "Routing policies — AWS docs",
+        url: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-policy.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "ans-ops-007",
+    slug: "network-manager-tgw-visibility",
+    cert: "ans-c01",
+    domain: "ans-network-management-operations",
+    topic: "ans-network-operations",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Ops needs a global view of all Transit Gateways and their VPC attachments across regions — topology maps, route monitoring, centralized ops. Which tool?",
+    options: [
+      { id: "A", text: "Network Manager (TGW global network registration)" },
+      { id: "B", text: "VPC console per region" },
+      { id: "C", text: "CloudWatch metrics only" },
+      { id: "D", text: "AWS Config" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Network Manager is the TGW ops console — register TGWs into a global network for cross-region topology visualization, route tables, and event monitoring. Per-region consoles fragment the view.",
+    optionExplanations: {
+      A: "Global TGW ops plane = Network Manager. Correct.",
+      B: "Per-region console has no aggregate topology.",
+      C: "Metrics are per-resource — no topology.",
+      D: "Config audits configs — not live topology.",
+    },
+    services: ["AWS Transit Gateway", "Network Manager"],
+    references: [
+      {
+        title: "Network Manager — AWS docs",
+        url: "https://docs.aws.amazon.com/vpc/latest/tgw/what-is-network-manager.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "ans-sec-010",
+    slug: "dns-firewall-vs-resolver-rules",
+    cert: "ans-c01",
+    domain: "ans-network-security-compliance",
+    topic: "ans-network-security",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Malware on instances tries to resolve known-bad domains. Which feature BLOCKS DNS queries for malicious domains at the VPC Resolver level?",
+    options: [
+      { id: "A", text: "Route53 Resolver DNS Firewall domain lists" },
+      { id: "B", text: "Security groups" },
+      { id: "C", text: "NACLs" },
+      { id: "D", text: "GuardDuty" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "DNS Firewall attaches rule groups (domain allow/deny lists, AWS-managed threat lists) to VPCs — blocks/filter DNS resolution for malicious domains at the resolver layer. SGs/NACLs are IP-level — can't filter domains.",
+    optionExplanations: {
+      A: "Domain-level DNS blocking = DNS Firewall. Correct.",
+      B: "SGs filter IP/port — not domains.",
+      C: "NACLs same limitation.",
+      D: "GuardDuty detects — doesn't block DNS.",
+    },
+    services: ["Route 53 Resolver DNS Firewall"],
+    references: [
+      {
+        title: "DNS Firewall — AWS docs",
+        url: "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-dns-firewall.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "ans-sec-011",
+    slug: "sg-vs-nacl-layered-rules",
+    cert: "ans-c01",
+    domain: "ans-network-security-compliance",
+    topic: "ans-network-security",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Which correctly distinguishes security groups from NACLs for a compliance document?",
+    options: [
+      { id: "A", text: "SGs = stateful instance-level allow rules only; NACLs = stateless subnet-level allow AND deny rules evaluated in order" },
+      { id: "B", text: "SGs are stateless; NACLs are stateful" },
+      { id: "C", text: "SGs support deny rules; NACLs don't" },
+      { id: "D", text: "They're interchangeable" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Four differences every networking question exploits: SG = stateful (return traffic auto-allowed), instance-level, ALLOW-only, all rules evaluated. NACL = stateless (return needs explicit rule), subnet-level, allow+deny, ordered rule numbers.",
+    optionExplanations: {
+      A: "Correct on all four axes.",
+      B: "Reversed — SG is stateful.",
+      C: "SGs can't deny — NACLs can.",
+      D: "Layered defense uses BOTH — they're not equivalent.",
+    },
+    services: ["Amazon VPC"],
+    references: [
+      {
+        title: "SG vs NACL — AWS docs",
+        url: "https://docs.aws.amazon.com/vpc/latest/userguide/security-group-vs-network-acl.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
   }
 ];

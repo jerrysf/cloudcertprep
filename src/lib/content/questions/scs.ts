@@ -1483,5 +1483,365 @@ export const scsQuestions: Question[] = [
     estimatedMinutes: 3,
     reviewStatus: "published",
     lastReviewed: "2026-11-05",
+  },
+  {
+    id: "scs-det-010",
+    slug: "macie-pii-finding-triage",
+    cert: "scs-c03",
+    domain: "scs-detection",
+    topic: "scs-detection-and-response",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Macie flags an S3 bucket containing SSNs in log files. What is the correct FIRST response step in a data-exposure finding workflow?",
+    options: [
+      { id: "A", text: "Verify the finding scope — which objects, how much data, public or private access" },
+      { id: "B", text: "Delete the bucket immediately" },
+      { id: "C", text: "Make the bucket public for analysis" },
+      { id: "D", text: "Disable Macie to stop noise" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Data-exposure triage: assess scope first — which objects, sensitivity level, exposure path (public access? shared?) — then remediate proportionally (restrict access, move data, rotate if leaked). Deleting data or disabling detection is never the first move.",
+    optionExplanations: {
+      A: "Scope assessment before action. Correct.",
+      B: "Destruction without assessment loses data + forensics.",
+      C: "Publicizing makes exposure worse.",
+      D: "Disabling detection hides the problem.",
+    },
+    services: ["Amazon Macie", "Amazon S3"],
+    references: [
+      {
+        title: "Macie findings — AWS docs",
+        url: "https://docs.aws.amazon.com/macie/latest/user/findings.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "scs-det-011",
+    slug: "eventbridge-security-finding-rules",
+    cert: "scs-c03",
+    domain: "scs-detection",
+    topic: "scs-detection-and-response",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Security wants CRITICAL GuardDuty findings to page on-call within seconds — filtering by severity and routing to PagerDuty/SNS. Which mechanism?",
+    options: [
+      { id: "A", text: "EventBridge rule matching GuardDuty finding events by severity → SNS/integration" },
+      { id: "B", text: "CloudWatch dashboard polling" },
+      { id: "C", text: "Weekly finding export review" },
+      { id: "D", text: "VPC Flow Log alarms" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "GuardDuty publishes findings to EventBridge as they occur — rules filter severity/type and route to SNS, Lambda, or incident tooling. Event-driven detection-response is the standard pattern; polling adds minutes to detection.",
+    optionExplanations: {
+      A: "Event-driven severity-filtered routing. Correct.",
+      B: "Dashboards are passive — not alerting.",
+      C: "Weekly review isn't real-time response.",
+      D: "Flow logs are one input — not finding alerts.",
+    },
+    services: ["Amazon GuardDuty", "Amazon EventBridge"],
+    references: [
+      {
+        title: "GuardDuty EventBridge integration — AWS docs",
+        url: "https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_findings_cloudwatch.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "scs-iam-009",
+    slug: "abac-tag-based-access",
+    cert: "scs-c03",
+    domain: "scs-iam",
+    topic: "scs-iam-deep-dive",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A company wants IAM policies that automatically scope each team's access by their Department tag — one policy covering all teams instead of per-team policies. Which model?",
+    options: [
+      { id: "A", text: "ABAC — attribute-based access control using aws:PrincipalTag in conditions" },
+      { id: "B", text: "Separate policy per team" },
+      { id: "C", text: "SCPs per OU" },
+      { id: "D", text: "Resource-based policies only" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "ABAC scales by attributes: conditions like aws:ResourceTag/Department = aws:PrincipalTag/Department let ONE policy enforce team-scoped access dynamically — new teams inherit correct access without policy edits.",
+    optionExplanations: {
+      A: "Tag-driven single policy = ABAC. Correct.",
+      B: "Per-team policies multiply — exactly what ABAC avoids.",
+      C: "SCPs are account-level ceilings — not per-team resource scoping.",
+      D: "Resource policies don't express principal-tag conditions cleanly at scale.",
+    },
+    services: ["AWS IAM"],
+    references: [
+      {
+        title: "ABAC — AWS docs",
+        url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_attribute-based-access-control.html",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "scs-iam-010",
+    slug: "role-chaining-session-limits",
+    cert: "scs-c03",
+    domain: "scs-iam",
+    topic: "scs-iam-deep-dive",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "An app assumes Role A, which then assumes Role B (role chaining). What session-duration constraint applies to the SECOND assumption?",
+    options: [
+      { id: "A", text: "Max 1 hour — chained role sessions are capped regardless of the role's configured maximum" },
+      { id: "B", text: "Up to the role's full 12-hour max" },
+      { id: "C", text: "Chained sessions are not allowed" },
+      { id: "D", text: "36 hours with MFA" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Role chaining caps the second session at 1 hour regardless of the role's MaxSessionDuration — a tested IAM subtlety. Also: chained sessions can't use session-duration-extending assume-role policies beyond that cap.",
+    optionExplanations: {
+      A: "1-hour cap on chained sessions. Correct.",
+      B: "The 12h max doesn't apply to chains.",
+      C: "Chaining IS allowed — just time-capped.",
+      D: "MFA doesn't extend chain limits.",
+    },
+    services: ["AWS IAM", "AWS STS"],
+    references: [
+      {
+        title: "Role session duration — AWS docs",
+        url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_terms-and-concepts.html",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "scs-inf-007",
+    slug: "s3-object-lock-worm",
+    cert: "scs-c03",
+    domain: "scs-infrastructure-security",
+    topic: "scs-infrastructure-security",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Regulators require audit records stored WORM-style — undeletable and unmodifiable even by the root account for a fixed retention. Which S3 feature?",
+    options: [
+      { id: "A", text: "S3 Object Lock (compliance or governance mode)" },
+      { id: "B", text: "Bucket versioning alone" },
+      { id: "C", text: "A deny-all bucket policy" },
+      { id: "D", text: "SSE-KMS encryption" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Object Lock enforces WORM at the storage layer — compliance mode prevents deletion/modification by ANYONE including root during retention; governance mode allows bypass with special permission. Bucket policies can be edited by admins — not immutable.",
+    optionExplanations: {
+      A: "Storage-level WORM = Object Lock. Correct.",
+      B: "Versioning keeps history — objects still deletable.",
+      C: "Policies are editable — not true immutability.",
+      D: "Encryption protects confidentiality — not retention.",
+    },
+    services: ["Amazon S3"],
+    references: [
+      {
+        title: "Object Lock — AWS docs",
+        url: "https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "scs-inf-008",
+    slug: "waf-vs-shield-vs-network-firewall",
+    cert: "scs-c03",
+    domain: "scs-infrastructure-security",
+    topic: "scs-infrastructure-security",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Which correctly layers AWS network defenses: web app request filtering vs DDoS mitigation vs general VPC traffic inspection?",
+    options: [
+      { id: "A", text: "WAF (L7 rules on ALB/CF) + Shield (DDoS) + Network Firewall (VPC-level L3–L7 inspection)" },
+      { id: "B", text: "WAF does DDoS + everything" },
+      { id: "C", text: "Network Firewall replaces WAF" },
+      { id: "D", text: "Shield filters individual HTTP requests" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "The three-layer model: WAF = web ACL rules on edge/ALB/API GW (L7 request inspection), Shield = DDoS infrastructure protection, Network Firewall = managed stateful firewall in the VPC path (Suricata, domain filtering). Each covers a different attack surface.",
+    optionExplanations: {
+      A: "Layered roles mapped correctly.",
+      B: "WAF alone lacks DDoS flood absorption.",
+      C: "NFW inspects general traffic — not app-layer rules like WAF.",
+      D: "Shield absorbs floods — not per-request logic.",
+    },
+    services: ["AWS WAF", "AWS Shield", "AWS Network Firewall"],
+    references: [
+      {
+        title: "AWS network security — AWS docs",
+        url: "https://docs.aws.amazon.com/waf/latest/developerguide/what-is-aws-waf.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "scs-ir-008",
+    slug: "forensic-isolated-analysis-env",
+    cert: "scs-c03",
+    domain: "scs-incident-response",
+    topic: "scs-incident-response",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "After isolating a compromised instance, forensics needs a safe environment to analyze the disk image without risk to production. What's the pattern?",
+    options: [
+      { id: "A", text: "Snapshot the volume → attach a copy to a forensic instance in an isolated/security VPC" },
+      { id: "B", text: "Analyze on the production instance directly" },
+      { id: "C", text: "Terminate and analyze logs only" },
+      { id: "D", text: "Share the snapshot publicly for faster analysis" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Forensic workflow: snapshot the evidence volume → create a new volume from it → attach to a dedicated forensic instance in a quarantine VPC — analysis without touching evidence or production. Never analyze on the compromised host.",
+    optionExplanations: {
+      A: "Isolate + copy + dedicated forensic env. Correct.",
+      B: "Analysis on the host contaminates evidence.",
+      C: "Logs alone lose disk/memory evidence.",
+      D: "Public sharing destroys evidence integrity.",
+    },
+    services: ["Amazon EC2", "Amazon EBS"],
+    references: [
+      {
+        title: "Forensic analysis — AWS docs",
+        url: "https://docs.aws.amazon.com/whitepapers/latest/aws-security-incident-response-guide/analysis.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "scs-log-006",
+    slug: "cloudtrail-lake-event-query",
+    cert: "scs-c03",
+    domain: "scs-detection",
+    topic: "scs-logging-and-audit",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Security must run SQL-like queries over years of CloudTrail events — who deleted what, when, from where — across the org without building an ETL pipeline. Which feature?",
+    options: [
+      { id: "A", text: "CloudTrail Lake" },
+      { id: "B", text: "CloudTrail event history (90-day console view)" },
+      { id: "C", text: "Athena over the S3 log bucket" },
+      { id: "D", text: "CloudWatch Logs Insights" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "CloudTrail Lake = managed event data store: ingest trails org-wide, retain up to 7+ years, run SQL queries directly — no S3+Athena pipeline required. Event history is 90 days max.",
+    optionExplanations: {
+      A: "Managed queryable event store = Lake. Correct.",
+      B: "Event history caps at 90 days — not years.",
+      C: "S3+Athena works but requires building the pipeline — Lake is managed.",
+      D: "CW Logs ≠ CloudTrail events without export plumbing.",
+    },
+    services: ["AWS CloudTrail"],
+    references: [
+      {
+        title: "CloudTrail Lake — AWS docs",
+        url: "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-lake.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "scs-enc-004",
+    slug: "kms-key-policy-vs-grant",
+    cert: "scs-c03",
+    domain: "scs-data-protection",
+    topic: "scs-encryption-and-keys",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A Lambda function needs temporary encrypt/decrypt access to a KMS key — created programmatically per deployment and revoked after. Which mechanism fits better than editing the key policy?",
+    options: [
+      { id: "A", text: "KMS grants — programmatic, scoped permissions issued via CreateGrant" },
+      { id: "B", text: "Edit the key policy per deployment" },
+      { id: "C", text: "Create a new CMK per function" },
+      { id: "D", text: "IAM user access keys" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Grants delegate scoped KMS permissions programmatically — created via CreateGrant, retireable, ideal for dynamic/temporary access (Lambdas, spot workers, delegated encryption). Key policy edits are heavyweight for per-deployment grants.",
+    optionExplanations: {
+      A: "Programmatic scoped delegation = grants. Correct.",
+      B: "Policy churn per deployment is fragile.",
+      C: "Key-per-function is management sprawl.",
+      D: "IAM creds don't solve key access scoping.",
+    },
+    services: ["AWS KMS"],
+    references: [
+      {
+        title: "KMS grants — AWS docs",
+        url: "https://docs.aws.amazon.com/kms/latest/developerguide/grants.html",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "scs-enc-005",
+    slug: "sse-kms-vs-cse-vs-sse-c",
+    cert: "scs-c03",
+    domain: "scs-data-protection",
+    topic: "scs-encryption-and-keys",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Data must be encrypted client-side BEFORE leaving the app — the cloud provider should never see plaintext keys or data. Which model?",
+    options: [
+      { id: "A", text: "Client-side encryption (encrypt before upload)" },
+      { id: "B", text: "SSE-KMS server-side encryption" },
+      { id: "C", text: "SSE-C customer-provided keys" },
+      { id: "D", text: "SSE-S3 managed keys" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Encryption-location ladder: client-side (CSE) = data encrypted before transmission — provider never sees plaintext; SSE-KMS = AWS encrypts at service, keys in KMS; SSE-C = AWS encrypts with YOUR provided key; SSE-S3 = fully managed. 'Never see plaintext' = CSE.",
+    optionExplanations: {
+      A: "Encrypt before upload = CSE. Correct.",
+      B: "SSE-KMS encrypts server-side — data arrives plaintext over TLS.",
+      C: "SSE-C still encrypts server-side.",
+      D: "Fully server-side — provider handles plaintext.",
+    },
+    services: ["Amazon S3", "AWS KMS"],
+    references: [
+      {
+        title: "Client-side encryption — AWS docs",
+        url: "https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingClientSideEncryption.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
   }
 ];

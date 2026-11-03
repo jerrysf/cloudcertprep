@@ -1477,5 +1477,365 @@ export const sapQuestions: Question[] = [
     estimatedMinutes: 2,
     reviewStatus: "published",
     lastReviewed: "2026-11-05",
+  },
+  {
+    id: "sap-org-011",
+    slug: "scp-allowlist-vs-denylist",
+    cert: "sap-c02",
+    domain: "sap-organizational-complexity",
+    topic: "sap-multi-account-architecture",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A platform team wants member accounts to use ONLY an approved service list — everything else denied by default. Which SCP strategy implements this?",
+    options: [
+      { id: "A", text: "Allowlist — deny all actions except the approved services" },
+      { id: "B", text: "Denylist — allow everything except listed services" },
+      { id: "C", text: "IAM permission boundaries per account" },
+      { id: "D", text: "AWS Config managed rules" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Two SCP models: denylist (allow all + deny specific — default FullAWSAccess) vs allowlist (deny all + allow approved — tighter but riskier: you must explicitly include dependencies). 'Only approved list' = allowlist with explicit Deny on non-listed services.",
+    optionExplanations: {
+      A: "Default-deny + explicit allows = allowlist. Correct.",
+      B: "Denylist still permits every unlisted service.",
+      C: "Boundaries cap role permissions — not service catalogs org-wide.",
+      D: "Config detects drift — doesn't prevent API calls.",
+    },
+    services: ["AWS Organizations"],
+    references: [
+      {
+        title: "SCP strategies — AWS docs",
+        url: "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps_strategies.html",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "sap-org-012",
+    slug: "control-tower-guardrail-types",
+    cert: "sap-c02",
+    domain: "sap-organizational-complexity",
+    topic: "sap-multi-account-architecture",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "In AWS Control Tower, which correctly distinguishes preventive, detective, and proactive guardrails?",
+    options: [
+      { id: "A", text: "Preventive = SCPs that restrict actions; detective = Config rules that flag violations; proactive = CFN hooks that check before deploy" },
+      { id: "B", text: "All three are SCP-based" },
+      { id: "C", text: "Preventive = Config rules; detective = SCPs" },
+      { id: "D", text: "Proactive guardrails use IAM policies" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Control Tower guardrail mechanics: preventive = SCP (can't do it), detective = AWS Config rules (alert when it happens), proactive = CloudFormation hooks (check before deployment). The mechanism mapping is a classic exam trap.",
+    optionExplanations: {
+      A: "SCP / Config / hooks = correct mapping. Correct.",
+      B: "Only preventive uses SCPs.",
+      C: "Reversed assignment.",
+      D: "Proactive uses CFN hooks — not IAM.",
+    },
+    services: ["AWS Control Tower"],
+    references: [
+      {
+        title: "Guardrails — AWS docs",
+        url: "https://docs.aws.amazon.com/controltower/latest/userguide/guardrails.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "sap-org-013",
+    slug: "service-catalog-org-portfolios",
+    cert: "sap-c02",
+    domain: "sap-organizational-complexity",
+    topic: "sap-multi-account-architecture",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Application teams must self-service pre-approved, governed infrastructure — launching only centrally-curated templates with enforced constraints. Which service?",
+    options: [
+      { id: "A", text: "AWS Service Catalog portfolios shared via Organizations" },
+      { id: "B", text: "Direct CloudFormation access for all teams" },
+      { id: "C", text: "AWS Marketplace AMI listings" },
+      { id: "D", text: "Systems Manager documents" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Service Catalog = governed self-service: admins publish product portfolios (vetted CFN templates with launch/tag constraints); teams consume them via Organizations sharing — the standard 'curated infrastructure vending' pattern.",
+    optionExplanations: {
+      A: "Curated self-service + constraints = Service Catalog. Correct.",
+      B: "Direct CFN = ungoverned self-service.",
+      C: "Marketplace sells vendor software — not internal governance.",
+      D: "SSM docs automate ops — not product vending.",
+    },
+    services: ["AWS Service Catalog", "AWS Organizations"],
+    references: [
+      {
+        title: "Service Catalog — AWS docs",
+        url: "https://docs.aws.amazon.com/servicecatalog/latest/adminguide/what-is-service-catalog.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "sap-mig-011",
+    slug: "snowball-vs-datasync-decision",
+    cert: "sap-c02",
+    domain: "sap-migration-modernization",
+    topic: "sap-migration-strategies",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "500 TB must migrate to S3. Available bandwidth makes online transfer take ~4 months; the deadline is 3 weeks. Which migration path?",
+    options: [
+      { id: "A", text: "AWS Snowball Edge devices — offline bulk transfer" },
+      { id: "B", text: "AWS DataSync over the internet" },
+      { id: "C", text: "S3 multipart uploads" },
+      { id: "D", text: "Storage Gateway file mode" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Snow family = offline physical transfer when network math doesn't work: each Snowball Edge moves ~80TB per device round-trip. Rule of thumb: if online transfer time exceeds your deadline, ship devices.",
+    optionExplanations: {
+      A: "Bandwidth×time math fails → physical = Snow. Correct.",
+      B: "DataSync still rides the same constrained link.",
+      C: "Multipart doesn't create bandwidth.",
+      D: "Storage Gateway is for hybrid access — not one-shot bulk.",
+    },
+    services: ["AWS Snowball", "Amazon S3"],
+    references: [
+      {
+        title: "Snowball Edge — AWS docs",
+        url: "https://docs.aws.amazon.com/snowball/latest/developer-guide/whatisedge.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "sap-mig-012",
+    slug: "storage-gateway-file-vs-tape",
+    cert: "sap-c02",
+    domain: "sap-migration-modernization",
+    topic: "sap-migration-strategies",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A datacenter is being retired in phases — apps need low-latency LOCAL access to frequently-used files while all data lives in S3. Which Storage Gateway type?",
+    options: [
+      { id: "A", text: "File Gateway — NFS/SMB with local cache" },
+      { id: "B", text: "Tape Gateway — virtual tape library" },
+      { id: "C", text: "Volume Gateway cached mode" },
+      { id: "D", text: "DataSync scheduled copies" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "File Gateway presents S3 as NFS/SMB shares with local caching for hot data — the hybrid file-access pattern. Tape Gateway = VTL backup; Volume Gateway = iSCSI block; DataSync = transfer tool, not persistent access.",
+    optionExplanations: {
+      A: "SMB/NFS front-end for S3 = File Gateway. Correct.",
+      B: "Tape is for backup archives — not live file access.",
+      C: "Volume Gateway is block iSCSI — not file shares.",
+      D: "DataSync copies — doesn't serve mounted access.",
+    },
+    services: ["AWS Storage Gateway"],
+    references: [
+      {
+        title: "File Gateway — AWS docs",
+        url: "https://docs.aws.amazon.com/filegateway/latest/files3/what-is-file-gateway.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "sap-new-011",
+    slug: "aurora-vs-dynamodb-vs-redshift",
+    cert: "sap-c02",
+    domain: "sap-new-solutions",
+    topic: "sap-complex-solutions",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Match the workload: 50M req/day of key-value lookups with single-digit-ms reads at any scale, no joins or SQL needed. Which database?",
+    options: [
+      { id: "A", text: "Amazon Aurora" },
+      { id: "B", text: "Amazon DynamoDB" },
+      { id: "C", text: "Amazon Redshift" },
+      { id: "D", text: "Amazon Neptune" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Massive key-value scale + ms latency + no relational requirements = DynamoDB (serverless key-value/doc store). Aurora = relational OLTP with joins; Redshift = analytics; Neptune = graph. The exam tests this selection matrix constantly.",
+    optionExplanations: {
+      A: "Relational engine — wrong model for pure key-value.",
+      B: "Key-value at any scale = DynamoDB. Correct.",
+      C: "Analytics warehouse — not operational lookups.",
+      D: "Graph database — wrong data model.",
+    },
+    services: ["Amazon DynamoDB"],
+    references: [
+      {
+        title: "DynamoDB — AWS docs",
+        url: "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "sap-new-012",
+    slug: "multi-tier-caching-architecture",
+    cert: "sap-c02",
+    domain: "sap-new-solutions",
+    topic: "sap-complex-solutions",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A content-heavy app needs: edge caching for global users, session-state caching for the app tier, and microsecond DB query caching for DynamoDB. Which combination?",
+    options: [
+      { id: "A", text: "CloudFront + ElastiCache + DAX" },
+      { id: "B", text: "ElastiCache for all three layers" },
+      { id: "C", text: "CloudFront + S3 Transfer Acceleration" },
+      { id: "D", text: "DAX + Global Accelerator" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Three distinct cache layers map to three services: CloudFront (edge CDN), ElastiCache Redis/Memcached (app-tier sessions/objects), DAX (DynamoDB-specific accelerator). Each layer has a purpose-built service — the architect-level answer.",
+    optionExplanations: {
+      A: "Three layers, three tools. Correct.",
+      B: "ElastiCache can't do edge caching or DDB accel.",
+      C: "Transfer Acceleration speeds uploads — not caching.",
+      D: "Global Accelerator routes traffic — not a cache.",
+    },
+    services: ["Amazon CloudFront", "Amazon ElastiCache", "Amazon DAX"],
+    references: [
+      {
+        title: "Caching strategies — AWS docs",
+        url: "https://aws.amazon.com/caching/best-practices/",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "sap-opt-011",
+    slug: "layered-cost-optimization",
+    cert: "sap-c02",
+    domain: "sap-continuous-improvement",
+    topic: "sap-optimization",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "Cost-optimize a mixed EC2 fleet: steady baseline load, predictable business-hours batch, and interruptible CI jobs. What's the optimal purchasing mix?",
+    options: [
+      { id: "A", text: "Savings Plans for baseline + On-Demand for batch windows + Spot for CI" },
+      { id: "B", text: "All On-Demand for simplicity" },
+      { id: "C", text: "All Spot for maximum savings" },
+      { id: "D", text: "All Reserved Instances for everything" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Layered purchasing: commit (SP/RI) for steady baseline, On-Demand for scheduled predictable burst, Spot for interruptible work — matching pricing models to workload shapes is the deep cost question on SAP.",
+    optionExplanations: {
+      A: "Match each workload shape to its pricing model. Correct.",
+      B: "All-OD pays peak price for baseline too.",
+      C: "Spot can't carry steady/stateful workloads.",
+      D: "RIs over-commit for interruptible jobs Spot would cut further.",
+    },
+    services: ["Amazon EC2", "AWS Savings Plans"],
+    references: [
+      {
+        title: "Cost optimization — AWS docs",
+        url: "https://docs.aws.amazon.com/whitepapers/latest/cost-optimization-leveraging-ec2-pricing-models/welcome.html",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "sap-opt-012",
+    slug: "trusted-advisor-org-view",
+    cert: "sap-c02",
+    domain: "sap-continuous-improvement",
+    topic: "sap-optimization",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A platform team wants Trusted Advisor findings — cost, security, fault tolerance — aggregated across all org accounts in one view. What enables this?",
+    options: [
+      { id: "A", text: "Trusted Advisor Organizational View" },
+      { id: "B", text: "Individual account TA dashboards" },
+      { id: "C", text: "AWS Config aggregator" },
+      { id: "D", text: "Cost Explorer reports" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "TA Organizational View aggregates recommendations org-wide — download consolidated reports across member accounts (requires org + appropriate support plan). Individual dashboards don't consolidate; Config aggregator is resource config, not TA checks.",
+    optionExplanations: {
+      A: "Org-wide TA = Organizational View. Correct.",
+      B: "Per-account views don't aggregate.",
+      C: "Config aggregator shows resource compliance — not TA recommendations.",
+      D: "Cost Explorer covers cost only — not all TA pillars.",
+    },
+    services: ["AWS Trusted Advisor", "AWS Organizations"],
+    references: [
+      {
+        title: "Organizational view — AWS docs",
+        url: "https://docs.aws.amazon.com/awssupport/latest/user/trusted-advisor.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "sap-opt-013",
+    slug: "cur-chargeback-tagging",
+    cert: "sap-c02",
+    domain: "sap-continuous-improvement",
+    topic: "sap-optimization",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Finance needs per-team cost chargeback across 30 accounts — line-item detail attributed to business units. What combination delivers it?",
+    options: [
+      { id: "A", text: "Cost allocation tags + Cost and Usage Report + Athena/QuickSight analysis" },
+      { id: "B", text: "AWS Budgets per account" },
+      { id: "C", text: "Cost Explorer alone" },
+      { id: "D", text: "Consolidated billing alone" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Chargeback requires attribution: enforce cost allocation tags → CUR delivers line-item spend to S3 → Athena/QuickSight builds team-level reports. Tags activate per-resource cost attribution; Budgets/Explorer don't do per-team line items.",
+    optionExplanations: {
+      A: "Tags + CUR + analytics = chargeback pipeline. Correct.",
+      B: "Budgets alert on thresholds — not attribution.",
+      C: "Explorer filters tags but lacks line-item export depth.",
+      D: "Consolidated billing merges bills — no attribution.",
+    },
+    services: ["AWS CUR", "Amazon Athena"],
+    references: [
+      {
+        title: "Cost allocation tags — AWS docs",
+        url: "https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
   }
 ];

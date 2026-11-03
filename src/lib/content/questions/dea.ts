@@ -1475,5 +1475,365 @@ export const deaQuestions: Question[] = [
     estimatedMinutes: 2,
     reviewStatus: "published",
     lastReviewed: "2026-11-05",
+  },
+  {
+    id: "dea-ing-012",
+    slug: "firehose-vs-kinesis-vs-msk-delivery",
+    cert: "dea-c01",
+    domain: "dea-ingestion-transformation",
+    topic: "dea-ingestion-and-etl",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Application logs must land in S3 as compressed JSON batches every 60 seconds — serverless, no stream consumers to manage. Which service?",
+    options: [
+      { id: "A", text: "Kinesis Data Firehose" },
+      { id: "B", text: "Kinesis Data Streams" },
+      { id: "C", text: "Amazon MSK" },
+      { id: "D", text: "Amazon SQS" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Firehose = serverless delivery service: buffers records, batches/compresses/converts, lands in S3/Redshift/OpenSearch — no consumer management. Data Streams needs consumer apps; MSK is managed Kafka; SQS is a queue, not a delivery service.",
+    optionExplanations: {
+      A: "Serverless batch delivery to destinations = Firehose. Correct.",
+      B: "Streams require consumer-side processing.",
+      C: "MSK needs Kafka consumers + cluster management.",
+      D: "SQS delivers to consumers — not storage destinations.",
+    },
+    services: ["Amazon Kinesis Data Firehose"],
+    references: [
+      {
+        title: "Kinesis Firehose — AWS docs",
+        url: "https://docs.aws.amazon.com/firehose/latest/dev/what-is-this-service.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "dea-ing-013",
+    slug: "dms-cdc-database-to-lake",
+    cert: "dea-c01",
+    domain: "dea-ingestion-transformation",
+    topic: "dea-ingestion-and-etl",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A PostgreSQL OLTP database must continuously replicate changes into an S3 data lake for analytics — ongoing CDC, not just one-time load. Which service?",
+    options: [
+      { id: "A", text: "AWS DMS with ongoing replication (CDC)" },
+      { id: "B", text: "A nightly pg_dump to S3" },
+      { id: "C", text: "RDS snapshots to S3" },
+      { id: "D", text: "AWS DataSync" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "DMS full-load + CDC continuously captures changes from the source DB into targets including S3 — the standard operational DB→lake ingestion pattern. Snapshots/dumps are point-in-time; DataSync is file transfer.",
+    optionExplanations: {
+      A: "Continuous change capture = DMS CDC. Correct.",
+      B: "Nightly dumps miss intraday changes + heavy load.",
+      C: "Snapshots aren't queryable lake data.",
+      D: "DataSync transfers files — not DB change streams.",
+    },
+    services: ["AWS DMS"],
+    references: [
+      {
+        title: "DMS CDC — AWS docs",
+        url: "https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Introduction.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "dea-store-011",
+    slug: "opensearch-ultrawarm-tiers",
+    cert: "dea-c01",
+    domain: "dea-data-store-management",
+    topic: "dea-data-stores",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A log-analytics cluster on OpenSearch keeps 90 days searchable but only 7 days are queried actively. How to cut storage cost while keeping old data queryable?",
+    options: [
+      { id: "A", text: "UltraWarm — move older indices to S3-backed warm storage" },
+      { id: "B", text: "Delete indices older than 7 days" },
+      { id: "C", text: "Snapshot to S3 and restore when needed" },
+      { id: "D", text: "Scale up hot nodes" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "UltraWarm moves older indices off hot nodes to S3-backed storage — still queryable (slower), ~80% cheaper than hot-tier storage. The tiered-storage answer for OpenSearch retention patterns.",
+    optionExplanations: {
+      A: "Warm S3-backed queryable tier = UltraWarm. Correct.",
+      B: "Deleting breaks the 90-day requirement.",
+      C: "Snapshot-restore takes data offline — not queryable.",
+      D: "More hot nodes increases cost — opposite direction.",
+    },
+    services: ["Amazon OpenSearch Service"],
+    references: [
+      {
+        title: "UltraWarm — AWS docs",
+        url: "https://docs.aws.amazon.com/opensearch-service/latest/developerguide/ultrawarm.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "dea-store-012",
+    slug: "athena-vs-redshift-spectrum-vs-rs",
+    cert: "dea-c01",
+    domain: "dea-data-store-management",
+    topic: "dea-data-stores",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "Analysts need SQL over both a 500TB S3 lake AND a Redshift warehouse with unified queries — which service queries lake data alongside warehouse tables?",
+    options: [
+      { id: "A", text: "Redshift Spectrum (or Redshift data-lake integration)" },
+      { id: "B", text: "Athena alone" },
+      { id: "C", text: "EMR with Hive" },
+      { id: "D", text: "RDS for PostgreSQL" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Redshift Spectrum queries S3 data in place alongside native Redshift tables in one SQL statement — unified warehouse+lake analytics. Athena queries S3 standalone but can't join Redshift tables. (Lakehouse/RA3 patterns build on this.)",
+    optionExplanations: {
+      A: "Unified SQL over warehouse + lake = Spectrum. Correct.",
+      B: "Athena queries the lake only — no warehouse join.",
+      C: "EMR/Hive queries the lake — not unified with Redshift.",
+      D: "RDS is OLTP — not analytics.",
+    },
+    services: ["Amazon Redshift", "Amazon Athena"],
+    references: [
+      {
+        title: "Redshift Spectrum — AWS docs",
+        url: "https://docs.aws.amazon.com/redshift/latest/dg/c-getting-started-using-spectrum.html",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "dea-store-013",
+    slug: "s3-vs-efs-vs-fsx-shared-data",
+    cert: "dea-c01",
+    domain: "dea-data-store-management",
+    topic: "dea-data-stores",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An HPC genomics pipeline needs a POSIX shared filesystem across hundreds of compute nodes with sub-millisecond file ops. Which storage?",
+    options: [
+      { id: "A", text: "Amazon S3" },
+      { id: "B", text: "Amazon FSx for Lustre" },
+      { id: "C", text: "Amazon EFS Standard" },
+      { id: "D", text: "Amazon EBS volumes" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "FSx for Lustre = high-performance parallel POSIX filesystem for HPC — sub-ms latency, hundreds of GB/s, S3 import/export integration. EFS is general NFS (ms latency, not HPC-grade); S3 is object storage; EBS is single-instance block.",
+    optionExplanations: {
+      A: "Object storage — no POSIX, high latency.",
+      B: "HPC parallel filesystem = FSx Lustre. Correct.",
+      C: "EFS is general-purpose NFS — not sub-ms HPC.",
+      D: "EBS attaches to one instance — not shared.",
+    },
+    services: ["Amazon FSx for Lustre"],
+    references: [
+      {
+        title: "FSx for Lustre — AWS docs",
+        url: "https://docs.aws.amazon.com/fsx/latest/LustreGuide/what-is.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "dea-gov-011",
+    slug: "lake-formation-tag-based-access",
+    cert: "dea-c01",
+    domain: "dea-data-security-governance",
+    topic: "dea-data-governance",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A lake has 2,000 tables; new ones appear weekly. Analysts should automatically get access based on data classification attributes — not per-table grants. Which Lake Formation model?",
+    options: [
+      { id: "A", text: "LF-Tag based access control (attribute-based)" },
+      { id: "B", text: "Named-resource grants on each table" },
+      { id: "C", text: "IAM policies per table" },
+      { id: "D", text: "Athena workgroup isolation" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "LF-Tags = attribute-based access control: tag tables by classification (PII, finance, region) and grant principals access by TAG — automatically covers new tables matching tags. Named grants don't scale to thousands of tables.",
+    optionExplanations: {
+      A: "Attribute-driven grants that scale = LF-Tags. Correct.",
+      B: "Per-table grants don't scale to 2,000 + weekly additions.",
+      C: "IAM can't express column/row-level lake permissions.",
+      D: "Workgroups isolate compute — not fine-grained data access.",
+    },
+    services: ["AWS Lake Formation"],
+    references: [
+      {
+        title: "LF-Tag based access — AWS docs",
+        url: "https://docs.aws.amazon.com/lake-formation/latest/dg/tag-based-access-control.html",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "dea-gov-012",
+    slug: "macie-continuous-pii-discovery",
+    cert: "dea-c01",
+    domain: "dea-data-security-governance",
+    topic: "dea-data-governance",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Compliance must inventory PII/PHI across hundreds of S3 buckets continuously — credit cards, SSNs, patient data. Which service discovers sensitive data automatically?",
+    options: [
+      { id: "A", text: "Amazon Macie" },
+      { id: "B", text: "AWS Glue DataBrew" },
+      { id: "C", text: "Amazon Athena" },
+      { id: "D", text: "AWS Config" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Macie = managed sensitive-data discovery for S3: ML + pattern matching identifies PII (SSNs, cards, PHI), buckets it by type, and reports findings continuously. DataBrew profiles/cleans data but isn't the compliance discovery tool.",
+    optionExplanations: {
+      A: "Automated PII discovery = Macie. Correct.",
+      B: "DataBrew is data-prep — not compliance scanning.",
+      C: "Athena queries data — doesn't classify sensitivity.",
+      D: "Config audits resource config — not content.",
+    },
+    services: ["Amazon Macie"],
+    references: [
+      {
+        title: "Amazon Macie — AWS docs",
+        url: "https://docs.aws.amazon.com/macie/latest/user/what-is-macie.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "dea-gov-013",
+    slug: "data-sharing-lake-formation-vs-s3",
+    cert: "dea-c01",
+    domain: "dea-data-security-governance",
+    topic: "dea-data-governance",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A data-mesh team must share governed lake tables with a PARTNER AWS account — the consumer queries in place without data copies. Which mechanism?",
+    options: [
+      { id: "A", text: "Lake Formation cross-account sharing via AWS RAM + resource links" },
+      { id: "B", text: "S3 cross-account replication" },
+      { id: "C", text: "Public bucket policy" },
+      { id: "D", text: "Export CSVs to a shared bucket" },
+    ],
+    correctAnswers: ["A"],
+      explanation:
+      "Lake Formation shares Data Catalog resources cross-account via RAM; consumers create resource links and query in place with LF permissions preserved — the governed data-mesh pattern. Replication copies data; public buckets break governance.",
+    optionExplanations: {
+      A: "Governed in-place cross-account share = LF + RAM. Correct.",
+      B: "Replication copies — loses governance and doubles storage.",
+      C: "Public access isn't governance.",
+      D: "CSV export loses catalog permissions entirely.",
+    },
+    services: ["AWS Lake Formation", "AWS RAM"],
+    references: [
+      {
+        title: "Cross-account sharing — AWS docs",
+        url: "https://docs.aws.amazon.com/lake-formation/latest/dg/cross-account.html",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "dea-ops-010",
+    slug: "glue-job-failure-alerting",
+    cert: "dea-c01",
+    domain: "dea-data-operations-support",
+    topic: "dea-data-operations",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "ETL jobs must alert the on-call team within minutes when a Glue job fails — what delivers job-state events to notifications?",
+    options: [
+      { id: "A", text: "EventBridge rule on Glue job state change → SNS" },
+      { id: "B", text: "Polling the job list hourly via Lambda" },
+      { id: "C", text: "CloudWatch dashboards checked manually" },
+      { id: "D", text: "CloudTrail event history" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Glue emits state-change events (SUCCEEDED/FAILED) to EventBridge — rule → SNS/SQS/Lambda for alerting or auto-remediation. Event-driven ops is the managed pattern; polling is the anti-pattern the exam contrasts.",
+    optionExplanations: {
+      A: "Event-driven job alerts = EventBridge → SNS. Correct.",
+      B: "Polling delays detection and wastes invocations.",
+      C: "Dashboards are passive — not alerting.",
+      D: "CloudTrail logs API calls — not job-state notifications.",
+    },
+    services: ["AWS Glue", "Amazon EventBridge"],
+    references: [
+      {
+        title: "Automating Glue with EventBridge — AWS docs",
+        url: "https://docs.aws.amazon.com/glue/latest/dg/automating-awsglue-with-cloudwatch-events.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "dea-ops-011",
+    slug: "workflow-orchestration-step-functions-glue",
+    cert: "dea-c01",
+    domain: "dea-data-operations-support",
+    topic: "dea-data-operations",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A pipeline must orchestrate: Glue job → conditional check → parallel Athena queries → notification, with retries and branching logic. Which service?",
+    options: [
+      { id: "A", text: "AWS Step Functions" },
+      { id: "B", text: "EventBridge scheduled rules" },
+      { id: "C", text: "Glue workflow triggers only" },
+      { id: "D", text: "A cron-based Lambda" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Step Functions = service-agnostic orchestration: native integrations (Glue, Athena, SNS), branching, parallel states, retry/catch policies. Glue workflows only chain Glue jobs — can't orchestrate cross-service logic.",
+    optionExplanations: {
+      A: "Cross-service orchestration with branching = SFN. Correct.",
+      B: "Schedules trigger — don't orchestrate multi-step logic.",
+      C: "Glue workflows chain Glue resources only.",
+      D: "Cron Lambdas hand-roll what SFN provides.",
+    },
+    services: ["AWS Step Functions", "AWS Glue"],
+    references: [
+      {
+        title: "Step Functions — AWS docs",
+        url: "https://docs.aws.amazon.com/step-functions/latest/dg/welcome.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
   }
 ];

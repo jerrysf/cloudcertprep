@@ -1477,5 +1477,365 @@ export const soaQuestions: Question[] = [
     estimatedMinutes: 2,
     reviewStatus: "published",
     lastReviewed: "2026-11-05",
+  },
+  {
+    id: "soa-mon-012",
+    slug: "cloudwatch-rum-real-user-monitoring",
+    cert: "soa-c03",
+    domain: "soa-monitoring-logging-remediation",
+    topic: "soa-monitoring-and-remediation",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Product wants REAL end-user experience data — actual page load times and JS errors from browsers in each geography, not synthetic probes. Which CloudWatch feature?",
+    options: [
+      { id: "A", text: "CloudWatch RUM (Real User Monitoring)" },
+      { id: "B", text: "CloudWatch Synthetics canaries" },
+      { id: "C", text: "X-Ray service maps" },
+      { id: "D", text: "ALB access logs" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "RUM collects telemetry from actual user sessions — load times, errors, geography, devices — via a JS snippet. Synthetics are scripted probes (not real users); X-Ray traces server-side; access logs are load balancer records.",
+    optionExplanations: {
+      A: "Real browser telemetry = RUM. Correct.",
+      B: "Canaries are scripted — not real users.",
+      C: "X-Ray traces requests server-side — not UX metrics.",
+      D: "ALB logs are infra records — not client experience.",
+    },
+    services: ["Amazon CloudWatch RUM"],
+    references: [
+      {
+        title: "CloudWatch RUM — AWS docs",
+        url: "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-RUM.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "soa-mon-013",
+    slug: "opscenter-opswork-items",
+    cert: "soa-c03",
+    domain: "soa-monitoring-logging-remediation",
+    topic: "soa-monitoring-and-remediation",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Ops team wants operational issues from CloudWatch alarms and EventBridge events consolidated into trackable work items with runbook links and status. Which SSM feature?",
+    options: [
+      { id: "A", text: "Systems Manager OpsCenter (OpsItems)" },
+      { id: "B", text: "CloudWatch dashboards" },
+      { id: "C", text: "AWS Config timeline" },
+      { id: "D", text: "Systems Manager Inventory" },
+    ],
+    correctAnswers: ["A"],
+      explanation:
+      "OpsCenter aggregates operational issues as OpsItems — deduplication, related resources, runbook suggestions, status tracking — the incident-management layer in SSM. Dashboards visualize; they don't track work items.",
+    optionExplanations: {
+      A: "Consolidated ops work items = OpsCenter. Correct.",
+      B: "Dashboards show metrics — not ticket-like items.",
+      C: "Config tracks configuration history — not ops issues.",
+      D: "Inventory is software data collection.",
+    },
+    services: ["AWS Systems Manager"],
+    references: [
+      {
+        title: "OpsCenter — AWS docs",
+        url: "https://docs.aws.amazon.com/systems-manager/latest/userguide/OpsCenter.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "soa-mon-014",
+    slug: "cloudwatch-cross-account-observability",
+    cert: "soa-c03",
+    domain: "soa-monitoring-logging-remediation",
+    topic: "soa-monitoring-and-remediation",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A central ops account must view metrics and dashboards from 50 member accounts without logging into each. Which CloudWatch capability?",
+    options: [
+      { id: "A", text: "CloudWatch cross-account observability (monitoring + source accounts)" },
+      { id: "B", text: "Metric export to S3 daily" },
+      { id: "C", text: "Read-only IAM users per account" },
+      { id: "D", text: "Third-party monitoring agents" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Cross-account observability links a monitoring account to source accounts — one console for metrics/logs/alarms/ServiceLens across the org. Purpose-built for central ops visibility without per-account login.",
+    optionExplanations: {
+      A: "Native cross-account monitoring = observability feature. Correct.",
+      B: "Exports are periodic data movement — not live monitoring.",
+      C: "IAM users per account = the painful manual way.",
+      D: "Unnecessary — the feature is built in.",
+    },
+    services: ["Amazon CloudWatch"],
+    references: [
+      {
+        title: "Cross-account observability — AWS docs",
+        url: "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Unified-Cross-Account.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "soa-dep-010",
+    slug: "state-manager-association-compliance",
+    cert: "soa-c03",
+    domain: "soa-deployment-provisioning-automation",
+    topic: "soa-deployment-and-automation",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A fleet must continuously keep specific software installed and configs applied — auto-remediating drift on a schedule. Which SSM feature enforces desired state?",
+    options: [
+      { id: "A", text: "State Manager associations" },
+      { id: "B", text: "Run Command one-off execution" },
+      { id: "C", text: "Patch Manager" },
+      { id: "D", text: "Session Manager" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "State Manager associations = desired-state configuration: documents applied to targets on a schedule, re-applied when drifted. Patch Manager handles OS patches specifically; Run Command is one-shot without scheduling/persistence.",
+    optionExplanations: {
+      A: "Scheduled desired-state enforcement = associations. Correct.",
+      B: "Run Command is ad-hoc — no drift remediation.",
+      C: "Patch Manager = patches only — not arbitrary config.",
+      D: "Session Manager is shell access — not config enforcement.",
+    },
+    services: ["AWS Systems Manager"],
+    references: [
+      {
+        title: "State Manager — AWS docs",
+        url: "https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-state.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "soa-dep-011",
+    slug: "cloudformation-drift-remediation",
+    cert: "soa-c03",
+    domain: "soa-deployment-provisioning-automation",
+    topic: "soa-deployment-and-automation",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Stack resources were manually modified outside CloudFormation and the template no longer matches reality. What DETECTS this divergence?",
+    options: [
+      { id: "A", text: "Stack drift detection" },
+      { id: "B", text: "Change sets" },
+      { id: "C", text: "Stack policies" },
+      { id: "D", text: "Termination protection" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Drift detection compares actual resource state vs template — flags drifted resources so you can reconcile (revert manually or accept into the template via import/update). Stack policies PREVENT changes; they don't detect out-of-band edits.",
+    optionExplanations: {
+      A: "Template vs reality comparison = drift detection. Correct.",
+      B: "Change sets preview template changes — not external drift.",
+      C: "Policies prevent stack update overwrites — not detection.",
+      D: "Termination protection guards deletes — unrelated.",
+    },
+    services: ["AWS CloudFormation"],
+    references: [
+      {
+        title: "Drift detection — AWS docs",
+        url: "https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-stack-drift.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "soa-net-009",
+    slug: "cloudfront-oac-origin-access",
+    cert: "soa-c03",
+    domain: "soa-networking-content-delivery",
+    topic: "soa-networking-operations",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An S3 origin must block ALL direct bucket access — content only served through CloudFront. What's the modern access mechanism?",
+    options: [
+      { id: "A", text: "Origin Access Control (OAC) + bucket policy scoped to the distribution" },
+      { id: "B", text: "Public bucket with cache behavior rules" },
+      { id: "C", text: "Origin Access Identity (legacy OAI)" },
+      { id: "D", text: "Signed URLs for every object" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "OAC is the modern successor to OAI — SigV4-signed requests from CloudFront, bucket policy allows only the distribution's service principal. The bucket stays fully private; OAI is the older approach exams may still reference.",
+    optionExplanations: {
+      A: "OAC + scoped bucket policy = current best practice. Correct.",
+      B: "Public bucket defeats the purpose.",
+      C: "OAI works but OAC is the modern replacement.",
+      D: "Signed URLs are for private per-user access — not CDN origin.",
+    },
+    services: ["Amazon CloudFront", "Amazon S3"],
+    references: [
+      {
+        title: "Origin Access Control — AWS docs",
+        url: "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "soa-net-010",
+    slug: "alb-access-logs-troubleshoot",
+    cert: "soa-c03",
+    domain: "soa-networking-content-delivery",
+    topic: "soa-networking-operations",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Intermittent 502s need per-request detail — which target returned the error, latency per request. Where does the ALB write this data?",
+    options: [
+      { id: "A", text: "ALB access logs to S3 (queryable via Athena)" },
+      { id: "B", text: "CloudWatch metrics only" },
+      { id: "C", text: "VPC Flow Logs" },
+      { id: "D", text: "CloudTrail data events" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "ALB access logs (opt-in, to S3) capture per-request details: target, status code, latencies, TLS — queryable in Athena. CloudWatch gives aggregate metrics; flow logs are L4 connection records; CloudTrail is API calls.",
+    optionExplanations: {
+      A: "Per-request L7 detail = access logs → S3 → Athena. Correct.",
+      B: "Metrics aggregate — no per-request detail.",
+      C: "Flow logs show connections — not HTTP status/target.",
+      D: "Data events are API calls — not LB requests.",
+    },
+    services: ["Elastic Load Balancing", "Amazon S3"],
+    references: [
+      {
+        title: "ALB access logs — AWS docs",
+        url: "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "soa-rel-009",
+    slug: "rds-backup-vs-snapshot-retention",
+    cert: "soa-c03",
+    domain: "soa-reliability-continuity",
+    topic: "soa-reliability-and-dr",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An RDS instance needs point-in-time recovery to ANY second within 7 days — plus manual snapshots kept beyond deletion. What covers BOTH?",
+    options: [
+      { id: "A", text: "Automated backups (PITR window) + manual snapshots for long retention" },
+      { id: "B", text: "Manual snapshots only" },
+      { id: "C", text: "Read replica promotion" },
+      { id: "D", text: "Multi-AZ failover" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Automated backups = transaction logs + daily snapshots → restore to any point in the retention window. Manual snapshots persist until deleted — for retention beyond 35 days or post-deletion. Replicas/failover are HA, not backup.",
+    optionExplanations: {
+      A: "PITR window + manual long-term snaps. Correct.",
+      B: "Manual-only loses continuous PITR capability.",
+      C: "Replicas aren't point-in-time backups.",
+      D: "Multi-AZ is availability — not recoverability.",
+    },
+    services: ["Amazon RDS"],
+    references: [
+      {
+        title: "RDS backups — AWS docs",
+        url: "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_WorkingWithAutomatedBackups.html",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "soa-rel-010",
+    slug: "ebs-vss-application-consistent",
+    cert: "soa-c03",
+    domain: "soa-reliability-continuity",
+    topic: "soa-reliability-and-dr",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "Windows EC2 running SQL Server needs snapshots that guarantee application consistency — flushing in-memory transactions before capture. What's required?",
+    options: [
+      { id: "A", text: "VSS-enabled EBS snapshots via Systems Manager or Backup" },
+      { id: "B", text: "Standard EBS snapshots during off-hours" },
+      { id: "C", text: "Stop the instance before every snapshot" },
+      { id: "D", text: "Fast snapshot restore" },
+    ],
+    correctAnswers: ["A"],
+      explanation:
+      "VSS (Volume Shadow Copy Service) snapshots coordinate with Windows apps to quiesce I/O — application-consistent captures without stopping the instance. Standard snapshots are crash-consistent only — acceptable for many apps, risky for busy databases.",
+    optionExplanations: {
+      A: "Application-consistent Windows snapshots = VSS. Correct.",
+      B: "Crash-consistent may corrupt in-flight DB transactions.",
+      C: "Stopping works but VSS avoids downtime.",
+      D: "FSR accelerates restore — doesn't improve capture consistency.",
+    },
+    services: ["Amazon EBS", "AWS Systems Manager"],
+    references: [
+      {
+        title: "VSS snapshots — AWS docs",
+        url: "https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/application-consistent-snapshots.html",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "soa-sec-005",
+    slug: "inspector-cve-scanning",
+    cert: "soa-c03",
+    domain: "soa-security-compliance",
+    topic: "soa-security-operations",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "Ops wants automated continuous scanning of EC2 instances and ECR images for known software vulnerabilities (CVEs). Which service?",
+    options: [
+      { id: "A", text: "Amazon Inspector" },
+      { id: "B", text: "Amazon GuardDuty" },
+      { id: "C", text: "AWS Security Hub" },
+      { id: "D", text: "AWS Config" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Inspector = automated vulnerability management: continuous CVE scanning of EC2 (via SSM agent), ECR images, and Lambda functions — findings with severity + network reachability. GuardDuty detects threats; Hub aggregates findings.",
+    optionExplanations: {
+      A: "CVE scanning = Inspector. Correct.",
+      B: "GuardDuty = threat detection — not vuln scanning.",
+      C: "Hub aggregates — doesn't scan itself.",
+      D: "Config audits configuration — not CVEs.",
+    },
+    services: ["Amazon Inspector"],
+    references: [
+      {
+        title: "Amazon Inspector — AWS docs",
+        url: "https://docs.aws.amazon.com/inspector/latest/user/what-is-inspector.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
   }
 ];
