@@ -2594,5 +2594,365 @@ export const clfQuestions: Question[] = [
     estimatedMinutes: 1,
     reviewStatus: "published",
     lastReviewed: "2026-11-05",
+  },
+  {
+    id: "clf-cc-020",
+    slug: "clf-elasticity-vs-agility",
+    cert: "clf-c02",
+    domain: "clf-cloud-concepts",
+    topic: "clf-cloud-essentials",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An e-commerce site automatically adds EC2 capacity during Black Friday traffic spikes and removes it after — matching resources to demand. Which cloud characteristic is this?",
+    options: [
+      { id: "A", text: "Elasticity" },
+      { id: "B", text: "Agility" },
+      { id: "C", text: "Fault tolerance" },
+      { id: "D", text: "High availability" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Elasticity = dynamically scaling resources to match demand (auto-scaling up/down). Agility = speed of provisioning new resources. CLF loves this pair — demand-matching is ALWAYS elasticity.",
+    optionExplanations: {
+      A: "Scale to match demand = elasticity. Correct.",
+      B: "Agility is speed of getting resources — not demand matching.",
+      C: "Fault tolerance = surviving failures — different concept.",
+      D: "HA = uptime through redundancy — not scaling.",
+    },
+    services: ["Amazon EC2", "EC2 Auto Scaling"],
+    references: [
+      {
+        title: "Elasticity in the cloud — AWS docs",
+        url: "https://wa.aws.amazon.com/wellarchitected/2020-07-02T19-33-23/wat.concept.elasticity.en.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "clf-cc-021",
+    slug: "clf-availability-zone-definition",
+    cert: "clf-c02",
+    domain: "clf-cloud-concepts",
+    topic: "clf-cloud-essentials",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "What is an AWS Availability Zone?",
+    options: [
+      { id: "A", text: "One or more discrete data centers with redundant power/networking within a region" },
+      { id: "B", text: "A geographic area containing edge locations" },
+      { id: "C", text: "A single physical server rack" },
+      { id: "D", text: "A country where AWS operates" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Hierarchy: Region (geographic area) → Availability Zones (isolated data center groups within the region, connected by low-latency links) → Edge locations (CloudFront caching). Deploying across AZs = high availability within a region.",
+    optionExplanations: {
+      A: "Isolated DC groups in a region = AZ. Correct.",
+      B: "Edge locations are the CDN layer — not AZs.",
+      C: "An AZ is larger than a rack — usually multiple facilities.",
+      D: "That describes a Region's geography, not an AZ.",
+    },
+    services: ["Amazon EC2"],
+    references: [
+      {
+        title: "Regions and Availability Zones — AWS docs",
+        url: "https://aws.amazon.com/about-aws/global-infrastructure/regions_az/",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "clf-sec-018",
+    slug: "clf-mfa-root-account",
+    cert: "clf-c02",
+    domain: "clf-security-compliance",
+    topic: "clf-security-basics",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "What is the FIRST security action AWS recommends for a new account's root user?",
+    options: [
+      { id: "A", text: "Enable multi-factor authentication (MFA) on root" },
+      { id: "B", text: "Create access keys for the root user" },
+      { id: "C", text: "Share root credentials with the admin team" },
+      { id: "D", text: "Use root for daily administrative tasks" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Root account best practices: enable MFA immediately, never create root access keys, never use root for daily work — create an IAM admin user/role instead. Root = billing + account-recovery only.",
+    optionExplanations: {
+      A: "MFA on root = first recommendation. Correct.",
+      B: "Root access keys are explicitly discouraged.",
+      C: "Never share root credentials.",
+      D: "Daily work belongs in IAM — not root.",
+    },
+    services: ["AWS IAM"],
+    references: [
+      {
+        title: "Root user best practices — AWS docs",
+        url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "clf-sec-019",
+    slug: "clf-iam-least-privilege",
+    cert: "clf-c02",
+    domain: "clf-security-compliance",
+    topic: "clf-security-basics",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "An application only needs to read objects from one S3 bucket. Following IAM best practices, what permissions should its role have?",
+    options: [
+      { id: "A", text: "s3:GetObject on that specific bucket only" },
+      { id: "B", text: "s3:* on all buckets" },
+      { id: "C", text: "AdministratorAccess for simplicity" },
+      { id: "D", text: "s3:FullAccess" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Least privilege = grant only the actions needed, only on the resources needed — s3:GetObject on that one bucket. Wildcards and admin access are the classic wrong answers on every AWS exam level.",
+    optionExplanations: {
+      A: "Minimal action + minimal resource = least privilege. Correct.",
+      B: "Wildcard on all buckets is far more than needed.",
+      C: "Admin access violates least privilege completely.",
+      D: "Full S3 access still includes writes/deletes.",
+    },
+    services: ["AWS IAM", "Amazon S3"],
+    references: [
+      {
+        title: "IAM best practices — AWS docs",
+        url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "clf-sec-020",
+    slug: "clf-shield-ddos-protection",
+    cert: "clf-c02",
+    domain: "clf-security-compliance",
+    topic: "clf-security-basics",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "Which AWS service protects applications from DDoS attacks at the network and transport layers — enabled automatically at no cost?",
+    options: [
+      { id: "A", text: "AWS WAF" },
+      { id: "B", text: "AWS Shield Standard" },
+      { id: "C", text: "Amazon GuardDuty" },
+      { id: "D", text: "AWS Network Firewall" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Shield Standard = automatic free DDoS protection (L3/L4) for all customers. Shield Advanced adds L7 mitigations, 24/7 response team, and cost protection for a fee. WAF filters application-layer requests — complementary, not DDoS infrastructure protection.",
+    optionExplanations: {
+      A: "WAF filters L7 web requests — different layer.",
+      B: "Free automatic DDoS = Shield Standard. Correct.",
+      C: "GuardDuty detects threats — doesn't mitigate floods.",
+      D: "Network Firewall is custom traffic rules — not DDoS.",
+    },
+    services: ["AWS Shield"],
+    references: [
+      {
+        title: "AWS Shield — AWS docs",
+        url: "https://aws.amazon.com/shield/",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "clf-svc-022",
+    slug: "clf-rds-vs-dynamodb",
+    cert: "clf-c02",
+    domain: "clf-technology-services",
+    topic: "clf-core-services",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "An app needs a managed RELATIONAL database with SQL queries, joins, and ACID transactions on structured data. Which service?",
+    options: [
+      { id: "A", text: "Amazon RDS" },
+      { id: "B", text: "Amazon DynamoDB" },
+      { id: "C", text: "Amazon ElastiCache" },
+      { id: "D", text: "Amazon Redshift" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "RDS = managed relational engines (MySQL, PostgreSQL, etc.) for OLTP with joins/ACID. DynamoDB = NoSQL key-value; ElastiCache = in-memory cache; Redshift = analytics warehouse — the four-way database map CLF tests.",
+    optionExplanations: {
+      A: "Managed relational OLTP = RDS. Correct.",
+      B: "DynamoDB is NoSQL — no joins/SQL.",
+      C: "ElastiCache caches data — not a primary store.",
+      D: "Redshift is analytics — not transactional.",
+    },
+    services: ["Amazon RDS"],
+    references: [
+      {
+        title: "Amazon RDS — AWS docs",
+        url: "https://aws.amazon.com/rds/",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "clf-svc-023",
+    slug: "clf-lambda-event-driven",
+    cert: "clf-c02",
+    domain: "clf-technology-services",
+    topic: "clf-core-services",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "Code should run automatically when a file uploads to S3 — a few seconds of execution, billed only while running, no servers. Which service?",
+    options: [
+      { id: "A", text: "Amazon EC2" },
+      { id: "B", text: "AWS Lambda" },
+      { id: "C", text: "Amazon ECS" },
+      { id: "D", text: "AWS Elastic Beanstalk" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Lambda = event-driven serverless functions: triggered by S3/SQS/API Gateway/etc., billed per millisecond of execution, zero servers. The canonical serverless compute answer on CLF.",
+    optionExplanations: {
+      A: "EC2 = always-on servers you manage.",
+      B: "Event-triggered + no servers + pay-per-run = Lambda. Correct.",
+      C: "ECS runs containers — you still manage compute.",
+      D: "Beanstalk provisions infrastructure — not per-invocation billing.",
+    },
+    services: ["AWS Lambda", "Amazon S3"],
+    references: [
+      {
+        title: "AWS Lambda — AWS docs",
+        url: "https://aws.amazon.com/lambda/",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "clf-svc-024",
+    slug: "clf-sqs-decoupling",
+    cert: "clf-c02",
+    domain: "clf-technology-services",
+    topic: "clf-core-services",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A web tier must survive backend processing delays — requests should queue up instead of failing when the worker is busy. Which service decouples the tiers?",
+    options: [
+      { id: "A", text: "Amazon SNS" },
+      { id: "B", text: "Amazon SQS" },
+      { id: "C", text: "Amazon EventBridge" },
+      { id: "D", text: "AWS Step Functions" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "SQS = message QUEUE for decoupling — producers drop messages, consumers pull when ready, failures buffer instead of cascading. SNS = pub/sub fan-out to many subscribers. Queue-to-decouple is THE classic CLF concept.",
+    optionExplanations: {
+      A: "SNS pushes to subscribers — no pull-based buffering.",
+      B: "Queue buffering between tiers = SQS. Correct.",
+      C: "EventBridge routes events — not durable work queues.",
+      D: "Step Functions orchestrates — not tier decoupling.",
+    },
+    services: ["Amazon SQS"],
+    references: [
+      {
+        title: "Amazon SQS — AWS docs",
+        url: "https://aws.amazon.com/sqs/",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "clf-bill-016",
+    slug: "clf-consolidated-billing-organizations",
+    cert: "clf-c02",
+    domain: "clf-billing-pricing-support",
+    topic: "clf-billing-and-support",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A company has 20 AWS accounts and wants a single bill plus volume-discount pricing that pools usage across all accounts. Which feature?",
+    options: [
+      { id: "A", text: "AWS Budgets" },
+      { id: "B", text: "AWS Organizations consolidated billing" },
+      { id: "C", text: "Cost allocation tags" },
+      { id: "D", text: "AWS Cost Explorer" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Organizations consolidated billing = one bill + shared volume discounts + shared RI/Savings Plans benefits across member accounts. It's free — one of the few 'always yes' answers about AWS features.",
+    optionExplanations: {
+      A: "Budgets alert — don't consolidate billing.",
+      B: "One bill + pooled discounts = consolidated billing. Correct.",
+      C: "Tags organize spend reporting — not billing consolidation.",
+      D: "Explorer analyzes — doesn't combine bills.",
+    },
+    services: ["AWS Organizations"],
+    references: [
+      {
+        title: "Consolidated billing — AWS docs",
+        url: "https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/consolidated-billing.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "clf-bill-017",
+    slug: "clf-savings-plans-vs-on-demand",
+    cert: "clf-c02",
+    domain: "clf-billing-pricing-support",
+    topic: "clf-billing-and-support",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A workload runs steady-state compute 24/7 for the next year. Which pricing option gives the biggest discount in exchange for a usage commitment?",
+    options: [
+      { id: "A", text: "On-Demand Instances" },
+      { id: "B", text: "Savings Plans" },
+      { id: "C", text: "Spot Instances" },
+      { id: "D", text: "Dedicated Hosts" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Commitment pricing map: Savings Plans / Reserved Instances = up to ~72% off for 1–3 year commitments on STEADY workloads. Spot = cheaper but interruptible — wrong for steady-state critical work. On-Demand = no commitment, highest price.",
+    optionExplanations: {
+      A: "On-Demand has no discount for commitment.",
+      B: "Commitment discount on steady compute = Savings Plans. Correct.",
+      C: "Spot can be interrupted — not for always-on critical load.",
+      D: "Dedicated Hosts are for licensing/compliance — not the discount answer.",
+    },
+    services: ["AWS Savings Plans", "Amazon EC2"],
+    references: [
+      {
+        title: "EC2 pricing options — AWS docs",
+        url: "https://aws.amazon.com/ec2/pricing/",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
   }
 ];

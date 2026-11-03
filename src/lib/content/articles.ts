@@ -4318,6 +4318,78 @@ ARTICLES.push({
   ],
 });
 
+ARTICLES.push({
+  slug: "sap-c02-vs-az-305",
+  title: "SAP-C02 vs AZ-305: Expert-Level Architecture Certs Compared",
+  description:
+    "AWS Solutions Architect Professional vs Azure Solutions Architect Expert — difficulty, prerequisites, question style, and which expert-level architecture certification to pursue.",
+  domain: "sap-new-solutions",
+  topic: "sap-complex-solutions",
+  updatedAt: "2026-11-05",
+  readingMinutes: 8,
+  sections: [
+    {
+      paragraphs: [
+        "AWS Certified Solutions Architect – Professional (SAP-C02) and Microsoft Certified: Azure Solutions Architect Expert (AZ-305) are the pinnacle architecture credentials on each platform — the exams that separate people who know services from people who can design enterprise systems. Both are legitimately difficult; neither is a 'study for two weeks' exam.",
+      ],
+    },
+    {
+      heading: "Side-by-side basics",
+      list: [
+        "Cost: SAP $300 / AZ-305 $165",
+        "Questions: SAP ~75 scenario questions in 180 minutes / AZ-305 ~40–60 with case studies in ~120 minutes",
+        "Prerequisites: SAP has no formal prereq but assumes SAA-level knowledge / AZ-305 formally requires AZ-104 (Azure Administrator) first",
+        "Passing: SAP 750/1000 / AZ-305 700/1000",
+      ],
+    },
+    {
+      heading: "The AZ-104 gate",
+      paragraphs: [
+        "The biggest structural difference: AZ-305 can't be taken standalone — Microsoft requires the AZ-104 administrator credential first, making the Azure expert path a two-exam journey (~$330 total, comparable to SAP's $300). SAP-C02 has no enforced prerequisite, though attempting it without SAA-level fluency is genuinely unwise.",
+        "This changes sequencing strategy: Azure path = AZ-900 → AZ-104 → AZ-305; AWS path = CLF → SAA → SAP, with SAA technically optional but practically necessary.",
+      ],
+    },
+    {
+      heading: "What each exam actually tests",
+      paragraphs: [
+        "SAP-C02 is a judgment exam at depth: multi-page scenarios with conflicting requirements where two answers look right and you must weigh trade-offs — cost vs durability, latency vs complexity, organizational constraints (SCPs, delegated admin, multi-account patterns). Expect migration, hybrid connectivity, and organization-level governance at length.",
+        "AZ-305 leans more design-document-style: given business/technical requirements, select solutions for identity/governance, data, business continuity, and infrastructure. It tests architecture decisions across a slightly broader-but-shallower surface, with case-study question groups that force you to hold multiple requirements in mind.",
+      ],
+    },
+    {
+      heading: "Difficulty — honest assessment",
+      paragraphs: [
+        "SAP-C02 is widely considered the harder exam — the answer ambiguity is deliberate and brutal, and 180 minutes of dense scenarios is an endurance test. AZ-305 is challenging but more tractable: questions reward knowing Microsoft's documented reference architectures and the 'correct' answer tends to follow official design guidance more predictably.",
+        "Preparation reality: SAP typically takes 8–12 weeks for an experienced architect; AZ-305 more like 6–8 weeks after AZ-104. Budget accordingly.",
+      ],
+    },
+    {
+      heading: "Career value",
+      list: [
+        "SAP-C02 carries strong market weight — it's one of the most cited certs in senior cloud architect and consultant job posts, and historically correlates with the highest cert-holder salaries in AWS surveys.",
+        "AZ-305 matters most in Microsoft-standardized enterprises — it's the credential that unlocks 'cloud architect' titles in Azure shops, especially combined with the AZ-104 foundation.",
+        "Both signal senior-level design ability; neither is common enough to be commoditized. The expert tier is where certification still differentiates.",
+      ],
+    },
+    {
+      heading: "Which path first?",
+      paragraphs: [
+        "If you're already certified on one side, adding the other expert cert is a strong 'multi-cloud architect' signal — but do it after job-relevant depth, not for collection. If choosing from scratch: follow your employer's cloud. If truly neutral, AWS's larger market share makes SAP-C02 the higher-EV single bet, while the Azure path offers a smoother two-step ramp (AZ-104 then AZ-305) that's easier to sequence around work.",
+      ],
+    },
+    {
+      heading: "Where to practice",
+      paragraphs: [
+        "Our SAP-C02 bank (40 scenario questions covering org complexity, migration, and multi-account design) plus the SAP exam guide, cheat sheet, and pass guide cover the AWS side. For the Azure ramp, start with the AZ-104 bank and guide — the AZ-305 path runs through it.",
+      ],
+    },
+  ],
+  references: [
+    { title: "SAP-C02 certification page (AWS)", url: "https://aws.amazon.com/certification/certified-solutions-architect-professional/" },
+    { title: "AZ-305 certification page (Microsoft)", url: "https://learn.microsoft.com/en-us/credentials/certifications/azure-solutions-architect/" },
+  ],
+});
+
 export function getArticle(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
 }
