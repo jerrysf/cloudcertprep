@@ -4248,6 +4248,76 @@ ARTICLES.push({
   ],
 });
 
+ARTICLES.push({
+  slug: "aif-c01-vs-ai-900",
+  title: "AIF-C01 vs AI-900: AWS or Azure for Your AI Fundamentals Cert?",
+  description:
+    "AWS AI Practitioner vs Azure AI Fundamentals compared — scope, difficulty, generative AI coverage, career value, and which AI basics certification to take first.",
+  domain: "aif-ai-ml-fundamentals",
+  topic: "aif-ml-foundations",
+  updatedAt: "2026-11-05",
+  readingMinutes: 7,
+  sections: [
+    {
+      paragraphs: [
+        "AWS Certified AI Practitioner (AIF-C01) and Microsoft Azure AI Fundamentals (AI-900) are the two entry-level AI certifications — both launched to capture the generative AI wave, both knowledge-only with no coding required. They overlap heavily on ML basics but diverge on what 'AI' means at each vendor: AWS centers the exam on foundation models and Bedrock, Azure spreads wider across vision, NLP, and document services.",
+      ],
+    },
+    {
+      heading: "Side-by-side basics",
+      list: [
+        "Cost: AIF $100 / AI-900 $99 — identical",
+        "Questions: AIF ~65 in 90 min / AI-900 ~40–60 in ~60 min",
+        "Passing: AIF 700/1000 / AI-900 700/1000",
+        "Prerequisites: none — both designed for beginners, sales roles, and managers",
+      ],
+    },
+    {
+      heading: "Scope — where they diverge",
+      paragraphs: [
+        "AIF-C01 is heavily generative-AI-weighted: foundation model concepts, prompt engineering, Amazon Bedrock (models, Knowledge Bases, Agents, Guardrails, pricing modes), plus a slice of classic ML terminology and responsible AI. Roughly a third of the exam is Bedrock-specific.",
+        "AI-900 spreads evenly across five domains: responsible AI principles, ML fundamentals (regression/classification/clustering, Azure ML), computer vision (Vision, Custom Vision, Document Intelligence, Face), NLP/speech (Language, Speech, Translator), and generative AI (Azure OpenAI, prompt basics). Less Bedrock-style depth on any single service, more breadth across cognitive services.",
+      ],
+    },
+    {
+      heading: "Concept translation",
+      list: [
+        "Amazon Bedrock → Azure OpenAI Service (hosted foundation models via API)",
+        "Bedrock Knowledge Bases → Azure AI Search + RAG patterns / Copilot grounding",
+        "Bedrock Agents → Azure OpenAI function calling / Copilot Studio agents",
+        "Bedrock Guardrails → Azure AI Content Safety",
+        "SageMaker → Azure Machine Learning (full ML lifecycle platform)",
+        "Rekognition/Comprehend/Textract → Azure AI Vision / Language / Document Intelligence",
+      ],
+    },
+    {
+      heading: "Difficulty",
+      paragraphs: [
+        "Both are passable in 2–3 weeks of part-time study. AI-900 is arguably the friendlier exam — service-recognition questions are literal ('which service extracts invoice fields?'). AIF asks slightly more nuanced judgment ('which Bedrock feature fits this requirement — Knowledge Base or fine-tuning?'). Neither requires hands-on skill.",
+      ],
+    },
+    {
+      heading: "Career value and which to take",
+      list: [
+        "Take AIF-C01 if your organization runs AWS or you're pursuing the AWS cert ladder (it pairs naturally with CLF → SAA).",
+        "Take AI-900 if you're in a Microsoft shop — it's the fastest credential to prove AI literacy in an Azure environment and feeds toward AI-102.",
+        "Both are 'awareness' credentials — they signal AI literacy, not AI engineering ability. Hiring impact is modest but real for non-technical and early-career roles.",
+        "Doing both is cheap (~$200) and quick — the shared vocabulary (tokens, embeddings, temperature, RAG) transfers 80% between them.",
+      ],
+    },
+    {
+      heading: "Where to practice",
+      paragraphs: [
+        "We maintain free banks for both — the AIF-C01 bank (40 questions, Bedrock-heavy) and the AI-900 bank (40 questions across all five domains) — plus exam guides, cheat sheets, and study plans for each.",
+      ],
+    },
+  ],
+  references: [
+    { title: "AIF-C01 certification page (AWS)", url: "https://aws.amazon.com/certification/certified-ai-practitioner/" },
+    { title: "AI-900 certification page (Microsoft)", url: "https://learn.microsoft.com/en-us/credentials/certifications/azure-ai-fundamentals/" },
+  ],
+});
+
 export function getArticle(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
 }

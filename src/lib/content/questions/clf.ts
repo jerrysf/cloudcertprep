@@ -2235,4 +2235,364 @@ export const clfQuestions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-11-01",
   },
+  {
+    id: "clf-cc-018",
+    slug: "clf-well-architected-framework-pillars",
+    cert: "clf-c02",
+    domain: "clf-cloud-concepts",
+    topic: "clf-cloud-essentials",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "Which AWS framework provides architectural best practices across six pillars including operational excellence, security, and cost optimization?",
+    options: [
+      { id: "A", text: "AWS Well-Architected Framework" },
+      { id: "B", text: "AWS Cloud Adoption Framework" },
+      { id: "C", text: "AWS Shared Responsibility Model" },
+      { id: "D", text: "AWS Migration Acceleration Program" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "The Well-Architected Framework = six pillars: operational excellence, security, reliability, performance efficiency, cost optimization, sustainability. CAF is about organizational cloud adoption — different framework, a classic CLF trap.",
+    optionExplanations: {
+      A: "Six-pillar architecture guidance. Correct.",
+      B: "CAF covers people/process adoption — not architecture pillars.",
+      C: "SRM splits AWS/customer security duties — not a design framework.",
+      D: "MAP is a migration program — not architecture guidance.",
+    },
+    services: ["AWS Well-Architected Tool"],
+    references: [
+      {
+        title: "Well-Architected Framework — AWS docs",
+        url: "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "clf-cc-019",
+    slug: "clf-cloud-adoption-benefit-capex",
+    cert: "clf-c02",
+    domain: "clf-cloud-concepts",
+    topic: "clf-cloud-essentials",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "A startup wants to avoid large upfront hardware purchases and instead pay for infrastructure as it grows. Which cloud benefit is this?",
+    options: [
+      { id: "A", text: "Trade capital expense (CapEx) for variable expense (OpEx)" },
+      { id: "B", text: "Benefit from massive economies of scale" },
+      { id: "C", text: "Increase speed and agility" },
+      { id: "D", text: "Go global in minutes" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "AWS advertises six cloud advantages — 'trade capital expense for variable expense' is the pay-as-you-go/no-upfront-hardware benefit. The distractors are all real advantages too; match the SPECIFIC wording to the scenario.",
+    optionExplanations: {
+      A: "No upfront purchase, pay-as-you-grow = CapEx→OpEx. Correct.",
+      B: "Economies of scale = lower prices from AWS's size — different point.",
+      C: "Agility = provisioning speed — different advantage.",
+      D: "Global deployment = geographic reach — different advantage.",
+    },
+    services: ["AWS"],
+    references: [
+      {
+        title: "Advantages of cloud computing — AWS docs",
+        url: "https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "clf-sec-015",
+    slug: "clf-shared-responsibility-patch-guest-os",
+    cert: "clf-c02",
+    domain: "clf-security-compliance",
+    topic: "clf-security-basics",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Under the shared responsibility model for EC2, who is responsible for patching the GUEST operating system on an instance?",
+    options: [
+      { id: "A", text: "AWS — they own the infrastructure" },
+      { id: "B", text: "The customer — guest OS is 'security IN the cloud'" },
+      { id: "C", text: "AWS and customer equally" },
+      { id: "D", text: "The OS vendor" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "EC2 splits: AWS secures the cloud (hardware, hypervisor, host OS, facilities); the customer secures IN the cloud (guest OS patching, apps, data, SGs, IAM). Guest OS patching is the classic exam item — always the customer on EC2.",
+    optionExplanations: {
+      A: "AWS handles the HOST/hypervisor — not your guest OS.",
+      B: "Guest OS = customer responsibility. Correct.",
+      C: "The model draws a clear line — not a 50/50 split.",
+      D: "Vendors ship updates — applying them is on you.",
+    },
+    services: ["Amazon EC2", "AWS IAM"],
+    references: [
+      {
+        title: "Shared responsibility model — AWS docs",
+        url: "https://aws.amazon.com/compliance/shared-responsibility-model/",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "clf-sec-016",
+    slug: "clf-artifact-compliance-reports",
+    cert: "clf-c02",
+    domain: "clf-security-compliance",
+    topic: "clf-security-basics",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An auditor asks for AWS's SOC 2 and ISO 27001 compliance reports. Where does the customer download these documents?",
+    options: [
+      { id: "A", text: "AWS Artifact" },
+      { id: "B", text: "AWS Trusted Advisor" },
+      { id: "C", text: "AWS Config" },
+      { id: "D", text: "AWS Security Hub" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "AWS Artifact is the self-service portal for AWS compliance reports (SOC, ISO, PCI) and agreements — downloadable audit evidence. Security Hub finds YOUR issues; Artifact gives you AWS's attestations.",
+    optionExplanations: {
+      A: "Compliance reports/agreements portal. Correct.",
+      B: "Advisor checks YOUR account best practices.",
+      C: "Config tracks YOUR resource configurations.",
+      D: "Hub aggregates YOUR security findings.",
+    },
+    services: ["AWS Artifact"],
+    references: [
+      {
+        title: "AWS Artifact — AWS docs",
+        url: "https://aws.amazon.com/artifact/",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "clf-sec-017",
+    slug: "clf-guardduty-threat-detection",
+    cert: "clf-c02",
+    domain: "clf-security-compliance",
+    topic: "clf-security-basics",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "Which AWS service continuously monitors for malicious activity — unusual API calls, compromised instances, crypto mining — using threat intelligence?",
+    options: [
+      { id: "A", text: "Amazon Inspector" },
+      { id: "B", text: "Amazon GuardDuty" },
+      { id: "C", text: "AWS Shield" },
+      { id: "D", text: "AWS WAF" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "GuardDuty = managed threat DETECTION analyzing CloudTrail, VPC Flow Logs, and DNS logs for malicious behavior. Inspector finds vulnerabilities; Shield blocks DDoS; WAF filters web requests — CLF tests this service map hard.",
+    optionExplanations: {
+      A: "Inspector = vulnerability scanning, not threat detection.",
+      B: "Continuous threat detection = GuardDuty. Correct.",
+      C: "Shield = DDoS protection — not behavior analysis.",
+      D: "WAF = web request filtering — not detection.",
+    },
+    services: ["Amazon GuardDuty"],
+    references: [
+      {
+        title: "Amazon GuardDuty — AWS docs",
+        url: "https://aws.amazon.com/guardduty/",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "clf-svc-019",
+    slug: "clf-fargate-serverless-containers",
+    cert: "clf-c02",
+    domain: "clf-technology-services",
+    topic: "clf-core-services",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "A team wants to run containers without managing any EC2 instances or servers — just define the container and let AWS handle compute. Which option?",
+    options: [
+      { id: "A", text: "EC2 launch type on ECS" },
+      { id: "B", text: "AWS Fargate" },
+      { id: "C", text: "AWS Elastic Beanstalk" },
+      { id: "D", text: "Amazon Lightsail" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "Fargate = serverless compute engine for containers (works with ECS/EKS) — no instances to provision or patch. EC2 launch type makes you manage the fleet. Classic compute-spectrum question: EC2 → managed → containers → Fargate → Lambda.",
+    optionExplanations: {
+      A: "EC2 launch type requires managing instances.",
+      B: "Serverless containers = Fargate. Correct.",
+      C: "Beanstalk provisions EC2 under the hood.",
+      D: "Lightsail is simplified VPS — you manage the server.",
+    },
+    services: ["AWS Fargate", "Amazon ECS"],
+    references: [
+      {
+        title: "AWS Fargate — AWS docs",
+        url: "https://aws.amazon.com/fargate/",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "clf-svc-020",
+    slug: "clf-glacier-archive-storage",
+    cert: "clf-c02",
+    domain: "clf-technology-services",
+    topic: "clf-core-services",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "Which S3 storage class offers the LOWEST storage cost for compliance archives retained 7+ years and retrieved at most once a year — accepting hours-long retrieval?",
+    options: [
+      { id: "A", text: "S3 Standard" },
+      { id: "B", text: "S3 Standard-IA" },
+      { id: "C", text: "S3 Glacier Deep Archive" },
+      { id: "D", text: "S3 One Zone-IA" },
+    ],
+    correctAnswers: ["C"],
+    explanation:
+      "Deep Archive is the cheapest GB/month tier — designed for 7–10 year retention, ~12-hour retrieval. The exam pattern: rarely accessed + cheapest + hours OK → Deep Archive; rarely accessed + milliseconds → Standard-IA or Glacier Instant.",
+    optionExplanations: {
+      A: "Standard is the most expensive storage tier.",
+      B: "IA is cheaper but for millisecond retrieval — not archive pricing.",
+      C: "Long retention + hours OK = Deep Archive. Correct.",
+      D: "One Zone-IA trades durability for cost — still not archive pricing.",
+    },
+    services: ["Amazon S3"],
+    references: [
+      {
+        title: "S3 storage classes — AWS docs",
+        url: "https://aws.amazon.com/s3/storage-classes/",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "clf-svc-021",
+    slug: "clf-cloudfront-cdn-purpose",
+    cert: "clf-c02",
+    domain: "clf-technology-services",
+    topic: "clf-core-services",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "A website's users worldwide experience slow page loads because content is served from a single region. Which AWS service caches content at edge locations close to users?",
+    options: [
+      { id: "A", text: "Amazon Route 53" },
+      { id: "B", text: "Amazon CloudFront" },
+      { id: "C", text: "AWS Direct Connect" },
+      { id: "D", text: "Elastic Load Balancing" },
+    ],
+    correctAnswers: ["B"],
+    explanation:
+      "CloudFront is the CDN — caches content at 600+ edge locations globally for low-latency delivery. Route 53 is DNS; Direct Connect is private connectivity to AWS; ELB distributes traffic within the architecture.",
+    optionExplanations: {
+      A: "Route 53 routes DNS — doesn't cache content.",
+      B: "Edge caching CDN = CloudFront. Correct.",
+      C: "DX is a dedicated network link — not content caching.",
+      D: "ELB balances load across targets — not edge delivery.",
+    },
+    services: ["Amazon CloudFront"],
+    references: [
+      {
+        title: "Amazon CloudFront — AWS docs",
+        url: "https://aws.amazon.com/cloudfront/",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "clf-bill-014",
+    slug: "clf-cost-explorer-usage-analysis",
+    cert: "clf-c02",
+    domain: "clf-billing-pricing-support",
+    topic: "clf-billing-and-support",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "A finance team wants to visualize AWS spending over time — filtering by service, region, and tags to spot trends. Which tool?",
+    options: [
+      { id: "A", text: "AWS Cost Explorer" },
+      { id: "B", text: "AWS Budgets" },
+      { id: "C", text: "Cost and Usage Report" },
+      { id: "D", text: "AWS Pricing Calculator" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Cost Explorer = interactive spend visualization/filtering/forecasting. Budgets = alerts when you exceed thresholds; CUR = raw line-item billing data; Pricing Calculator = pre-purchase estimates — the four cost tools CLF wants you to distinguish.",
+    optionExplanations: {
+      A: "Visualize + filter + forecast spend = Cost Explorer. Correct.",
+      B: "Budgets alert on thresholds — not analysis.",
+      C: "CUR is raw data export — not a visualizer.",
+      D: "Calculator estimates FUTURE architectures.",
+    },
+    services: ["AWS Cost Explorer"],
+    references: [
+      {
+        title: "Cost Explorer — AWS docs",
+        url: "https://docs.aws.amazon.com/cost-management/latest/userguide/ce-what-is.html",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "clf-bill-015",
+    slug: "clf-support-plans-tam",
+    cert: "clf-c02",
+    domain: "clf-billing-pricing-support",
+    topic: "clf-billing-and-support",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Which support plan is required to get a Technical Account Manager (TAM) and infrastructure event management?",
+    options: [
+      { id: "A", text: "Basic" },
+      { id: "B", text: "Developer" },
+      { id: "C", text: "Business" },
+      { id: "D", text: "Enterprise" },
+    ],
+    correctAnswers: ["D"],
+    explanation:
+      "Support tiers: Basic (free) → Developer (business-hours email, 1 contact) → Business (24/7 phone/chat, full Trusted Advisor checks) → Enterprise (TAM, concierge, event management). TAM = Enterprise-only.",
+    optionExplanations: {
+      A: "Basic = docs/forums only.",
+      B: "Developer = business-hours email support.",
+      C: "Business adds 24/7 + full TA — but no TAM.",
+      D: "TAM + event management = Enterprise. Correct.",
+    },
+    services: ["AWS Support"],
+    references: [
+      {
+        title: "AWS Support plans — AWS docs",
+        url: "https://aws.amazon.com/premiumsupport/plans/",
+      },
+    ],
+    estimatedMinutes: 1,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  }
 ];
