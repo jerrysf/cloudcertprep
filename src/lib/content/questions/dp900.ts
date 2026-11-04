@@ -1444,5 +1444,365 @@ export const dp900Questions: Question[] = [
     estimatedMinutes: 2,
     reviewStatus: "published",
     lastReviewed: "2026-11-05",
+  },
+  {
+    id: "dp-core-011",
+    slug: "structured-vs-semi-vs-unstructured",
+    cert: "dp-900",
+    domain: "dp-core-data-concepts",
+    topic: "dp-core-data-concepts",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "JSON documents with varying fields per record — no fixed schema — are which data type?",
+    options: [
+      { id: "A", text: "Semi-structured — tags/keys organize data without a rigid schema" },
+      { id: "B", text: "Structured — like a relational table" },
+      { id: "C", text: "Unstructured — like video files" },
+      { id: "D", text: "Binary data" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Structured = schema-fixed tables; semi-structured = self-describing formats (JSON/XML/Parquet) with flexible fields; unstructured = no inherent organization (images, video, raw text). JSON is THE exam example of semi-structured.",
+    optionExplanations: {
+      A: "Flexible-schema JSON = semi-structured. Correct.",
+      B: "Structured requires rigid schema — JSON varies.",
+      C: "Unstructured has no organization — JSON has keys.",
+      D: "Binary is a format — not the data-type answer.",
+    },
+    services: ["Azure"],
+    references: [
+      {
+        title: "Data types — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/training/modules/explore-core-data-concepts/",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "dp-core-012",
+    slug: "acid-properties-meaning",
+    cert: "dp-900",
+    domain: "dp-core-data-concepts",
+    topic: "dp-core-data-concepts",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A bank transfer must debit one account and credit another as ONE unit — either both happen or neither does, even on failure. Which ACID property guarantees this?",
+    options: [
+      { id: "A", text: "Atomicity — transactions are all-or-nothing" },
+      { id: "B", text: "Consistency" },
+      { id: "C", text: "Isolation" },
+      { id: "D", text: "Durability" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "ACID: Atomicity = all-or-nothing transaction unit; Consistency = moves between valid states; Isolation = concurrent transactions don't interfere; Durability = committed data survives crashes. 'Both or neither' is always atomicity.",
+    optionExplanations: {
+      A: "All-or-nothing = atomicity. Correct.",
+      B: "Consistency is about valid states — not indivisibility.",
+      C: "Isolation concerns concurrent visibility.",
+      D: "Durability concerns survival after commit.",
+    },
+    services: ["Azure SQL Database"],
+    references: [
+      {
+        title: "Transactions — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/training/modules/explore-relational-data-azure/",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "dp-rel-011",
+    slug: "azure-sql-edge-offerings",
+    cert: "dp-900",
+    domain: "dp-relational-data",
+    topic: "dp-relational-data",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A company needs SQL Server features on their own VMs for full OS control including SQL Agent and linked servers. Which deployment option gives maximum control?",
+    options: [
+      { id: "A", text: "SQL Server on Azure Virtual Machines — IaaS, you manage the OS and SQL" },
+      { id: "B", text: "Azure SQL Database single database" },
+      { id: "C", text: "Azure SQL Managed Instance" },
+      { id: "D", text: "Azure Synapse SQL pool" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "The control ladder: SQL on VM (IaaS — full OS + all SQL Server features) > Managed Instance (PaaS, near-full SQL features, no OS) > SQL Database (PaaS, mainstream features only). 'Full OS control' = IaaS always.",
+    optionExplanations: {
+      A: "IaaS = full control. Correct.",
+      B: "Single DB PaaS has no Agent/linked-server parity.",
+      C: "MI is close — but no OS-level access.",
+      D: "Synapse is analytics — not OLTP.",
+    },
+    services: ["SQL Server on Azure VMs"],
+    references: [
+      {
+        title: "SQL on Azure options — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/azure-sql/azure-sql-iaas-vs-paas-what-is-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "dp-rel-012",
+    slug: "postgres-mysql-azure-service",
+    cert: "dp-900",
+    domain: "dp-relational-data",
+    topic: "dp-relational-data",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "An open-source app built on PostgreSQL must migrate to Azure with minimal code change. Which Azure service hosts it?",
+    options: [
+      { id: "A", text: "Azure Database for PostgreSQL" },
+      { id: "B", text: "Azure SQL Database" },
+      { id: "C", text: "Azure Cosmos DB" },
+      { id: "D", text: "Azure Synapse Analytics" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Azure offers managed open-source engines: Database for PostgreSQL, MySQL, and MariaDB — lift-and-shift compatible. Azure SQL is Microsoft's engine (T-SQL dialect differences); Cosmos is NoSQL.",
+    optionExplanations: {
+      A: "Managed PostgreSQL = direct answer. Correct.",
+      B: "Different engine — dialect incompatibilities.",
+      C: "Cosmos is NoSQL — not relational PostgreSQL.",
+      D: "Synapse is analytics warehousing.",
+    },
+    services: ["Azure Database for PostgreSQL"],
+    references: [
+      {
+        title: "Azure Database for PostgreSQL — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/postgresql/overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "dp-rel-013",
+    slug: "index-and-view-purposes",
+    cert: "dp-900",
+    domain: "dp-relational-data",
+    topic: "dp-relational-data",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Queries filtering on customer region are slow on a 200M-row table. Which database object most directly improves read performance on that filter?",
+    options: [
+      { id: "A", text: "An index on the region column" },
+      { id: "B", text: "A view" },
+      { id: "C", text: "A stored procedure" },
+      { id: "D", text: "A foreign key" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Indexes speed lookups/filters at the cost of write overhead and storage. Views are saved queries (convenience/security); stored procedures encapsulate logic; foreign keys enforce integrity — none primarily accelerate reads.",
+    optionExplanations: {
+      A: "Filter acceleration = index. Correct.",
+      B: "Views are saved queries — no inherent speedup.",
+      C: "Procs encapsulate logic — not access paths.",
+      D: "FKs enforce referential integrity.",
+    },
+    services: ["Azure SQL Database"],
+    references: [
+      {
+        title: "Indexes — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/sql/relational-databases/indexes/indexes",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "dp-doc-011",
+    slug: "cosmos-api-selection-table",
+    cert: "dp-900",
+    domain: "dp-non-relational-data",
+    topic: "dp-non-relational-data",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An app using Azure Table Storage semantics (key-value pairs, schemaless entities) must migrate to Cosmos DB for global distribution. Which Cosmos API preserves the data model?",
+    options: [
+      { id: "A", text: "Table API" },
+      { id: "B", text: "NoSQL API" },
+      { id: "C", text: "MongoDB API" },
+      { id: "D", text: "Gremlin API" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Cosmos API ↔ model mapping: NoSQL = JSON docs; MongoDB = Mongo wire protocol; Cassandra = column-family; Gremlin = graphs; Table = key-attribute entities (the Azure Table Storage migration path).",
+    optionExplanations: {
+      A: "Table semantics = Table API. Correct.",
+      B: "NoSQL API is JSON documents — different model.",
+      C: "MongoDB API is document-model — different queries.",
+      D: "Gremlin is graphs — vertices/edges.",
+    },
+    services: ["Azure Cosmos DB"],
+    references: [
+      {
+        title: "Cosmos APIs — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/cosmos-db/choose-api",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "dp-doc-012",
+    slug: "cosmos-partition-key-design",
+    cert: "dp-900",
+    domain: "dp-non-relational-data",
+    topic: "dp-non-relational-data",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "A Cosmos container stores IoT readings. All queries filter by deviceId, and each device generates similar volume. What's the correct partition key choice and why?",
+    options: [
+      { id: "A", text: "deviceId — distributes writes evenly AND aligns with query patterns (single-partition reads)" },
+      { id: "B", text: "timestamp — chronological ordering" },
+      { id: "C", text: "A constant value — simplest schema" },
+      { id: "D", text: "A random GUID per item" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Partition keys serve two goals: even distribution (avoid hot partitions) and query alignment (queries within one partition are cheap/fast; cross-partition = fan-out cost). timestamp would create a hot 'now' partition; a constant collapses everything into one; random GUIDs fragment query affinity.",
+    optionExplanations: {
+      A: "Even spread + query alignment = ideal key. Correct.",
+      B: "Time keys concentrate writes on 'now' = hot partition.",
+      C: "One partition = no distribution benefit.",
+      D: "Random keys break query co-location.",
+    },
+    services: ["Azure Cosmos DB"],
+    references: [
+      {
+        title: "Partitioning — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/cosmos-db/partitioning-overview",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "dp-an-011",
+    slug: "databricks-vs-synapse-vs-fabric",
+    cert: "dp-900",
+    domain: "dp-analytics-workloads",
+    topic: "dp-analytics-workloads",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Which Azure service provides a unified SaaS analytics platform combining data integration, warehousing, lakehouse, real-time analytics, and Power BI under one workspace?",
+    options: [
+      { id: "A", text: "Microsoft Fabric" },
+      { id: "B", text: "Azure Synapse Analytics" },
+      { id: "C", text: "Azure Databricks" },
+      { id: "D", text: "Azure HDInsight" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Fabric = Microsoft's unified SaaS analytics platform (Data Factory + Synapse engines + Power BI + OneLake in one product). Synapse is the PaaS predecessor; Databricks is the Spark notebook platform; HDInsight is managed Hadoop (legacy path).",
+    optionExplanations: {
+      A: "Unified SaaS analytics = Fabric. Correct.",
+      B: "Synapse is PaaS components — not the unified SaaS.",
+      C: "Databricks is Spark-based engineering — not BI-unified.",
+      D: "HDInsight = managed Hadoop clusters.",
+    },
+    services: ["Microsoft Fabric"],
+    references: [
+      {
+        title: "Microsoft Fabric — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/fabric/fundamentals/microsoft-fabric-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "dp-an-012",
+    slug: "stream-analytics-windowing",
+    cert: "dp-900",
+    domain: "dp-analytics-workloads",
+    topic: "dp-analytics-workloads",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Sensor telemetry streams in continuously; you need average temperature per device every 60 seconds computed over rolling 5-minute windows. Which service processes this in real time?",
+    options: [
+      { id: "A", text: "Azure Stream Analytics with a hopping/tumbling window query" },
+      { id: "B", text: "Nightly batch in Synapse" },
+      { id: "C", text: "Azure Data Factory copy job" },
+      { id: "D", text: "Cosmos DB queries" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Stream Analytics = real-time SQL-like processing over event streams (Event Hubs/IoT Hub input) with windowing functions (tumbling = non-overlapping, hopping = overlapping, sliding, session). Batch/warehouse tools can't produce per-minute continuous aggregates.",
+    optionExplanations: {
+      A: "Continuous windowed aggregation = Stream Analytics. Correct.",
+      B: "Nightly batch = wrong latency class.",
+      C: "ADF moves data — doesn't compute windows.",
+      D: "Cosmos stores — doesn't do stream windowing.",
+    },
+    services: ["Azure Stream Analytics", "Azure Event Hubs"],
+    references: [
+      {
+        title: "Stream Analytics — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-introduction",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "dp-an-013",
+    slug: "powerbi-dashboards-vs-reports",
+    cert: "dp-900",
+    domain: "dp-analytics-workloads",
+    topic: "dp-analytics-workloads",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "Executives need a single-page view of key metrics pinned from multiple reports — refreshing tiles, natural-language Q&A. Which Power BI concept?",
+    options: [
+      { id: "A", text: "Dashboard — a single-canvas collection of pinned visuals" },
+      { id: "B", text: "Report — a multi-page authored document" },
+      { id: "C", text: "Dataset" },
+      { id: "D", text: "Dataflow" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Power BI object model: dataset (data) → report (multi-page, authored in Desktop/Service) → dashboard (single-page pinned tiles from multiple reports, Q&A feature). Confusing dashboards vs reports is the common exam trap.",
+    optionExplanations: {
+      A: "Single canvas + pinned tiles + Q&A = dashboard. Correct.",
+      B: "Reports are multi-page — different object.",
+      C: "Datasets feed reports — not the visual surface.",
+      D: "Dataflows prepare data — not presentation.",
+    },
+    services: ["Power BI"],
+    references: [
+      {
+        title: "Dashboards vs reports — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/power-bi/consumer/end-user-dashboards",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
   }
 ];

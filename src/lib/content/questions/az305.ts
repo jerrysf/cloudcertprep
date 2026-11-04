@@ -1444,5 +1444,365 @@ export const az305Questions: Question[] = [
     estimatedMinutes: 2,
     reviewStatus: "published",
     lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-ig-011",
+    slug: "az305-policy-exemption-workflow",
+    cert: "az-305",
+    domain: "az305-identity-governance",
+    topic: "az305-identity-governance",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "One workload must violate an org-wide region-restriction policy for a documented business reason, while the policy stays enforced everywhere else. What's the cleanest design?",
+    options: [
+      { id: "A", text: "A policy exemption on that resource group/subscription scope only" },
+      { id: "B", text: "Remove the policy assignment org-wide" },
+      { id: "C", text: "Recreate the policy at a lower scope" },
+      { id: "D", text: "Disable the policy definition" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Policy exemptions carve out a scope without weakening the rule — documented, auditable, and expirable. Removing/weakening the assignment applies the loosening everywhere; a second lower assignment doesn't override inheritance.",
+    optionExplanations: {
+      A: "Scoped exception, rule intact = exemption. Correct.",
+      B: "Global removal loses enforcement everywhere.",
+      C: "Lower-scope duplicate can't override the inherited deny.",
+      D: "Disabling the definition affects all assignments.",
+    },
+    services: ["Azure Policy"],
+    references: [
+      {
+        title: "Policy exemptions — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/governance/policy/concepts/exemption-structure",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-ig-012",
+    slug: "az305-authentication-method-choice",
+    cert: "az-305",
+    domain: "az305-identity-governance",
+    topic: "az305-identity-governance",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "Users should authenticate on-prem AD and Azure AD with the same credentials, and sign-in traffic must validate INSIDE the corporate network (DCs) — never against cloud endpoints. Which method?",
+    options: [
+      { id: "A", text: "Pass-through authentication (PTA) — validates against on-prem AD via agent" },
+      { id: "B", text: "Password hash synchronization (PHS)" },
+      { id: "C", text: "Cloud-only identities" },
+      { id: "D", text: "Social identity federation" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "PHS validates in the CLOUD (hashes synced up) — easiest and includes leaked-credential detection; PTA validates against on-prem DCs in real time (agent inside, password never leaves); federation (ADFS) keeps auth fully on-prem. 'Validate inside the corporate network' = PTA.",
+    optionExplanations: {
+      A: "On-prem validation = PTA. Correct.",
+      B: "PHS validates cloud-side — the opposite requirement.",
+      C: "Cloud-only ignores the on-prem requirement.",
+      D: "Social IdP is for consumers — not AD.",
+    },
+    services: ["Microsoft Entra ID"],
+    references: [
+      {
+        title: "Choose an auth method — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/entra/identity/hybrid/connect/choose-ad-authn",
+      },
+    ],
+    estimatedMinutes: 3,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-ig-013",
+    slug: "az305-access-reviews-design",
+    cert: "az-305",
+    domain: "az305-identity-governance",
+    topic: "az305-identity-governance",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Quarterly, managers must confirm whether team members still need access to a project resource group — with automatic removal on non-response. Which feature?",
+    options: [
+      { id: "A", text: "Entra access reviews — scheduled attestations with auto-removal" },
+      { id: "B", text: "Azure Policy audits" },
+      { id: "C", text: "Conditional Access" },
+      { id: "D", text: "RBAC deny assignments" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Access reviews = recurring attestation workflows: reviewers (managers/self) confirm continued need; non-response or denial auto-removes assignment. Purpose-built for access recertification — the governance answer when 'periodic review' appears.",
+    optionExplanations: {
+      A: "Periodic recertification = access reviews. Correct.",
+      B: "Policy governs resources — not user entitlements.",
+      C: "CA evaluates sign-in — not membership review.",
+      D: "Deny rules block actions — not review workflows.",
+    },
+    services: ["Microsoft Entra ID"],
+    references: [
+      {
+        title: "Access reviews — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/entra/id-governance/access-reviews-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-ds-011",
+    slug: "az305-sql-vs-cosmos-scenario",
+    cert: "az-305",
+    domain: "az305-data-storage",
+    topic: "az305-data-storage",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Designing for a global retail app: single-digit-ms reads worldwide, JSON documents, multi-region writes, massive elastic scale. Which datastore?",
+    options: [
+      { id: "A", text: "Azure Cosmos DB — global distribution, multi-region writes, single-digit ms" },
+      { id: "B", text: "Azure SQL Database" },
+      { id: "C", text: "Azure Database for PostgreSQL" },
+      { id: "D", text: "Azure Table Storage" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Cosmos = turnkey global NoSQL: multi-region writes, five consistency levels, single-digit-ms latency SLAs, elastic RU scaling. Relational services can geo-replicate but not multi-region write; Table Storage lacks the latency SLA and indexing depth.",
+    optionExplanations: {
+      A: "Global multi-write NoSQL = Cosmos. Correct.",
+      B: "SQL DB has geo-replicas — not multi-region writes.",
+      C: "Same limitation as SQL DB.",
+      D: "Table is simpler key-value — no global write SLAs.",
+    },
+    services: ["Azure Cosmos DB"],
+    references: [
+      {
+        title: "Cosmos DB — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/cosmos-db/introduction",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-ds-012",
+    slug: "az305-adls-vs-blob-analytics",
+    cert: "az-305",
+    domain: "az305-data-storage",
+    topic: "az305-data-storage",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A big-data analytics platform needs a hierarchical namespace (directories, POSIX ACLs) on Blob-priced storage so Synapse/Databricks can mount and process files efficiently. Which service?",
+    options: [
+      { id: "A", text: "Azure Data Lake Storage Gen2 — hierarchical namespace on Blob storage" },
+      { id: "B", text: "Standard Blob Storage flat namespace" },
+      { id: "C", text: "Azure Files Premium" },
+      { id: "D", text: "Azure NetApp Files" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "ADLS Gen2 = Blob storage + hierarchical namespace (real directories, atomic renames, POSIX ACLs) — the standard data-lake answer. Flat blob namespaces make directory operations expensive; Files/NetApp are file shares, not analytics lakes.",
+    optionExplanations: {
+      A: "HNS + analytics = ADLS Gen2. Correct.",
+      B: "Flat namespace lacks true directories/ACLs.",
+      C: "Azure Files is SMB shares — not lake scale.",
+      D: "NetApp is enterprise NAS — not the analytics default.",
+    },
+    services: ["Azure Data Lake Storage Gen2"],
+    references: [
+      {
+        title: "ADLS Gen2 — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-ds-013",
+    slug: "az305-database-migration-path",
+    cert: "az-305",
+    domain: "az305-data-storage",
+    topic: "az305-data-storage",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An on-prem SQL Server database must migrate to Azure SQL Managed Instance with MINIMAL downtime and continuous sync until cutover. Which tooling?",
+    options: [
+      { id: "A", text: "Azure Database Migration Service (DMS) — online migration mode" },
+      { id: "B", text: "Backup and restore to MI" },
+      { id: "C", text: "BACPAC export/import" },
+      { id: "D", text: "Manual schema scripting" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "DMS online mode = continuous replication (full load + CDC) then cutover — minutes of downtime. Offline options (backup/restore, BACPAC) freeze changes during transfer — hours of downtime at scale.",
+    optionExplanations: {
+      A: "Continuous sync + cutover = online DMS. Correct.",
+      B: "Restore is point-in-time — downtime for full transfer.",
+      C: "BACPAC is export/import — slower, offline.",
+      D: "Scripting doesn't migrate data continuously.",
+    },
+    services: ["Azure Database Migration Service"],
+    references: [
+      {
+        title: "Database Migration Service — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/dms/dms-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-bc-011",
+    slug: "az305-rpo-rto-sla-targets",
+    cert: "az-305",
+    domain: "az305-business-continuity",
+    topic: "az305-business-continuity",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A business accepts losing up to 15 minutes of data and being down up to 1 hour. Which pair expresses these tolerances?",
+    options: [
+      { id: "A", text: "RPO = 15 min (data-loss tolerance), RTO = 1 hour (recovery-time tolerance)" },
+      { id: "B", text: "RPO = 1 hour, RTO = 15 min" },
+      { id: "C", text: "SLA = 15 min, MTTR = 1 hour" },
+      { id: "D", text: "RPO and RTO are the same metric" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "RPO measures tolerable data LOSS (how far back the last recoverable point is); RTO measures tolerable DOWNTIME (how fast service must resume). The exam tests the direction constantly — loss = RPO, time-to-restore = RTO.",
+    optionExplanations: {
+      A: "Loss=15m, downtime=1h mapped correctly.",
+      B: "Reversed assignment.",
+      C: "SLA is a contract — not a recovery objective.",
+      D: "Different axes — data vs time.",
+    },
+    services: ["Azure Site Recovery", "Azure Backup"],
+    references: [
+      {
+        title: "RPO/RTO — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/architecture/framework/resiliency/business-metrics",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-bc-012",
+    slug: "az305-backup-vault-architecture",
+    cert: "az-305",
+    domain: "az305-business-continuity",
+    topic: "az305-business-continuity",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "VM backups must survive a regional outage AND a ransomware attack that deletes backups — soft delete plus a second region's copies. Which architecture choices?",
+    options: [
+      { id: "A", text: "Recovery Services vault with GRS + soft delete enabled" },
+      { id: "B", text: "LRS vault only" },
+      { id: "C", text: "Managed disk snapshots in same region" },
+      { id: "D", text: "Azure Files sync" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "RSV + GRS replicates backups to the paired region (regional survivability); soft delete retains data 14 days after a delete operation (ransomware protection); optionally CRR (cross-region restore) to restore from secondary. LRS/same-region snapshots fail both requirements.",
+    optionExplanations: {
+      A: "GRS + soft delete covers both threats. Correct.",
+      B: "LRS loses backups with the region.",
+      C: "Same-region snapshots fail regional + deletion scenarios.",
+      D: "File sync isn't VM backup.",
+    },
+    services: ["Azure Backup"],
+    references: [
+      {
+        title: "RSV storage redundancy — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/backup/backup-create-rs-vault",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-inf-011",
+    slug: "az305-landing-zone-components",
+    cert: "az-305",
+    domain: "az305-infrastructure",
+    topic: "az305-infrastructure",
+    difficulty: "hard",
+    format: "single-choice",
+    question:
+      "An enterprise needs a repeatable Azure environment foundation — identity, management groups, network topology, and policy already configured before workloads deploy. What is this pattern called?",
+    options: [
+      { id: "A", text: "Azure landing zone — the platform-foundation architecture (CAF)" },
+      { id: "B", text: "A single resource group" },
+      { id: "C", text: "An availability zone" },
+      { id: "D", text: "A VPN gateway" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Landing zones (part of Cloud Adoption Framework) codify the multi-subscription enterprise foundation: management-group hierarchy, connectivity (hub-spoke/vWAN), identity, governance, and platform ops — before app workloads land.",
+    optionExplanations: {
+      A: "Codified foundation = landing zone. Correct.",
+      B: "An RG is a container — not a governance foundation.",
+      C: "AZ is physical redundancy — unrelated.",
+      D: "One gateway isn't an environment strategy.",
+    },
+    services: ["Azure Landing Zones"],
+    references: [
+      {
+        title: "Landing zones — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aza-inf-012",
+    slug: "az305-container-platform-choice",
+    cert: "az-305",
+    domain: "az305-infrastructure",
+    topic: "az305-infrastructure",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A microservices platform needs Kubernetes orchestration — service discovery, rolling updates, autoscaling, managed control plane. Which compute service?",
+    options: [
+      { id: "A", text: "Azure Kubernetes Service (AKS)" },
+      { id: "B", text: "Azure Container Instances" },
+      { id: "C", text: "Azure App Service" },
+      { id: "D", text: "Azure Functions" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "AKS = managed Kubernetes: orchestration, scaling, self-healing, service discovery — the answer when 'orchestrated containers at platform scale' appears. ACI = single containers; App Service = web apps; Functions = event-driven code.",
+    optionExplanations: {
+      A: "Managed K8s orchestration = AKS. Correct.",
+      B: "ACI is single-shot containers — no orchestration.",
+      C: "App Service hosts web workloads — not K8s.",
+      D: "Functions are event-driven compute — not orchestration.",
+    },
+    services: ["Azure Kubernetes Service"],
+    references: [
+      {
+        title: "AKS — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/aks/intro-kubernetes",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
   }
 ];

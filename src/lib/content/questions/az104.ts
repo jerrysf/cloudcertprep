@@ -1446,4 +1446,364 @@ export const az104Questions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-02-14",
   },
+  {
+    id: "azad-ids-009",
+    slug: "az104-pim-eligible-activation",
+    cert: "az-104",
+    domain: "az104-identities-governance",
+    topic: "az104-identity-governance",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Admins should hold NO standing privileged access — they request elevation for a few hours with approval and justification. Which Entra feature implements this?",
+    options: [
+      { id: "A", text: "Privileged Identity Management (PIM) — eligible assignments requiring activation" },
+      { id: "B", text: "Permanent Owner role assignments" },
+      { id: "C", text: "Conditional Access alone" },
+      { id: "D", text: "Azure Policy" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "PIM converts privileged roles to ELIGIBLE assignments — activation requires justification, approval, MFA, and expires after a configured window (max 24h). Zero-standing-privilege is a tested governance pattern. Requires P2 licensing.",
+    optionExplanations: {
+      A: "Just-in-time elevation = PIM. Correct.",
+      B: "Standing access is the problem PIM removes.",
+      C: "CA gates sign-in — not role elevation workflows.",
+      D: "Policy governs resources — not role assignments.",
+    },
+    services: ["Microsoft Entra ID"],
+    references: [
+      {
+        title: "Privileged Identity Management — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/entra/id-governance/privileged-identity-management/pim-configure",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "azad-ids-010",
+    slug: "az104-subscription-vs-management-group",
+    cert: "az-104",
+    domain: "az104-identities-governance",
+    topic: "az104-identity-governance",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An enterprise must apply one Azure Policy across 40 subscriptions organized by department. What is the correct scoping approach?",
+    options: [
+      { id: "A", text: "Assign the policy at a management group containing the subscriptions — it inherits down" },
+      { id: "B", text: "Assign it to each subscription individually" },
+      { id: "C", text: "Assign at each resource group" },
+      { id: "D", text: "Deploy via ARM template per subscription" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Management groups sit above subscriptions in the governance hierarchy — policies and RBAC assigned there inherit to all child subscriptions/RGs/resources. Per-subscription assignment doesn't scale and drifts.",
+    optionExplanations: {
+      A: "Hierarchy-level assignment = management groups. Correct.",
+      B: "40 individual assignments = drift and toil.",
+      C: "RG scope is too granular for org-wide rules.",
+      D: "ARM deploys resources — not policy governance.",
+    },
+    services: ["Azure Management Groups", "Azure Policy"],
+    references: [
+      {
+        title: "Management groups — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/governance/management-groups/overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "azad-sto-009",
+    slug: "az104-blob-access-tier-decisions",
+    cert: "az-104",
+    domain: "az104-storage",
+    topic: "az104-storage",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Backup data must stay retrievable within hours (not instant), stored ~1 year, accessed rarely. Which Blob tier minimizes cost while meeting the retrieval SLA?",
+    options: [
+      { id: "A", text: "Cool tier — online but optimized for infrequent access" },
+      { id: "B", text: "Hot tier" },
+      { id: "C", text: "Archive tier" },
+      { id: "D", text: "Premium block blobs" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Tier decision: Hot = active; Cool = infrequent (≥30 days, higher access cost, lower storage cost, online retrieval); Cold = rarely accessed (≥90 days); Archive = offline, hours-long REHYDRATION. 'Retrievable within hours, not instant' + online requirement points to Cool/Cold — Archive's rehydration makes it the trap.",
+    optionExplanations: {
+      A: "Online + rare access = Cool. Correct.",
+      B: "Hot wastes money on cold data.",
+      C: "Archive is OFFLINE — rehydration takes hours and costs more.",
+      D: "Premium is performance tier — not cost optimization.",
+    },
+    services: ["Azure Blob Storage"],
+    references: [
+      {
+        title: "Blob access tiers — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "azad-sto-010",
+    slug: "az104-immutable-blob-worm",
+    cert: "az-104",
+    domain: "az104-storage",
+    topic: "az104-storage",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Legal requires audit logs stored WORM-style — undeletable and unmodifiable for 7 years, even by admins. Which storage feature?",
+    options: [
+      { id: "A", text: "Immutable storage policies (time-based retention or legal hold) on the container" },
+      { id: "B", text: "Storage account firewall" },
+      { id: "C", text: "RBAC deny assignments" },
+      { id: "D", text: "Snapshot schedules" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Immutable blob storage = WORM enforcement at the storage layer: time-based retention (can't delete/modify until expiry) and legal holds (indefinite until removed). RBAC/firewall are access controls an admin can change — not immutability.",
+    optionExplanations: {
+      A: "Storage-level WORM = immutable policies. Correct.",
+      B: "Firewall restricts network access — not deletion.",
+      C: "RBAC is changeable — not a guarantee.",
+      D: "Snapshots preserve points — don't prevent deletes.",
+    },
+    services: ["Azure Blob Storage"],
+    references: [
+      {
+        title: "Immutable storage — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/storage/blobs/immutable-storage-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "azad-cmp-011",
+    slug: "az104-vmss-autoscale-rules",
+    cert: "az-104",
+    domain: "az104-compute",
+    topic: "az104-compute",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A web tier must add VMs when CPU > 75% for 10 minutes and remove them when CPU < 25% — automatically, matching load. Which feature?",
+    options: [
+      { id: "A", text: "Virtual Machine Scale Sets with autoscale rules" },
+      { id: "B", text: "Availability Sets" },
+      { id: "C", text: "Manual VM resizing" },
+      { id: "D", text: "Azure Batch" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "VMSS + autoscale = horizontal scaling on metrics/schedules: scale-out and scale-in rules with thresholds and cooldowns. Availability Sets are placement (fault/update domains) — they don't scale.",
+    optionExplanations: {
+      A: "Metric-driven horizontal scaling = VMSS autoscale. Correct.",
+      B: "Availability Sets distribute — don't scale.",
+      C: "Manual resizing is vertical + manual — the opposite.",
+      D: "Batch runs job schedules — not autoscaling web tiers.",
+    },
+    services: ["Virtual Machine Scale Sets"],
+    references: [
+      {
+        title: "VMSS autoscale — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-autoscale-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "azad-cmp-012",
+    slug: "az104-container-instances-vs-aks",
+    cert: "az-104",
+    domain: "az104-compute",
+    topic: "az104-compute",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A batch job needs a container that runs on demand for 20 minutes then stops — no cluster, no orchestration, billed per second. Which compute service?",
+    options: [
+      { id: "A", text: "Azure Container Instances (ACI)" },
+      { id: "B", text: "Azure Kubernetes Service (AKS)" },
+      { id: "C", text: "Azure App Service" },
+      { id: "D", text: "Virtual Machine Scale Sets" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "ACI = single containers on demand, per-second billing, no orchestrator — the fastest container startup for burst/batch work. AKS is for orchestrated multi-container apps needing scheduling/service discovery; App Service hosts web workloads.",
+    optionExplanations: {
+      A: "On-demand single container = ACI. Correct.",
+      B: "AKS needs cluster management — overkill for a batch job.",
+      C: "App Service targets web apps — not ephemeral containers.",
+      D: "VMSS scales VMs — not containers directly.",
+    },
+    services: ["Azure Container Instances"],
+    references: [
+      {
+        title: "Container Instances — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/container-instances/container-instances-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "azad-net-009",
+    slug: "az104-expressroute-private-connectivity",
+    cert: "az-104",
+    domain: "az104-networking",
+    topic: "az104-networking",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Headquarters needs private, dedicated connectivity to Azure that does NOT traverse the public internet — for compliance and predictable latency. Which service?",
+    options: [
+      { id: "A", text: "Azure ExpressRoute" },
+      { id: "B", text: "Site-to-site VPN over internet" },
+      { id: "C", text: "Point-to-site VPN" },
+      { id: "D", text: "Azure Virtual WAN default path" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "ExpressRoute = private dedicated circuit via connectivity provider — no internet traversal, predictable latency, up to 100Gbps. VPNs ride the internet (encrypted, but public path). This is the 'not over the public internet' test phrase.",
+    optionExplanations: {
+      A: "Dedicated private circuit = ExpressRoute. Correct.",
+      B: "S2S VPN traverses the internet — violates the requirement.",
+      C: "P2S is for individual devices — and rides the internet.",
+      D: "vWAN is an architecture — connectivity still uses ER/VPN/SDWAN.",
+    },
+    services: ["Azure ExpressRoute"],
+    references: [
+      {
+        title: "ExpressRoute — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/expressroute/expressroute-introduction",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "azad-net-010",
+    slug: "az104-app-gateway-vs-load-balancer",
+    cert: "az-104",
+    domain: "az104-networking",
+    topic: "az104-networking",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A web app needs routing: /api/* → backend pool A, /images/* → pool B, plus TLS termination and WAF. Which service?",
+    options: [
+      { id: "A", text: "Azure Application Gateway — L7 URL-path routing with WAF" },
+      { id: "B", text: "Azure Load Balancer" },
+      { id: "C", text: "Azure Front Door" },
+      { id: "D", text: "Azure NAT Gateway" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Application Gateway = regional L7 load balancer: URL-path/host routing, TLS offload, optional WAF. Load Balancer is L4 (no HTTP path awareness); Front Door is the GLOBAL equivalent; NAT Gateway handles outbound only.",
+    optionExplanations: {
+      A: "L7 path routing + WAF = App Gateway. Correct.",
+      B: "L4 only — can't inspect URLs.",
+      C: "Front Door is global/multi-region — question is regional L7.",
+      D: "NAT GW is egress — not inbound routing.",
+    },
+    services: ["Azure Application Gateway"],
+    references: [
+      {
+        title: "Application Gateway — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/application-gateway/overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "azad-mon-007",
+    slug: "az104-log-analytics-vs-app-insights",
+    cert: "az-104",
+    domain: "az104-monitoring",
+    topic: "az104-monitoring-backup",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A web application needs request tracing, dependency tracking (which SQL call is slow), and live failure analysis. Which Azure Monitor component?",
+    options: [
+      { id: "A", text: "Application Insights" },
+      { id: "B", text: "Log Analytics workspace alone" },
+      { id: "C", text: "Azure Monitor metrics" },
+      { id: "D", text: "Network Watcher" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Application Insights = APM for apps: request/dependency/exception telemetry, Live Metrics, distributed tracing. Log Analytics is the query backend; platform metrics are numeric counters; Network Watcher diagnoses connectivity.",
+    optionExplanations: {
+      A: "App-level APM/tracing = App Insights. Correct.",
+      B: "Log Analytics stores data — App Insights produces it.",
+      C: "Metrics are counters — not request traces.",
+      D: "Network Watcher is packet/connectivity — not app performance.",
+    },
+    services: ["Azure Monitor", "Application Insights"],
+    references: [
+      {
+        title: "Application Insights — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "azad-mon-008",
+    slug: "az104-backup-vs-site-recovery-scenarios",
+    cert: "az-104",
+    domain: "az104-monitoring",
+    topic: "az104-monitoring-backup",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Requirement A: recover a file accidentally deleted 30 days ago. Requirement B: keep the app running if the entire region fails. Which two services?",
+    options: [
+      { id: "A", text: "Azure Backup (A) + Azure Site Recovery (B)" },
+      { id: "B", text: "Site Recovery (A) + Backup (B)" },
+      { id: "C", text: "Availability Zones for both" },
+      { id: "D", text: "Geo-redundant storage for both" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Backup = point-in-time restore of data (deleted files, corrupt DBs, retention years). Site Recovery = replication + failover of running workloads to another region. The backup-vs-DR split is a classic exam distinguisher.",
+    optionExplanations: {
+      A: "Data restore → Backup; region failover → ASR. Correct.",
+      B: "Reversed — ASR doesn't do file-level restore.",
+      C: "AZs protect datacenter — not regional failure or deletion.",
+      D: "GRS copies blobs — doesn't restore deleted files or fail over VMs.",
+    },
+    services: ["Azure Backup", "Azure Site Recovery"],
+    references: [
+      {
+        title: "Backup vs Site Recovery — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/backup/backup-introduction-to-azure-backup",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  }
 ];

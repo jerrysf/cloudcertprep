@@ -1547,4 +1547,364 @@ export const az900Questions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-02-13",
   },
+  {
+    id: "az-cc-013",
+    slug: "az-cloud-vs-onprem-capex-opex",
+    cert: "az-900",
+    domain: "az-cloud-concepts",
+    topic: "az-cloud-concepts",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "Which statement correctly contrasts capital expenditure (CapEx) and operational expenditure (OpEx) in cloud computing?",
+    options: [
+      { id: "A", text: "CapEx = upfront hardware purchases depreciated over years; OpEx = pay-as-you-go consumption that scales with usage" },
+      { id: "B", text: "CapEx = monthly subscriptions; OpEx = datacenter builds" },
+      { id: "C", text: "Cloud eliminates all costs" },
+      { id: "D", text: "OpEx requires long-term contracts" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Cloud converts infrastructure spend from CapEx (big upfront, own the depreciation risk) to OpEx (metered consumption, treat as operating cost). The exam tests this shift plus elasticity — paying for what you use when you use it.",
+    optionExplanations: {
+      A: "Correct — upfront vs metered consumption.",
+      B: "Reversed definitions.",
+      C: "Cloud shifts the cost model — doesn't remove cost.",
+      D: "OpEx is consumption-based — contracts not required.",
+    },
+    services: ["Azure"],
+    references: [
+      {
+        title: "CapEx vs OpEx — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/training/modules/describe-cloud-compute/",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "az-cc-014",
+    slug: "az-private-public-hybrid-cloud",
+    cert: "az-900",
+    domain: "az-cloud-concepts",
+    topic: "az-cloud-concepts",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "A bank runs sensitive workloads in its own datacenter with cloud-style automation, and bursts seasonal traffic to Azure. What deployment model is this?",
+    options: [
+      { id: "A", text: "Hybrid cloud — private infrastructure plus public cloud integration" },
+      { id: "B", text: "Public cloud only" },
+      { id: "C", text: "Private cloud only" },
+      { id: "D", text: "Multi-cloud" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Private cloud = dedicated infrastructure with cloud characteristics (virtualization, self-service); hybrid = private + public working as one environment; multi-cloud = multiple PUBLIC providers. Mixing hybrid with multi-cloud is the common exam trap.",
+    optionExplanations: {
+      A: "Private + public integration = hybrid. Correct.",
+      B: "The datacenter part makes this not public-only.",
+      C: "Bursting to Azure means it's not private-only.",
+      D: "Multi-cloud means multiple public providers — not on-prem + one cloud.",
+    },
+    services: ["Azure"],
+    references: [
+      {
+        title: "Cloud deployment models — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/training/modules/describe-cloud-compute/",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "az-svc-013",
+    slug: "az-paas-service-selection",
+    cert: "az-900",
+    domain: "az-architecture-services",
+    topic: "az-core-services",
+    difficulty: "medium",
+    format: "multiple-response",
+    question:
+      "Which TWO Azure services are PaaS offerings where Microsoft manages the OS and runtime? (Select TWO.)",
+    options: [
+      { id: "A", text: "Azure App Service" },
+      { id: "B", text: "Azure SQL Database" },
+      { id: "C", text: "Azure Virtual Machines" },
+      { id: "D", text: "Azure Virtual Network" },
+    ],
+    correctAnswers: ["A", "B"],
+    explanation:
+      "App Service (managed web hosting) and SQL Database (managed relational DB) are PaaS — Microsoft handles OS/runtime patching, you handle the app/data. VMs are IaaS (you patch the OS); VNet is infrastructure networking.",
+    optionExplanations: {
+      A: "Managed web platform = PaaS. Correct.",
+      B: "Managed database service = PaaS. Correct.",
+      C: "VMs leave the OS to you = IaaS.",
+      D: "Networking is an IaaS building block.",
+    },
+    services: ["Azure App Service", "Azure SQL Database"],
+    references: [
+      {
+        title: "Cloud service types — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/training/modules/describe-cloud-service-types/",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "az-svc-014",
+    slug: "azure-functions-serverless",
+    cert: "az-900",
+    domain: "az-architecture-services",
+    topic: "az-core-services",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "Code must run only when a file lands in storage — no servers to manage, billed per execution. Which Azure compute service?",
+    options: [
+      { id: "A", text: "Azure Functions" },
+      { id: "B", text: "Azure Virtual Machines" },
+      { id: "C", text: "Azure Kubernetes Service" },
+      { id: "D", text: "Azure App Service dedicated plan" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Functions = event-driven serverless compute: triggers (blob, queue, HTTP, timer) invoke code, consumption plan bills per execution + scales to zero. VMs/AKS require capacity management; App Service dedicated is always-on.",
+    optionExplanations: {
+      A: "Event-triggered, per-execution billing = Functions. Correct.",
+      B: "VMs run 24/7 — you manage everything.",
+      C: "AKS orchestrates containers — needs node pools.",
+      D: "Dedicated plans bill for reserved capacity.",
+    },
+    services: ["Azure Functions"],
+    references: [
+      {
+        title: "Azure Functions — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/azure-functions/functions-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "az-svc-015",
+    slug: "azure-dns-vs-traffic-manager",
+    cert: "az-900",
+    domain: "az-architecture-services",
+    topic: "az-core-services",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A global app must route users to the nearest healthy deployment endpoint based on routing rules. Which Azure service performs this intelligent traffic distribution?",
+    options: [
+      { id: "A", text: "Azure Traffic Manager" },
+      { id: "B", text: "Azure DNS" },
+      { id: "C", text: "Azure Load Balancer" },
+      { id: "D", text: "Azure CDN" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Traffic Manager = DNS-based global routing across endpoints (performance, weighted, priority, geographic routing methods). Azure DNS only hosts/resolves zones; Load Balancer distributes within a region (L4); CDN caches content at edges.",
+    optionExplanations: {
+      A: "Global endpoint routing = Traffic Manager. Correct.",
+      B: "Azure DNS resolves names — doesn't pick endpoints.",
+      C: "Load Balancer works inside one region — L4 only.",
+      D: "CDN caches content — not endpoint failover routing.",
+    },
+    services: ["Azure Traffic Manager"],
+    references: [
+      {
+        title: "Traffic Manager — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/traffic-manager/traffic-manager-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "az-ids-009",
+    slug: "entra-mfa-methods",
+    cert: "az-900",
+    domain: "az-architecture-services",
+    topic: "az-identity-access",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "An organization requires a second verification factor beyond passwords at sign-in — authenticator app push, SMS, or hardware key. Which Entra ID capability enforces this?",
+    options: [
+      { id: "A", text: "Microsoft Entra multifactor authentication (MFA)" },
+      { id: "B", text: "Single sign-on (SSO)" },
+      { id: "C", text: "Password hash sync" },
+      { id: "D", text: "RBAC role assignment" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "MFA adds a second factor (something you have/are) — enforced via Conditional Access policies or per-user settings. SSO reduces sign-in count; PHS is an authentication method; RBAC is authorization, not authentication.",
+    optionExplanations: {
+      A: "Second-factor enforcement = MFA. Correct.",
+      B: "SSO = one login for many apps — no second factor.",
+      C: "PHS syncs password hashes — still single-factor.",
+      D: "RBAC controls what you can do — not how you prove identity.",
+    },
+    services: ["Microsoft Entra ID"],
+    references: [
+      {
+        title: "Microsoft Entra MFA — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/entra/identity/authentication/concept-mfa-howitworks",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "az-ids-010",
+    slug: "conditional-access-policy",
+    cert: "az-900",
+    domain: "az-architecture-services",
+    topic: "az-identity-access",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "IT wants sign-ins from outside the corporate network to require MFA, while in-office sign-ins pass without it. Which Entra feature implements signal-based access decisions?",
+    options: [
+      { id: "A", text: "Conditional Access policies" },
+      { id: "B", text: "Azure RBAC" },
+      { id: "C", text: "Access reviews" },
+      { id: "D", text: "Privileged Identity Management" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Conditional Access = if-then access control: signals (location, device, app, risk) → decisions (allow, require MFA, block). It's the policy engine for context-aware authentication — not RBAC (resource permissions) or PIM (JIT elevation).",
+    optionExplanations: {
+      A: "Signal→decision policy engine = Conditional Access. Correct.",
+      B: "RBAC is authorization on resources — not sign-in conditions.",
+      C: "Access reviews audit group membership — not real-time sign-in.",
+      D: "PIM manages privileged role activation — not base sign-in rules.",
+    },
+    services: ["Microsoft Entra ID"],
+    references: [
+      {
+        title: "Conditional Access — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/entra/identity/conditional-access/overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "az-ids-011",
+    slug: "managed-identity-purpose",
+    cert: "az-900",
+    domain: "az-architecture-services",
+    topic: "az-identity-access",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A VM-hosted app needs to call Key Vault WITHOUT storing any client secret or connection string in code. Which Azure feature provides the credential automatically?",
+    options: [
+      { id: "A", text: "Managed identity — system- or user-assigned Entra identity for the resource" },
+      { id: "B", text: "Service principal with a stored secret" },
+      { id: "C", text: "Shared access signature" },
+      { id: "D", text: "An Entra user account" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Managed identities give Azure resources an Entra identity whose credential lifecycle Azure manages entirely — no secrets in code, no rotation burden. The 'no stored credentials' requirement is the exam's managed-identity signal.",
+    optionExplanations: {
+      A: "Azure-managed credential = managed identity. Correct.",
+      B: "A stored secret is exactly what we're avoiding.",
+      C: "SAS is a token embedded in URLs — still a stored credential.",
+      D: "User accounts shouldn't run services.",
+    },
+    services: ["Microsoft Entra ID", "Azure Key Vault"],
+    references: [
+      {
+        title: "Managed identities — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "az-mg-009",
+    slug: "azure-policy-vs-blueprint",
+    cert: "az-900",
+    domain: "az-management-governance",
+    topic: "az-management-governance",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Compliance requires that all storage accounts in the org enforce HTTPS — automatically auditing and remedying violations. Which Azure service?",
+    options: [
+      { id: "A", text: "Azure Policy — define and enforce rules over resource configurations" },
+      { id: "B", text: "Azure Resource Graph" },
+      { id: "C", text: "Azure Advisor" },
+      { id: "D", text: "Resource locks" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Azure Policy evaluates/enforces resource configuration rules (audit, deny, modify, deployIfNotExists effects) at management-group or subscription scope. Resource Graph queries inventory; Advisor recommends; locks prevent changes to specific resources.",
+    optionExplanations: {
+      A: "Rule enforcement at scale = Azure Policy. Correct.",
+      B: "Resource Graph queries resources — doesn't enforce.",
+      C: "Advisor recommends best practices — doesn't enforce.",
+      D: "Locks block delete/change on individual resources — not config rules.",
+    },
+    services: ["Azure Policy"],
+    references: [
+      {
+        title: "Azure Policy — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/governance/policy/overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "az-mg-010",
+    slug: "azure-pricing-calculator-vs-tco",
+    cert: "az-900",
+    domain: "az-management-governance",
+    topic: "az-management-governance",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "Which tool estimates the MONTHLY COST of a planned Azure deployment, and which compares total cost vs running it on-premises?",
+    options: [
+      { id: "A", text: "Pricing Calculator (deployment estimate) + TCO Calculator (cloud vs on-prem comparison)" },
+      { id: "B", text: "Cost Management for both" },
+      { id: "C", text: "Azure Advisor for both" },
+      { id: "D", text: "Budgets and alerts" },
+    ],
+    correctAnswers: ["A"],
+      explanation:
+      "Pricing Calculator models a hypothetical deployment's cost; TCO Calculator estimates savings vs on-prem (hardware, power, labor); Cost Management analyzes ACTUAL spend after deployment. The exam loves the calculator pair.",
+    optionExplanations: {
+      A: "Estimate + comparison = Pricing + TCO. Correct.",
+      B: "Cost Management analyzes real spend — not hypothetical.",
+      C: "Advisor optimizes existing resources.",
+      D: "Budgets control actual spend — not estimates.",
+    },
+    services: ["Azure Pricing Calculator"],
+    references: [
+      {
+        title: "Cost tools — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/training/modules/describe-cost-management-azure/",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  }
 ];

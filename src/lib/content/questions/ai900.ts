@@ -1446,4 +1446,364 @@ export const ai900Questions: Question[] = [
     reviewStatus: "published",
     lastReviewed: "2026-02-14",
   },
+  {
+    id: "aiz-wld-009",
+    slug: "ai900-anomaly-detector-vs-content-safety",
+    cert: "ai-900",
+    domain: "ai900-ai-workloads",
+    topic: "ai900-ai-workloads",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A metrics dashboard must flag unusual spikes in server CPU data automatically as time-series anomalies. Which Azure AI service?",
+    options: [
+      { id: "A", text: "Anomaly Detector — univariate/multivariate time-series anomaly detection" },
+      { id: "B", text: "Content Safety" },
+      { id: "C", text: "Document Intelligence" },
+      { id: "D", text: "Azure AI Search" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Anomaly Detector ingests time-series and flags outliers/trend changes. Content Safety = harmful content moderation; Document Intelligence = form/invoice extraction; AI Search = retrieval. 'Time-series outliers' is the Anomaly Detector signal.",
+    optionExplanations: {
+      A: "Time-series anomaly detection = Anomaly Detector. Correct.",
+      B: "Content moderation — not metrics.",
+      C: "Document extraction — not telemetry.",
+      D: "Search indexes content — not anomaly detection.",
+    },
+    services: ["Azure AI Anomaly Detector"],
+    references: [
+      {
+        title: "Anomaly Detector — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/ai-services/anomaly-detector/overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aiz-wld-010",
+    slug: "ai900-responsible-ai-fairness-scenario",
+    cert: "ai-900",
+    domain: "ai900-ai-workloads",
+    topic: "ai900-ai-workloads",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A hiring model approves applicants at different rates across age groups — systematically disadvantaging one demographic. Which responsible-AI principle is violated?",
+    options: [
+      { id: "A", text: "Fairness — equal treatment of similar people/groups" },
+      { id: "B", text: "Reliability and safety" },
+      { id: "C", text: "Privacy and security" },
+      { id: "D", text: "Transparency" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Six principles: fairness (no group bias), reliability/safety (consistent, safe behavior), privacy/security, inclusiveness, transparency (explainable), accountability. Demographic disparate impact = fairness. This maps to mitigation via bias evaluation + retraining data review.",
+    optionExplanations: {
+      A: "Group-rate disparity = fairness violation. Correct.",
+      B: "Reliability is about consistent correctness — not bias.",
+      C: "Privacy concerns data protection — not outcome equity.",
+      D: "Transparency is explainability — related but not the violation.",
+    },
+    services: ["Azure AI Services"],
+    references: [
+      {
+        title: "Responsible AI principles — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/training/modules/get-started-ai-fundamentals/",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aiz-ml-009",
+    slug: "ai900-automl-purpose",
+    cert: "ai-900",
+    domain: "ai900-ml-principles",
+    topic: "ai900-ml-fundamentals",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A data analyst without deep ML expertise needs to try many algorithms/hyperparameters automatically and pick the best model. Which Azure ML capability?",
+    options: [
+      { id: "A", text: "Automated machine learning (AutoML)" },
+      { id: "B", text: "Designer drag-and-drop pipelines" },
+      { id: "C", text: "Manual Jupyter notebooks" },
+      { id: "D", text: "MLflow model registry" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "AutoML explores algorithm + hyperparameter combinations, evaluates them, and ranks the best model — democratizing model selection. Designer is visual pipeline authoring; notebooks are manual code; MLflow tracks/registers models post-training.",
+    optionExplanations: {
+      A: "Automatic algorithm+param search = AutoML. Correct.",
+      B: "Designer builds pipelines visually — you still choose the algorithm.",
+      C: "Manual approach defeats 'without deep expertise'.",
+      D: "Registry manages trained models — doesn't train them.",
+    },
+    services: ["Azure Machine Learning"],
+    references: [
+      {
+        title: "AutoML — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/machine-learning/concept-automated-ml",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aiz-ml-010",
+    slug: "ai900-training-validation-test-purpose",
+    cert: "ai-900",
+    domain: "ai900-ml-principles",
+    topic: "ai900-ml-fundamentals",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Why is data split into training, validation, and test sets during model development?",
+    options: [
+      { id: "A", text: "Train on training data, tune/choose on validation, and get ONE unbiased final score on test data the model never saw" },
+      { id: "B", text: "To triple the dataset size" },
+      { id: "C", text: "Test set is used for hyperparameter tuning" },
+      { id: "D", text: "Splitting is optional bookkeeping" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "The split's purpose: train learns patterns; validation guides model/hyperparameter selection; test stays untouched until final evaluation — giving an honest generalization estimate. Using test data for tuning leaks information and inflates scores.",
+    optionExplanations: {
+      A: "Correct division of labor for the three sets.",
+      B: "Splitting partitions — doesn't multiply data.",
+      C: "That's validation's job — test must stay clean.",
+      D: "Without held-out evaluation you can't measure generalization.",
+    },
+    services: ["Azure Machine Learning"],
+    references: [
+      {
+        title: "Data splitting — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/training/modules/fundamentals-machine-learning/",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aiz-cv-009",
+    slug: "ai900-read-ocr-vs-docintel-fields",
+    cert: "ai-900",
+    domain: "ai900-computer-vision",
+    topic: "ai900-computer-vision",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Requirement A: read printed text from a photo. Requirement B: extract structured fields (vendor, total, line items) from invoices. Which services?",
+    options: [
+      { id: "A", text: "OCR/Read in Vision (A) + Document Intelligence (B)" },
+      { id: "B", text: "Document Intelligence for both" },
+      { id: "C", text: "Face service + Custom Vision" },
+      { id: "D", text: "Video Indexer for both" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "OCR extracts raw text from images; Document Intelligence goes further — structured extraction of key-value pairs, tables, and fields from forms/receipts/invoices with prebuilt models. Read for text, DocIntel for documents.",
+    optionExplanations: {
+      A: "Raw text → OCR; structured fields → DocIntel. Correct.",
+      B: "DocIntel can read text but OCR is the direct answer for photos.",
+      C: "Face/Custom Vision don't extract document fields.",
+      D: "Video Indexer analyzes video content.",
+    },
+    services: ["Azure AI Vision", "Azure AI Document Intelligence"],
+    references: [
+      {
+        title: "Document Intelligence — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/ai-services/document-intelligence/overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aiz-cv-010",
+    slug: "ai900-bounding-box-object-detection",
+    cert: "ai-900",
+    domain: "ai900-computer-vision",
+    topic: "ai900-computer-vision",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "A quality-control system must locate EACH defective item in an image and draw bounding boxes around them — not just label the whole photo. Which vision task?",
+    options: [
+      { id: "A", text: "Object detection — locate and classify individual items with bounding boxes" },
+      { id: "B", text: "Image classification" },
+      { id: "C", text: "Optical character recognition" },
+      { id: "D", text: "Facial recognition" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Classification assigns label(s) to the whole image; object detection finds multiple objects + their locations (bounding boxes); OCR reads text; face analysis handles identities/attributes. 'Bounding boxes per item' = detection.",
+    optionExplanations: {
+      A: "Per-item locations = object detection. Correct.",
+      B: "Whole-image label only — no locations.",
+      C: "OCR reads text — not defect regions.",
+      D: "Faces are a specific object category — not general items.",
+    },
+    services: ["Azure AI Custom Vision"],
+    references: [
+      {
+        title: "Vision tasks — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/training/modules/explore-computer-vision-azure/",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aiz-nlp-009",
+    slug: "ai900-text-analytics-capabilities",
+    cert: "ai-900",
+    domain: "ai900-nlp",
+    topic: "ai900-nlp-speech",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "Support tickets must be auto-analyzed: sentiment score, key phrases, named entities (people, places, products), and language detection — all via one API call set. Which service?",
+    options: [
+      { id: "A", text: "Azure AI Language — text analytics suite (sentiment, key phrases, NER, language detection)" },
+      { id: "B", text: "Azure AI Speech" },
+      { id: "C", text: "Azure AI Translator" },
+      { id: "D", text: "Azure OpenAI only" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "The Language service's text-analytics features bundle exactly these: sentiment analysis, key phrase extraction, named entity recognition + linking, PII detection, language detection. Speech = audio; Translator = language conversion.",
+    optionExplanations: {
+      A: "All four = Language service text analytics. Correct.",
+      B: "Speech is audio↔text — not text analysis.",
+      C: "Translator converts languages — not analysis.",
+      D: "OpenAI CAN do it — but the question asks the purpose-built service.",
+    },
+    services: ["Azure AI Language"],
+    references: [
+      {
+        title: "Azure AI Language — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/ai-services/language-service/overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aiz-nlp-010",
+    slug: "ai900-speech-stt-vs-tts",
+    cert: "ai-900",
+    domain: "ai900-nlp",
+    topic: "ai900-nlp-speech",
+    difficulty: "easy",
+    format: "single-choice",
+    question:
+      "Requirement A: convert a recorded call to text. Requirement B: generate natural-sounding audio from a transcript. Which two Speech capabilities?",
+    options: [
+      { id: "A", text: "Speech-to-text (A) + text-to-speech (B)" },
+      { id: "B", text: "Text-to-speech (A) + speech-to-text (B)" },
+      { id: "C", text: "Speaker recognition for both" },
+      { id: "D", text: "Speech translation for both" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Speech-to-text (STT/transcription) converts audio → text; text-to-speech (TTS/synthesis) converts text → audio with neural voices. Speaker recognition identifies WHO is speaking; speech translation converts spoken language to another language.",
+    optionExplanations: {
+      A: "Audio→text then text→audio. Correct.",
+      B: "Reversed order.",
+      C: "Speaker recognition identifies voices — not conversion.",
+      D: "Translation changes language — not modality.",
+    },
+    services: ["Azure AI Speech"],
+    references: [
+      {
+        title: "Speech service — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aiz-gen-009",
+    slug: "ai900-copilot-architecture-rag",
+    cert: "ai-900",
+    domain: "ai900-generative-ai",
+    topic: "ai900-generative-ai",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "An assistant must answer questions grounded in the company's OWN documents — not just the model's training data. Which architecture pattern is required?",
+    options: [
+      { id: "A", text: "RAG — retrieve relevant company content and inject it into the prompt context" },
+      { id: "B", text: "Fine-tuning the model from scratch" },
+      { id: "C", text: "Increasing temperature for creativity" },
+      { id: "D", text: "A larger context window alone" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "RAG (retrieval-augmented generation): search company content → inject top results into the prompt → model answers from YOUR data with citations. Fine-tuning adapts behavior/style, not factual grounding on private docs; context size alone doesn't fetch data.",
+    optionExplanations: {
+      A: "Grounding on private docs = RAG. Correct.",
+      B: "Fine-tuning doesn't reliably inject private knowledge.",
+      C: "Temperature is a randomness knob — unrelated.",
+      D: "Big context doesn't help if data isn't retrieved into it.",
+    },
+    services: ["Azure OpenAI Service", "Azure AI Search"],
+    references: [
+      {
+        title: "RAG on Azure — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/azure/search/retrieval-augmented-generation-overview",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  },
+  {
+    id: "aiz-gen-010",
+    slug: "ai900-hallucination-mitigation",
+    cert: "ai-900",
+    domain: "ai900-generative-ai",
+    topic: "ai900-generative-ai",
+    difficulty: "medium",
+    format: "single-choice",
+    question:
+      "A chatbot sometimes invents plausible-sounding but wrong facts. Which combination most directly reduces hallucinations?",
+    options: [
+      { id: "A", text: "RAG grounding on trusted data + lower temperature + system prompts constraining answers" },
+      { id: "B", text: "Higher temperature for more creative answers" },
+      { id: "C", text: "Removing the system prompt" },
+      { id: "D", text: "Disabling content filters" },
+    ],
+    correctAnswers: ["A"],
+    explanation:
+      "Hallucination mitigations stack: RAG anchors responses to real sources, low temperature reduces invention, system-prompt guardrails constrain behavior ('answer only from provided context'), and output validation catches the remainder.",
+    optionExplanations: {
+      A: "Grounding + determinism + constraints = correct stack.",
+      B: "More randomness increases hallucination.",
+      C: "Removing constraints frees the model to invent.",
+      D: "Filters address harmful content — not factual accuracy.",
+    },
+    services: ["Azure OpenAI Service"],
+    references: [
+      {
+        title: "Grounding LLMs — Microsoft Learn",
+        url: "https://learn.microsoft.com/en-us/training/modules/explore-generative-ai-azure/",
+      },
+    ],
+    estimatedMinutes: 2,
+    reviewStatus: "published",
+    lastReviewed: "2026-11-05",
+  }
 ];
