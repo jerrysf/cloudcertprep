@@ -19,6 +19,8 @@ export const ANALYTICS_EVENTS = {
   guideView: "guide_view",
   affiliateClick: "affiliate_click",
   studyPlanCreate: "study_plan_create",
+  questionFeedback: "question_feedback",
+  scoreCardDownload: "score_card_download",
 } as const;
 
 export type AnalyticsEvent =

@@ -13,6 +13,7 @@ import { useProgress } from "@/lib/use-progress";
 import { formatDuration } from "@/lib/utils";
 import { QuestionView } from "@/components/question-view";
 import { ShareButton } from "@/components/share-button";
+import { ScoreCardButton } from "@/components/score-card-button";
 import { Badge, ButtonLink, Card } from "@/components/ui";
 
 function ScoreRing({
@@ -166,7 +167,21 @@ export function ResultsView({
               Back to practice
             </ButtonLink>
             <ShareButton
-              text={`I scored ${Math.round(result.scorePercent)}% on a CloudCertPrep ${cert?.code ?? "AWS"} mock exam — free AWS practice questions:`}
+              text={`I scored ${Math.round(result.scorePercent)}% on a CloudCertPrep ${cert?.code ?? "cloud"} mock exam — free cloud certification practice:`}
+            />
+            <ScoreCardButton
+              certCode={cert?.code ?? "Cloud"}
+              percent={result.scorePercent}
+              passing={passing}
+              correct={result.correct}
+              total={result.totalQuestions}
+              timed={result.timed}
+              domainBars={Object.entries(result.domainBreakdown).map(
+                ([domainId, s]) => ({
+                  name: getDomain(domainId as DomainId)?.name ?? domainId,
+                  pct: s.total === 0 ? 0 : (s.correct / s.total) * 100,
+                }),
+              )}
             />
           </div>
         </div>

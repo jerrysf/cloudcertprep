@@ -12,6 +12,7 @@ import { breadcrumbJsonLd } from "@/lib/jsonld";
 import { cn } from "@/lib/utils";
 import { Badge, Breadcrumbs, Card, Container } from "@/components/ui";
 import { AffiliateBlock } from "@/components/affiliate-note";
+import { QuestionFeedback } from "@/components/question-feedback";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -185,11 +186,14 @@ export default async function QuestionPage({ params }: Props) {
               Correct answer{q.correctAnswers.length > 1 ? "s" : ""}:{" "}
               {q.correctAnswers.join(", ")} · Last reviewed {q.lastReviewed}
             </p>
+            <div className="mt-4 border-t border-accent/20 pt-4">
+              <QuestionFeedback questionId={q.id} />
+            </div>
           </Card>
 
           <div className="mt-6">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
-              Official AWS references
+              Official {cert.vendor === "azure" ? "Microsoft" : "AWS"} references
             </h2>
             <ul className="mt-2 space-y-1.5">
               {q.references.map((r) => (

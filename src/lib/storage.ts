@@ -66,6 +66,7 @@ export interface ProgressData {
   examResults: ExamResult[];
   bookmarks: string[];
   flags: Record<string, { reason: string; flaggedAt: string }>;
+  feedback: Record<string, "up" | "down">;
   flashcardStatus: Record<string, "known" | "learning">;
   studyPlan: StoredStudyPlan | null;
   activityDays: string[]; // YYYY-MM-DD — for streaks
@@ -93,6 +94,7 @@ export const EMPTY_PROGRESS: ProgressData = {
   examResults: [],
   bookmarks: [],
   flags: {},
+  feedback: {},
   flashcardStatus: {},
   studyPlan: null,
   activityDays: [],

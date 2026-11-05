@@ -14,6 +14,7 @@ function safeParseProgress(raw: string | null): ProgressData {
     examResults: [],
     bookmarks: [],
     flags: {},
+    feedback: {},
     flashcardStatus: {},
     studyPlan: null,
     activityDays: [],
