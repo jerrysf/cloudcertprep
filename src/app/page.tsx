@@ -20,7 +20,7 @@ import { CERTIFICATIONS } from "@/lib/content/certifications";
 import { ARTICLES } from "@/lib/content/articles";
 import { SITE } from "@/lib/site";
 import { DashboardPreview } from "@/components/progress-dashboard";
-import { Badge, ButtonLink, Card, CertLevelBadge, Container, SectionHeading } from "@/components/ui";
+import { Badge, ButtonLink, Card, CertLevelBadge, Container, SectionHeading, VendorBadge } from "@/components/ui";
 
 export const metadata: Metadata = pageMetadata({
   title: `${SITE.name} — Free AWS Certification Practice Exams & Questions`,
@@ -253,8 +253,9 @@ export default function Home() {
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <span className="font-mono text-sm font-semibold text-accent">
-                        {c.code}
+                      <span className="flex items-center gap-1.5 font-mono text-sm font-semibold text-accent">
+                        <VendorBadge vendor={c.vendor} />
+                        {c.vendor === "azure" ? c.code : `AWS ${c.code}`}
                       </span>
                       <h3 className="mt-1 font-semibold leading-snug">
                         {c.name.replace("AWS Certified ", "")}

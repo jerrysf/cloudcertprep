@@ -3,7 +3,7 @@ import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { ArrowRight, BookOpen } from "lucide-react";
 import { CERTIFICATIONS } from "@/lib/content/certifications";
-import { Container } from "@/components/ui";
+import { Container, VendorBadge } from "@/components/ui";
 
 export const metadata: Metadata = pageMetadata({
   title: "AWS vs Azure Certification Comparison — Which Cloud Cert First?",
@@ -89,7 +89,10 @@ export default function ComparePage() {
                     className="rounded-lg border border-border p-4"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-semibold text-accent">{c.code}</span>
+                      <span className="inline-flex items-center gap-1.5 font-semibold text-accent">
+                        <VendorBadge vendor={c.vendor} />
+                        {c.vendor === "azure" ? c.code : `AWS ${c.code}`}
+                      </span>
                       <span className="rounded-full bg-surface px-2 py-0.5 text-xs text-muted">
                         {c.vendor === "azure" ? "Azure" : "AWS"} · {c.level}
                       </span>

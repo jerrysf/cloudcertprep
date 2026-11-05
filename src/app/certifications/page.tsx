@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowRight, Clock, DollarSign, FileText } from "lucide-react";
 import { CERTIFICATIONS } from "@/lib/content/certifications";
 import { PUBLISHED_QUESTIONS, publishedByCert } from "@/lib/content/questions";
-import { Badge, Card, CertLevelBadge, Container } from "@/components/ui";
+import { Badge, Card, CertLevelBadge, Container, VendorBadge } from "@/components/ui";
 
 export const metadata: Metadata = pageMetadata({
   title: "AWS & Azure Certification Practice Exams — All Certifications",
@@ -108,8 +108,11 @@ export default function CertificationsPage() {
                     <div className="flex items-start justify-between gap-3">
                       <div>
                         <div className="flex flex-wrap items-center gap-2">
-                          <span className="font-mono text-sm font-semibold text-accent">
-                            {cert.code}
+                          <span className="flex items-center gap-1.5 font-mono text-sm font-semibold text-accent">
+                            <VendorBadge vendor={cert.vendor} />
+                            {cert.vendor === "azure"
+                              ? cert.code
+                              : `AWS ${cert.code}`}
                           </span>
                           <CertLevelBadge level={cert.level} />
                           {cert.featured ? (

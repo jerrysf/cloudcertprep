@@ -123,6 +123,67 @@ export function CertLevelBadge({
   );
 }
 
+export function VendorBadge({
+  vendor,
+  className,
+}: {
+  vendor?: "aws" | "azure";
+  className?: string;
+}) {
+  const v = vendor ?? "aws";
+  return (
+    <span
+      className={cn("inline-flex h-5 w-5 shrink-0 items-center", className)}
+      role="img"
+      aria-label={v === "azure" ? "Microsoft Azure" : "AWS"}
+      title={v === "azure" ? "Microsoft Azure" : "AWS"}
+    >
+      {v === "azure" ? (
+        <svg viewBox="0 0 24 24" className="h-full w-full" aria-hidden>
+          <path
+            d="M9.1 2.2h7.4L6.2 21.8H2.2L9.1 2.2z"
+            fill="#0078d4"
+          />
+          <path
+            d="M13.4 11.1 8.8 21.8h12.9l-8.3-10.7z"
+            fill="#4cc2f1"
+          />
+        </svg>
+      ) : (
+        <svg viewBox="0 0 24 24" className="h-full w-full" aria-hidden>
+          <rect width="24" height="24" rx="5" fill="#ff9900" />
+          <text
+            x="12"
+            y="14.2"
+            textAnchor="middle"
+            fontSize="7.5"
+            fontWeight="800"
+            fontFamily="system-ui, sans-serif"
+            fill="#ffffff"
+          >
+            aws
+          </text>
+          <path
+            d="M4.5 16.4c2.7 2.6 12.3 2.6 15-1"
+            stroke="#ffffff"
+            strokeWidth="1.6"
+            fill="none"
+            strokeLinecap="round"
+          />
+          <path
+            d="M17.2 15.1l2.4.3-1 2.1"
+            stroke="#ffffff"
+            strokeWidth="1.4"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      )}
+    </span>
+  );
+}
+
 const btnBase =
   "inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-150 active:scale-[0.98]";
 

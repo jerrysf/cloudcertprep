@@ -7,7 +7,7 @@ import { TOPICS, topicsByCert } from "@/lib/content/topics";
 import { publishedByTopic } from "@/lib/content/questions";
 import { CERTIFICATIONS } from "@/lib/content/certifications";
 import { PracticeHub } from "@/components/practice-hub";
-import { Badge, Card, Container } from "@/components/ui";
+import { Badge, Card, Container, VendorBadge } from "@/components/ui";
 
 export const metadata: Metadata = pageMetadata({
   title: "Practice Questions — AWS Certification Practice Exams",
@@ -43,9 +43,10 @@ export default function PracticePage() {
             <h3 className="text-sm font-semibold uppercase tracking-wide text-muted">
               <Link
                 href={`/certifications/${cert.id}`}
-                className="hover:text-accent"
+                className="inline-flex items-center gap-1.5 hover:text-accent"
               >
-                {cert.code}
+                <VendorBadge vendor={cert.vendor} />
+                {cert.vendor === "azure" ? cert.code : `AWS ${cert.code}`}
               </Link>{" "}
               — {cert.name.replace("AWS Certified ", "")}
             </h3>
