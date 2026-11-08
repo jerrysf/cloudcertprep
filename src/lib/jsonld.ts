@@ -14,3 +14,17 @@ export function breadcrumbJsonLd(
     })),
   };
 }
+
+export function faqJsonLd(
+  items: { question: string; answer: string }[],
+): object {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((i) => ({
+      "@type": "Question",
+      name: i.question,
+      acceptedAnswer: { "@type": "Answer", text: i.answer },
+    })),
+  };
+}

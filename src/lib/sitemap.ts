@@ -68,12 +68,20 @@ export function getSitemapEntries(): MetadataRoute.Sitemap {
     });
   }
   for (const c of CERTIFICATIONS) {
-    entries.push({
-      url: `${SITE.url}/certifications/${c.id}`,
-      lastModified: SITE_LAST_UPDATED,
-      changeFrequency: "weekly",
-      priority: 0.8,
-    });
+    entries.push(
+      {
+        url: `${SITE.url}/certifications/${c.id}`,
+        lastModified: SITE_LAST_UPDATED,
+        changeFrequency: "weekly",
+        priority: 0.8,
+      },
+      {
+        url: `${SITE.url}/practice/${c.id}`,
+        lastModified: SITE_LAST_UPDATED,
+        changeFrequency: "weekly",
+        priority: 0.7,
+      },
+    );
   }
   for (const s of SERVICES) {
     entries.push({

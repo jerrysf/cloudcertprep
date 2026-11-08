@@ -8,7 +8,7 @@ import { ARTICLES } from "@/lib/content/articles";
 import { getDomain } from "@/lib/content/domains";
 import { getCertification } from "@/lib/content/certifications";
 import { getTopic } from "@/lib/content/topics";
-import { breadcrumbJsonLd } from "@/lib/jsonld";
+import { breadcrumbJsonLd, faqJsonLd } from "@/lib/jsonld";
 import { cn } from "@/lib/utils";
 import { Badge, Breadcrumbs, Card, Container } from "@/components/ui";
 import { AffiliateBlock } from "@/components/affiliate-note";
@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cert = getCertification(q.cert);
   return pageMetadata({
     title: `${q.question.slice(0, 60)}${q.question.length > 60 ? "…" : ""}`,
-    description: `${cert?.code ?? "AWS"} practice question on ${topic?.name ?? q.topic}: see the scenario, the correct answer, and why each option is right or wrong — with official AWS documentation.`,
+    description: `${cert?.code ?? "Cloud"} practice question on ${topic?.name ?? q.topic}: see the scenario, the correct answer, and why each option is right or wrong — with official ${cert?.vendor === "azure" ? "Microsoft Learn" : "AWS"} documentation.`,
     path: `/questions/${slug}`,
   });
 }
@@ -67,6 +67,20 @@ export default async function QuestionPage({ params }: Props) {
     { label: `Question` },
   ];
   const jsonLd = breadcrumbJsonLd(crumbs);
+  const vendorName = cert.vendor === "azure" ? "Microsoft Learn" : "AWS documentation";
+  const faqLd = faqJsonLd([
+    {
+      question: q.question,
+      answer: `The correct answer${q.correctAnswers.length > 1 ? "s are" : " is"}: ${q.options
+        .filter((o) => q.correctAnswers.includes(o.id))
+        .map((o) => `${o.id}. ${o.text}`)
+        .join("; ")}. ${q.explanation}`,
+    },
+    {
+      question: `Which ${cert.code} domain does this question belong to?`,
+      answer: `Domain ${domain.number}: ${domain.name}${topic ? `, in the ${topic.name} topic` : ""}. This is a ${q.difficulty} ${q.format === "multiple-response" ? "multiple-response" : "single-choice"} practice question with per-option explanations and official ${vendorName} references.`,
+    },
+  ]);
 
   // Quiz structured data — enables "practice problems" eligibility in search
   const quizLd = {
@@ -336,6 +350,10 @@ export default async function QuestionPage({ params }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(quizLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
       />
     </Container>
   );
