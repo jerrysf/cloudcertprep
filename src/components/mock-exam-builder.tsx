@@ -14,6 +14,15 @@ import {
 import { publishedByCert } from "@/lib/content/questions";
 import { ANALYTICS_EVENTS, track } from "@/lib/analytics";
 import { EXAM_SESSION_PREFIX } from "@/lib/storage";
+import { useProgress } from "@/lib/use-progress";
+import {
+  applyPoolFilter,
+  DifficultyButtons,
+  PoolModeButtons,
+  usePoolCounts,
+  type DifficultyFilter,
+  type PoolMode,
+} from "@/components/pool-filters";
 import { Card } from "@/components/ui";
 
 const COUNT_OPTIONS = [10, 20, 35, 65];
@@ -24,8 +33,19 @@ export function MockExamBuilder() {
   const [count, setCount] = useState(10);
   const [timed, setTimed] = useState(true);
   const [domains, setDomains] = useState<DomainId[]>([]);
+  const [difficulty, setDifficulty] = useState<DifficultyFilter>("all");
+  const [poolMode, setPoolMode] = useState<PoolMode>("all");
   const cert = getCertification(certId)!;
-  const available = publishedByCert(cert.id).length;
+  const progress = useProgress();
+
+  const bankSize = publishedByCert(cert.id).length;
+  const basePool = publishedByCert(cert.id).filter(
+    (q) =>
+      (domains.length === 0 || domains.includes(q.domain)) &&
+      (difficulty === "all" || q.difficulty === difficulty),
+  );
+  const poolCounts = usePoolCounts(basePool);
+  const available = applyPoolFilter(basePool, poolMode, progress).length;
   const effectiveCount = Math.min(count, available);
 
   function selectCert(id: CertificationId) {
@@ -40,7 +60,7 @@ export function MockExamBuilder() {
   }
 
   function start() {
-    const pool = publishedByCert(cert.id);
+    const pool = applyPoolFilter(basePool, poolMode, progress);
     const questions = selectExamQuestions(
       pool,
       effectiveCount,
@@ -120,8 +140,32 @@ export function MockExamBuilder() {
         </div>
         <p className="mt-2 text-xs text-muted">
           The real {cert.code} exam has {cert.questionCount} questions. This
-          practice bank currently contains {available} {cert.code} questions.
+          practice bank currently contains {bankSize} {cert.code} questions
+          {available !== bankSize
+            ? ` — ${available} match your filters`
+            : ""}
+          .
         </p>
+      </div>
+
+      <div className="flex flex-wrap gap-6">
+        <div>
+          <h2 className="text-lg font-semibold">Pool</h2>
+          <div className="mt-3">
+            <PoolModeButtons
+              value={poolMode}
+              onChange={setPoolMode}
+              mistakesCount={poolCounts.mistakes}
+              unseenCount={poolCounts.unseen}
+            />
+          </div>
+        </div>
+        <div>
+          <h2 className="text-lg font-semibold">Difficulty</h2>
+          <div className="mt-3">
+            <DifficultyButtons value={difficulty} onChange={setDifficulty} />
+          </div>
+        </div>
       </div>
 
       <div>

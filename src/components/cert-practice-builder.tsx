@@ -7,10 +7,18 @@ import type { Question } from "@/lib/content/schema";
 import { getDomain } from "@/lib/content/domains";
 import type { DomainId } from "@/lib/content/schema";
 import { PracticeSession } from "@/components/practice-session";
+import {
+  applyPoolFilter,
+  DifficultyButtons,
+  PoolModeButtons,
+  usePoolCounts,
+  type DifficultyFilter,
+  type PoolMode,
+} from "@/components/pool-filters";
+import { useProgress } from "@/lib/use-progress";
 import { Card } from "@/components/ui";
 import { cn } from "@/lib/utils";
 
-const DIFFICULTIES = ["all", "easy", "medium", "hard"] as const;
 const COUNTS = [10, 20, 50, 0] as const; // 0 = all
 
 function shuffle<T>(arr: T[]): T[] {
@@ -32,10 +40,11 @@ export function CertPracticeBuilder({
   const [selectedDomains, setSelectedDomains] = useState<Set<string>>(
     () => new Set(cert.domains.map((d) => d.id)),
   );
-  const [difficulty, setDifficulty] =
-    useState<(typeof DIFFICULTIES)[number]>("all");
+  const [difficulty, setDifficulty] = useState<DifficultyFilter>("all");
+  const [poolMode, setPoolMode] = useState<PoolMode>("all");
   const [count, setCount] = useState<number>(20);
   const [session, setSession] = useState<Question[] | null>(null);
+  const progress = useProgress();
 
   const domainIds = cert.domains.map((d) => d.id);
   const perDomain = useMemo(() => {
@@ -44,7 +53,7 @@ export function CertPracticeBuilder({
     return m;
   }, [questions]);
 
-  const pool = useMemo(
+  const basePool = useMemo(
     () =>
       questions.filter(
         (q) =>
@@ -52,6 +61,11 @@ export function CertPracticeBuilder({
           (difficulty === "all" || q.difficulty === difficulty),
       ),
     [questions, selectedDomains, difficulty],
+  );
+  const poolCounts = usePoolCounts(basePool);
+  const pool = useMemo(
+    () => applyPoolFilter(basePool, poolMode, progress),
+    [basePool, poolMode, progress],
   );
 
   function toggleDomain(id: string) {
@@ -111,25 +125,23 @@ export function CertPracticeBuilder({
       <div className="mt-5 flex flex-wrap gap-6">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wide text-muted">
+            Pool
+          </p>
+          <div className="mt-2">
+            <PoolModeButtons
+              value={poolMode}
+              onChange={setPoolMode}
+              mistakesCount={poolCounts.mistakes}
+              unseenCount={poolCounts.unseen}
+            />
+          </div>
+        </div>
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wide text-muted">
             Difficulty
           </p>
-          <div className="mt-2 flex gap-1 rounded-lg bg-slate-100 p-1 text-sm">
-            {DIFFICULTIES.map((d) => (
-              <button
-                key={d}
-                type="button"
-                onClick={() => setDifficulty(d)}
-                aria-pressed={difficulty === d}
-                className={cn(
-                  "rounded-md px-3 py-1.5 capitalize transition-colors",
-                  difficulty === d
-                    ? "bg-white font-medium text-foreground shadow-sm"
-                    : "text-muted hover:text-foreground",
-                )}
-              >
-                {d}
-              </button>
-            ))}
+          <div className="mt-2">
+            <DifficultyButtons value={difficulty} onChange={setDifficulty} />
           </div>
         </div>
         <div>
