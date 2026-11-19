@@ -4,17 +4,18 @@ test("homepage renders positioning and CTAs", async ({ page }) => {
   await page.goto("/");
   await expect(
     page.getByRole("heading", {
-      name: "Free AWS & Azure Certification Practice Exams & Questions",
+      name: "Pass your cloud certification. On the first try.",
     }),
   ).toBeVisible();
   await expect(
-    page.getByRole("link", { name: "Start Free Practice" }),
+    page.getByRole("link", { name: "Start practicing free" }).first(),
   ).toBeVisible();
-  await expect(
-    page.getByRole("link", { name: "Explore Certifications" }).first(),
-  ).toBeVisible();
+  // interactive mini quiz preview is present
+  await expect(page.getByText("Try it — click an answer")).toBeVisible();
   // official domain weights are shown
-  await expect(page.getByText("Design Secure Architectures")).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Design Secure Architectures" }),
+  ).toBeVisible();
 });
 
 test("practice session: answer, submit, see explanation", async ({ page }) => {
